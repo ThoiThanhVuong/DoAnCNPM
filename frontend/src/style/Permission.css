@@ -1,0 +1,54 @@
+.manager-permission{
+    position: relative;
+    text-align: center;
+    width: 80%;
+    margin: auto;
+    h1{
+        margin-bottom: 20px;
+    }
+}
+.manager-permission .manager-permission_content table{
+    margin: auto;
+    width: 100%;
+    td{
+        padding: 20px;
+    }
+}
+.manager-permission .manager-permission_content table tr:first-child{
+    color: rgba(0, 0, 0, 0.5);
+}
+.manager-permission_content{
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+button{
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+button:first-child{
+    margin-right: 10px;
+}
+button:last-child{
+    background-color: unset;
+    color: black;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    transition: 0.2s;
+}
+button:last-child:hover{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.manager-permission_button{
+    position: absolute;
+    right: 0;
+    bottom: -50px;
+}
+.edit, .delete, button{
+    cursor: pointer;
+}
+.edit{
+    margin-right: 20px;
+    font-size: 18px;
+}
