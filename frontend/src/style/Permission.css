@@ -3,9 +3,9 @@
     text-align: center;
     width: 80%;
     margin: auto;
-    h1{
-        margin-bottom: 20px;
-    }
+}
+h1{
+    margin-bottom: 20px;
 }
 .manager-permission .manager-permission_content table{
     margin: auto;
@@ -45,10 +45,79 @@ button:last-child:hover{
     right: 0;
     bottom: -50px;
 }
+.manager-permission_button button{
+    margin-right: unset;
+    color: white;
+    background-color: black;
+}
+.manager-permission_button button:hover{
+    background-color: black;
+}
 .edit, .delete, button{
     cursor: pointer;
 }
 .edit{
     margin-right: 20px;
     font-size: 18px;
+}
+.add-permission{
+    width: 40%;
+    margin: auto;
+    margin-top: 50px;
+    text-align: center;
+
+    input{
+        padding: 5px 5px;
+        margin-right: 20px;
+        margin-left: 5px;
+    }
+}
+.add-permission_button{
+    margin-top: 15px;
+}
+.edit-permission{
+    margin: auto;
+    width: 80%;
+    text-align: center;
+    margin-top: 50px;
+
+}
+.edit-permission_content__title input{
+    margin-left: 5px;
+    padding: 5px;
+}
+.edit-permission_content{
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 20px;
+}
+.edit-permission_content table{
+    width: 100%;
+    td{
+        padding: 20px;
+    }
+}
+.edit-permission_content table tr:first-child{
+    color: rgba(0, 0, 0, 0.5);
+}
+.edit-permission_button{
+    position: absolute;
+    right: 0;
+    bottom: -50px;
+}
+.add-function-permission{
+    width: 40%;
+    margin: auto;
+    margin-top: 50px;
+    text-align: center;
+
+    input{
+        padding: 5px 5px;
+        margin-right: 20px;
+        margin-left: 5px;
+    }
+}
+.add-function-permission_button{
+    margin-top: 15px;
 }
