@@ -55,11 +55,11 @@ const Permission=()=>{
             </div>
 
             <div className="add-permission" style={{display: showAddPermission ? "block" : "none"}}>
-                <h1>Thêm Vai Trò</h1>
+                <h1>Thêm Nhóm Quyền</h1>
                 <label for="">STT:</label>
                 <input type="text"/>
                 <label for="">Vai Trò:</label>
-                <input type="text" placeholder="Nhập vài trò"/>
+                <input type="text" placeholder="Nhập nhóm quyền"/>
                 <div className="add-permission_button">
                     <button>Lưu</button>
                     <button onClick={handleShowAddPermission}>Thoát</button>
@@ -118,7 +118,7 @@ const Permission=()=>{
                     <button onClick={handleShowAddFunctionPermission}>Thoát</button>
                 </div>
             </div>
-
+        
         </div>
     );
 };

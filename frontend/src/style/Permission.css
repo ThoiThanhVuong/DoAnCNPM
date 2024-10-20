@@ -65,7 +65,6 @@ button:last-child:hover{
     margin: auto;
     margin-top: 50px;
     text-align: center;
-
     input{
         padding: 5px 5px;
         margin-right: 20px;
@@ -80,7 +79,6 @@ button:last-child:hover{
     width: 80%;
     text-align: center;
     margin-top: 50px;
-
 }
 .edit-permission_content__title input{
     margin-left: 5px;

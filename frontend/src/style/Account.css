@@ -1,0 +1,39 @@
+.container-account{
+    text-align: center;
+    width: 80%;
+    margin: auto;
+}
+.container-account_content{
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+}
+.container-account_content table{
+    width: 100%;
+    td{
+        padding: 20px;
+    }
+}
+.container-account_content table tr:first-child{
+    color: rgba(0, 0, 0, 0.5);
+}
+.container-account_button{
+    position: absolute;
+    right: 0;
+    bottom: -50px;
+}
+.add-user-account{
+    margin-top: 50px;
+    text-align: center;
+}
+.add-user-account_content__content-items{
+    margin: 10px;
+}
+.add-user-account_content__content-items input{
+    margin-left: 5px;
+    padding: 5px;
+}
+.add-user-account_button{
+    margin-top: 14px;
+}
