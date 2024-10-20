@@ -14,6 +14,12 @@
     td{
         padding: 20px;
     }
+    tr{
+        transition: 0.2s;
+    }
+}
+.container-account_content table tr:hover{
+    background-color: rgba(0, 0, 0, 0.3);
 }
 .container-account_content table tr:first-child{
     color: rgba(0, 0, 0, 0.5);
@@ -27,13 +33,57 @@
     margin-top: 50px;
     text-align: center;
 }
+.add-user-account_content{
+    position: relative;
+    width: 24%;
+    text-align: right;
+    margin: auto;
+}
 .add-user-account_content__content-items{
     margin: 10px;
 }
 .add-user-account_content__content-items input{
-    margin-left: 5px;
     padding: 5px;
 }
 .add-user-account_button{
-    margin-top: 14px;
+    position: absolute;
+    right: 10px;
+}
+.add-user-account_content .add-user-account_content__content-items:first-child input{
+    margin-left: 10px;
+}
+.add-user-account_content .add-user-account_content__content-items:nth-child(2) input{
+    margin-left: 10px;
+}
+.add-user-account_content .add-user-account_content__content-items:nth-child(3) input{
+    margin-left: 10px;
+}
+.edit-user-account{
+    margin-top: 70px;
+    text-align: center;
+}
+.edit-user-account_content{
+    position: relative;
+    width: 24%;
+    text-align: right;
+    margin: auto;
+}
+.edit-user-account_content__content-items{
+    margin: 10px;
+}
+.edit-user-account_content__content-items input{
+    padding: 5px;
+}
+.edit-user-account_button{
+    position: absolute;
+    right: 10px;
+}
+.edit-user-account_content .edit-user-account_content__content-items:first-child input{
+    margin-left: 10px;
+}
+.edit-user-account_content .edit-user-account_content__content-items:nth-child(2) input{
+    margin-left: 10px;
+}
+.edit-user-account_content .edit-user-account_content__content-items:nth-child(3) input{
+    margin-left: 10px;
 }

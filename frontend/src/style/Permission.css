@@ -10,9 +10,15 @@ h1{
 .manager-permission .manager-permission_content table{
     margin: auto;
     width: 100%;
+    tr{
+        transition: 0.2s;
+    }
     td{
         padding: 20px;
     }
+}
+.manager-permission .manager-permission_content table tr:hover{
+    background-color: rgba(0, 0, 0, 0.3);
 }
 .manager-permission .manager-permission_content table tr:first-child{
     color: rgba(0, 0, 0, 0.5);
@@ -92,9 +98,15 @@ button:last-child:hover{
 }
 .edit-permission_content table{
     width: 100%;
+    tr{
+        transition: 0.2s;
+    }
     td{
         padding: 20px;
     }
+}
+.edit-permission_content table tr:hover{
+    background-color: rgba(0, 0, 0, 0.3);
 }
 .edit-permission_content table tr:first-child{
     color: rgba(0, 0, 0, 0.5);

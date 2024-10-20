@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import '../style/Permission.css'
 import {FaEdit, FaTrash} from 'react-icons/fa'
 const Permission=()=>{
+    
     const [showAddPermission, setShow] = useState(false);
 
     const handleShowAddPermission = () => {
