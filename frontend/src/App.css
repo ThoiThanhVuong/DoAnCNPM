@@ -9,11 +9,12 @@
 main{
   width:100%;
   padding:20px;
+  height: 130vh;
 }
 .sidebar{
   background: #000;
   color:#fff;
-  height:110vh;
+  height:150vh;
   width:250px;
   transition: all 0.5s;
 }

@@ -1,0 +1,101 @@
+.Title {
+    font-weight: bold;
+    font-size: 30px;
+}
+.boxFind {
+    display: flex;
+    height: 200px;
+    margin-top: 25px;
+}
+.boxDate {
+    width: 50%;
+    border: 2px solid black;
+}
+.boxID {
+    width: 50%;
+    border-top: 2px solid black ;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+}
+.boxDate p{
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+}
+.boxID p{
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+}
+.custom_textField {
+    margin-top: 6%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.custom_textField p{
+    font-size: 15px;
+    width: 25%;
+}
+.custom_textField .css-17nf42q{
+    max-width: 300px;
+}
+.boxID .custom-icSearchID {
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.boxID .custom-icSearchID .icSearchID{
+    padding: 8px 8px 8px 8px;
+    font-size: 25px;
+    background-color: silver;
+    border-radius: 10px;
+    border: none;
+}
+.boxID .custom-icSearchID .icSearchID:hover{
+    background-color: gray;
+}
+.boxDate .custom-startDate p{
+    font-size: 15px;
+}
+.boxDate .custom-startDate{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2%;
+    gap: 2%;
+    height: 20%;
+}
+.boxDate .custom-endDate p{
+    font-size: 15px;
+}
+.boxDate .custom-endDate{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2%;
+    gap: 2%;
+    height: 20%;
+    margin-right: 9px;
+}
+.boxDate .custom-icSearchDate{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2%;
+} 
+.boxDate .custom-icSearchDate .icSearchDate{
+    padding: 8px 8px 8px 8px;
+    font-size: 25px;
+    background-color: silver;
+    border-radius: 10px;
+    border: none;
+} 
+.boxDate .custom-icSearchDate .icSearchDate:hover{
+    background-color: gray;
+}
+.listPX{
+    margin-top: 5%;
+}
