@@ -35,7 +35,7 @@
 }
 .add-user-account_content{
     position: relative;
-    width: 24%;
+    width: 40%;
     text-align: right;
     margin: auto;
 }
@@ -44,10 +44,11 @@
 }
 .add-user-account_content__content-items input{
     padding: 5px;
+    margin-right: 120px;
 }
 .add-user-account_button{
     position: absolute;
-    right: 10px;
+    right: 129px;
 }
 .add-user-account_content .add-user-account_content__content-items:first-child input{
     margin-left: 10px;
@@ -64,7 +65,7 @@
 }
 .edit-user-account_content{
     position: relative;
-    width: 24%;
+    width: 40%;
     text-align: right;
     margin: auto;
 }
@@ -73,10 +74,11 @@
 }
 .edit-user-account_content__content-items input{
     padding: 5px;
+    margin-right: 120px;
 }
 .edit-user-account_button{
     position: absolute;
-    right: 10px;
+    right: 129px;
 }
 .edit-user-account_content .edit-user-account_content__content-items:first-child input{
     margin-left: 10px;

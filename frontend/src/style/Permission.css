@@ -10,6 +10,7 @@ h1{
 .manager-permission .manager-permission_content table{
     margin: auto;
     width: 100%;
+    padding: 20px;
     tr{
         transition: 0.2s;
     }

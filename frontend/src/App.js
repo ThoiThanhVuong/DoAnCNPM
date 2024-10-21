@@ -34,7 +34,6 @@ return (
                 <Route path="/permission" element={<Permission/>}/>
                 <Route path="/permissionAccount" element={<PermissionAccount/>}/>
                 <Route path="/statistics" element={<Statistics/>}/>
-
             </Routes>
         </Sidebar>
     </BrowserRouter>
