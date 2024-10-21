@@ -1,9 +1,19 @@
-import React from 'react'
+import React, {useEffect,useState} from 'react'
+import productService from '../services/productService';
 const Product=()=>{
-
+  const [data ,setData] = useState([]);
+    useEffect(()=>{
+      const fetchProduct = async()=>{
+        const data = await productService.getAllProducts();
+        setData(data);
+      };
+      fetchProduct();
+    },[])
     return (
     <div className="products">
-      Trang Sản phẩm
+      <h2> Trang sản phẩm</h2>
+     
+
     </div>
     );
 };
