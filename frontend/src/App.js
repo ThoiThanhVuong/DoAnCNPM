@@ -20,6 +20,7 @@ return (
     <BrowserRouter>
         <Sidebar>
             <Routes>
+                <Route path="/" element={<HomePage/>}/>
                 <Route path="/homePage" element={<HomePage/>}/>
                 <Route path="/product" element={<Product/>}/>
                 <Route path="/attribute" element={<Attribute/>}/>
