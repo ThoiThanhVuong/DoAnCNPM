@@ -13,6 +13,7 @@ import Provider from './pages/Provider.jsx';
 import Employee from './pages/Employee.jsx';
 import Account from './pages/Account.jsx';
 import Permission from './pages/Permission.jsx';
+import PermissionAccount from './pages/PermissionAccount.jsx';
 import Statistics from './pages/Statistics.jsx';
 import HomePage from './pages/HomePage.jsx';
 const App=()=>{
@@ -31,6 +32,7 @@ return (
                 <Route path="/employee" element={<Employee/>}/>
                 <Route path="/account" element={<Account/>}/>
                 <Route path="/permission" element={<Permission/>}/>
+                <Route path="/permissionAccount" element={<PermissionAccount/>}/>
                 <Route path="/statistics" element={<Statistics/>}/>
 
             </Routes>
