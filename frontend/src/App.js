@@ -2,7 +2,7 @@
 import React from 'react';
 import './App.css'
 import { BrowserRouter, Routes ,Route } from 'react-router-dom';
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/Sidebar.jsx';
 import Product from './pages/Product.jsx';
 import Attribute from './pages/Attribute.jsx';
 import WarehouseArea from './pages/WarehouseArea.jsx';
