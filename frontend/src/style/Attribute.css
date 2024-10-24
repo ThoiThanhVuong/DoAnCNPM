@@ -3,7 +3,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 70px;
   background-color: #eaf6fc;
-  padding: 50px;
+  padding: 55px;
 }
 .attribute-item {
   width: 70%;
