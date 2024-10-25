@@ -10,6 +10,15 @@ const productService = {
             console.error("Error fetching products:", error);
             return [];
         }
+    },
+    createProduct : async (product) => {
+        try {
+            const response = await axios.post(API_URL, product);
+            return response.data;
+        } catch (error) {
+            console.error('Error creating product:', error);
+            throw error;
+        }
     }
 };
 

@@ -5,6 +5,7 @@ const Product=()=>{
     useEffect(()=>{
       const fetchProduct = async()=>{
         const data = await productService.getAllProducts();
+        console.log(data);
         setData(data);
       };
       fetchProduct();

@@ -16,7 +16,7 @@
 
 
 -- Dumping database structure for quanlikhohang
-CREATE DATABASE IF NOT EXISTS `quanlikhohang` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+CREATE DATABASE IF NOT EXISTS `quanlidienthoai` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 USE `quanlikhohang`;
 
 -- Dumping structure for table quanlikhohang.chi_tiet_hoa_don
