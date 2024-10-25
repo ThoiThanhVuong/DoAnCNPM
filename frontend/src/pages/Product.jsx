@@ -13,7 +13,6 @@ const Product=()=>{
     return (
     <div className="products">
       <h2> Trang sản phẩm</h2>
-     
 
     </div>
     );

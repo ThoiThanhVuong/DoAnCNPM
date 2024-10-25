@@ -2,16 +2,16 @@ const db = require('../config/db');
 const { DataTypes } = require('sequelize');
 
 const ProductModel = db.define('ProductModel',{
-    masp:{
+    ma_sp:{
         type: DataTypes.INTEGER,
        allowNull:false,
        primaryKey: true
     },
-    tensp:{
+    ten_sp:{
         type: DataTypes.STRING,
         allowNull: false
     },
-   hinhanh:{
+   hinh_anh:{
     type: DataTypes.STRING,
     allowNull: false
    }

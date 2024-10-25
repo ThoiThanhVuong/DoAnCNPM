@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
+import React, {useState , useEffect} from 'react'
 import '../style/Permission.css'
+import permissionService from '../services/permissionService';
 import {FaEdit, FaTrash} from 'react-icons/fa'
 const Permission=()=>{
     
@@ -20,6 +21,15 @@ const Permission=()=>{
     const handleShowAddFunctionPermission = () => {
         setShow3(!showAddFunctionPermission);
     }
+    const [data ,setData] = useState([]);
+    useEffect(()=>{
+      const fetchPermission = async()=>{
+        const data = await permissionService.getAllPermissions();
+        console.log(data);
+        setData(data);
+      };
+      fetchPermission();
+    },[])
 
     return (
         <div>
@@ -33,7 +43,14 @@ const Permission=()=>{
                             <td>Nhóm Quyền</td>
                             <td>Thao Tác</td>
                         </tr>
-                        <tr>
+                        {data.map(item =>(
+                            <tr>
+                                <td>{item.ma_quyen}</td>
+                                <td>{item.ten_quyen}</td>
+                                <td><FaEdit className="edit" onClick={handleShowEditPermission}/><FaTrash className="delete"/></td>
+                            </tr>
+                        ))}
+                        {/* <tr>
                             <td>1</td>
                             <td>admin</td>
                             <td><FaEdit className="edit" onClick={handleShowEditPermission}/><FaTrash className="delete"/></td>
@@ -47,7 +64,7 @@ const Permission=()=>{
                             <td>3</td>
                             <td>kế toán</td>
                             <td><FaEdit className="edit" onClick={handleShowEditPermission}/><FaTrash className="delete"/></td>
-                        </tr>
+                        </tr> */}
                     </table>
                 </div>
                 <div className="manager-permission_button">
