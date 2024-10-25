@@ -1,13 +1,25 @@
 const express = require('express');
 const cors = require('cors');
-const app = express();
+const sequelize = require('../backend/src/config/db.js');
 const productRoutes = require('../backend/src/routes/productRoutes.js');
+const bodyParser = require('body-parser');
+
+const app = express();
+
 app.use(cors());
 // Middleware để parse JSON
-app.use(express.json());
+app.use(bodyParser.json());
 
-// Định nghĩa các route
+// Định nghĩa các route cho sản phẩm
 app.use('/api/products', productRoutes);
 
-
+// Đồng bộ database với Sequelize
+sequelize.sync()
+    .then(() => {
+        console.log('Database synchronized');
+    })
+    .catch(err => {
+        console.log('Error syncing database:', err);
+    }); 
+    
 module.exports = app;
