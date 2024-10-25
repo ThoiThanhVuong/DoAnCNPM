@@ -4,7 +4,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database:'quanlidienthoai'
+    database:'quanlikhohang'
 });
 
 // Kết nối tới cơ sở dữ liệu
