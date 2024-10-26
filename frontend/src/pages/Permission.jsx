@@ -11,9 +11,11 @@ const Permission=()=>{
     };
     
     const [showEditPermission, setShow2] = useState(false);
-
-    const handleShowEditPermission = () => {
+    const [namePermission, setNamePermission] = useState('')
+    const handleShowEditPermission = (ten_quyen) => {
         setShow2(!showEditPermission);
+        setNamePermission(ten_quyen)
+
     };
 
     const [showAddFunctionPermission, setShow3] = useState(false);
@@ -32,7 +34,7 @@ const Permission=()=>{
       fetchPermission();
     },[])
 
-    const [dataSave,setDataSave] = useState({
+    const [dataSave, setDataSave] = useState({
         ma_quyen: '',
         ten_quyen: ''
     })
@@ -44,31 +46,37 @@ const Permission=()=>{
 
     const handleSaveAddPermission =async()=>{
         try {
-            const response = await permissionService.createPermission(dataSave)
-            console.log('Permission created:', response.data);
-            setDataSave({
-                ma_quyen: '',
-                ten_quyen: ''
-            })
-            window.location.reload(); 
+            if(dataSave.ma_quyen !== "" && dataSave.ten_quyen !== ""){
+                const response = await permissionService.createPermission(dataSave)
+                console.log('Permission created:', response);
+                setDataSave({
+                    ma_quyen: '',
+                    ten_quyen: ''
+                })
+                window.location.reload(); 
+            }else{
+                alert("Nhap thong tin!")
+            }
         } catch (error) {
             console.error('Error creating permission:', error);
         }
     }
 
     const handleDeletePermission = async (ma_quyen)=>{
+        if(ma_quyen === 1 || ma_quyen === 2 || ma_quyen ===3){
+            alert("ban khong the xoa quyen nay")
+            return
+        }
         const confirmDelete = window.confirm('Ban co chac chan muon xoa quyen nay?')
         if(!confirmDelete) return
         try {
             const response = await permissionService.deletePermission(ma_quyen)
-            console.log('Permission deleted:', response.data);
+            console.log('Permission deleted:', response);
             setData(data => data.filter(item => item.ma_quyen !== ma_quyen))
         } catch (error) {
             console.error('Error deleting permission:', error);
         }
     }
-
-
 
     return (
         <div>
@@ -86,7 +94,7 @@ const Permission=()=>{
                             <tr>
                                 <td>{item.ma_quyen}</td>
                                 <td>{item.ten_quyen}</td>
-                                <td><FaEdit className="edit" onClick={handleShowEditPermission}/><FaTrash className="delete" onClick={()=>handleDeletePermission(item.ma_quyen)}/></td>
+                                <td><FaEdit className="edit" onClick={()=>handleShowEditPermission(item.ten_quyen)}/><FaTrash className="delete" onClick={()=>handleDeletePermission(item.ma_quyen)}/></td>
                             </tr>
                         ))}
                         {/* <tr>
@@ -128,7 +136,7 @@ const Permission=()=>{
                 <div className="edit-permission_content">
                     <div className="edit-permission_content__title">
                         Nhóm Quyền:
-                        <input type="text"/>
+                        <input type="text" value={namePermission}/>
                     </div>
                     <table>
                         <tr>

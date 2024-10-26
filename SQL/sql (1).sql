@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `chi_tiet_quyen` (
   `ma_chuc_nang` int(11) DEFAULT NULL,
   `hanh_dong` varchar(255) DEFAULT NULL,
   KEY `ma_chuc_nang` (`ma_chuc_nang`),
-  KEY `ma_nhom_quyen` (`ma_quyen`) USING BTREE,
+  KEY `ma_quyen` (`ma_quyen`) USING BTREE,
   CONSTRAINT `fk_chi_tiet_quyen_ma_chuc_nang` FOREIGN KEY (`ma_chuc_nang`) REFERENCES `chuc_nang` (`ma_chuc_nang`),
   CONSTRAINT `fk_chi_tiet_quyen_ma_quyen` FOREIGN KEY (`ma_quyen`) REFERENCES `nhom_quyen` (`ma_quyen`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
