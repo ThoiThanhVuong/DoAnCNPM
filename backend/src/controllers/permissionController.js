@@ -48,30 +48,40 @@ exports.deletePermission = async (req, res) => {
 }
 
 exports.getAllFunctionPermission = async (req, res) => {
+    const {ma_quyen} = req.params
+    console.log(ma_quyen)
     try {
-        const permissions = await Permission.PermissionModel.findAll({
-            include: {
-                model: Permission.DetailPermission,
-                as: 'chiTietQuyen',
-                include: {
-                    model: Permission.FunctionPermission,
-                    as: 'chucNang',
-                    attributes: ['ten_chuc_nang']
+        // const functions = await Permission.DetailPermission.findAll({
+        //     where: {ma_quyen},
+        //     include: [{
+        //         model: Permission.FunctionPermission
+        //     }]
+        // })
+        // if(!functions.length) return res.status(404).json({massage: 'khong tim thay chuc nang chi ma quyen nay'})
+        // res.status(200).json(functions)
+        const permissionWithFunctions = await Permission.PermissionModel.findOne({
+            where: { ma_quyen },
+            include: [{
+                model: Permission.FunctionPermission,
+                through: {
+                    model: Permission.DetailPermission
                 },
-                attributes: []
-            },
-            attributes: ['ten_quyen']
+                attributes: ['ten_chuc_nang']
+            }]
         });
-
-        const result = permissions.map(permission => {
-            return {
-                ten_quyen: permission.ten_quyen,
-                chuc_nang: permission.chiTietQuyen.map(detail => detail.chucNang.ten_chuc_nang)
-            };
+        if (!permissionWithFunctions) {
+            return res.status(404).json({ message: 'Permission not found' });
+        }
+        console.log("kq:", permissionWithFunctions)
+        const functionPermissions = permissionWithFunctions.Permission.FunctionPermissions.map(func => ({
+            ten_chuc_nang: func.ten_chuc_nang
+        }));
+        console.log("COMPLETED")
+        res.status(200).json({
+            ten_quyen: permissionWithFunctions.ten_quyen
         });
-        
-        res.json(result); // Trả về result đã được định dạng
     } catch (error) {
-        res.status(500).json({ error: 'Lỗi khi lấy tên quyền và tên chức năng' });
+        console.log("ERROR")
+        res.status(500).json({error: 'Loi khi lay chuc nang'})
     }
 };
