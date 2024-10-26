@@ -3,7 +3,8 @@ const Permission = require('../models/PermissionModel')
 exports.getAllPermissions = async (req ,res) => {
     try {
         const permission =await Permission.PermissionModel.findAll();
-        res.json(permission);
+        // console.log(permission) // permission luc nay la 1 mang doi tuong
+        res.json(permission); // chuyen ve chuoi JSON hien thi len client nguoi dung
     }
     catch (err) {
         res.status(500).json({ error: ' Lỗi khi lấy sản phẩm'})
@@ -17,6 +18,7 @@ exports.createPermission = async (req, res) => {
             ma_quyen,
             ten_quyen
         })
+        // console.log(newPermission)
         res.status(201).json(newPermission)
     } catch (error) {
         res.status(500).json({error: 'Loi khi them nhom quyen'})
