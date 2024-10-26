@@ -21,15 +21,54 @@ const Permission=()=>{
     const handleShowAddFunctionPermission = () => {
         setShow3(!showAddFunctionPermission);
     }
+
     const [data ,setData] = useState([]);
     useEffect(()=>{
       const fetchPermission = async()=>{
-        const data = await permissionService.getAllPermissions();
-        console.log(data);
-        setData(data);
+        const response = await permissionService.getAllPermissions();
+        console.log(response);
+        setData(response);
       };
       fetchPermission();
     },[])
+
+    const [dataSave,setDataSave] = useState({
+        ma_quyen: '',
+        ten_quyen: ''
+    })
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setDataSave({ ...dataSave, [name]: value });
+    };
+
+    const handleSaveAddPermission =async()=>{
+        try {
+            const response = await permissionService.createPermission(dataSave)
+            console.log('Permission created:', response.data);
+            setDataSave({
+                ma_quyen: '',
+                ten_quyen: ''
+            })
+            window.location.reload(); 
+        } catch (error) {
+            console.error('Error creating permission:', error);
+        }
+    }
+
+    const handleDeletePermission = async (ma_quyen)=>{
+        const confirmDelete = window.confirm('Ban co chac chan muon xoa quyen nay?')
+        if(!confirmDelete) return
+        try {
+            const response = await permissionService.deletePermission(ma_quyen)
+            console.log('Permission deleted:', response.data);
+            setData(data => data.filter(item => item.ma_quyen !== ma_quyen))
+        } catch (error) {
+            console.error('Error deleting permission:', error);
+        }
+    }
+
+
 
     return (
         <div>
@@ -47,7 +86,7 @@ const Permission=()=>{
                             <tr>
                                 <td>{item.ma_quyen}</td>
                                 <td>{item.ten_quyen}</td>
-                                <td><FaEdit className="edit" onClick={handleShowEditPermission}/><FaTrash className="delete"/></td>
+                                <td><FaEdit className="edit" onClick={handleShowEditPermission}/><FaTrash className="delete" onClick={()=>handleDeletePermission(item.ma_quyen)}/></td>
                             </tr>
                         ))}
                         {/* <tr>
@@ -69,17 +108,17 @@ const Permission=()=>{
                 </div>
                 <div className="manager-permission_button">
                     <button onClick={handleShowAddPermission}>Thêm</button>
-                </div>                
+                </div>           
             </div>
 
             <div className="add-permission" style={{display: showAddPermission ? "block" : "none"}}>
                 <h1>Thêm Nhóm Quyền</h1>
                 <label for="">STT:</label>
-                <input type="text"/>
+                <input type="text" name="ma_quyen" onChange={handleChange} value={dataSave.ma_quyen}/>
                 <label for="">Vai Trò:</label>
-                <input type="text" placeholder="Nhập nhóm quyền"/>
+                <input type="text" placeholder="Nhập nhóm quyền" name='ten_quyen' onChange={handleChange} value={dataSave.ten_quyen}/>
                 <div className="add-permission_button">
-                    <button>Lưu</button>
+                    <button onClick={handleSaveAddPermission}>Lưu</button>
                     <button onClick={handleShowAddPermission}>Thoát</button>
                 </div>                
             </div>
