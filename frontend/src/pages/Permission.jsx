@@ -9,14 +9,28 @@ const Permission=()=>{
     const handleShowAddPermission = () => {
         setShow(!showAddPermission);
     };
-    
+
+    const [dataFeature, setDataFeature] = useState({FeaturePermissions: []})
     const [showEditPermission, setShow2] = useState(false);
     const [namePermission, setNamePermission] = useState('')
-    const handleShowEditPermission = (ten_quyen) => {
-        setShow2(!showEditPermission);
+    const [maQuyen, setMaQuyen] = useState(null)
+    const handleShowEditPermission2 = () => {
+        setShow2(!showEditPermission)
+    }
+    const handleShowEditPermission = async (ma_quyen, ten_quyen) => {
+        setShow2(!showEditPermission)
         setNamePermission(ten_quyen)
-
+        setMaQuyen(ma_quyen)
     };
+    useEffect(()=>{
+        const fetchFeature = async () => {
+            if(maQuyen !== null){
+                const response = await permissionService.getAllFeaturePermission(maQuyen)
+                setDataFeature(response)
+            }
+        }
+        fetchFeature()
+    },[maQuyen]) // kiem tra su thay doi cua maQuyen: khi co su thay doi lap tuc thuc hien ham useEffect
 
     const [showAddFunctionPermission, setShow3] = useState(false);
 
@@ -28,11 +42,11 @@ const Permission=()=>{
     useEffect(()=>{
       const fetchPermission = async()=>{
         const response = await permissionService.getAllPermissions();
-        console.log(response);
         setData(response);
       };
       fetchPermission();
     },[])
+
 
     const [dataSave, setDataSave] = useState({
         ma_quyen: '',
@@ -94,7 +108,7 @@ const Permission=()=>{
                             <tr>
                                 <td>{item.ma_quyen}</td>
                                 <td>{item.ten_quyen}</td>
-                                <td><FaEdit className="edit" onClick={()=>handleShowEditPermission(item.ten_quyen)}/><FaTrash className="delete" onClick={()=>handleDeletePermission(item.ma_quyen)}/></td>
+                                <td><FaEdit className="edit" onClick={()=>handleShowEditPermission(item.ma_quyen, item.ten_quyen)}/><FaTrash className="delete" onClick={()=>handleDeletePermission(item.ma_quyen)}/></td>
                             </tr>
                         ))}
                         {/* <tr>
@@ -143,34 +157,16 @@ const Permission=()=>{
                             <td>Chức Năng</td>
                             <td>Thao Tác</td>
                         </tr>
-                        <tr>
-                            <td>Quản lí quyền người dùng</td>
-                            <td><FaTrash className="delete"/></td>
-                        </tr>
-                        <tr>
-                            <td>Quản lí nhà cung cấp</td>
-                            <td><FaTrash className="delete"/></td>
-                        </tr>
-                        <tr>
-                            <td>Quản lí nhân viên</td>
-                            <td><FaTrash className="delete"/></td>
-                        </tr>
-                        <tr>
-                            <td>Quản lí sản phẩm</td>
-                            <td><FaTrash className="delete"/></td>
-                        </tr>
-                        <tr>
-                            <td>Quản lí phiếu nhập, xuất</td>
-                            <td><FaTrash className="delete"/></td>
-                        </tr>
-                        <tr>
-                            <td>Quản lí báo cáo, thống kê</td>
-                            <td><FaTrash className="delete"/></td>
-                        </tr>
+                        {dataFeature.FeaturePermissions.map(item => (
+                            <tr>
+                                <td>{item.ten_chuc_nang}</td>
+                                <td><FaTrash className="delete"/></td>
+                            </tr>
+                        ))}
                     </table>
                     <div class="edit-permission_button">
                         <button onClick={handleShowAddFunctionPermission}>Thêm</button>
-                        <button onClick={handleShowEditPermission}>Thoát</button>
+                        <button onClick={handleShowEditPermission2}>Thoát</button>
                     </div>
                 </div>
             </div>

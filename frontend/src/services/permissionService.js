@@ -27,6 +27,15 @@ const permissionService = {
             console.error('Error deleting permission:', error);
             throw error;
         }
+    },
+    getAllFeaturePermission : async (ma_quyen) => {
+        try {
+            const response = await axios.get(`http://localhost:3001/api/permission/feature_permission/${ma_quyen}`)
+            return response.data
+        } catch (error) {
+            console.error('Error getting role and feature:', error)
+            throw error
+        }
     }
 };
 

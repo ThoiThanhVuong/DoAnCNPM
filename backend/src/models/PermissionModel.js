@@ -16,7 +16,7 @@ const PermissionModel = db.define('PermissionModel',{
    timestamps:false
 })
 
-const FunctionPermission = db.define('FunctionPermission', {
+const FeaturePermission = db.define('FeaturePermission', {
     ma_chuc_nang:{
         type: DataTypes.INTEGER,
         allowNull:false,
@@ -32,6 +32,20 @@ const FunctionPermission = db.define('FunctionPermission', {
 })
 
 const DetailPermission = db.define('DetailPermission', {
+    ma_quyen: {
+        type: DataTypes.INTEGER,
+        references:{
+            model: PermissionModel,
+            key: 'ma_quyen'
+        }
+    },
+    ma_chuc_nang: {
+        type: DataTypes.INTEGER,
+        references:{
+            model: FeaturePermission,
+            key: 'ma_chuc_nang'
+        }
+    },
     hanh_dong: {
         type: DataTypes.STRING,
         allowNull: false
@@ -41,20 +55,7 @@ const DetailPermission = db.define('DetailPermission', {
     timestamps: false
 });
 
-PermissionModel.hasMany(DetailPermission, {
-    foreignKey: 'ma_quyen'
-});
+PermissionModel.belongsToMany(FeaturePermission, {through: DetailPermission, foreignKey: 'ma_quyen'})
+FeaturePermission.belongsToMany(PermissionModel, {through: DetailPermission, foreignKey: 'ma_chuc_nang'})
 
-FunctionPermission.hasMany(DetailPermission, {
-    foreignKey: 'ma_chuc_nang'
-});
-
-DetailPermission.belongsTo(PermissionModel, {
-    foreignKey: 'ma_quyen'
-});
-
-DetailPermission.belongsTo(FunctionPermission, {
-    foreignKey: 'ma_chuc_nang'
-});
-
-module.exports = {PermissionModel, FunctionPermission, DetailPermission}
+module.exports = {PermissionModel, FeaturePermission, DetailPermission}

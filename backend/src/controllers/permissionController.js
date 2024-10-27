@@ -47,39 +47,30 @@ exports.deletePermission = async (req, res) => {
     }
 }
 
-exports.getAllFunctionPermission = async (req, res) => {
+exports.getAllFeaturePermission = async (req, res) => {
     const {ma_quyen} = req.params
-    console.log(ma_quyen)
     try {
-        // const functions = await Permission.DetailPermission.findAll({
-        //     where: {ma_quyen},
-        //     include: [{
-        //         model: Permission.FunctionPermission
-        //     }]
-        // })
-        // if(!functions.length) return res.status(404).json({massage: 'khong tim thay chuc nang chi ma quyen nay'})
-        // res.status(200).json(functions)
-        const permissionWithFunctions = await Permission.PermissionModel.findOne({
-            where: { ma_quyen },
-            include: [{
-                model: Permission.FunctionPermission,
+        const result = await Permission.PermissionModel.findByPk(ma_quyen, {
+            include:[{
+                model: Permission.FeaturePermission,
                 through: {
-                    model: Permission.DetailPermission
+                    attributes: []
                 },
                 attributes: ['ten_chuc_nang']
-            }]
-        });
-        if (!permissionWithFunctions) {
-            return res.status(404).json({ message: 'Permission not found' });
-        }
-        console.log("kq:", permissionWithFunctions)
-        const functionPermissions = permissionWithFunctions.Permission.FunctionPermissions.map(func => ({
-            ten_chuc_nang: func.ten_chuc_nang
-        }));
-        console.log("COMPLETED")
-        res.status(200).json({
-            ten_quyen: permissionWithFunctions.ten_quyen
-        });
+            }],
+            attributes: ['ma_quyen', 'ten_quyen']
+        })
+        //hien thi du lieu: cach 1
+        //neu khong lay it nhat 1 attributes tu PermissionModel thi no se khong the format duoc
+        // const formattedResult = {
+        //     ma_quyen: result.ma_quyen,
+        //     ten_quyen: result.ten_quyen,
+        //     ten_chuc_nang: result.FeaturePermissions.map(fp => fp.ten_chuc_nang)
+        // };
+        // res.json(formattedResult);
+        
+        //hien thi du lieu: cach 2
+        res.json(result)
     } catch (error) {
         console.log("ERROR")
         res.status(500).json({error: 'Loi khi lay chuc nang'})
