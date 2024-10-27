@@ -10,7 +10,7 @@ const Permission=()=>{
         setShow(!showAddPermission);
     };
 
-    const [dataFeature, setDataFeature] = useState({FeaturePermissions: []})
+    const [dataFeature, setDataFeature] = useState({})
     const [showEditPermission, setShow2] = useState(false);
     const [namePermission, setNamePermission] = useState('')
     const [maQuyen, setMaQuyen] = useState(null)
@@ -157,12 +157,14 @@ const Permission=()=>{
                             <td>Chức Năng</td>
                             <td>Thao Tác</td>
                         </tr>
-                        {dataFeature.FeaturePermissions.map(item => (
-                            <tr>
-                                <td>{item.ten_chuc_nang}</td>
-                                <td><FaTrash className="delete"/></td>
-                            </tr>
-                        ))}
+                        {dataFeature.FeaturePermissions && dataFeature.FeaturePermissions.length > 0 ? (      
+                            dataFeature.FeaturePermissions.map(item => (
+                                <tr>
+                                    <td>{item.ten_chuc_nang}</td>
+                                    <td><FaTrash className="delete"/></td>
+                                </tr>
+                            ) 
+                            )) : null}
                     </table>
                     <div class="edit-permission_button">
                         <button onClick={handleShowAddFunctionPermission}>Thêm</button>
