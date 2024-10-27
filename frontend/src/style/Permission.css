@@ -90,6 +90,7 @@ button:last-child:hover{
 .edit-permission_content__title input{
     margin-left: 5px;
     padding: 5px;
+    font-weight: bold;
 }
 .edit-permission_content{
     position: relative;
