@@ -60,7 +60,6 @@ const PermissionAccount=()=>{
                     </table>
                     <div class="container-account_button">
                         <button onClick={handleShowAddUserAccount}>Thêm</button>
-                        <button>Thoát</button>
                     </div>
                 </div>
             </div>
@@ -69,16 +68,20 @@ const PermissionAccount=()=>{
                 <h1>Thêm Người Dùng</h1>
                 <div className="add-user-account_content">
                     <div className="add-user-account_content__content-items">
-                        <label for="">Tên Tài Khoản:</label>
+                        <label htmlFor="">Tên Tài Khoản:</label>
                         <input type="text" placeholder="Nhập tên tài khoản"/>
                     </div>
                     <div className="add-user-account_content__content-items">
-                        <label for="">Email:</label>
+                        <label htmlFor="">Email:</label>
                         <input type="text" placeholder="Nhập email"/>
                     </div>
                     <div className="add-user-account_content__content-items">
-                        <label for="">Gán Nhóm Quyền:</label>
-                        <input type="text" placeholder="Nhập nhóm quyền" id="input"/>
+                        <label htmlFor="">Chọn vai trò:</label>
+                        <select name="ten_quyen">
+                            <option value="Admin">Admin</option>
+                            <option value="nhân viên quản lí kho">nhân viên quản lí kho</option>
+                            <option value="kế toán">kế toán</option>
+                        </select>
                     </div>
                     <div className="add-user-account_button">
                         <button>Lưu</button>
@@ -91,16 +94,20 @@ const PermissionAccount=()=>{
                 <h1>Sửa Thông Tin Người Dùng</h1>
                 <div className="edit-user-account_content">
                     <div className="edit-user-account_content__content-items">
-                        <label for="">Tên Tài Khoản:</label>
+                        <label htmlFor="">Tên Tài Khoản:</label>
                         <input type="text" placeholder="Nhập tên tài khoản"/>
                     </div>
                     <div className="edit-user-account_content__content-items">
-                        <label for="">Email:</label>
+                        <label htmlFor="">Email:</label>
                         <input type="text" placeholder="Nhập email"/>
                     </div>
                     <div className="edit-user-account_content__content-items">
-                        <label for="">Gán Nhóm Quyền:</label>
-                        <input type="text" placeholder="Nhập nhóm quyền" id="input"/>
+                    <label htmlFor="">Chọn vai trò:</label>
+                        <select name="ten_quyen">
+                            <option value="Admin">Admin</option>
+                            <option value="nhân viên quản lí kho">nhân viên quản lí kho</option>
+                            <option value="kế toán">kế toán</option>
+                        </select>
                     </div>
                     <div className="edit-user-account_button">
                         <button>Lưu</button>
