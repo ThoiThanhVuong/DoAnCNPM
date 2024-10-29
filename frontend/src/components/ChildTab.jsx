@@ -1,5 +1,9 @@
 import React ,{useState} from 'react';
 import '../style/ChildTab.css';
+import TheoNam from '../components/Chart/Year.jsx';
+import './Chart/ChartMonth.jsx'
+import ChartMonth from './Chart/ChartMonth.jsx';
+
 const ChildTab = ()=>{
     const [activeTab, setActiveTab] = useState('TheoNam');
 
@@ -32,8 +36,8 @@ const ChildTab = ()=>{
                 </button>
             </div>
             <div className='tab-content'>
-                {activeTab === 'TheoNam' && <div><h3>Tab Doanh thu năm</h3></div>} 
-                {activeTab === 'TheoThang' && <div><h3>Tab Doanh thu theo tháng trong năm</h3></div>} 
+                {activeTab === 'TheoNam' && <div><TheoNam/></div>} 
+                {activeTab === 'TheoThang' && <div><ChartMonth/></div>} 
                 {activeTab === 'TheoNgay' && <div><h3>Tab Doanh thu theo ngày trong tháng</h3></div>} 
                 {activeTab === 'NgayDenNgay' && <div><h3>Tab Doanh thu từ ngày đến ngày</h3></div>} 
             </div>

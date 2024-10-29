@@ -1,6 +1,7 @@
 import React ,{useState} from 'react'
 import '../style/Statistics.css';
 import TabChilden from '../components/ChildTab';
+import StatisticProvider from '../components/statisticsChild/NhaCungCap.jsx'
 const Statistics=()=>{
     const [activeTab, setActiveTab] = useState('TongQuan');
 
@@ -54,7 +55,7 @@ const Statistics=()=>{
                 {activeTab === 'TonKho' && <div><h3>Tab Tồn kho</h3></div>}
                 {activeTab === 'DoanhThu' && <div><TabChilden/></div>}
                 {activeTab === 'KhachHang' && <div><h3>Tab khách hàng</h3></div>}
-                {activeTab === 'NhaCungCap' && <div><h3>Tab nhà cung cấp</h3></div>}
+                {activeTab === 'NhaCungCap' && <div><StatisticProvider/></div>}
             </div>
       </div>
     );
