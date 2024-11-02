@@ -5,7 +5,7 @@ const NhaCungCap = ()=> {
     return (
         <div className="statistics-page">
             <div className="filters-container">
-                <label>Tìm kiếm khách hàng</label>
+                <label>Tìm kiếm nhà cung cấp</label>
                 <input type="text" />
                 <label >Từ Ngày</label>
                 <input type="date" />
@@ -21,9 +21,9 @@ const NhaCungCap = ()=> {
                     <thead>
                         <tr>
                             <th>STT</th>
-                            <th>Mã khách hàng</th>
-                            <th>Tên khách hàng</th>
-                            <th>Số lượng phiếu</th>
+                            <th>Mã nhà cung cấp</th>
+                            <th>Tên nhà cung cấp</th>
+                            <th>Số lượng nhập</th>
                             <th>Tổng số tiền</th>
                         </tr>
                     </thead>

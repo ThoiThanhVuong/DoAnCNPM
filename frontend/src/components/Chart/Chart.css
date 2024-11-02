@@ -4,12 +4,14 @@
     padding:0;
   }
   
-.statistics-page {
+.Chart-page {
     width: 100%;
     padding: 20px;
     height: 100vh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   
   .filter-container {
@@ -45,32 +47,34 @@
     height: auto;
     max-height: 50vh; 
     margin-bottom: 20px;
-   flex:1;
+    flex:1;
   }
 
   .table-container {
     flex: 1;
     max-height: 33vh; 
-    overflow-y: auto;
-   
-  }
+    position: relative;
   
+  }
+
   .table-container table {
     width: 100%;
     border-collapse: collapse;
     position: relative;
-
+    overflow-y: auto;
+  
   }
   .table-container thead{
-    position:sticky;
+    position:fixed;
     top:0;
-    z-index: 1;
+
   }
   .table-container th,
   .table-container td {
     border: 1px solid #ddd;
     padding: 10px;
-    text-align: left;
+    text-align: center;
+    overflow: hidden;
   }
   
   .table-container th {

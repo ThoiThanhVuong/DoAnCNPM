@@ -3,7 +3,7 @@ import '../style/ChildTab.css';
 import TheoNam from '../components/Chart/Year.jsx';
 import './Chart/ChartMonth.jsx'
 import ChartMonth from './Chart/ChartMonth.jsx';
-
+import ChartDateOfMonth from '../components/Chart/DateOfMonth.jsx';
 const ChildTab = ()=>{
     const [activeTab, setActiveTab] = useState('TheoNam');
 
@@ -38,7 +38,7 @@ const ChildTab = ()=>{
             <div className='tab-content'>
                 {activeTab === 'TheoNam' && <div><TheoNam/></div>} 
                 {activeTab === 'TheoThang' && <div><ChartMonth/></div>} 
-                {activeTab === 'TheoNgay' && <div><h3>Tab Doanh thu theo ngày trong tháng</h3></div>} 
+                {activeTab === 'TheoNgay' && <div><ChartDateOfMonth/></div>} 
                 {activeTab === 'NgayDenNgay' && <div><h3>Tab Doanh thu từ ngày đến ngày</h3></div>} 
             </div>
         </div>

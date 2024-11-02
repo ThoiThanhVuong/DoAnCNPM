@@ -108,7 +108,7 @@ const ChartMonth =()=>{
         }
       };
   return (
-    <div className="statistics-page">
+    <div className="Chart-page">
           <div className="filter-container">
             <label>Chọn năm thống kê:</label>
             <select value={selectedYear} onChange={handleChangeyear}>

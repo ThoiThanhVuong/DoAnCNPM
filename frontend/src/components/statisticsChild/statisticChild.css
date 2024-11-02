@@ -39,21 +39,29 @@
 .buttons-container{
  width:100%;
  display:flex;
- justify-content: center;
+ justify-content: space-between;
  align-items: center;
+}
+.buttons-container button{
+    width:100%;
+    font-size: 18px;
+    margin: 10px;
+    padding:5px;
+    border-radius: 10px;
+    color:#fff;
+    border: none;
 }
 .buttons-container button:first-child{
     background-color:#59A869 ;
 }
 .buttons-container button:last-child{
     background-color:#DB5860;
-    color:#fff;
+    
 }
 .table-container{
     width:calc(75% - 10px);
     background: #fff;
     border-radius: 10px;
-    padding:12px;
     height:100%;
     overflow-y: auto;
 }
@@ -80,3 +88,4 @@
   .table-container tbody tr:nth-child(even) {
     background-color: #f9f9f9;
   }
+

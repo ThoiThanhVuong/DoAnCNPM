@@ -24,7 +24,7 @@ const Year = () => {
     setFromYear('');
     setToYear('');
   };
-
+  
   const handleExportExcel = () => {
     // Xử lý logic xuất excel
   };
@@ -79,7 +79,7 @@ const Year = () => {
   };
 
   return (
-    <div className="statistics-page">
+    <div className="Chart-page">
       <div className="filter-container">
         <input
           type="text"
