@@ -241,6 +241,7 @@ CREATE TABLE IF NOT EXISTS `phien_ban_san_pham` (
   `ma_mau` int(11) DEFAULT NULL,
   `gia_nhap` int(11) DEFAULT NULL,
   `gia_xuat` int(11) DEFAULT NULL,
+  `khu_vuc_kho` int(11) DEFAULT NULL,
   `ton_kho` int(11) DEFAULT 0,
   PRIMARY KEY (`ma_phien_ban`),
   KEY `ma_ram` (`ma_ram`),
@@ -250,21 +251,23 @@ CREATE TABLE IF NOT EXISTS `phien_ban_san_pham` (
   CONSTRAINT `FK4_masp` FOREIGN KEY (`ma_sp`) REFERENCES `san_pham` (`ma_sp`),
   CONSTRAINT `phien_ban_san_pham_ibfk_2` FOREIGN KEY (`ma_ram`) REFERENCES `ram` (`ma_ram`),
   CONSTRAINT `phien_ban_san_pham_ibfk_3` FOREIGN KEY (`ma_rom`) REFERENCES `rom` (`ma_rom`),
-  CONSTRAINT `phien_ban_san_pham_ibfk_4` FOREIGN KEY (`ma_mau`) REFERENCES `mau_sac` (`ma_mau`)
+  CONSTRAINT `phien_ban_san_pham_ibfk_4` FOREIGN KEY (`ma_mau`) REFERENCES `mau_sac` (`ma_mau`),
+  CONSTRAINT `phien_ban_san_pham` FOREIGN KEY (`ma_kho`) REFERENCES `khu_vuc_kho`
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table quanlikhohang.phien_ban_san_pham: ~10 rows (approximately)
 INSERT INTO `phien_ban_san_pham` (`ma_phien_ban`, `ma_sp`, `ma_ram`, `ma_rom`, `ma_mau`, `gia_nhap`, `gia_xuat`, `ton_kho`) VALUES
-	(1, 1, 1, 1, 1, 5000000, 6000000, 10),
-	(2, 1, 1, 2, 2, 5500000, 6500000, 15),
-	(3, 1, 2, 1, 3, 6000000, 7000000, 8),
-	(4, 2, 1, 2, 1, 5700000, 6700000, 12),
-	(5, 2, 2, 2, 2, 6200000, 7200000, 20),
-	(6, 2, 2, 3, 3, 6500000, 7500000, 7),
-	(7, 3, 1, 1, 1, 4500000, 5500000, 25),
-	(8, 3, 2, 1, 2, 4900000, 5900000, 18),
-	(9, 4, 1, 3, 3, 7000000, 8000000, 5),
-	(10, 5, 3, 3, 2, 7500000, 8500000, 10);
+	(1, 1, 1, 1, 1, 5000000, 6000000, 10 ,1),
+	(2, 1, 1, 2, 2, 5500000, 6500000, 15,1),
+	(3, 1, 2, 1, 3, 6000000, 7000000, 8,2),
+	(4, 2, 1, 2, 1, 5700000, 6700000, 12,2),
+	(5, 2, 2, 2, 2, 6200000, 7200000, 20,2),
+	(6, 2, 2, 3, 3, 6500000, 7500000, 7,2),
+	(7, 3, 1, 1, 1, 4500000, 5500000, 25,2),
+	(8, 3, 2, 1, 2, 4900000, 5900000, 18,2),
+	(9, 4, 1, 3, 3, 7000000, 8000000, 5,1),
+	(10, 5, 3, 3, 2, 7500000, 8500000, 10,1),
+  (11,5,3,2,1,7700000,9000000,5,2),
 
 -- Dumping structure for table quanlikhohang.phieu_nhap
 CREATE TABLE IF NOT EXISTS `phieu_nhap` (
