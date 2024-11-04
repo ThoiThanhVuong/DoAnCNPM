@@ -15,11 +15,11 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
--- Dumping database structure for quanlikhohang
+-- Dumping database structure for quanlidienthoai
 CREATE DATABASE IF NOT EXISTS `quanlidienthoai` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
-USE `quanlikhohang`;
+USE `quanlidienthoai`;
 
--- Dumping structure for table quanlikhohang.chi_tiet_hoa_don
+-- Dumping structure for table quanlidienthoai.chi_tiet_hoa_don
 CREATE TABLE IF NOT EXISTS `chi_tiet_hoa_don` (
   `ma_hd` int(11) DEFAULT NULL,
   `ma_sp` int(11) DEFAULT NULL,
@@ -34,14 +34,14 @@ CREATE TABLE IF NOT EXISTS `chi_tiet_hoa_don` (
   CONSTRAINT `fk_chi_tiet_hd_ma_sp` FOREIGN KEY (`ma_sp`) REFERENCES `san_pham` (`ma_sp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.chi_tiet_hoa_don: ~4 rows (approximately)
+-- Dumping data for table quanlidienthoai.chi_tiet_hoa_don: ~4 rows (approximately)
 INSERT INTO `chi_tiet_hoa_don` (`ma_hd`, `ma_sp`, `so_luong`, `ma_kho`, `gia_xuat`) VALUES
 	(1, 1, 3, 1, 5000000),
 	(1, 2, 3, 2, 6000000),
 	(2, 2, 3, 1, 6000000),
 	(3, 3, 3, 3, 5500000);
 
--- Dumping structure for table quanlikhohang.chi_tiet_kho
+-- Dumping structure for table quanlidienthoai.chi_tiet_kho
 CREATE TABLE IF NOT EXISTS `chi_tiet_kho` (
   `ma_kho` int(11) DEFAULT NULL,
   `ma_sp` int(11) DEFAULT NULL,
@@ -52,13 +52,13 @@ CREATE TABLE IF NOT EXISTS `chi_tiet_kho` (
   CONSTRAINT `FK_chi_tiet_kho_san_pham` FOREIGN KEY (`ma_sp`) REFERENCES `san_pham` (`ma_sp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.chi_tiet_kho: ~3 rows (approximately)
+-- Dumping data for table quanlidienthoai.chi_tiet_kho: ~3 rows (approximately)
 INSERT INTO `chi_tiet_kho` (`ma_kho`, `ma_sp`, `so_luong`) VALUES
 	(1, 1, 15),
 	(1, 2, 16),
 	(2, 2, 13);
 
--- Dumping structure for table quanlikhohang.chi_tiet_phieu_nhap
+-- Dumping structure for table quanlidienthoai.chi_tiet_phieu_nhap
 CREATE TABLE IF NOT EXISTS `chi_tiet_phieu_nhap` (
   `ma_pn` int(11) DEFAULT NULL,
   `ma_sp` int(11) DEFAULT NULL,
@@ -73,14 +73,14 @@ CREATE TABLE IF NOT EXISTS `chi_tiet_phieu_nhap` (
   CONSTRAINT `fk_chi_tiet_pn_ma_sp` FOREIGN KEY (`ma_sp`) REFERENCES `san_pham` (`ma_sp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.chi_tiet_phieu_nhap: ~4 rows (approximately)
+-- Dumping data for table quanlidienthoai.chi_tiet_phieu_nhap: ~4 rows (approximately)
 INSERT INTO `chi_tiet_phieu_nhap` (`ma_pn`, `ma_sp`, `so_luong`, `ma_kho`, `gia_nhap`) VALUES
 	(1, 1, 3, 1, 6000000),
 	(1, 2, 3, 2, 7000000),
 	(2, 2, 3, 1, 6000000),
 	(3, 3, 3, 3, 6000000);
 
--- Dumping structure for table quanlikhohang.chi_tiet_quyen
+-- Dumping structure for table quanlidienthoai.chi_tiet_quyen
 CREATE TABLE IF NOT EXISTS `chi_tiet_quyen` (
   `ma_quyen` int(11) DEFAULT NULL,
   `ma_chuc_nang` int(11) DEFAULT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `chi_tiet_quyen` (
   CONSTRAINT `fk_chi_tiet_quyen_ma_quyen` FOREIGN KEY (`ma_quyen`) REFERENCES `nhom_quyen` (`ma_quyen`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.chi_tiet_quyen: ~15 rows (approximately)
+-- Dumping data for table quanlidienthoai.chi_tiet_quyen: ~15 rows (approximately)
 INSERT INTO `chi_tiet_quyen` (`ma_quyen`, `ma_chuc_nang`, `hanh_dong`) VALUES
 	(1, 4, 'quản lí sản phẩm'),
 	(1, 6, 'quản lí báo cáo'),
@@ -109,14 +109,14 @@ INSERT INTO `chi_tiet_quyen` (`ma_quyen`, `ma_chuc_nang`, `hanh_dong`) VALUES
 	(2, 4, 'quản lí sản phẩm'),
 	(3, 6, 'quản lí báo cáo ');
 
--- Dumping structure for table quanlikhohang.chuc_nang
+-- Dumping structure for table quanlidienthoai.chuc_nang
 CREATE TABLE IF NOT EXISTS `chuc_nang` (
   `ma_chuc_nang` int(11) NOT NULL,
   `ten_chuc_nang` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ma_chuc_nang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.chuc_nang: ~8 rows (approximately)
+-- Dumping data for table quanlidienthoai.chuc_nang: ~8 rows (approximately)
 INSERT INTO `chuc_nang` (`ma_chuc_nang`, `ten_chuc_nang`) VALUES
 	(1, 'quản lí quyền người dùng'),
 	(2, 'quản lí nhà cung cấp'),
@@ -127,19 +127,19 @@ INSERT INTO `chuc_nang` (`ma_chuc_nang`, `ten_chuc_nang`) VALUES
 	(7, 'quản lí khách hàng'),
 	(8, 'quản lí kho');
 
--- Dumping structure for table quanlikhohang.he_dieu_hanh
+-- Dumping structure for table quanlidienthoai.he_dieu_hanh
 CREATE TABLE IF NOT EXISTS `he_dieu_hanh` (
   `ma_hdh` int(11) NOT NULL AUTO_INCREMENT,
   `ten_hdh` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ma_hdh`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.he_dieu_hanh: ~2 rows (approximately)
+-- Dumping data for table quanlidienthoai.he_dieu_hanh: ~2 rows (approximately)
 INSERT INTO `he_dieu_hanh` (`ma_hdh`, `ten_hdh`) VALUES
 	(1, 'Android'),
 	(2, 'iOS');
 
--- Dumping structure for table quanlikhohang.hoa_don
+-- Dumping structure for table quanlidienthoai.hoa_don
 CREATE TABLE IF NOT EXISTS `hoa_don` (
   `ma_hd` int(11) NOT NULL,
   `ma_nv` int(11) DEFAULT NULL,
@@ -154,13 +154,13 @@ CREATE TABLE IF NOT EXISTS `hoa_don` (
   CONSTRAINT `fk_hoa_don_ma_nv` FOREIGN KEY (`ma_nv`) REFERENCES `nhan_vien` (`ma_nv`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.hoa_don: ~2 rows (approximately)
+-- Dumping data for table quanlidienthoai.hoa_don: ~2 rows (approximately)
 INSERT INTO `hoa_don` (`ma_hd`, `ma_nv`, `ma_kh`, `thoi_gian_xuat`, `tong_tien`, `trang_thai`) VALUES
 	(1, 1, 1, '2024-10-05 14:00:00', 2000002, 1),
 	(2, 2, 2, '2024-10-06 15:00:00', 3000044, 1),
 	(3, 1, 1, '2024-10-07 16:00:00', 4300000, 1);
 
--- Dumping structure for table quanlikhohang.khach_hang
+-- Dumping structure for table quanlidienthoai.khach_hang
 CREATE TABLE IF NOT EXISTS `khach_hang` (
   `ma_kh` int(11) NOT NULL,
   `ten_kh` varchar(255) DEFAULT NULL,
@@ -169,13 +169,13 @@ CREATE TABLE IF NOT EXISTS `khach_hang` (
   PRIMARY KEY (`ma_kh`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.khach_hang: ~3 rows (approximately)
+-- Dumping data for table quanlidienthoai.khach_hang: ~3 rows (approximately)
 INSERT INTO `khach_hang` (`ma_kh`, `ten_kh`, `dia_chi_kh`, `sdt_kh`) VALUES
 	(1, 'Khách hàng 1', 'Hà Nội', '0987654321'),
 	(2, 'Khách hàng 2', 'TP. Hồ Chí Minh', '0976543210'),
 	(3, 'Khách hàng 3', 'Đà Nẵng', '0965432109');
 
--- Dumping structure for table quanlikhohang.khu_vuc_kho
+-- Dumping structure for table quanlidienthoai.khu_vuc_kho
 CREATE TABLE IF NOT EXISTS `khu_vuc_kho` (
   `ma_kho` int(11) NOT NULL,
   `ten_kho` varchar(255) DEFAULT NULL,
@@ -184,26 +184,26 @@ CREATE TABLE IF NOT EXISTS `khu_vuc_kho` (
   PRIMARY KEY (`ma_kho`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.khu_vuc_kho: ~4 rows (approximately)
+-- Dumping data for table quanlidienthoai.khu_vuc_kho: ~4 rows (approximately)
 INSERT INTO `khu_vuc_kho` (`ma_kho`, `ten_kho`, `chu_thich`, `trang_thai`) VALUES
 	(1, 'khu vuc A', 'kho A', 1),
 	(2, 'khu vuc B', 'kho B', 1),
 	(3, 'khu vuc C', 'kho C', 1);
 
--- Dumping structure for table quanlikhohang.mau_sac
+-- Dumping structure for table quanlidienthoai.mau_sac
 CREATE TABLE IF NOT EXISTS `mau_sac` (
   `ma_mau` int(11) NOT NULL,
   `ten_mau` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`ma_mau`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.mau_sac: ~3 rows (approximately)
+-- Dumping data for table quanlidienthoai.mau_sac: ~3 rows (approximately)
 INSERT INTO `mau_sac` (`ma_mau`, `ten_mau`) VALUES
 	(1, 'Hồng'),
 	(2, 'Đen'),
 	(3, 'Trắng');
 
--- Dumping structure for table quanlikhohang.nhan_vien
+-- Dumping structure for table quanlidienthoai.nhan_vien
 CREATE TABLE IF NOT EXISTS `nhan_vien` (
   `ma_nv` int(11) NOT NULL,
   `ten_nv` varchar(255) DEFAULT NULL,
@@ -218,13 +218,13 @@ CREATE TABLE IF NOT EXISTS `nhan_vien` (
   CONSTRAINT `fk_nhan_vien_ma_quyen` FOREIGN KEY (`ma_quyen`) REFERENCES `nhom_quyen` (`ma_quyen`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.nhan_vien: ~3 rows (approximately)
+-- Dumping data for table quanlidienthoai.nhan_vien: ~3 rows (approximately)
 INSERT INTO `nhan_vien` (`ma_nv`, `ten_nv`, `gioi_tinh`, `sdt`, `email`, `mat_khau`, `ma_quyen`, `trang_thai`) VALUES
 	(1, 'Nguyễn Văn A', 'Nam', '0911111111', 'nguyenvana@example.com', 'password123', 1, 1),
 	(2, 'Trần Thị B', 'Nữ', '0922222222', 'tranthib@example.com', 'password123', 2, 1),
 	(3, 'Lê Văn C', 'Nam', '0933333333', 'levanc@example.com', 'password123', 3, 1);
 
--- Dumping structure for table quanlikhohang.nha_cung_cap
+-- Dumping structure for table quanlidienthoai.nha_cung_cap
 CREATE TABLE IF NOT EXISTS `nha_cung_cap` (
   `ma_ncc` int(11) NOT NULL,
   `ten_ncc` varchar(255) DEFAULT NULL,
@@ -234,26 +234,26 @@ CREATE TABLE IF NOT EXISTS `nha_cung_cap` (
   PRIMARY KEY (`ma_ncc`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.nha_cung_cap: ~3 rows (approximately)
+-- Dumping data for table quanlidienthoai.nha_cung_cap: ~3 rows (approximately)
 INSERT INTO `nha_cung_cap` (`ma_ncc`, `ten_ncc`, `dia_chi`, `email_ncc`, `sdt_ncc`) VALUES
 	(1, 'Nhà cung cấp 1', 'Hải Phòng', 'ncc1@example.com', '0912345678'),
 	(2, 'Nhà cung cấp 2', 'Cần Thơ', 'ncc2@example.com', '0923456789'),
 	(3, 'Nhà cung cấp 3', 'Huế', 'ncc3@example.com', '0934567890');
 
--- Dumping structure for table quanlikhohang.nhom_quyen
+-- Dumping structure for table quanlidienthoai.nhom_quyen
 CREATE TABLE IF NOT EXISTS `nhom_quyen` (
   `ma_quyen` int(11) NOT NULL,
   `ten_quyen` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ma_quyen`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.nhom_quyen: ~3 rows (approximately)
+-- Dumping data for table quanlidienthoai.nhom_quyen: ~3 rows (approximately)
 INSERT INTO `nhom_quyen` (`ma_quyen`, `ten_quyen`) VALUES
 	(1, 'Admin'),
 	(2, 'nhân viên quản lí kho\r\n'),
 	(3, 'kế toán');
 
--- Dumping structure for table quanlikhohang.phieu_nhap
+-- Dumping structure for table quanlidienthoai.phieu_nhap
 CREATE TABLE IF NOT EXISTS `phieu_nhap` (
   `ma_pn` int(11) NOT NULL,
   `ma_nv` int(11) DEFAULT NULL,
@@ -268,40 +268,40 @@ CREATE TABLE IF NOT EXISTS `phieu_nhap` (
   CONSTRAINT `fk_phieu_nhap_ma_nv` FOREIGN KEY (`ma_nv`) REFERENCES `nhan_vien` (`ma_nv`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.phieu_nhap: ~2 rows (approximately)
+-- Dumping data for table quanlidienthoai.phieu_nhap: ~2 rows (approximately)
 INSERT INTO `phieu_nhap` (`ma_pn`, `ma_nv`, `ma_ncc`, `thoi_gian_nhap`, `tong_tien`, `trang_thai`) VALUES
 	(1, 1, 1, '2024-10-01 10:00:00', 3400500, 1),
 	(2, 2, 2, '2024-10-02 11:00:00', 4530000, 1),
 	(3, 1, 1, '2024-10-03 12:00:00', 6453000, 1);
 
--- Dumping structure for table quanlikhohang.ram
+-- Dumping structure for table quanlidienthoai.ram
 CREATE TABLE IF NOT EXISTS `ram` (
   `ma_ram` int(11) NOT NULL,
   `kich_thuoc_ram` int(11) DEFAULT NULL,
   PRIMARY KEY (`ma_ram`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.ram: ~3 rows (approximately)
+-- Dumping data for table quanlidienthoai.ram: ~3 rows (approximately)
 INSERT INTO `ram` (`ma_ram`, `kich_thuoc_ram`) VALUES
 	(1, 4),
 	(2, 6),
 	(3, 12);
 
--- Dumping structure for table quanlikhohang.rom
+-- Dumping structure for table quanlidienthoai.rom
 CREATE TABLE IF NOT EXISTS `rom` (
   `ma_rom` int(11) NOT NULL,
   `kich_thuoc_rom` int(11) DEFAULT NULL,
   PRIMARY KEY (`ma_rom`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.rom: ~4 rows (approximately)
+-- Dumping data for table quanlidienthoai.rom: ~4 rows (approximately)
 INSERT INTO `rom` (`ma_rom`, `kich_thuoc_rom`) VALUES
 	(1, 32),
 	(2, 64),
 	(3, 128),
 	(4, 256);
 
--- Dumping structure for table quanlikhohang.san_pham
+-- Dumping structure for table quanlidienthoai.san_pham
 CREATE TABLE IF NOT EXISTS `san_pham` (
   `ma_sp` int(11) NOT NULL,
   `ten_sp` varchar(255) DEFAULT NULL,
@@ -330,7 +330,7 @@ CREATE TABLE IF NOT EXISTS `san_pham` (
   CONSTRAINT `fk_san_pham_xuat_xu` FOREIGN KEY (`xuat_xu`) REFERENCES `xuat_xu` (`ma_xuat_xu`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.san_pham: ~13 rows (approximately)
+-- Dumping data for table quanlidienthoai.san_pham: ~13 rows (approximately)
 INSERT INTO `san_pham` (`ma_sp`, `ten_sp`, `hinh_anh`, `chip_xu_ly`, `dung_luong_pin`, `hdh`, `ram`, `rom`, `mau_sac`, `thuong_hieu`, `xuat_xu`, `mo_ta_sp`) VALUES
 	(1, 'iPhone 17', 'iphone17.jpg', 'A16', 5000, 2, 2, 3, 2, 2, 2, 'Điện thoại thông minh iPhone 17'),
 	(2, 'iPhone 13', 'iphone13.jpg', 'A15 Bionic', 3095, 2, 2, 2, 2, 2, 2, 'Điện thoại thông minh iPhone 13'),
@@ -358,27 +358,27 @@ INSERT INTO `san_pham` (`ma_sp`, `ten_sp`, `hinh_anh`, `chip_xu_ly`, `dung_luong
 	(24, 'iPhone 14 Plus', 'iphone14plus.jpg', 'A16 Bionic', 4323, 2, 3, 3, 3, 2, 1, 'Điện thoại thông minh iPhone 14 Plus'),
 	(25, 'iPhone 13 Mini', 'iphone13mini.jpg', 'A15 Bionic', 2406, 2, 2, 3, 2, 2, 3, 'Điện thoại thông minh iPhone 13 Mini');
 
--- Dumping structure for table quanlikhohang.thuong_hieu
+-- Dumping structure for table quanlidienthoai.thuong_hieu
 CREATE TABLE IF NOT EXISTS `thuong_hieu` (
   `ma_thuong_hieu` int(11) NOT NULL,
   `ten_thuong_hieu` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ma_thuong_hieu`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.thuong_hieu: ~3 rows (approximately)
+-- Dumping data for table quanlidienthoai.thuong_hieu: ~3 rows (approximately)
 INSERT INTO `thuong_hieu` (`ma_thuong_hieu`, `ten_thuong_hieu`) VALUES
 	(1, 'Samsung'),
 	(2, 'iPhone'),
 	(3, 'OnePlus');
 
--- Dumping structure for table quanlikhohang.xuat_xu
+-- Dumping structure for table quanlidienthoai.xuat_xu
 CREATE TABLE IF NOT EXISTS `xuat_xu` (
   `ma_xuat_xu` int(11) NOT NULL,
   `ten_xuat_xu` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ma_xuat_xu`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table quanlikhohang.xuat_xu: ~3 rows (approximately)
+-- Dumping data for table quanlidienthoai.xuat_xu: ~3 rows (approximately)
 INSERT INTO `xuat_xu` (`ma_xuat_xu`, `ten_xuat_xu`) VALUES
 	(1, 'Trung Quốc'),
 	(2, 'Mỹ'),
