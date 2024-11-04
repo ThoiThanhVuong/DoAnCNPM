@@ -7,7 +7,4 @@ const sequelize = new Sequelize('quanlidienthoai', 'root', '', {
     logging: false
 });
 
-
-
-
 module.exports = sequelize;

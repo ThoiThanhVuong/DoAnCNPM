@@ -2,12 +2,23 @@
     text-align: center;
     width: 80%;
     margin: auto;
+    h1{
+        margin-bottom: 20px;
+    }
 }
 .container-account_content{
     position: relative;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     padding: 20px;
+    .edit{
+        font-size: 19px;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+    .delete{
+        cursor: pointer;
+    }
 }
 .container-account_content table{
     width: 100%;
@@ -28,6 +39,15 @@
     position: absolute;
     right: 0;
     bottom: -50px;
+    button{
+        padding: 10px 15px;
+        background-color: black;
+        color: white;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 }
 .add-user-account{
     margin-top: 50px;
@@ -46,9 +66,32 @@
     padding: 5px;
     margin-right: 120px;
 }
+.add-user-account_content__content-items select{
+    padding: 5px;
+    margin-right: 120px;
+    width: 176px;
+}
 .add-user-account_button{
     position: absolute;
     right: 129px;
+    button{
+        padding: 10px 15px;
+        background-color: black;
+        color: white;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:last-child{
+        color: black;
+        background-color: white;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        margin-left: 10px;
+    }
+    button:last-child:hover{
+        background-color: rgba(0, 0, 0, 0.3);
+    }
 }
 .add-user-account_content .add-user-account_content__content-items:first-child input{
     margin-left: 10px;
@@ -56,7 +99,7 @@
 .add-user-account_content .add-user-account_content__content-items:nth-child(2) input{
     margin-left: 10px;
 }
-.add-user-account_content .add-user-account_content__content-items:nth-child(3) input{
+.add-user-account_content .add-user-account_content__content-items:nth-child(3) select{
     margin-left: 10px;
 }
 .edit-user-account{
@@ -76,9 +119,32 @@
     padding: 5px;
     margin-right: 120px;
 }
+.edit-user-account_content__content-items select{
+    padding: 5px;
+    margin-right: 120px;
+    width: 176px;
+}
 .edit-user-account_button{
     position: absolute;
     right: 129px;
+    button{
+        padding: 10px 15px;
+        background-color: black;
+        color: white;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:last-child{
+        color: black;
+        background-color: white;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        margin-left: 10px;
+    }
+    button:last-child:hover{
+        background-color: rgba(0, 0, 0, 0.3);
+    }
 }
 .edit-user-account_content .edit-user-account_content__content-items:first-child input{
     margin-left: 10px;
@@ -86,6 +152,6 @@
 .edit-user-account_content .edit-user-account_content__content-items:nth-child(2) input{
     margin-left: 10px;
 }
-.edit-user-account_content .edit-user-account_content__content-items:nth-child(3) input{
+.edit-user-account_content .edit-user-account_content__content-items:nth-child(3) select{
     margin-left: 10px;
 }

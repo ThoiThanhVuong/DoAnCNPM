@@ -12,7 +12,6 @@ import {
     FaUserCircle,
     FaChartBar ,
     FaUserFriends,
-    FaCodeBranch ,
     FaUserShield
 } from "react-icons/fa";
 import { NavLink } from 'react-router-dom';
@@ -71,11 +70,6 @@ const Sidebar=({children})=>{
             path:"/account",
             name:"Tài khoản",
             icon:<FaUserCircle/>,
-        },
-        {
-            path:"/permission",
-            name:"Phân quyền",
-            icon:<FaCodeBranch/>,
         },
         {
             path:"/permissionAccount",
