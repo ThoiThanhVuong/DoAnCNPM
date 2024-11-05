@@ -1,9 +1,10 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
+const bodyParser = require("body-parser");
 const sequelize = require("../backend/src/config/db.js"); // Import kết nối cơ sở dữ liệu
 const productRoutes = require("../backend/src/routes/productRoutes.js");
-const path = require("path");
-const brandRoutes = require("./routes/brandRoutes");
+const brandRoutes = require("../backend/src/routes/brandRoutes.js");
 
 const app = express();
 
