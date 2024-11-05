@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+// import '../style/Employee.css'
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const Employee = () => {
