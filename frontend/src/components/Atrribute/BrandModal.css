@@ -18,8 +18,9 @@
   width: 470px;
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Thêm bóng mờ cho modal */
   position: relative; /* Thêm position relative cho việc định vị nút đóng */
+  transition: transform 0.3s ease-in-out; /* Thêm hiệu ứng chuyển động cho modal */
 }
 
 .modal-container h2 {
@@ -58,18 +59,27 @@
   border-radius: 4px;
   border: 1px solid #ccc;
   font-size: 1em;
+  transition: border-color 0.3s; /* Thêm hiệu ứng cho border khi focus */
+}
+
+.input-container input:focus {
+  border-color: #3498db; /* Thay đổi màu viền khi focus */
+}
+
+.brand-table-container {
+  max-height: 320px; /* Đặt chiều cao tối đa cho bảng */
+  overflow-y: auto; /* Kích hoạt cuộn dọc khi dữ liệu vượt quá chiều cao */
 }
 
 .brand-table {
   width: 100%;
-  margin-top: 10px;
   border-collapse: collapse;
   table-layout: fixed;
 }
 
 .brand-table th,
 .brand-table td {
-  padding: 10px;
+  padding: 12px; /* Tăng padding cho bảng */
   text-align: center;
   border: 1px solid #ddd;
   white-space: nowrap;
@@ -77,6 +87,11 @@
 
 .brand-table th {
   background-color: #f5f5f5;
+}
+.brand-table thead {
+  position: sticky; /* Giữ cố định hàng tiêu đề khi cuộn */
+  top: 0;
+  background-color: #f8f8f8;
 }
 
 .button-container {
@@ -92,6 +107,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s; /* Thêm hiệu ứng cho nút */
 }
 
 .add-btn-modal {
@@ -108,18 +124,33 @@
   background-color: #e74c3c;
   color: white;
 }
+
 .add-btn-modal:hover {
   background-color: #218838; /* Tối hơn khi hover */
+  transform: translateY(-2px); /* Tăng hiệu ứng nâng khi hover */
 }
 
 .edit-btn-modal:hover {
   background-color: #2980b9; /* Tối hơn khi hover */
+  transform: translateY(-2px); /* Tăng hiệu ứng nâng khi hover */
 }
 
 .btn-delete-modal:hover {
   background-color: #c0392b; /* Tối hơn khi hover */
+  transform: translateY(-2px); /* Tăng hiệu ứng nâng khi hover */
 }
+
 .error-message {
   color: red;
   margin-top: 10px;
+  animation: fadeIn 0.5s ease; /* Thêm hiệu ứng hiển thị lỗi */
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

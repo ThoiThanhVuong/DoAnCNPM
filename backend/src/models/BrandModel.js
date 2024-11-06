@@ -13,11 +13,10 @@ const Brand = sequelize.define(
     tenthuonghieu: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
   },
   {
-    tableName: "thuonghieu",
+    tableName: "thuonghieu1",
     timestamps: false,
   }
 );

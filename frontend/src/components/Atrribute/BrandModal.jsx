@@ -17,16 +17,21 @@ const BrandModal = ({ isOpen, onClose }) => {
         setBrands(response.data);
       } catch (error) {
         console.error("Error fetching brands:", error);
+        setErrorMessage("Lỗi khi tải danh sách thương hiệu.");
       }
     };
 
-    if (isOpen) fetchBrands();
+    if (isOpen) {
+      fetchBrands();
+    }
   }, [isOpen]);
 
   // Handle adding a new brand
   const handleAddBrand = async () => {
-    if (newBrand.trim() === "") {
+    if (newBrand.trim().length === 0) {
+      console.log("rỗng");
       setErrorMessage("Tên thương hiệu không được để trống");
+      document.getElementById("brand-input").focus();
       return;
     }
 
@@ -40,6 +45,7 @@ const BrandModal = ({ isOpen, onClose }) => {
     } catch (error) {
       if (error.response && error.response.status === 409) {
         setErrorMessage("Tên thương hiệu đã tồn tại");
+        document.getElementById("brand-input").focus();
       } else {
         setErrorMessage("Lỗi khi thêm thương hiệu");
         console.error("Lỗi khi thêm thương hiệu:", error);
@@ -51,6 +57,7 @@ const BrandModal = ({ isOpen, onClose }) => {
   const handleEditBrand = async () => {
     if (newBrand.trim() === "") {
       setErrorMessage("Tên thương hiệu không được để trống");
+      document.getElementById("brand-input").focus();
       return;
     }
 
@@ -71,6 +78,7 @@ const BrandModal = ({ isOpen, onClose }) => {
     } catch (error) {
       if (error.response && error.response.status === 400) {
         setErrorMessage("Tên thương hiệu đã tồn tại");
+        document.getElementById("brand-input").focus();
       } else {
         setErrorMessage("Lỗi khi cập nhật thương hiệu");
         console.error("Lỗi khi cập nhật thương hiệu:", error);
@@ -78,9 +86,14 @@ const BrandModal = ({ isOpen, onClose }) => {
     }
   };
 
-  // Handle deleting a brand
+  // Handle deleting a brand with confirmation
   const handleDeleteBrand = async (index) => {
     const brandToDelete = brands[index];
+    const confirmDelete = window.confirm(
+      `Bạn có chắc muốn xóa thương hiệu ${brandToDelete.tenthuonghieu}?`
+    );
+
+    if (!confirmDelete) return;
 
     try {
       await axios.delete(
@@ -113,52 +126,62 @@ const BrandModal = ({ isOpen, onClose }) => {
         <div className="input-container">
           <label>Tên thương hiệu</label>
           <input
+            id="brand-input"
             type="text"
             placeholder="Nhập tên thương hiệu"
             value={newBrand}
             onChange={(e) => setNewBrand(e.target.value)}
           />
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
         </div>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        <table className="brand-table">
-          <thead>
-            <tr>
-              <th>Mã thương hiệu</th>
-              <th>Tên thương hiệu</th>
-              <th>Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
-            {brands.map((brand, index) => (
-              <tr
-                key={brand.mathuonghieu}
-                onClick={() => handleBrandClick(index)}
-              >
-                <td>{brand.mathuonghieu}</td>
-                <td>{brand.tenthuonghieu}</td>
-                <td>
-                  <button
-                    className="btn-delete-modal"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteBrand(index);
-                    }}
-                  >
-                    Xóa
-                  </button>
-                </td>
+
+        <div className="brand-table-container">
+          <table className="brand-table">
+            <thead>
+              <tr>
+                <th>Mã thương hiệu</th>
+                <th>Tên thương hiệu</th>
+                <th>Hành động</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {brands.map((brand, index) => (
+                <tr
+                  key={brand.mathuonghieu}
+                  onClick={() => handleBrandClick(index)}
+                >
+                  <td>{brand.mathuonghieu}</td>
+                  <td>{brand.tenthuonghieu}</td>
+                  <td>
+                    <button
+                      className="btn-delete-modal"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteBrand(index);
+                      }}
+                    >
+                      Xóa
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
         <div className="button-container">
-          <button className="add-btn-modal" onClick={handleAddBrand}>
+          <button
+            className="add-btn-modal"
+            onClick={handleAddBrand}
+            disabled={newBrand.trim() === ""}
+          >
             Thêm
           </button>
+
           <button
             className="edit-btn-modal"
             onClick={handleEditBrand}
-            disabled={editIndex === null}
+            disabled={editIndex === null || newBrand.trim() === ""}
           >
             Sửa
           </button>

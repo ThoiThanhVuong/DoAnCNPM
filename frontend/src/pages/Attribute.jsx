@@ -10,7 +10,6 @@ import "../style/Attribute.css";
 
 const Attribute = () => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [brands, setBrands] = useState([]);
 
   const openModal = () => {
     setModalOpen(true);
@@ -18,22 +17,6 @@ const Attribute = () => {
 
   const closeModal = () => {
     setModalOpen(false);
-  };
-
-  const addBrand = (newBrand) => {
-    setBrands((prevBrands) => [...prevBrands, { name: newBrand }]);
-  };
-
-  const editBrand = (index, newBrand) => {
-    const updatedBrands = brands.map((brand, i) =>
-      i === index ? { name: newBrand } : brand
-    );
-    setBrands(updatedBrands);
-  };
-
-  const deleteBrand = (index) => {
-    const updatedBrands = brands.filter((_, i) => i !== index);
-    setBrands(updatedBrands);
   };
 
   return (
@@ -57,7 +40,10 @@ const Attribute = () => {
         <p>Ram</p>
       </div>
       <div className="attribute-item">
-        <IoHardwareChipOutline style={{ color: "", fontSize: "3.5em" }} />
+        <IoHardwareChipOutline
+          style={{ color: "#95a5a6", fontSize: "3.5em" }}
+        />{" "}
+        {/* Màu sắc đã được thêm */}
         <p>Rom</p>
       </div>
       <div className="attribute-item">
@@ -66,14 +52,7 @@ const Attribute = () => {
       </div>
 
       {/* Hiển thị modal nếu isModalOpen là true */}
-      <BrandModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        brands={brands}
-        onAddBrand={addBrand}
-        onEditBrand={editBrand}
-        onDeleteBrand={deleteBrand}
-      />
+      {isModalOpen && <BrandModal isOpen={isModalOpen} onClose={closeModal} />}
     </div>
   );
 };
