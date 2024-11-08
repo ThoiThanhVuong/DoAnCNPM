@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `phieu_nhap` (
   KEY `ma_nha_cung_cap` (`ma_ncc`) USING BTREE,
   CONSTRAINT `fk_phieu_nhap_ma_ncc` FOREIGN KEY (`ma_ncc`) REFERENCES `nha_cung_cap` (`ma_ncc`),
   CONSTRAINT `fk_phieu_nhap_ma_nv` FOREIGN KEY (`ma_nv`) REFERENCES `nhan_vien` (`ma_nv`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `phieu_nhap` (`ma_pn`,`ma_nv`,`ma_ncc`, `thoi_gian_nhap`,`tong_tien`,`trang_thai`)
 VALUES
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `phieu_xuat` (
   KEY `ma_khach_hang` (`ma_kh`) USING BTREE,
   CONSTRAINT `fk_hoa_don_ma_kh` FOREIGN KEY (`ma_kh`) REFERENCES `khach_hang` (`ma_kh`),
   CONSTRAINT `fk_hoa_don_ma_nv` FOREIGN KEY (`ma_nv`) REFERENCES `nhan_vien` (`ma_nv`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `phieu_xuat` (`ma_px`,`ma_nv`,`ma_kh`, `thoi_gian_xuat`, `tong_tien`,`trang_thai`)
 VALUES
@@ -118,7 +118,7 @@ VALUES
 (2, 'nv2', 3, '2023-04-01 15:20:00', 604300000, 1),
 (3, 'nv2', 5, '2023-06-12 13:15:00', 293500000, 1),
 (4, 'nv2', 6, '2023-08-25 17:30:00',585000000, 1),
-(5, 'nv4', 7, '2023-10-19 10:10:00', 522000000, 1),
+(5, 'nv4', 3, '2023-10-19 10:10:00', 522000000, 1),
 (6, 'nv4', 4, '2023-12-01 14:00:00', 427900000, 1),
 (7, 'nv2', 2, '2024-02-05 11:45:00', 333000000, 1),
 (8, 'nv4', 5, '2024-03-18 13:25:00', 273000000, 1),
@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS `nhom_quyen` (
   `ma_quyen` int(11) NOT NULL AUTO_INCREMENT,
   `ten_quyen` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ma_quyen`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `nhom_quyen` (`ten_quyen`) VALUES
 ('Admin'),
@@ -239,7 +239,7 @@ CREATE TABLE IF NOT EXISTS `chuc_nang` (
   `ma_chuc_nang` int(11) NOT NULL AUTO_INCREMENT,
   `ten_chuc_nang` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ma_chuc_nang`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Thêm dữ liệu mẫu cho bảng `chuc_nang`
 INSERT INTO `chuc_nang` (`ten_chuc_nang`) VALUES
@@ -285,7 +285,7 @@ CREATE TABLE IF NOT EXISTS `he_dieu_hanh` (
   `ma_hdh` int(11) NOT NULL AUTO_INCREMENT,
   `ten_hdh` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ma_hdh`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Thêm dữ liệu mẫu cho bảng `he_dieu_hanh`
 INSERT INTO `he_dieu_hanh` (`ten_hdh`) VALUES
@@ -299,7 +299,7 @@ CREATE TABLE IF NOT EXISTS `khach_hang` (
   `dia_chi_kh` varchar(255) DEFAULT NULL,
   `sdt_kh` varchar(12) DEFAULT NULL,
   PRIMARY KEY (`ma_kh`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `khach_hang` (`ten_kh`,`dia_chi_kh`,`sdt_kh`) VALUES
 ('Nguyễn Văn A','Gia Đức, Ân Đức, Hoài Ân, Bình Định','0387913347'),
@@ -318,7 +318,7 @@ CREATE TABLE IF NOT EXISTS `nha_cung_cap` (
   `email_ncc` varchar(255) DEFAULT NULL,
   `sdt_ncc` varchar(11) DEFAULT NULL,
   PRIMARY KEY (`ma_ncc`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Thêm dữ liệu mẫu cho bảng `nha_cung_cap`
 INSERT INTO `nha_cung_cap` (`ten_ncc`, `dia_chi`, `email_ncc`, `sdt_ncc`) VALUES
@@ -341,7 +341,7 @@ CREATE TABLE IF NOT EXISTS `khu_vuc_kho` (
   `chu_thich` varchar(255) DEFAULT NULL,
   `trang_thai` int(11) DEFAULT NULL,
   PRIMARY KEY (`ma_kho`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Thêm dữ liệu mẫu cho bảng `khu_vuc_kho`
 INSERT INTO `khu_vuc_kho` (`ten_kho`, `chu_thich`, `trang_thai`) VALUES
@@ -362,7 +362,7 @@ CREATE TABLE IF NOT EXISTS `mau_sac` (
   `ma_mau` int(11) NOT NULL AUTO_INCREMENT,
   `ten_mau` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`ma_mau`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Thêm dữ liệu mẫu cho bảng `mau_sac`
 INSERT INTO `mau_sac` (`ten_mau`) VALUES
@@ -389,7 +389,7 @@ CREATE TABLE IF NOT EXISTS `phien_ban_san_pham` (
    FOREIGN KEY (`ma_ram`) REFERENCES `ram` (`ma_ram`),
    FOREIGN KEY (`ma_rom`) REFERENCES `rom` (`ma_rom`),
    FOREIGN KEY (`ma_mau`) REFERENCES `mau_sac` (`ma_mau`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `phien_ban_san_pham` (`ma_sp`, `ma_ram`, `ma_rom`, `ma_mau`, `gia_nhap`, `gia_xuat`, `ton_kho`)
 VALUES
@@ -473,7 +473,7 @@ CREATE TABLE IF NOT EXISTS `ram` (
   `ma_ram` int(11) NOT NULL AUTO_INCREMENT,
   `kich_thuoc_ram` int(11) DEFAULT NULL,
   PRIMARY KEY (`ma_ram`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Thêm dữ liệu mẫu cho bảng `ram`
 INSERT INTO `ram` (`kich_thuoc_ram`) VALUES
@@ -486,7 +486,7 @@ CREATE TABLE IF NOT EXISTS `rom` (
   `ma_rom` int(11) NOT NULL AUTO_INCREMENT,
   `kich_thuoc_rom` int(11) DEFAULT NULL,
   PRIMARY KEY (`ma_rom`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Thêm dữ liệu mẫu cho bảng `rom`
 INSERT INTO `rom` (`kich_thuoc_rom`) VALUES
@@ -519,7 +519,7 @@ CREATE TABLE IF NOT EXISTS `san_pham` (
   CONSTRAINT `FK2_thuong_hieu` FOREIGN KEY (`thuong_hieu`) REFERENCES `thuong_hieu` (`ma_thuong_hieu`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK3_xuat_xu` FOREIGN KEY (`xuat_xu`) REFERENCES `xuat_xu` (`ma_xuat_xu`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK4_khu_vuc_kho` FOREIGN KEY (`khu_vuc_kho`) REFERENCES `khu_vuc_kho` (`ma_kho`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `san_pham` (`ten_sp`, `hinh_anh`, `chip_xu_ly`, `dung_luong_pin`, `kich_thuoc_man`, `camera_truoc`, `camera_sau`, `hdh`, `thuong_hieu`, `xuat_xu`, `khu_vuc_kho`, `so_luong_ton`, `mo_ta_sp`)
 VALUES
@@ -545,7 +545,7 @@ CREATE TABLE IF NOT EXISTS `thuong_hieu` (
   `ma_thuong_hieu` int(11) NOT NULL AUTO_INCREMENT,
   `ten_thuong_hieu` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ma_thuong_hieu`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Thêm dữ liệu mẫu cho bảng `thuong_hieu`
 INSERT INTO `thuong_hieu` (`ten_thuong_hieu`) VALUES
@@ -566,7 +566,7 @@ CREATE TABLE IF NOT EXISTS `xuat_xu` (
   `ma_xuat_xu` int(11) NOT NULL AUTO_INCREMENT,
   `ten_xuat_xu` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ma_xuat_xu`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Thêm dữ liệu mẫu cho bảng `xuat_xu`
 INSERT INTO `xuat_xu` (`ten_xuat_xu`) VALUES
