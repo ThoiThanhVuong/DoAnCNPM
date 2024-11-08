@@ -10,13 +10,18 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+<<<<<<< HEAD
     "backend": "file:",
+=======
+    "axios": "^1.7.7",
+>>>>>>> 000c129fb56eb4774b5a7dac08ffb1d54c564149
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "mysql": "^2.18.1",
     "mysql2": "^3.11.3",
-    "sequelize": "^6.37.5"
+    "sequelize": "^6.37.5",
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"

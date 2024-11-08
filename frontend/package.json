@@ -9,8 +9,13 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
+<<<<<<< HEAD
     "frontend": "file:",
+=======
+    "chart.js": "^4.4.6",
+>>>>>>> 000c129fb56eb4774b5a7dac08ffb1d54c564149
     "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0",
     "react-router-dom": "^6.27.0",

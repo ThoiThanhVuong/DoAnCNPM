@@ -1,0 +1,112 @@
+/* Container chung */
+.container-employee {
+    text-align: center;
+    width: 80%;
+    margin: auto;
+}
+
+.container-employee_content {
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.container-employee_content table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.container-employee_content table th,
+.container-employee_content table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.container-employee_content table tr {
+    transition: 0.2s;
+}
+
+.container-employee_content table tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.container-employee_content table tr:first-child {
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+}
+
+.container-employee_button {
+    position: absolute;
+    right: 20px;
+    bottom: -50px;
+}
+
+.container-employee_button button {
+    margin: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.container-employee_button button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Thêm nhân viên */
+.add-employee,
+.edit-employee {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.add-employee_content,
+.edit-employee_content {
+    position: relative;
+    width: 40%;
+    text-align: left;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-employee_content__content-items,
+.edit-employee_content__content-items {
+    margin: 10px 0;
+}
+
+.add-employee_content__content-items label,
+.edit-employee_content__content-items label {
+    margin-right: 10px;
+    display: inline-block;
+    width: 120px;
+}
+
+.add-employee_content__content-items input,
+.edit-employee_content__content-items input {
+    padding: 8px;
+    width: calc(100% - 140px);
+}
+
+.add-employee_button,
+.edit-employee_button {
+    position: relative;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.add-employee_button button,
+.edit-employee_button button {
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.add-employee_button button:hover,
+.edit-employee_button button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}

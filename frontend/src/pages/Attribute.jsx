@@ -1,16 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaAndroid } from "react-icons/fa";
 import { GiFactory } from "react-icons/gi";
 import { MdOutlineBrandingWatermark } from "react-icons/md";
 import { IoIosColorFilter } from "react-icons/io";
 import { BsMemory } from "react-icons/bs";
 import { IoHardwareChipOutline } from "react-icons/io5";
+import BrandModal from "../components/Atrribute/BrandModal"; // Nhập BrandModal
 import "../style/Attribute.css";
 
 const Attribute = () => {
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   return (
     <div className="attribute-container">
-      <div className="attribute-item">
+      <div className="attribute-item" onClick={openModal}>
         <MdOutlineBrandingWatermark
           style={{ color: "#f39c12", fontSize: "3.5em" }}
         />
@@ -29,13 +40,19 @@ const Attribute = () => {
         <p>Ram</p>
       </div>
       <div className="attribute-item">
-        <IoHardwareChipOutline style={{ color: "", fontSize: "3.5em" }} />
+        <IoHardwareChipOutline
+          style={{ color: "#95a5a6", fontSize: "3.5em" }}
+        />{" "}
+        {/* Màu sắc đã được thêm */}
         <p>Rom</p>
       </div>
       <div className="attribute-item">
         <IoIosColorFilter style={{ color: "#e67e22", fontSize: "3.5em" }} />
         <p>Màu sắc</p>
       </div>
+
+      {/* Hiển thị modal nếu isModalOpen là true */}
+      {isModalOpen && <BrandModal isOpen={isModalOpen} onClose={closeModal} />}
     </div>
   );
 };
