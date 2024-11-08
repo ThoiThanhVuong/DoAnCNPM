@@ -1,17 +1,10 @@
 const { Sequelize } = require("sequelize");
 
 // Kết nối MySQL với Sequelize
-<<<<<<< HEAD
-const sequelize = new Sequelize('quanli_khohang', 'root', '', {
+const sequelize = new Sequelize('quanlikhohang', 'root', '', {
     host: 'localhost',
     dialect: 'mysql',
     logging: false
-=======
-const sequelize = new Sequelize("quanlidienthoai", "root", "", {
-  host: "localhost",
-  dialect: "mysql",
-  logging: false,
->>>>>>> 000c129fb56eb4774b5a7dac08ffb1d54c564149
 });
 // Kiểm tra kết nối
 async function testConnection() {
