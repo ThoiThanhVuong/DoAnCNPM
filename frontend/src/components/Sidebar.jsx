@@ -73,11 +73,6 @@ const Sidebar=({children})=>{
             icon:<FaUserCircle/>,
         },
         {
-            path:"/permission",
-            name:"Phân quyền",
-            icon:<FaCodeBranch/>,
-        },
-        {
             path:"/permissionAccount",
             name:"Quyền tài khoản",
             icon:<FaUserShield/>,
