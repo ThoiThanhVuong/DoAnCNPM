@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
-const ProviderModel = sequelize.define('Provider', {
+const Provider = sequelize.define('Provider', {
     ma_ncc: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -20,4 +20,5 @@ const ProviderModel = sequelize.define('Provider', {
     sdt_ncc: {
         type: DataTypes.STRING,
     },
-}, { tableName: 'nha_cung_cap', timestamps: false });
+}, { tableName: 'nha_cung_cap', timestamps: false, });
+module.exports = Provider
