@@ -60,6 +60,7 @@ const ExportForm = () => {
           <div className="custom-ID">
             <p>ID phiếu xuất:</p>
             <Textfield
+            className="TF"
             value={searchID}
             onChange={(e) => setSearchID(e.target.value)}
             ></Textfield>
@@ -88,8 +89,8 @@ const ExportForm = () => {
               onChange={(e) => setGiaLon(e.target.value)}
             />
           </div>
-          <div className="custom-icSearchDate">
-            <FaSearch className="icSearchDate" onClick={SearchIDPX}/>
+          <div className="custom-icSearch">
+            <FaSearch className="icSearch" onClick={SearchIDPX}/>
           </div> 
       </div> 
       <div className="listPX">

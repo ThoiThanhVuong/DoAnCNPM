@@ -21,4 +21,4 @@ const Provider = sequelize.define('Provider', {
         type: DataTypes.STRING,
     },
 }, { tableName: 'nha_cung_cap', timestamps: false, });
-module.exports = Provider
+module.exports = Provider;

@@ -49,10 +49,13 @@
     text-align: center;
     border: 1px solid black;
 }
+.listSP table tbody tr td:hover {
+    background-color: rgb(255, 255, 255) !important;;
+}
 .listSP table tbody tr {
     transition: 0.5s;
 }
-.listSP table tbody tr:hover {
+.listSP table tbody tr:hover{
     background-color: rgb(255, 255, 255) !important;
 }
 .listSP table thead tr {
@@ -69,6 +72,7 @@
     cursor: pointer;
 }
 .custom-icAdd{
+    font-size: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -150,12 +154,29 @@
     position: absolute;
     bottom: 5%;
     right: 3%;
+    gap: 5px;
 }
 .custom-btyn .bty:hover{
-    background: lightskyblue;
+    background: lightskyblue !important;
+}
+.custom-btyn .btn:hover{
+    background: rgb(255, 118, 118) !important;
+}
+.custom-btyn .bty{
+    width: 67.237px !important;
+    background-color: rgb(227, 227, 227);
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    transition: 0.4s;
 }
 .custom-btyn .btn{
-    width: 67.237px;
+    width: 67.237px !important;
+    background-color: rgb(227, 227, 227);
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    transition: 0.4s;
 }
 .overlay {
     position: fixed;
@@ -163,8 +184,14 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(255, 255, 255, 0.1); /* Màu trắng rất nhạt, trong suốt 10% */
+    background-color: rgba(255, 255, 255, 0.1) !important; /* Màu trắng rất nhạt, trong suốt 10% */
     backdrop-filter: blur(2px); /* Độ mờ nhẹ chỉ 2px */
     z-index: 10; /* Đảm bảo overlay hiển thị trên tất cả các phần tử khác */
     transition: 0.4s;
+  }
+  .custom-SL .ipSL{
+    height: 35px !important;
+  }
+  .custom-GN .ipGN{
+    height: 35px !important;
   }

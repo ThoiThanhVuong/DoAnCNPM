@@ -2,21 +2,27 @@ import React from "react";
 import "../style/ImportForm.css";
 import { FaPlus } from "react-icons/fa";
 import { useState } from "react";
-const SoLuongGiaNhap = () =>{
+const SoLuongGiaNhap = ({handleCancel,handleOK, soLuong, setSoluong, giaNhap, setGiaNhap}) =>{
   return (
     <div className="ctn">
       <div className="custom-SL-GN">
         <div className="custom-SL">
           <p>Nhập số lượng:</p>
-          <input type="text" className="ipSL" placeholder="Nhập số lượng"/>
+          <input type="text" className="ipSL" placeholder="Nhập số lượng"
+            value={soLuong}
+            onChange={(e)=>setSoluong(e.target.value)}
+          />
         </div>
         <div className="custom-GN">
           <p>Giá nhập vào:</p>
-          <input type="text" className="ipGN" placeholder="Giá muốn nhập vào" />
+          <input type="text" className="ipGN" placeholder="Giá muốn nhập vào"
+           value={giaNhap}
+           onChange={(e)=>setGiaNhap(e.target.value)}
+           />
         </div>
         <div className="custom-btyn">
-          <button className="bty">Đồng ý</button>
-          <button className="btn">Hủy</button>
+          <button className="bty" onClick={handleOK}>Đồng ý</button>
+          <button className="btn" onClick={handleCancel}>Hủy</button>
         </div>
       </div>
     </div>
@@ -43,7 +49,7 @@ const NhapHang = () => {
       xuatxu: "trung quoc",
     },
     {
-      masp: 2,
+      masp: 3,
       tensp: "test2",
       chipxuli: "snapdragon",
       hedieuhanh: "android",
@@ -52,7 +58,7 @@ const NhapHang = () => {
       xuatxu: "trung quoc",
     },
     {
-      masp: 2,
+      masp: 4,
       tensp: "test2",
       chipxuli: "snapdragon",
       hedieuhanh: "android",
@@ -61,7 +67,7 @@ const NhapHang = () => {
       xuatxu: "trung quoc",
     },
     {
-      masp: 2,
+      masp: 5,
       tensp: "test2",
       chipxuli: "snapdragon",
       hedieuhanh: "android",
@@ -70,7 +76,7 @@ const NhapHang = () => {
       xuatxu: "trung quoc",
     },
     {
-      masp: 2,
+      masp: 6,
       tensp: "test2",
       chipxuli: "snapdragon",
       hedieuhanh: "android",
@@ -79,7 +85,7 @@ const NhapHang = () => {
       xuatxu: "trung quoc",
     },
     {
-      masp: 2,
+      masp: 7,
       tensp: "test2",
       chipxuli: "snapdragon",
       hedieuhanh: "android",
@@ -88,7 +94,7 @@ const NhapHang = () => {
       xuatxu: "trung quoc",
     },
     {
-      masp: 2,
+      masp: 8,
       tensp: "test2",
       chipxuli: "snapdragon",
       hedieuhanh: "android",
@@ -97,11 +103,38 @@ const NhapHang = () => {
       xuatxu: "trung quoc",
     },
   ];
+  const [queueData, setQueuedata] = useState([])
+  const [soLuong, setSoluong] = useState("")
+  const [giaNhap, setGiaNhap] = useState("")
   const [showNotification, setShowNotification] = useState();
   const [showOverlay, setShowOverlay] = useState(false);
+
+
   const handleToggleNotification = (id) => {
     setShowNotification(id);
+    setShowOverlay(true);
   };
+
+
+  const handleCancel = () => {
+    setShowNotification(null);
+    setShowOverlay(false);
+    setGiaNhap("")
+    setSoluong("")
+  };
+
+  const handleOK = () => {
+    const newDate ={
+      masp : showNotification,
+      tensp : data.find((item) => item.masp === showNotification)?.tensp,
+      soluong: soLuong,
+      gianhap: giaNhap,
+      tongtien: parseInt(soLuong) * parseInt(giaNhap)
+    };
+    setQueuedata([...queueData, newDate]);
+    handleCancel();
+  }
+
   return (
     <div className="cardNhapHang">
       <div className="custom-listSP">
@@ -133,10 +166,10 @@ const NhapHang = () => {
                   <td style={{ width: "15%" }}>
                     <div className="custom-icAdd">
                       <FaPlus className="iconAdd" onClick={() => handleToggleNotification(datatable.masp)}/>
-                      { showNotification === datatable.masp && (<div>
-                        {() => setShowOverlay(true)}
+                      { showNotification === datatable.masp && showOverlay && (<div>
                         <div className="overlay"></div>
-                        <SoLuongGiaNhap/>
+                        <SoLuongGiaNhap handleCancel={handleCancel} handleOK={handleOK} soLuong={soLuong} 
+                        setSoluong={setSoluong} giaNhap={giaNhap} setGiaNhap={setGiaNhap}/>
                       </div>)}
                     </div>
                   </td>
@@ -162,6 +195,19 @@ const NhapHang = () => {
               </tr>
             </thead>
             <tbody>
+              {
+                queueData.map((dataQueue)=>
+                (
+                  <tr key={dataQueue.masp}>
+                    <td style={{width: "15%"}}>{dataQueue.masp}</td>
+                    <td style={{width: "15%"}}>{dataQueue.tensp}</td>
+                    <td style={{width: "15%"}}>{dataQueue.gianhap}</td>
+                    <td style={{width: "15%"}}>{dataQueue.soluong}</td>
+                    <td style={{width: "25%"}}>{dataQueue.tongtien}</td>
+                    <td style={{width: "15%"}}>test</td>
+                  </tr>
+                ))
+              }
             </tbody>
           </table>
         </div>

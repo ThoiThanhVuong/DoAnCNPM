@@ -1,28 +1,33 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const Invoice = require('../models/phieuXuatModel')
-const Product = require('../models/ProductModel')
+const PhieuXuatModel = require('../models/phieuXuatModel')
+const ProductModel = require('../models/ProductModel')
+const WareHouse = require('../models/WareHouseModel');
+
 const detailExport = sequelize.define('detailExport', {
-    ma_hd: {
+    ma_px: {
         type: DataTypes.INTEGER,
         references:{
-            model : Invoice,
-            key: 'ma_hd',
+            model : PhieuXuatModel,
+            key: 'ma_px',
         }
     },
     ma_sp: {
         type: DataTypes.INTEGER,
         references:{
-            model : Product,
+            model : ProductModel,
             key: 'ma_sp',
         }
     },
     so_luong: {
         type: DataTypes.INTEGER,
     },
-    ma_kho: {
+   ma_kho: {
         type: DataTypes.INTEGER,
-        // chưa có model kho
+        references:{
+            model: WareHouse,
+            key: 'ma_kho',
+        }
     },
     gia_xuat: {
         type: DataTypes.INTEGER,
@@ -31,5 +36,7 @@ const detailExport = sequelize.define('detailExport', {
     tableName: 'chi_tiet_hoa_don',
     timestamps: false,
 }) 
-detailExport.belongsTo(Invoice, {foreignKey: 'ma_hd', onDelete: 'CASCADE'});
-detailExport.belongsTo(Product, {foreignKey: 'ma_sp', onDelete: 'CASCADE'});
+detailExport.belongsTo(PhieuXuatModel, {foreignKey: 'ma_px', onDelete: 'CASCADE'});
+detailExport.belongsTo(ProductModel, {foreignKey: 'ma_sp', onDelete: 'CASCADE'});
+detailExport.belongsTo(WareHouse, {foreignKey: 'ma_kho', onDelete: 'CASCADE'});
+module.exports = detailExport;

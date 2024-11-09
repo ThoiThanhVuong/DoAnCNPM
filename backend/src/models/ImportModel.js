@@ -2,6 +2,8 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 const Employee =require('../models/EmployeeModel');
 const Provider =require('../models/ProviderModel');
+
+
 const Import = sequelize.define('Import',{
     ma_pn: {
         type: DataTypes.INTEGER,
