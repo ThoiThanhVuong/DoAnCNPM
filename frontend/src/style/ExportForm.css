@@ -1,101 +1,139 @@
 .Title {
-    font-weight: bold;
-    font-size: 30px;
+  font-weight: 630;
+  font-size: 30px;
 }
 .boxFind {
-    display: flex;
-    height: 200px;
-    margin-top: 25px;
+  text-align: center;
+  height: 270px;
+  margin-top: 25px;
 }
-.boxDate {
-    width: 50%;
-    border: 2px solid black;
+.boxFind p {
+  font-weight:500;
+  font-size: 20px;
+  text-align: center;
 }
-.boxID {
-    width: 50%;
-    border-top: 2px solid black ;
-    border-bottom: 2px solid black;
-    border-right: 2px solid black;
+.boxFind .custom-ID {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.5%;
+  gap: 15px;
+  height: 30px;
+  margin-left: 25px;
+  margin-top: 20px;
 }
-.boxDate p{
-    font-weight: bold;
-    font-size: 20px;
-    text-align: center;
+.boxFind .custom-ID p {
+  font-size: 15px;
 }
-.boxID p{
-    font-weight: bold;
-    font-size: 20px;
-    text-align: center;
+.custom-ID .css-17nf42q {
+  max-width: 200px;
+  max-height: 30px;
+  background-color: white;
 }
-.custom_textField {
-    margin-top: 6%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.custom-ID .css-17nf42q input:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
-.custom_textField p{
-    font-size: 15px;
-    width: 25%;
+.boxFind .custom-endDate p {
+  font-size: 15px;
 }
-.custom_textField .css-17nf42q{
-    max-width: 300px;
+.boxFind .custom-startDate p {
+  font-size: 15px;
 }
-.boxID .custom-icSearchID {
-    margin-top: 5%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
+.boxFind .custom-startDate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+  height: 30px;
+  margin-left: 61px;
 }
-.boxID .custom-icSearchID .icSearchID{
-    padding: 8px 8px 8px 8px;
-    font-size: 25px;
-    background-color: silver;
-    border-radius: 10px;
-    border: none;
+.boxFind .custom-startDate input {
+  width: 198px;
+  height: 30px;
+  border: 1px solid gray;
+  border-radius: 3px;
 }
-.boxID .custom-icSearchID .icSearchID:hover{
-    background-color: gray;
+.boxFind .custom-endDate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+  height: 30px;
+  margin-left: 51px;
 }
-.boxDate .custom-startDate p{
-    font-size: 15px;
+.boxFind .custom-endDate input {
+  width: 198px;
+  height: 30px;
+  border: 1px solid gray;
+  border-radius: 3px;
 }
-.boxDate .custom-startDate{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 2%;
-    gap: 2%;
-    height: 20%;
+.boxFind .custom-endDate input:hover {
+  background-color: rgb(235, 235, 235);
+  transition: 0.2s;
 }
-.boxDate .custom-endDate p{
-    font-size: 15px;
+.boxFind .custom-startDate input:hover {
+  background-color: rgb(235, 235, 235);
+  transition: 0.2s;
 }
-.boxDate .custom-endDate{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 2%;
-    gap: 2%;
-    height: 20%;
-    margin-right: 9px;
+.boxFind .custom-SoTien {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+  height: 30px;
+  margin-left: 214px;
 }
-.boxDate .custom-icSearchDate{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 2%;
-} 
-.boxDate .custom-icSearchDate .icSearchDate{
-    padding: 8px 8px 8px 8px;
-    font-size: 25px;
-    background-color: silver;
-    border-radius: 10px;
-    border: none;
-} 
-.boxDate .custom-icSearchDate .icSearchDate:hover{
-    background-color: gray;
+.boxFind .custom-SoTien p {
+  font-size: 15px;
 }
-.listPX{
-    margin-top: 5%;
+.boxFind .custom-SoTien input {
+  width: 188px;
+  height: 20px;
+  border: 1px solid gray;
+  border-radius: 3px;
+  padding: 5px 5px 5px 5px;
+}
+.boxFind .custom-SoTien input:hover {
+  background-color: rgb(235, 235, 235);
+  transition: 0.2s;
+}
+.boxFind .custom-icSearchDate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.boxFind .custom-icSearchDate .icSearchDate {
+  padding: 8px 8px 8px 8px;
+  font-size: 25px;
+  background-color: rgb(194, 194, 194);
+  border-radius: 10px;
+  border: none;
+}
+.boxFind .custom-icSearchDate .icSearchDate:hover {
+  background-color: rgb(146, 146, 146);
+  transition: 0.2s;
+}
+
+.listPX {
+  margin-top: 20px;
+}
+table tbody tr td {
+  text-align: center;
+  border: 1px solid black;
+  height: 30px;
+}
+table tbody tr:hover {
+  background-color: silver !important;
+}
+table thead tr {
+  height: 50px;
+}
+table thead tr th {
+  border: 1px solid black;
+  font-weight: 600;
 }
