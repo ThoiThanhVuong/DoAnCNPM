@@ -1,43 +1,35 @@
 const { Op } = require('sequelize');
-const Customer = require('../models/CustomerModel');
-const Invoice = require('../models/phieuXuatModel');
-const getCustomerStatistics = async (req, res) => {
+const {KhachHang,PhieuXuat,sequelize} =require('../models/index');
+const getThongKeKhachHang = async (req, res) => {
     const { text, timeStart, timeEnd } = req.query;
     try {
-        const customers = await Customer.findAll({
-            include: [{
-                model: Invoice,
-                required: false,
-                where: {
-                    thoi_gian_xuat: {
-                        [Op.between]: [new Date(timeStart), new Date(timeEnd)],
-                    },
-                },
-                attributes: [
-                    [sequelize.fn('COUNT', sequelize.col('ma_px')), 'soluong'],
-                    [sequelize.fn('SUM', sequelize.col('tong_tien')), 'total'],
-                ],
-            }],
-            where: {
-                [Op.or]: [
-                    { ten_kh: { [Op.like]: `%${text}%` } },
-                    { ma_kh: { [Op.like]: `%${text}%` } },
-                ],
-            },
-        });
-
-        const result = customers.map(customer => ({
-            ma_kh: customer.ma_kh,
-            ten_kh: customer.ten_kh,
-            soluong: customer.Invoices[0]?.dataValues.soluong || 0,
-            total: customer.Invoices[0]?.dataValues.total || 0,
-        }));
-
-        res.json(result);
+      const results = await KhachHang.findAll({
+        attributes: ['ma_kh', 'ten_kh', 
+          [sequelize.fn('COUNT', sequelize.col('phieuXuats.ma_px')), 'SoLuong'],
+          [sequelize.fn('SUM', sequelize.col('phieuXuats.tong_tien')), 'total']
+        ],
+        include: [{
+          model: PhieuXuat,
+          as: 'phieuXuats',
+          attributes: [],
+          where: {
+            thoi_gian_xuat: { [Op.between]: [new Date(timeStart), new Date(timeEnd)] }
+          }
+        }],
+        where: {
+          [Op.or]: [
+            { ten_kh: { [Op.like]: `%${text}%` } },
+            { ma_kh: { [Op.like]: `%${text}%` } }
+          ]
+        },
+        group: ['customer.ma_kh', 'customer.ten_kh']
+      });
+  
+      res.json(results);
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Server Error');
+      console.error(error);
+      res.status(500).json({ message: 'Error fetching customer statistics' });
     }
-};
+  };
 
-module.exports = { getCustomerStatistics };
+module.exports = { getThongKeKhachHang };

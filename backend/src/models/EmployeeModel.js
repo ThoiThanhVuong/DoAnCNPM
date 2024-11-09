@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
 const db = require('../config/db');
-
 const Employee = db.define('Employee', {
   ma_nv: {
     type: DataTypes.STRING,
@@ -16,6 +15,7 @@ const Employee = db.define('Employee', {
   timestamps: false,
 });
 module.exports = Employee;
+
 // module.exports = {
 //   // Lấy tất cả nhân viên
 //   getAll: async () => {
