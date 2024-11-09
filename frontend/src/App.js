@@ -15,11 +15,13 @@ import Account from './pages/Account.jsx';
 import PermissionAccount from './pages/PermissionAccount.jsx';
 import Statistics from './pages/Statistics.jsx';
 import HomePage from './pages/HomePage.jsx';
+import SignIn from './components/SignIn/SignIn.jsx';
 const App=()=>{
 return (
     <BrowserRouter>
         <Sidebar>
             <Routes>
+                <Route path='/login' element={<SignIn/>}/>
                 <Route path="/" element={<HomePage/>}/>
                 <Route path="/homePage" element={<HomePage/>}/>
                 <Route path="/product" element={<Product/>}/>
