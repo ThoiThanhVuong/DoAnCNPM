@@ -25,7 +25,7 @@ const Employee = () => {
 
   const fetchEmployees = async () => {
     try {
-      const response = await fetch('http://localhost:3000/employee');
+      const response = await fetch('http://localhost:5000/employee');
       const employees = await response.json();
       setData(employees);
     } catch (error) {
@@ -48,7 +48,7 @@ const Employee = () => {
 
   const handleAddEmployee = async () => {
     try {
-      const response = await fetch('http://localhost:3000/employee', {
+      const response = await fetch('http://localhost:5000/employee', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newEmployeeData),
@@ -69,7 +69,7 @@ const Employee = () => {
 
   const handleEditEmployee = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/employee/${currentEmployee.ma_nv}`, {
+      const response = await fetch(`http://localhost:5000/employee/${currentEmployee.ma_nv}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editEmployeeData),
@@ -85,7 +85,7 @@ const Employee = () => {
 
   const handleDeleteEmployee = async (ma_nv) => {
     try {
-      const response = await fetch(`http://localhost:3000/employee/${ma_nv}`, {
+      const response = await fetch(`http://localhost:5000/employee/${ma_nv}`, {
         method: 'DELETE',
       });
       if (!response.ok) throw new Error('Failed to delete employee');

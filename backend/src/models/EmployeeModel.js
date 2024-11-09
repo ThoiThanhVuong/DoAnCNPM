@@ -1,20 +1,51 @@
-const { DataTypes } = require('sequelize');
-const db = require('../config/db');
+const { DataTypes } = require("sequelize");
+const db = require("../config/db");
+const permission = require("../models/permissionModel");
 
-const Employee = db.define('Employee', {
-  ma_nv: {
-    type: DataTypes.STRING,
-    primaryKey: true,
+const Employee = db.define(
+  "Employee",
+  {
+    ma_nv: {
+      type: DataTypes.STRING,
+      primaryKey: true,
+    },
+    ten_nv: {
+      type: DataTypes.STRING,
+    },
+    gioi_tinh: {
+      type: DataTypes.STRING,
+    },
+    sdt: {
+      type: DataTypes.STRING,
+    },
+    email: {
+      type: DataTypes.STRING,
+    },
+    mat_khau: {
+      type: DataTypes.STRING,
+    },
+    ma_quyen: {
+      type: DataTypes.INTEGER,
+      // references: {
+      //   model: "Permission",
+      //   key: "ma_quyen",
+      // },
+
+      //Hoặc viết như này cũng được
+      references: {
+        model: permission.Permission,
+        key: "ma_quyen",
+      },
+    },
+    trang_thai: {
+      type: DataTypes.INTEGER,
+    },
   },
-  ten_nv: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  // Thêm các thuộc tính khác nếu cần
-}, {
-  tableName: 'nhan_vien',
-  timestamps: false,
-});
+  {
+    tableName: "nhan_vien",
+    timestamps: false,
+  }
+);
 module.exports = Employee;
 // module.exports = {
 //   // Lấy tất cả nhân viên

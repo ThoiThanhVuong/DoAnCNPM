@@ -1,8 +1,9 @@
 const Permission = require("../models/permissionModel");
+const Employee = require("../models/EmployeeModel");
 
 exports.showAllPermission = async (req, res) => {
   try {
-    const permission = await Permission.Employees.findAll({
+    const permission = await Employee.findAll({
       include: [
         {
           model: Permission.Permission,
