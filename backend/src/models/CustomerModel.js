@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-
 const CustomerModel = sequelize.define('Customer', {
     ma_kh: {
         type: DataTypes.INTEGER,
@@ -18,5 +17,4 @@ const CustomerModel = sequelize.define('Customer', {
         type: DataTypes.STRING,
     },
 }, { tableName: 'khach_hang', timestamps: false });
-
 module.exports = CustomerModel;

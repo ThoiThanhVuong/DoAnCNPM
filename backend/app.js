@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-// const path = require("path");
+//  const path = require("path");
 const bodyParser = require("body-parser");
 const productRoutes = require("../backend/src/routes/productRoutes.js");
 const brandRoutes = require("../backend/src/routes/brandRoutes.js");
@@ -19,13 +19,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // app.use(express.static(path.join(__dirname, "../frontend/build")));
-app.use("/api/thongke",thongkeRoutes);
-
-// app.use(express.static(path.join(__dirname, "../frontend/build")));
 // Định nghĩa các route cho sản phẩm
 app.use("/api/products", productRoutes);
 // Route
 app.use("/api/brands", brandRoutes);
+
+//Route cho thống kê
+app.use("/api/thongke",thongkeRoutes);
 
 app.use("/api/permission", permissionRoutes);
 // Xử lý các yêu cầu không hợp lệ (phục vụ cho SPA)

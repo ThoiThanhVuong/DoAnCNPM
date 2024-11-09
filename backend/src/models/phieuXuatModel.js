@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 const Customer = require('../models/CustomerModel');
 const Employee =require('../models/EmployeeModel');
-const Invoice = sequelize.define('Invoice', {
+const PhieuXuatModel = sequelize.define('PhieuXuatModel', {
     ma_px: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -33,7 +33,4 @@ const Invoice = sequelize.define('Invoice', {
     }
 }, { tableName: 'phieu_xuat', timestamps: false });
 
-// Thiết lập quan hệ
-Invoice.belongsTo(Customer, { foreignKey: 'ma_kh', onDelete: 'CASCADE' });
-Invoice.belongsTo(Employee, { foreignKey: 'ma_nv', onDelete: 'CASCADE' });
-module.exports = Invoice;
+module.exports = PhieuXuatModel;
