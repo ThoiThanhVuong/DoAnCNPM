@@ -5,7 +5,7 @@ const TonKho = ()=> {
     return (
         <div className="statistics-page">
             <div className="filters-container">
-                <label>Tìm kiếm khách hàng</label>
+                <label>Tìm kiếm sản phẩm</label>
                 <input type="text" />
                 <label >Từ Ngày</label>
                 <input type="date" />

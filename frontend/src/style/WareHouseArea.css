@@ -1,0 +1,90 @@
+.container-area {
+    text-align: center;
+    width: 80%;
+    margin: auto;
+}
+.container_banner {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.container_content {
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+}
+.container_content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.container_content th, .container_content td {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.container_content th {
+    color: rgba(0, 0, 0, 0.5);
+}
+.container_content tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+.container_content tr:first-child {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+.detail, .edit, .delete {
+    cursor: pointer;
+    margin: 0 5px;
+}
+.add-area, .edit-area {
+    margin-top: 50px;
+    text-align: center;
+}
+.add-area_banner, .edit-area_banner {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.add-area_content, .edit-area_content {
+    position: relative;
+    width: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+    margin: auto;
+    text-align: right;
+}
+.add-area_content__content-items, .edit-area_content__content-items {
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.add-area_content__content-items label, .edit-area_content__content-items label {
+    flex: 1;
+    text-align: left;
+}
+.add-area_content__content-items input, .edit-area_content__content-items input {
+    flex: 2;
+    padding: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+.add-area_button, .edit-area_button {
+    position: absolute;
+    right: 20px;
+    bottom: -50px;
+}
+.add-area_button button, .edit-area_button button {
+    padding: 8px 16px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #000000;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.add-area_button button:hover, .edit-area_button button:hover {
+    background-color: #000000;
+}

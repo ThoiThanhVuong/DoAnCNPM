@@ -1,0 +1,242 @@
+.page_customer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .page_customer h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 28px;
+  }
+  
+  .content_customer {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .content_customer table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .content_customer th,
+  .content_customer td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .content_customer th {
+    background-color: #f8f8f8;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 14px;
+  }
+  
+  .content_customer tr:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  
+  .content_customer td {
+    font-size: 14px;
+    text-align: center;
+    color: #000000;
+  }
+  
+
+
+.operation{
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: space-between; 
+}
+
+  .button-addCustomer button {
+    background-color: #000000 ;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    border:none;
+  }
+  
+  .button-addCustomer :hover{
+    background-color: #45a049;
+  }
+
+.input-search input{
+  padding: 10px 30px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* 
+interface ADD */
+
+.interface_add{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.form_interface{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form_interface_add{
+  margin-top: 10%;
+  background-color: #fff;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30%;
+
+}
+
+.interface_add-content{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.interface_add-content input{
+  margin-bottom: 10px;
+  padding: 12px 30px;   
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+.button-addCustomer-interface{
+  display: flex;
+  justify-content:space-between;
+  margin-top: 20px;
+}
+
+.button-addCustomer-interface button{
+  background-color: #000000 ;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  border:none;
+}
+
+.button-addCustomer-interface :hover{
+  background-color: #45a049;
+}
+/* 
+iterface_edit */
+.interface_edit{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/*animation*/
+.success-message {
+  color: white;
+  font-weight: bold;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #4caf50;
+  position: fixed;
+  top: 100px;
+  right: -300px; /* Bắt đầu từ ngoài màn hình */
+  width: 200px;
+  opacity: 0;
+  animation: slideInOut 2s forwards;
+}
+
+@keyframes slideInOut {
+  0% {
+    right: -300px;
+    opacity: 0;
+  }
+  20% {
+    right: 0px;
+    opacity: 1;
+  }
+  80% {
+    right: 0px;
+    opacity: 1;
+  }
+  100% {
+    right: -300px;
+    opacity: 0;
+  }
+}
+
+
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .content_customer {
+      overflow-x: auto;
+    }
+    
+    .content_customer table {
+      min-width: 500px;
+    }
+      
+      .button-addCustomer button {
+        width: 100%;
+      }
+      
+      .input-search input{
+        width: 50%;
+      }
+
+      /* 
+interface ADD */
+.form_interface_add{
+            width: 50%;
+
+}
+
+  }
+

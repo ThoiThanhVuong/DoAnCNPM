@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import '../style/Employee.css';
+=======
+import '../style/Employee.css'
+import { FaEdit, FaTrash } from 'react-icons/fa';
+>>>>>>> 2e638e15f395c8cfcf31df63180003d9ebf77c61
 
 const Employee = () => {
   const [employeeData, setEmployeeData] = useState({});
@@ -15,6 +20,7 @@ const Employee = () => {
       .catch((error) => console.error('Error fetching employee data:', error));
   }, []);
 
+<<<<<<< HEAD
   // Xử lý thay đổi mật khẩu
   const handlePasswordChange = () => {
     if (newPassword === confirmPassword) {
@@ -35,6 +41,77 @@ const Employee = () => {
         .catch((error) => console.error('Error changing password:', error));
     } else {
       alert('Mật khẩu không khớp. Vui lòng thử lại.');
+=======
+  const fetchEmployees = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/employee');
+      const employees = await response.json();
+      setData(employees);
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
+
+  const handleShowAddEmployee = () => {
+    setShowAddEmployee(!showAddEmployee);
+  };
+
+  const handleShowEditEmployee = (employee) => {
+    setCurrentEmployee(employee);
+    setEditEmployeeData({
+      sdt: employee.sdt,
+      email: employee.email,
+    });
+    setShowEditEmployee(true);
+  };
+
+  const handleAddEmployee = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/employee', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newEmployeeData),
+      });
+      if (!response.ok) throw new Error('Failed to add employee');
+      await fetchEmployees(); // Re-fetch employees after adding
+      setShowAddEmployee(false);
+      setNewEmployeeData({
+        ten_nv: '',
+        gioi_tinh: '',
+        sdt: '',
+        email: '',
+      });
+    } catch (error) {
+      console.error('Error adding employee:', error);
+    }
+  };
+
+  const handleEditEmployee = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/employee/${currentEmployee.ma_nv}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editEmployeeData),
+      });
+      if (!response.ok) throw new Error('Failed to update employee');
+      await fetchEmployees(); // Re-fetch employees after editing
+      setShowEditEmployee(false);
+      setCurrentEmployee(null);
+    } catch (error) {
+      console.error('Error updating employee:', error);
+    }
+  };
+
+  const handleDeleteEmployee = async (ma_nv) => {
+    try {
+      const response = await fetch(`http://localhost:5000/employee/${ma_nv}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) throw new Error('Failed to delete employee');
+      await fetchEmployees(); // Re-fetch employees after deletion
+    } catch (error) {
+      console.error('Error deleting employee:', error);
+>>>>>>> 2e638e15f395c8cfcf31df63180003d9ebf77c61
     }
   };
 

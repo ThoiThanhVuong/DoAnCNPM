@@ -2,14 +2,26 @@
     display: flex;
 }
 .title-Selection .titleNH{
-    font-weight: bold;
+    box-shadow: 0 .1rem 1rem .25rem rgba(0, 0, 0, .05) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    font-weight: 600;
+    font-family: Poppins, Helvetica, sans-serif;
     font-size: 25px;
-    width: 50%;
+    width: 50%; 
     text-align: center;
     border: 1px solid;
 }
 .title-Selection .titlePN{
-    font-weight: bold;
+    box-shadow: 0 .1rem 1rem .25rem rgba(0, 0, 0, .05) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    font-family: Poppins, Helvetica, sans-serif;
+    font-weight: 600;
     font-size: 25px;
     width: 50%;
     text-align: center;
@@ -17,3 +29,169 @@
     border-right: 1px solid;
     border-bottom: 1px solid;
 }
+.titleNH:hover{
+    background-color: silver;
+    transition: 0.8s;
+}
+.titlePN:hover{
+    background-color: silver;
+    transition: 0.8s;
+}
+.cardNhapHang{
+    margin-top: 15px;
+    font-family: Poppins, Helvetica, sans-serif;
+}
+.cardNhapHang .custom-listSP p{
+    font-size: 20px;
+    font-weight: bold;
+}
+.listSP table tbody tr td {
+    text-align: center;
+    border: 1px solid black;
+}
+.listSP table tbody tr td:hover {
+    background-color: rgb(255, 255, 255) !important;;
+}
+.listSP table tbody tr {
+    transition: 0.5s;
+}
+.listSP table tbody tr:hover{
+    background-color: rgb(255, 255, 255) !important;
+}
+.listSP table thead tr {
+    height: 50px;
+}
+.listSP table tbody tr .iconAdd{
+    padding: 5px 5px 5px 5px;
+}
+.listSP table tbody tr .iconAdd:hover{
+    background-color: silver ;
+    border-radius: 5px;
+    box-shadow: 10px;
+    transition: 0.8s;
+    cursor: pointer;
+}
+.custom-icAdd{
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.listSP{
+    height: 300px;
+    overflow-y: auto;
+}
+.custom-queue p{
+    font-size: 20px;
+    font-weight: 600;
+}
+.ctn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    position: fixed;
+    z-index: 9999;
+    left: 40%;
+    top: 0px;
+    transition: 0.6s;
+}
+.custom-SL-GN{
+    width: 300px;
+    height: 250px;
+    margin-bottom: 100px;
+    box-shadow: 0 .1rem 1rem .25rem rgba(0, 0, 0, .05) !important;
+    border-radius: .475rem !important;
+    border: silver solid 1px;
+    position: relative;
+    background-color: white;
+}
+.custom-SL-GN .custom-SL{
+    margin: 10px 0px 0px 20px;
+}
+.custom-SL-GN .custom-SL p{
+    color: #181c32;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.custom-SL-GN .custom-SL input{
+    height: 25px;
+    width: 200px;
+    border-radius: 5px;
+    box-shadow: none;
+    border: none;
+    font-size: medium;
+    background-color: #f5f8fa;
+    font-family: inherit;
+    border-color: #f5f8fa;
+    padding: 10px;
+}
+.custom-SL-GN .custom-GN p{
+    color: #181c32;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.custom-SL-GN .custom-GN{
+    margin: 10px 0px 0px 20px;
+}
+.custom-SL-GN .custom-GN input{
+    height: 25px;
+    width: 200px;
+    border-radius: 5px;
+    box-shadow: none;
+    border: none;
+    font-size: medium;
+    background-color: #f5f8fa;
+    font-family: inherit;
+    border-color: #f5f8fa;
+    padding: 10px;
+}
+.custom-btyn{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 5%;
+    right: 3%;
+    gap: 5px;
+}
+.custom-btyn .bty:hover{
+    background: lightskyblue !important;
+}
+.custom-btyn .btn:hover{
+    background: rgb(255, 118, 118) !important;
+}
+.custom-btyn .bty{
+    width: 67.237px !important;
+    background-color: rgb(227, 227, 227);
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    transition: 0.4s;
+}
+.custom-btyn .btn{
+    width: 67.237px !important;
+    background-color: rgb(227, 227, 227);
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    transition: 0.4s;
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.1) !important; /* Màu trắng rất nhạt, trong suốt 10% */
+    backdrop-filter: blur(2px); /* Độ mờ nhẹ chỉ 2px */
+    z-index: 10; /* Đảm bảo overlay hiển thị trên tất cả các phần tử khác */
+    transition: 0.4s;
+  }
+  .custom-SL .ipSL{
+    height: 35px !important;
+  }
+  .custom-GN .ipGN{
+    height: 35px !important;
+  }
