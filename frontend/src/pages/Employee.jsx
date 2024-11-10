@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD
 import '../style/Employee.css';
-=======
-import '../style/Employee.css'
 import { FaEdit, FaTrash } from 'react-icons/fa';
->>>>>>> 2e638e15f395c8cfcf31df63180003d9ebf77c61
 
 const Employee = () => {
   const [employeeData, setEmployeeData] = useState({});
   const [showPasswordChange, setShowPasswordChange] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [newEmployeeData, setNewEmployeeData] = useState({
+    ten_nv: '',
+    gioi_tinh: '',
+    sdt: '',
+    email: ''
+  });
+  const [editEmployeeData, setEditEmployeeData] = useState({
+    sdt: '',
+    email: ''
+  });
+  const [showAddEmployee, setShowAddEmployee] = useState(false);
+  const [showEditEmployee, setShowEditEmployee] = useState(false);
+  const [currentEmployee, setCurrentEmployee] = useState(null);
 
   // Lấy thông tin nhân viên hiện tại từ API
   useEffect(() => {
@@ -20,7 +29,6 @@ const Employee = () => {
       .catch((error) => console.error('Error fetching employee data:', error));
   }, []);
 
-<<<<<<< HEAD
   // Xử lý thay đổi mật khẩu
   const handlePasswordChange = () => {
     if (newPassword === confirmPassword) {
@@ -41,21 +49,26 @@ const Employee = () => {
         .catch((error) => console.error('Error changing password:', error));
     } else {
       alert('Mật khẩu không khớp. Vui lòng thử lại.');
-=======
+    }
+  };
+
+  // Lấy danh sách nhân viên từ API
   const fetchEmployees = async () => {
     try {
       const response = await fetch('http://localhost:5000/employee');
       const employees = await response.json();
-      setData(employees);
+      setEmployeeData(employees);
     } catch (error) {
       console.error('Error fetching employees:', error);
     }
   };
 
+  // Hiển thị form thêm nhân viên
   const handleShowAddEmployee = () => {
     setShowAddEmployee(!showAddEmployee);
   };
 
+  // Hiển thị form chỉnh sửa nhân viên
   const handleShowEditEmployee = (employee) => {
     setCurrentEmployee(employee);
     setEditEmployeeData({
@@ -65,6 +78,7 @@ const Employee = () => {
     setShowEditEmployee(true);
   };
 
+  // Thêm nhân viên mới
   const handleAddEmployee = async () => {
     try {
       const response = await fetch('http://localhost:5000/employee', {
@@ -86,6 +100,7 @@ const Employee = () => {
     }
   };
 
+  // Chỉnh sửa thông tin nhân viên
   const handleEditEmployee = async () => {
     try {
       const response = await fetch(`http://localhost:5000/employee/${currentEmployee.ma_nv}`, {
@@ -102,6 +117,7 @@ const Employee = () => {
     }
   };
 
+  // Xóa nhân viên
   const handleDeleteEmployee = async (ma_nv) => {
     try {
       const response = await fetch(`http://localhost:5000/employee/${ma_nv}`, {
@@ -111,7 +127,6 @@ const Employee = () => {
       await fetchEmployees(); // Re-fetch employees after deletion
     } catch (error) {
       console.error('Error deleting employee:', error);
->>>>>>> 2e638e15f395c8cfcf31df63180003d9ebf77c61
     }
   };
 
