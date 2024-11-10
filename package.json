@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "@atlaskit/textfield": "^6.5.4"
+    "@atlaskit/textfield": "^6.5.4",
+    "chart.js": "^4.4.6",
+    "react-chartjs-2": "^5.2.0"
   }
 }
