@@ -1,42 +1,44 @@
 .title-Selection{
     display: flex;
+    gap: 20px
 }
 .title-Selection .titleNH{
-    box-shadow: 0 .1rem 1rem .25rem rgba(0, 0, 0, .05) !important;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 50px;
+    width: 100px;
     font-weight: 600;
     font-family: Poppins, Helvetica, sans-serif;
-    font-size: 25px;
-    width: 50%; 
+    font-size: 15px;
     text-align: center;
-    border: 1px solid;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.selectTab{
+    border-bottom: 3px solid rgb(3, 156, 252) ;
+    background-color: lightskyblue;
 }
 .title-Selection .titlePN{
-    box-shadow: 0 .1rem 1rem .25rem rgba(0, 0, 0, .05) !important;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 50px;
     font-family: Poppins, Helvetica, sans-serif;
     font-weight: 600;
-    font-size: 25px;
-    width: 50%;
+    font-size: 15px;
     text-align: center;
-    border-top: 1px solid;
-    border-right: 1px solid;
-    border-bottom: 1px solid;
+    cursor: pointer;
+    transition: 0.5s;
 }
-.titleNH:hover{
+/* .titleNH:hover{
     background-color: silver;
     transition: 0.8s;
 }
 .titlePN:hover{
     background-color: silver;
     transition: 0.8s;
-}
+} */
 .cardNhapHang{
     margin-top: 15px;
     font-family: Poppins, Helvetica, sans-serif;
@@ -47,29 +49,37 @@
 }
 .listSP table tbody tr td {
     text-align: center;
-    border: 1px solid black;
+    border-right: 10px solid white;
 }
 .listSP table tbody tr td:hover {
-    background-color: rgb(255, 255, 255) !important;;
+    transition: 0.5s;
+    background-color: none;
 }
 .listSP table tbody tr {
+    border-top: 2px solid gray !important;
     transition: 0.5s;
+    height: 50px;
 }
 .listSP table tbody tr:hover{
-    background-color: rgb(255, 255, 255) !important;
+    background-color: none !important;
 }
 .listSP table thead tr {
-    height: 50px;
+    height: 60px !important;
+    background-color: lightskyblue ;
+}
+.listSP table thead tr th {
+    font-weight: 570;
+    border: 5px solid white;
 }
 .listSP table tbody tr .iconAdd{
     padding: 5px 5px 5px 5px;
+    cursor: pointer;
 }
 .listSP table tbody tr .iconAdd:hover{
     background-color: silver ;
     border-radius: 5px;
     box-shadow: 10px;
     transition: 0.8s;
-    cursor: pointer;
 }
 .custom-icAdd{
     font-size: 25px;
@@ -77,10 +87,42 @@
     justify-content: center;
     align-items: center;
 }
+.listSP table{
+    border-collapse: collapse;
+    overflow: hidden;
+    background-color: rgb(255, 255, 255);
+}
 .listSP{
     height: 300px;
     overflow-y: auto;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-x: hidden;
 }
+/* Tùy chỉnh thanh cuộn cho Chrome, Safari, và Edge */
+.listSP::-webkit-scrollbar {
+    width: 8px; /* Độ rộng của thanh cuộn dọc */
+    margin-right: 10px !important;
+}
+
+.listSP::-webkit-scrollbar-track {
+    background: none !important; /* Màu nền của thanh cuộn */
+    border-radius: 10px; /* Bo góc cho nền của thanh cuộn */
+}
+
+.listSP::-webkit-scrollbar-thumb {
+    background-color: #888; /* Màu của thanh cuộn */
+    border-radius: 15px; /* Bo góc cho thanh cuộn */
+    border: 2px solid #f1f1f1; /* Đường viền xung quanh thanh cuộn, giúp nổi bật hơn */
+    margin-right: 10px;
+}
+
+.listSP::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Màu của thanh cuộn khi hover */
+}
+
+
+
 .custom-queue p{
     font-size: 20px;
     font-weight: 600;
@@ -195,3 +237,84 @@
   .custom-GN .ipGN{
     height: 35px !important;
   }
+.queue{
+    height: 250px;
+    overflow-y: auto;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-x: hidden;
+}
+.queue table{
+    border-collapse: collapse ;
+}
+.queue table tbody tr td {
+    text-align: center; 
+    border-left: 10px solid white;
+}
+.queue table tbody tr td:hover {
+    background-color: rgb(255, 255, 255) !important;;
+}
+.queue table tbody tr {
+    border-top: 2px solid gray;
+    transition: 0.5s;
+    height: 50px;
+}
+.queue table tbody tr:hover{
+    background-color: rgb(255, 255, 255) !important;
+}
+.queue table thead tr {
+    background: lightskyblue;
+    height: 50px;
+}
+.queue table thead tr th{
+    border: 5px solid white;
+}
+.queue table tbody tr .iconAdd{
+    padding: 5px 5px 5px 5px;
+}
+.queue table tbody tr .iconAdd:hover{
+    background-color: silver ;
+    border-radius: 5px;
+    box-shadow: 10px;
+    transition: 0.8s;
+    cursor: pointer;
+}
+.queue::-webkit-scrollbar {
+    width: 8px; /* Độ rộng của thanh cuộn dọc */
+    margin-right: 10px !important;
+}
+
+.queue::-webkit-scrollbar-track {
+    background: none !important; /* Màu nền của thanh cuộn */
+    border-radius: 10px; /* Bo góc cho nền của thanh cuộn */
+}
+
+.queue::-webkit-scrollbar-thumb {
+    background-color: #888; /* Màu của thanh cuộn */
+    border-radius: 15px; /* Bo góc cho thanh cuộn */
+    border: 2px solid #f1f1f1; /* Đường viền xung quanh thanh cuộn, giúp nổi bật hơn */
+    margin-right: 10px;
+}
+
+.queue::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Màu của thanh cuộn khi hover */
+}
+.custom-icon{
+    font-size: 20px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+.custom-icon .icEdit:hover{
+    cursor: pointer;
+    color: rgb(13, 0, 255);
+}
+.custom-icon .icOk:hover{
+    cursor: pointer;
+    color: green;
+}
+.custom-icon .icDelete:hover{
+    cursor: pointer;
+    color: red;
+}

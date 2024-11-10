@@ -94,7 +94,7 @@ const ExportForm = () => {
           </div> 
       </div> 
       <div className="listPX">
-        <table style={{ width: "100%", borderCollapse: "collapse" }} border="1">
+        <table style={{ width: "100%"}} >
           <thead>
             <tr>
               <th style={{ width: "10%" }}>Mã phiếu xuất</th>

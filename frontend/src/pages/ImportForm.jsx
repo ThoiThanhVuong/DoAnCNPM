@@ -1,7 +1,10 @@
 import React from "react";
 import "../style/ImportForm.css";
 import { FaPlus } from "react-icons/fa";
+import { FaEdit } from 'react-icons/fa';
 import { useState } from "react";
+import { FaTrash, FaCheck } from 'react-icons/fa';
+
 const SoLuongGiaNhap = ({handleCancel,handleOK, soLuong, setSoluong, giaNhap, setGiaNhap}) =>{
   return (
     <div className="ctn">
@@ -109,12 +112,10 @@ const NhapHang = () => {
   const [showNotification, setShowNotification] = useState();
   const [showOverlay, setShowOverlay] = useState(false);
 
-
   const handleToggleNotification = (id) => {
     setShowNotification(id);
     setShowOverlay(true);
   };
-
 
   const handleCancel = () => {
     setShowNotification(null);
@@ -135,35 +136,41 @@ const NhapHang = () => {
     handleCancel();
   }
 
+  const deleteIQueue = (id) => {
+      const updatedData = queueData.filter((item) => item.masp !== id);
+      setQueuedata(updatedData);
+  };
+
+
   return (
     <div className="cardNhapHang">
       <div className="custom-listSP">
         <p>Danh sách sản phẩm</p>
         <div className="listSP">
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <table>  
             <thead>
               <tr>
-                <th style={{ width: "10%"}}>Mã sản phẩm</th>
-                <th style={{ width: "15%"}}>Tên sản phẩm</th>
-                <th style={{ width: "10%"}}>Chip xử lí</th>
-                <th style={{ width: "5%"}}>Hệ điều hành</th>
-                <th style={{ width: "15%"}}>Dung lượng pin</th>
-                <th style={{ width: "15%"}}>Thương hiệu</th>
-                <th style={{ width: "15%"}}>Xuất xứ</th>
-                <th style={{ width: "15%"}}>Thao tác</th>
+                <th>Mã sản phẩm</th>
+                <th>Tên sản phẩm</th>
+                <th>Chip xử lí</th>
+                <th>Hệ điều hành</th>
+                <th>Dung lượng pin</th>
+                <th>Thương hiệu</th>
+                <th>Xuất xứ</th>
+                <th>Thao tác</th>
               </tr>
             </thead>
-            <tbody>
+              <tbody>
               {data.map((datatable) => (
                 <tr key={datatable.id}>
-                  <td style={{ width: "10%" }}>{datatable.masp}</td>
+                  <td style={{ width: "5%" }}>{datatable.masp}</td>
                   <td style={{ width: "15%" }}>{datatable.tensp}</td>
                   <td style={{ width: "10%" }}>{datatable.chipxuli}</td>
-                  <td style={{ width: "5%" }}>{datatable.hedieuhanh}</td>
-                  <td style={{ width: "15%" }}>{datatable.pin}</td>
+                  <td style={{ width: "15%" }}>{datatable.hedieuhanh}</td>
+                  <td style={{ width: "10%" }}>{datatable.pin}</td>
                   <td style={{ width: "15%" }}>{datatable.thuonghieu}</td>
                   <td style={{ width: "15%" }}>{datatable.xuatxu}</td>
-                  <td style={{ width: "15%" }}>
+                  <td style={{ width: "10%" }}>
                     <div className="custom-icAdd">
                       <FaPlus className="iconAdd" onClick={() => handleToggleNotification(datatable.masp)}/>
                       { showNotification === datatable.masp && showOverlay && (<div>
@@ -183,7 +190,7 @@ const NhapHang = () => {
       <div className="custom-queue">
         <p>Hàng chờ nhập</p>
         <div className="queue">
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <table style={{ width: "100%"}}>
             <thead>
               <tr>
                 <th style={{width: "15%"}}>Mã sản phẩm</th>
@@ -204,7 +211,15 @@ const NhapHang = () => {
                     <td style={{width: "15%"}}>{dataQueue.gianhap}</td>
                     <td style={{width: "15%"}}>{dataQueue.soluong}</td>
                     <td style={{width: "25%"}}>{dataQueue.tongtien}</td>
-                    <td style={{width: "15%"}}>test</td>
+                    <td style={{width: "15%"}}>
+                      <div className="custom-icon">
+                        <FaEdit className="icEdit"/>
+                        <FaCheck className="icOk"/>
+                        <FaTrash className="icDelete"
+                        onClick={() => deleteIQueue(dataQueue.masp)}
+                        />
+                      </div>
+                    </td>
                   </tr>
                 ))
               }
@@ -216,14 +231,24 @@ const NhapHang = () => {
   );
 };
 const ImportForm = () => {
+  const [activeTab, setActiveTab] = useState("nhaphang")
+  const handleTab = (tabName) =>
+  {
+    setActiveTab(tabName)
+  }
   return (
     <div>
       <div className="title-Selection">
-        <p className="titleNH">Nhập hàng</p>
-        <p className="titlePN">Phiếu Nhập</p>
+        <p className={`titleNH ${activeTab === "nhaphang" ? "selectTab" : ""}`}
+        onClick={() => handleTab("nhaphang")}
+        >Nhập hàng</p>
+        <p className={`titlePN ${activeTab === "phieunhap" ? "selectTab" : ""}`}
+        onClick={() => handleTab("phieunhap")}
+        >Phiếu Nhập</p>
       </div>
-      <NhapHang/>
+      { activeTab === "nhaphang" ? <NhapHang/> : <div>Test</div>}
     </div>
   );
 };
 export default ImportForm;
+
