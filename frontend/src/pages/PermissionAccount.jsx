@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../style/PermissionAccount.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import permissionService from "../services/permissionService";
