@@ -12,6 +12,18 @@ const permissionService = {
       throw error;
     }
   },
+  updateRole: async (maNvID, roleID) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/permission/update_role/${maNvID}`,
+        roleID
+      );
+      return response.data;
+    } catch (error) {
+      console.log("error updating role: ", error);
+      throw error;
+    }
+  },
 };
 
 export default permissionService;

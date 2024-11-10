@@ -16,7 +16,7 @@ exports.showAllPermission = async (req, res) => {
               attributes: [],
             },
           ],
-          attributes: ["ten_quyen"],
+          attributes: ["ma_quyen", "ten_quyen"],
         },
       ],
       attributes: ["ma_nv", "ten_nv", "email"],
@@ -25,11 +25,30 @@ exports.showAllPermission = async (req, res) => {
       ma_nv: item.ma_nv,
       ten_nv: item.ten_nv,
       email: item.email,
+      ma_quyen: item.Permission.ma_quyen,
       ten_quyen: item.Permission.ten_quyen,
     }));
     res.json(formattedResult);
     // res.json(permission);
   } catch (error) {
     res.status(500).json({ error: "co loi khi tim", error });
+  }
+};
+
+exports.updateRole = async (req, res) => {
+  const { ma_nv } = req.params;
+  const { ma_quyen } = req.body;
+  try {
+    const employee = await Employee.findByPk(ma_nv);
+    if (!employee) {
+      return res.status(404).json({ error: "Không tìm thấy sản phẩm" });
+    }
+    // console.log(employee)
+    employee.ma_quyen = ma_quyen;
+    await employee.save();
+    console.log(ma_nv, ma_quyen);
+    res.json(employee);
+  } catch (error) {
+    res.status(500).json({ error: "loi khi update vai tro cua nhan vien" });
   }
 };
