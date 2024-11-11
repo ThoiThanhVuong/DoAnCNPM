@@ -26,6 +26,7 @@ const Employee = db.define(
     },
     ma_quyen: {
       type: DataTypes.INTEGER,
+      allowNull: true,
       // references: {
       //   model: "Permission",
       //   key: "ma_quyen",
