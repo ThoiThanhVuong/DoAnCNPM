@@ -1,113 +1,125 @@
-/* Container chung */
 .container-account {
-    width: 80%;
-    margin: auto;
-    text-align: center;
-}
-
-.container-account_content {
-    position: relative;
-    padding: 20px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 30px;
-}
-
-.container-account_content table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-}
-
-.container-account_content table th,
-.container-account_content table td {
-    padding: 15px 20px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.container-account_content table tr:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-}
-
-/* Form Thêm Tài Khoản */
-.add-account {
-    width: 80%; /* Chiếm 80% chiều rộng của container */
-    max-width: 600px; /* Đặt chiều rộng tối đa */
-    margin: 20px auto; /* Tạo khoảng cách với các phần khác và căn giữa */
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
+    margin: 20px;
+  }
+  
+  .container-account_content {
     display: flex;
     flex-direction: column;
+    align-items: center;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  table th, table td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .add-account_button {
+    margin-top: 20px;
+  }
+  
+  .add-account_button button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .add-account_button button:hover {
+    background-color: #45a049;
+  }
+  
+  .edit, .delete {
+    cursor: pointer;
+    margin: 0 5px;
+    font-size: 20px;
+  }
+  
+  .edit {
+    color: #4CAF50;
+  }
+  
+  .delete {
+    color: #f44336;
+  }
+  
+  .add-account, .edit-account {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
     justify-content: center;
     align-items: center;
-}
-
-/* Các trường thông tin */
-.add-account_content__content-items {
-    margin-bottom: 15px;
-    text-align: left;
-}
-
-/* Các trường thông tin sẽ có flex layout để chia thành 2 cột */
-.add-account_content {
-    display: flex;
-    justify-content: space-between; /* Căn đều các cột */
-    gap: 20px; /* Khoảng cách giữa các cột */
+  }
+  
+  .add-account_content, .edit-account_content {
+    background-color: white;
+    padding: 20px;
+    max-width: 600px;
     width: 100%;
-}
-
-/* Các cột trong form */
-.add-account_content__column {
-    width: 48%; /* Đảm bảo mỗi cột chiếm khoảng 48% */
-}
-
-/* Nhãn cho các trường thông tin */
-.add-account_content__content-items label {
-    display: block;
-    margin-bottom: 5px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .add-account_content__column, .edit-account_content__column {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .add-account_content__content-items, .edit-account_content__content-items {
+    width: 48%;
+    margin-right: 2%;
+  }
+  
+  .add-account_content__content-items:last-child, .edit-account_content__content-items:last-child {
+    margin-right: 0;
+  }
+  
+  label {
     font-weight: bold;
-}
-
-/* Các ô nhập liệu */
-.add-account_content__content-items input {
+  }
+  
+  input, select {
     width: 100%;
     padding: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-}
-
-/* Nút Lưu và Thoát */
-.add-account_button {
-    margin-top: 20px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+  .add-account_buttons, .edit-account_buttons {
     display: flex;
     justify-content: space-between;
-    width: 100%;
-}
-
-.add-account_button button {
-    padding: 8px 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
     color: white;
-    font-weight: bold;
-    transition: background-color 0.2s ease;
-}
-
-.add-account_button button:hover {
-    background-color: #0056b3;
-}
-
-.add-account_button button:nth-child(2) {
-    background-color: #6c757d;
-}
-
-.add-account_button button:nth-child(2):hover {
-    background-color: #5a6268;
-}
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  button:last-child {
+    background-color: #f44336;
+  }
+  
+  button:last-child:hover {
+    background-color: #d32f2f;
+  }
+  

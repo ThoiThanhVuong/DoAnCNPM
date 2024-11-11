@@ -3,7 +3,7 @@ const Employee = require('../models/EmployeeModel'); // MySQL model
 // Fetch all employees
 const getEmployees = async (req, res) => {
   try {
-    const employees = await Employee.getAll();
+    const employees = await Employee.findAll();
     res.status(200).json(employees);
   } catch (error) {
     res.status(500).json({ message: 'Lỗi khi tải danh sách', error: error.message });
@@ -14,7 +14,7 @@ const getEmployees = async (req, res) => {
 const getEmployeeByMaNV = async (req, res) => {
   const { ma_nv } = req.params;
   try {
-    const employee = await Employee.getByMaNV(ma_nv);
+    const employee = await Employee.findByPk(ma_nv);
     if (!employee) {
       return res.status(404).json({ message: 'Không tìm thấy nhân viên' });
     }
@@ -26,42 +26,61 @@ const getEmployeeByMaNV = async (req, res) => {
 
 // Add a new employee
 const addEmployee = async (req, res) => {
-  // Có thể kiểm tra dữ liệu đầu vào ở đây
+  const { ten_nv, gioi_tinh, sđt, email, mat_khau, ma_quyen } = req.body; // Các thuộc tính cần thêm
   try {
-    const savedEmployee = await Employee.create(req.body);
-    res.status(201).json(savedEmployee);
+    const newEmployee = await Employee.create({
+      ten_nv,
+      gioi_tinh,
+      department,
+      sđt,
+      email,
+      mat_khau,
+      ma_quyen
+    });
+    res.status(201).json(newEmployee);
   } catch (error) {
-    res.status(500).json({ message: 'Lỗi khi thêm nhân viên', error: error.message });
+    res.status(500).json({ error: 'Lỗi khi thêm nhân viên', details: error.message });
   }
 };
+
 
 // Update an employee by ma_nv
 const updateEmployee = async (req, res) => {
   const { ma_nv } = req.params;
+  const { ten_nv, gioi_tinh, sđt, email, mat_khau, ma_quyen } = req.body; // Các thuộc tính cần cập nhật
   try {
-    const updatedEmployee = await Employee.update(ma_nv, req.body);
-    if (updatedEmployee[0] === 0) {  // Kiểm tra affectedRows
-      return res.status(404).json({ message: 'Không tìm thấy nhân viên để cập nhật' });
-    }
-    res.status(200).json({ message: 'Nhân viên cập nhật thành công' });
+    const employee = await Employee.findByPk(ma_nv);
+    if (!employee) return res.status(404).json({ error: 'Không tìm thấy nhân viên' });
+    
+    employee.ten_nv = ten_nv;
+    employee.gioi_tinh = gioi_tinh;
+    employee.sđt = sđt;
+    employee.email = email;
+    employee.mat_khau = mat_khau;
+    employee.ma_quyen = ma_quyen;
+    await employee.save();
+
+    res.json(employee);
   } catch (error) {
-    res.status(500).json({ message: 'Cập nhật nhân viên không thành công', error: error.message });
+    res.status(500).json({ error: 'Lỗi khi cập nhật nhân viên', details: error.message });
   }
 };
+
 
 // Delete an employee by ma_nv
 const deleteEmployee = async (req, res) => {
   const { ma_nv } = req.params;
   try {
-    const deletedEmployee = await Employee.delete(ma_nv);
-    if (deletedEmployee === 0) {  // Kiểm tra affectedRows
-      return res.status(404).json({ message: 'Không tìm thấy nhân viên để xóa' });
-    }
-    res.status(200).json({ message: 'Xóa nhân viên thành công' });
+    const employee = await Employee.findByPk(ma_nv);
+    if (!employee) return res.status(404).json({ error: 'Không tìm thấy nhân viên' });
+    
+    await employee.destroy();
+    res.json({ message: 'Nhân viên đã được xóa' });
   } catch (error) {
-    res.status(500).json({ message: 'Xóa nhân viên không thành công', error: error.message });
+    res.status(500).json({ error: 'Lỗi khi xóa nhân viên', details: error.message });
   }
 };
+
 
 module.exports = {
   getEmployees,
