@@ -13,11 +13,14 @@ PhieuXuatModel.belongsTo(CustomerModel, { foreignKey: 'ma_kh', as: 'customer' })
 EmployeeModel.hasMany(PhieuXuatModel, { foreignKey: 'ma_nv', as: 'phieuXuats' });
 PhieuXuatModel.belongsTo(EmployeeModel, { foreignKey: 'ma_nv', as: 'nhanVien' });
 
-PermissionModel.hasMany(DetailPermission,{ foreignKey: 'ma_quyen'});
-DetailPermission.belongsTo(PermissionModel, { foreignKey: 'ma_quyen'});
-
-FeaturePermissionModel.hasMany(DetailPermission,{ foreignKey: 'ma_chuc_nang'});
-DetailPermission.belongsTo(FeaturePermissionModel,{foreignKey: 'ma_chuc_nang'});
+PermissionModel.belongsToMany(FeaturePermissionModel, {
+  through: DetailPermission,
+  foreignKey: "ma_quyen",
+});
+FeaturePermissionModel.belongsToMany(PermissionModel, {
+  through: DetailPermission,
+  foreignKey: "ma_chuc_nang",
+});
 
 PermissionModel.hasMany(EmployeeModel, { foreignKey: "ma_quyen" });
 EmployeeModel.belongsTo(PermissionModel, { foreignKey: "ma_quyen" });

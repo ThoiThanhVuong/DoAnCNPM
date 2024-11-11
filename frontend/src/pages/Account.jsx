@@ -8,19 +8,24 @@ const Account = () => {
   const [data, setData] = useState([]);
   const [currentAccount, setCurrentAccount] = useState(null);
   const [newAccountData, setNewAccountData] = useState({
-    employee_id: '',
-    username: '',
-    password: '',
+    ma_nv: '',
+    ten_nv: '',
+    gioi_tinh: '',
+    sdt: '',
     email: '',
-    full_name: '',
-    role: '',
-    status: '1',
+    mat_khau: '',
+    ma_quyen: '',
+    trang_thai: 1, // Default active
   });
 
   const [editAccountData, setEditAccountData] = useState({
+    ten_nv: '',
+    gioi_tinh: '',
+    sdt: '',
     email: '',
-    role: '',
-    status: '',
+    mat_khau: '',
+    ma_quyen: '',
+    trang_thai: 1,
   });
 
   useEffect(() => {
@@ -29,7 +34,7 @@ const Account = () => {
 
   const fetchAccounts = async () => {
     try {
-      const response = await fetch('http://localhost:3000/account');
+      const response = await fetch('http://localhost:5000/api/employee');
       const accounts = await response.json();
       setData(accounts);
     } catch (error) {
@@ -39,7 +44,7 @@ const Account = () => {
 
   const generateEmployeeId = () => {
     const maxId = data.reduce((max, account) => {
-      const match = account.employee_id.match(/^nv(\d+)$/);
+      const match = account.ma_nv.match(/^nv(\d+)$/);
       if (match) {
         const id = parseInt(match[1], 10);
         return Math.max(max, id);
@@ -51,10 +56,10 @@ const Account = () => {
 
   const handleAddAccount = async () => {
     try {
-      const employee_id = generateEmployeeId();
-      const newAccountWithEmployeeId = { ...newAccountData, employee_id };
+      const ma_nv = generateEmployeeId();
+      const newAccountWithEmployeeId = { ...newAccountData, ma_nv };
 
-      const response = await fetch('http://localhost:3000/account', {
+      const response = await fetch('http://localhost:5000/api/employee', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newAccountWithEmployeeId),
@@ -64,13 +69,14 @@ const Account = () => {
       setData((prevData) => [...prevData, newAccount]);
       setShowAddAccount(false);
       setNewAccountData({
-        employee_id: '',
-        username: '',
-        password: '',
+        ma_nv: '',
+        ten_nv: '',
+        gioi_tinh: '',
+        sdt: '',
         email: '',
-        full_name: '',
-        role: '',
-        status: '1',
+        mat_khau: '',
+        ma_quyen: '',
+        trang_thai: 1,
       });
     } catch (error) {
       console.error('Error adding account:', error);
@@ -79,14 +85,14 @@ const Account = () => {
 
   const handleEditAccount = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/account/${currentAccount.account_id}`, {
+      const response = await fetch(`http://localhost:5000/api/employee/${currentAccount.ma_nv}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editAccountData),
       });
       if (!response.ok) throw new Error('Failed to update account');
       setData((prevData) => prevData.map(account =>
-        account.account_id === currentAccount.account_id ? { ...account, ...editAccountData } : account
+        account.ma_nv === currentAccount.ma_nv ? { ...account, ...editAccountData } : account
       ));
       setShowEditAccount(false);
       setCurrentAccount(null);
@@ -95,13 +101,13 @@ const Account = () => {
     }
   };
 
-  const handleDeleteAccount = async (account_id) => {
+  const handleDeleteAccount = async (ma_nv) => {
     try {
-      const response = await fetch(`http://localhost:3000/account/${account_id}`, {
+      const response = await fetch(`http://localhost:5000/api/employees/${ma_nv}`, {
         method: 'DELETE',
       });
       if (!response.ok) throw new Error('Failed to delete account');
-      setData((prevData) => prevData.filter(account => account.account_id !== account_id));
+      setData((prevData) => prevData.filter(account => account.ma_nv !== ma_nv));
     } catch (error) {
       console.error('Error deleting account:', error);
     }
@@ -114,14 +120,17 @@ const Account = () => {
   const handleShowEditAccount = (account) => {
     setCurrentAccount(account);
     setEditAccountData({
+      ten_nv: account.ten_nv,
+      gioi_tinh: account.gioi_tinh,
+      sdt: account.sdt,
       email: account.email,
-      role: account.role,
-      status: account.status,
+      mat_khau: account.mat_khau,
+      ma_quyen: account.ma_quyen,
+      trang_thai: account.trang_thai,
     });
     setShowEditAccount(true);
   };
 
-  // Define the handleInputChange function
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (showAddAccount) {
@@ -146,42 +155,43 @@ const Account = () => {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Tên Đăng Nhập</th>
+                <th>Tên Nhân Viên</th>
+                <th>Giới Tính</th>
+                <th>Số Điện Thoại</th>
                 <th>Email</th>
-                <th>Tên Đầy Đủ</th>
-                <th>Vai Trò</th>
+                <th>Mật Khẩu</th>
+                <th>Mã Quyền</th>
                 <th>Trạng Thái</th>
-                <th>Lần Đăng Nhập Cuối</th>
                 <th>Thao Tác</th>
               </tr>
             </thead>
             <tbody>
               {data.length > 0 ? (
                 data.map((account) => (
-                  <tr key={account.account_id}>
-                    <td>{account.account_id}</td>
-                    <td>{account.username}</td>
+                  <tr key={account.ma_nv}>
+                    <td>{account.ma_nv}</td>
+                    <td>{account.ten_nv}</td>
+                    <td>{account.gioi_tinh}</td>
+                    <td>{account.sdt}</td>
                     <td>{account.email}</td>
-                    <td>{account.full_name}</td>
-                    <td>{account.role}</td>
-                    <td>{account.status}</td>
-                    <td>{account.last_login || 'Chưa đăng nhập'}</td>
+                    <td>{account.mat_khau}</td>
+                    <td>{account.ma_quyen}</td>
+                    <td>{account.trang_thai ? 'Hoạt động' : 'Ngừng hoạt động'}</td>
                     <td>
                       <FaEdit className="edit" onClick={() => handleShowEditAccount(account)} />
-                      <FaTrash className="delete" onClick={() => handleDeleteAccount(account.account_id)} />
+                      <FaTrash className="delete" onClick={() => handleDeleteAccount(account.ma_nv)} />
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="8" style={{ textAlign: 'center' }}>Không có dữ liệu</td>
+                  <td colSpan="9" style={{ textAlign: 'center' }}>Không có dữ liệu</td>
                 </tr>
               )}
             </tbody>
           </table>
           <div className="add-account_button">
             <button onClick={handleShowAddAccount}>Thêm Tài Khoản</button>
-            <button>Thoát</button>
           </div>
         </div>
       </div>
@@ -190,31 +200,44 @@ const Account = () => {
         <div className="add-account">
           <h2>Thêm Tài Khoản</h2>
           <div className="add-account_content">
+            {/* First Column */}
             <div className="add-account_content__column">
               <div className="add-account_content__content-items">
-                <label htmlFor="username">Tên Đăng Nhập</label>
+                <label htmlFor="ten_nv">Tên Nhân Viên</label>
                 <input
                   type="text"
-                  id="username"
-                  name="username"
-                  value={newAccountData.username}
+                  id="ten_nv"
+                  name="ten_nv"
+                  value={newAccountData.ten_nv}
                   onChange={handleInputChange}
                 />
               </div>
 
               <div className="add-account_content__content-items">
-                <label htmlFor="password">Mật Khẩu</label>
+                <label htmlFor="gioi_tinh">Giới Tính</label>
                 <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={newAccountData.password}
+                  type="text"
+                  id="gioi_tinh"
+                  name="gioi_tinh"
+                  value={newAccountData.gioi_tinh}
                   onChange={handleInputChange}
                 />
               </div>
             </div>
 
+            {/* Second Column */}
             <div className="add-account_content__column">
+              <div className="add-account_content__content-items">
+                <label htmlFor="sdt">Số Điện Thoại</label>
+                <input
+                  type="text"
+                  id="sdt"
+                  name="sdt"
+                  value={newAccountData.sdt}
+                  onChange={handleInputChange}
+                />
+              </div>
+
               <div className="add-account_content__content-items">
                 <label htmlFor="email">Email</label>
                 <input
@@ -227,60 +250,130 @@ const Account = () => {
               </div>
 
               <div className="add-account_content__content-items">
-                <label htmlFor="role">Vai Trò</label>
+                <label htmlFor="mat_khau">Mật Khẩu</label>
                 <input
-                  type="text"
-                  id="role"
-                  name="role"
-                  value={newAccountData.role}
+                  type="password"
+                  id="mat_khau"
+                  name="mat_khau"
+                  value={newAccountData.mat_khau}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              {/* Mã Quyền field moved below Mật Khẩu */}
+              <div className="add-account_content__content-items">
+                <label htmlFor="ma_quyen">Mã Quyền</label>
+                <input
+                  type="number"
+                  id="ma_quyen"
+                  name="ma_quyen"
+                  value={newAccountData.ma_quyen}
                   onChange={handleInputChange}
                 />
               </div>
             </div>
           </div>
 
-          <div className="add-account_button">
-            <button onClick={handleAddAccount}>Lưu</button>
-            <button onClick={handleShowAddAccount}>Thoát</button>
+          {/* Action Buttons */}
+          <div className="add-account_buttons">
+            <button onClick={handleAddAccount}>Thêm</button>
+            <button onClick={() => setShowAddAccount(false)}>Hủy</button>
           </div>
         </div>
       )}
 
       {showEditAccount && currentAccount && (
         <div className="edit-account">
-          <h1>Sửa Thông Tin Tài Khoản</h1>
+          <h2>Sửa Tài Khoản</h2>
           <div className="edit-account_content">
-            <div className="edit-account_content__content-items">
-              <label>Email:</label>
-              <input
-                type="email"
-                placeholder="Nhập email"
-                value={editAccountData.email}
-                onChange={(e) => setEditAccountData({ ...editAccountData, email: e.target.value })}
-              />
+            <div className="edit-account_content__column">
+              <div className="edit-account_content__content-items">
+                <label htmlFor="ten_nv">Tên Nhân Viên</label>
+                <input
+                  type="text"
+                  id="ten_nv"
+                  name="ten_nv"
+                  value={editAccountData.ten_nv}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="edit-account_content__content-items">
+                <label htmlFor="gioi_tinh">Giới Tính</label>
+                <input
+                  type="text"
+                  id="gioi_tinh"
+                  name="gioi_tinh"
+                  value={editAccountData.gioi_tinh}
+                  onChange={handleInputChange}
+                />
+              </div>
             </div>
-            <div className="edit-account_content__content-items">
-              <label>Vai Trò:</label>
-              <input
-                type="text"
-                placeholder="Nhập vai trò"
-                value={editAccountData.role}
-                onChange={(e) => setEditAccountData({ ...editAccountData, role: e.target.value })}
-              />
+
+            <div className="edit-account_content__column">
+              <div className="edit-account_content__content-items">
+                <label htmlFor="sdt">Số Điện Thoại</label>
+                <input
+                  type="text"
+                  id="sdt"
+                  name="sdt"
+                  value={editAccountData.sdt}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="edit-account_content__content-items">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={editAccountData.email}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="edit-account_content__content-items">
+                <label htmlFor="mat_khau">Mật Khẩu</label>
+                <input
+                  type="password"
+                  id="mat_khau"
+                  name="mat_khau"
+                  value={editAccountData.mat_khau}
+                  onChange={handleInputChange}
+                />
+              </div>
             </div>
-            <div className="edit-account_content__content-items">
-              <label>Trạng Thái:</label>
-              <select
-                value={editAccountData.status}
-                onChange={(e) => setEditAccountData({ ...editAccountData, status: e.target.value })}
-              >
-                <option value="1">Hoạt động</option>
-                <option value="0">Ngừng hoạt động</option>
-              </select>
+
+            <div className="edit-account_content__column">
+              <div className="edit-account_content__content-items">
+                <label htmlFor="ma_quyen">Mã Quyền</label>
+                <input
+                  type="number"
+                  id="ma_quyen"
+                  name="ma_quyen"
+                  value={editAccountData.ma_quyen}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="edit-account_content__content-items">
+                <label htmlFor="trang_thai">Trạng Thái</label>
+                <select
+                  id="trang_thai"
+                  name="trang_thai"
+                  value={editAccountData.trang_thai}
+                  onChange={handleInputChange}
+                >
+                  <option value="1">Hoạt động</option>
+                  <option value="0">Ngừng hoạt động</option>
+                </select>
+              </div>
             </div>
-            <div className="edit-account_button">
-              <button onClick={handleEditAccount}>Lưu</button>
-              <button onClick={() => setShowEditAccount(false)}>Thoát</button>
+
+            <div className="edit-account_buttons">
+              <button onClick={handleEditAccount}>Cập Nhật</button>
+              <button onClick={() => setShowEditAccount(false)}>Hủy</button>
             </div>
           </div>
         </div>

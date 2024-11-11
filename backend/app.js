@@ -5,7 +5,7 @@ const productRoutes = require("../backend/src/routes/productRoutes.js");
 const brandRoutes = require("../backend/src/routes/brandRoutes.js");
 const permissionRoutes = require("../backend/src/routes/permissionRoutes.js");
 const thongkeRoutes =require("../backend/src/routes/thongkeRoutes.js")
-const customerRoutes =require("../backend/src/routes/customerRoutes.js")
+const employeeRoutes =require("../backend/src/routes/employeeRoutes.js")
 
 const app = express();
 
@@ -21,6 +21,6 @@ app.use("/api/products", productRoutes);
 app.use("/api/brands", brandRoutes);
 app.use("/api/permission", permissionRoutes);
 app.use("/api/thongke",thongkeRoutes);
-app.use("/api/customers",customerRoutes);
+app.use("/api/employee",employeeRoutes);
 
 module.exports = app;

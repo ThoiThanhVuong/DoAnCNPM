@@ -24,6 +24,17 @@ const permissionService = {
       throw error;
     }
   },
+  deleteRole: async (maNvID) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/permission/delete_role/${maNvID}`
+      );
+      return response.data;
+    } catch (error) {
+      console.log("Loi khi xoa nhan vien:", error);
+      throw error;
+    }
+  },
 };
 
 export default permissionService;

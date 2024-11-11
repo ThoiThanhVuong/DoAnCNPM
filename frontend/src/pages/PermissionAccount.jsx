@@ -17,13 +17,13 @@ const PermissionAccount = () => {
   const handleShowEditUserAccount = (ma_nv, ten_nv, email, ma_quyen) => {
     setShow2(!showEditUserAccount);
     setName({ ten_nv: ten_nv, email: email });
-    setRoleID({ ...roleID, ma_quyen: ma_quyen });
+    setRoleID((prev) => ({ ...prev, ma_quyen: ma_quyen }));
     setMaNvID(ma_nv);
     setNameRoleChange(ma_quyen); // neu state la kieu chuoi khi set kieu so thi sau cung no van la chuoi
   };
 
   const handleRoleChange = (e) => {
-    setRoleID({ ...roleID, ma_quyen: parseInt(e.target.value) });
+    setRoleID((prev) => ({ ...prev, ma_quyen: parseInt(e.target.value) }));
     setNameRoleChange(e.target.value);
   };
   // kiem tra xem roleID co cap nhat sau khi thay doi option o the select khong
@@ -42,14 +42,37 @@ const PermissionAccount = () => {
   }, []);
 
   const handleChangeRole = async (maNvID, roleID) => {
-    console.log(roleID);
+    if (roleID.ma_quyen === null || !roleID.ma_quyen) {
+      alert("chon vai tro khong duoc de trong");
+      return;
+    }
     try {
+      console.log(roleID.ma_quyen);
       const response = await permissionService.updateRole(maNvID, roleID);
       console.log("updated role succcessfull", response);
-      alert("Update successfull")
-      window.location.reload()
+      alert("Update successfull");
+      window.location.reload();
     } catch (error) {
       console.log("error updating role: ", error);
+    }
+  };
+
+  const handleDeleteUserAccount = async (ma_nv, ma_quyen) => {
+    console.log(ma_nv);
+    if (ma_quyen === null) {
+      return;
+    }
+    const confirmDelete = window.confirm(
+      "ban co chac chan xoa vai tro cua nguoi dung nay khong?"
+    );
+    if (!confirmDelete) return;
+    try {
+      const response = await permissionService.deleteRole(ma_nv);
+      console.log("delete successfull", response);
+      alert("deleted", response);
+      window.location.reload();
+    } catch (error) {
+      console.log("error deleting user account: ", error);
     }
   };
 
@@ -82,7 +105,12 @@ const PermissionAccount = () => {
                       )
                     }
                   />
-                  <FaTrash className="delete" />
+                  <FaTrash
+                    className="delete"
+                    onClick={() =>
+                      handleDeleteUserAccount(item.ma_nv, item.ma_quyen)
+                    }
+                  />
                 </td>
               </tr>
             ))}
@@ -151,12 +179,14 @@ const PermissionAccount = () => {
           <div className="edit-user-account_content__content-items">
             <label htmlFor="">Chọn vai trò:</label>
             <select value={nameRoleChange} onChange={handleRoleChange}>
+              <option></option>
               <option value="1">Admin</option>
               <option value="2">Quản lý</option>
               <option value="3">Nhân viên kho</option>
               <option value="4">Nhân viên kiểm toán</option>
             </select>
-            {/* {console.log("check before:", nameRoleChange)} */}
+            {console.log("check before:", nameRoleChange)}
+            {console.log("check before:", roleID.ma_quyen)}
           </div>
           <div className="edit-user-account_button">
             <button onClick={() => handleChangeRole(maNvID, roleID)}>
