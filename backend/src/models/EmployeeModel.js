@@ -26,7 +26,6 @@ const Employee = sequelize.define(
     },
     ma_quyen: {
       type: DataTypes.INTEGER,
-<<<<<<< HEAD
       allowNull: true,
       // references: {
       //   model: "Permission",
@@ -34,8 +33,6 @@ const Employee = sequelize.define(
       // },
 
       //Hoặc viết như này cũng được
-=======
->>>>>>> 25b999398cdac8c282f6a082f7aa1efe107e1fb0
       references: {
         model: permissionModel,
         key: 'ma_quyen',
