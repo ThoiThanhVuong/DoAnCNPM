@@ -27,12 +27,6 @@ const Employee = sequelize.define(
     ma_quyen: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      // references: {
-      //   model: "Permission",
-      //   key: "ma_quyen",
-      // },
-
-      //Hoặc viết như này cũng được
       references: {
         model: permissionModel,
         key: 'ma_quyen',

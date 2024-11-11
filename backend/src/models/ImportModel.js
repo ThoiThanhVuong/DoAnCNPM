@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 const Employee =require('../models/EmployeeModel');
-const Provider =require('../models/ProviderModel');
+const Provider =require('../models/providerModel');
 
 
 const Import = sequelize.define('Import',{
@@ -38,6 +38,5 @@ const Import = sequelize.define('Import',{
     tableName: 'phieu_nhap',
     timestamps: false,
 } )
-Import.belongsTo(Provider, { foreignKey: 'ma_ncc', onDelete: 'CASCADE' });
-Import.belongsTo(Employee, { foreignKey: 'ma_nv', onDelete: 'CASCADE' });
+
 module.exports = Import;

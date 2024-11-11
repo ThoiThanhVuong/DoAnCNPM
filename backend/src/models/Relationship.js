@@ -6,6 +6,8 @@ const PhieuXuatModel = require('./phieuXuatModel');
 const FeaturePermissionModel =require('./FeaturePermissionModel');
 const PermissionModel = require('./permissionModel');
 const DetailPermission = require('./DetailPermission');
+const ProviderModel = require('./providerModel');
+const importModel = require('./ImportModel');
 // Thiết lập mối quan hệ
 CustomerModel.hasMany(PhieuXuatModel, { foreignKey: 'ma_kh', as: 'phieuXuats' });
 PhieuXuatModel.belongsTo(CustomerModel, { foreignKey: 'ma_kh', as: 'customer' });
@@ -24,6 +26,11 @@ FeaturePermissionModel.belongsToMany(PermissionModel, {
 
 PermissionModel.hasMany(EmployeeModel, { foreignKey: "ma_quyen" });
 EmployeeModel.belongsTo(PermissionModel, { foreignKey: "ma_quyen" });
+
+ProviderModel.hasMany(importModel,{foreignKey: 'ma_ncc' , as:'phieuNhaps'});
+importModel.belongsTo(ProviderModel,{foreignKey: 'ma_ncc',as:'provider'});
+EmployeeModel.hasMany(importModel,{foreignKey: 'ma_nv' , as:'phieuNhaps'});
+importModel.belongsTo(EmployeeModel,{foreignKey:'ma_nv' , as:'nhanvien'});
 // Xuất tất cả các model
 module.exports = {
   sequelize,
@@ -32,5 +39,7 @@ module.exports = {
   PhieuXuat: PhieuXuatModel,
   Permission: PermissionModel,
   FeaturePermission: FeaturePermissionModel,
-  DetailPermission
+  DetailPermission,
+  Provider:ProviderModel,
+  importModel
 };
