@@ -1,56 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../style/Customer.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import axios from 'axios';
+
 const Customer = () => {
-  const [Data,setData] = useState([
-    {
-      MKH: 1,
-      TKH: "Nguyen Van A",
-      DC: "Tp HO CHI MINH",
-      SDT: "0394163661",
-    },
-    {
-      MKH: 2,
-      TKH: "Nguyen Van B",
-      DC: "HN",
-      SDT: "0123456789",
-    },
-    {
-      MKH: 3,
-      TKH: "Nguyen Van C",
-      DC: "Tay Ninh",
-      SDT: "0987456123",
-    },
-    {
-      MKH: 4,
-      TKH: "Nguyen Van C",
-      DC: "Tay Ninh",
-      SDT: "0987456123",
-    },
-    {
-      MKH: 5,
-      TKH: "Nguyen Van C",
-      DC: "Tay Ninh",
-      SDT: "0987456123",
-    },
-  ]);
-
-
+  const [Data,setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showAddCustomer, setShow] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [showEditCustomer, setShow1] = useState(false);
-  const [formData,setform]=useState({MKH:" ",TKH:" ",DC:" ",SDT:" "});
+  const [formData,setform]=useState({ma_kh:" ",ten_kh:" ",dia_chi_kh:" ",sdt_kh:" "});
+    useEffect(() => {
+        axios.get("http://localhost:5000/api/customers")
+            .then(response => {
+                setData(response.data);
+                setLoading(false);
+              })
+              .catch(error => {
+                console.error('There has been a problem with your axios operation:', error);
+                setLoading(false);
+              });
+            }, []);
+            
+            if (loading) {
+              return <div>Loading...</div>;
+            }
+            
+
 
   const hiddenAdd = () => {
     setShow(!showAddCustomer);
-    setform({MKH:"",TKH:"",DC:"",SDT:""})
+    setform({ma_kh:" ",ten_kh:" ",dia_chi_kh:" ",sdt_kh:" "})
   };
 
 
 
   const hiddenEdit = (item) => {
     setShow1(!showEditCustomer);
-    setform({MKH:item.MKH,TKH:item.TKH,DC:item.DC,SDT:item.SDT});
+    setform({MKH:item.ma_kh,TKH:item.ten_kh,DC:item.dia_chi_kh,SDT:item.sdt_kh});
   };  
   
   const handleInputChange = (e) => {
@@ -80,7 +67,7 @@ const Customer = () => {
   };
 
   const deleteData = (mkh) => {
-    setData((prevData) => prevData.filter((item) => item.MKH !== mkh));
+    setData((prevData) => prevData.filter((item) => item.ma_kh !== mkh));
     setSuccessMessage("Xóa thành công!");
     setTimeout(() => setSuccessMessage(''), 2000);
   };
@@ -118,10 +105,10 @@ const Customer = () => {
             <div>
               <h1> Thêm Khách Hàng</h1>
               <div class="interface_add-content">
-                <input placeholder="Nhập Mã Khách Hàng" name="MKH" type="number" value={formData.MKH} onChange={handleInputChange}></input>
-                <input placeholder="Nhập Tên" name="TKH" type="text" value={formData.TKH}  onChange={handleInputChange}></input>
-                <input placeholder="nhập Địa chỉ" name="DC" type="text" value={formData.DC} onChange={handleInputChange}></input>
-                <input placeholder="Nhập Số điện thoại" name="SDT" type="text" value={formData.SDT} onChange={handleInputChange}></input>
+                <input placeholder="Nhập Mã Khách Hàng" name="MKH" type="number"  onChange={handleInputChange}></input>
+                <input placeholder="Nhập Tên" name="TKH" type="text"   onChange={handleInputChange}></input>
+                <input placeholder="nhập Địa chỉ" name="DC" type="text"  onChange={handleInputChange}></input>
+                <input placeholder="Nhập Số điện thoại" name="SDT" type="text"  onChange={handleInputChange}></input>
               </div>
               <div class="button-addCustomer-interface">
                 <button type="button" onClick={hiddenAdd}>Thoát</button>
@@ -168,10 +155,10 @@ const Customer = () => {
           </tr>
           {Data.map((item, index) => (
             <tr key={index}>
-              <td>{item.MKH}</td>
-              <td>{item.TKH}</td>
-              <td>{item.DC}</td>
-              <td>{item.SDT}</td>
+              <td>{item.ma_kh}</td>
+              <td>{item.ten_kh}</td>
+              <td>{item.dia_chi_kh}</td>
+              <td>{item.sdt_kh}</td>
               <td>
                 <FaEdit onClick={() => hiddenEdit(item)}></FaEdit> <FaTrash onClick={() => deleteData(item.MKH)}></FaTrash>
               </td>

@@ -1,24 +1,24 @@
-// models/BrandModel.js
+// models/RamModel.js
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 
-const Brand = sequelize.define(
-  "Brand",
+const Ram = sequelize.define(
+  "Ram",
   {
-    ma_thuong_hieu: {
+    ma_ram: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    ten_thuong_hieu: {
+    kich_thuoc_ram: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   },
   {
-    tableName: "thuong_hieu",
+    tableName: "ram",
     timestamps: false,
   }
 );
 
-module.exports = Brand;
+module.exports = Ram;

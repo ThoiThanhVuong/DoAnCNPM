@@ -1,24 +1,24 @@
-// models/BrandModel.js
+// models/OperatingSystemModel.js
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 
-const Brand = sequelize.define(
-  "Brand",
+const OperatingSystem = sequelize.define(
+  "OperatingSystem",
   {
-    ma_thuong_hieu: {
+    ma_hdh: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    ten_thuong_hieu: {
+    ten_hdh: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   },
   {
-    tableName: "thuong_hieu",
+    tableName: "he_dieu_hanh",
     timestamps: false,
   }
 );
 
-module.exports = Brand;
+module.exports = OperatingSystem;
