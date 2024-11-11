@@ -13,7 +13,7 @@ const BrandModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/brands");
+        const response = await axios.get("http://localhost:5000/api/brands");
         setBrands(response.data);
       } catch (error) {
         console.error("Error fetching brands:", error);
@@ -28,7 +28,7 @@ const BrandModal = ({ isOpen, onClose }) => {
 
   // Handle adding a new brand
   const handleAddBrand = async () => {
-    if (newBrand.trim().length === 0) {
+    if (!newBrand || newBrand.trim() === "") {
       console.log("rỗng");
       setErrorMessage("Tên thương hiệu không được để trống");
       document.getElementById("brand-input").focus();
@@ -36,7 +36,7 @@ const BrandModal = ({ isOpen, onClose }) => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/api/brands", {
+      const response = await axios.post("http://localhost:5000/api/brands", {
         tenthuonghieu: newBrand,
       });
       setBrands((prevBrands) => [...prevBrands, response.data]);
@@ -97,7 +97,7 @@ const BrandModal = ({ isOpen, onClose }) => {
 
     try {
       await axios.delete(
-        `http://localhost:3000/api/brands/${brandToDelete.mathuonghieu}`
+        `http://localhost:5000/api/brands/${brandToDelete.mathuonghieu}`
       );
       setBrands((prevBrands) => prevBrands.filter((_, i) => i !== index));
     } catch (error) {
@@ -129,7 +129,7 @@ const BrandModal = ({ isOpen, onClose }) => {
             id="brand-input"
             type="text"
             placeholder="Nhập tên thương hiệu"
-            value={newBrand}
+            value={newBrand || ""}
             onChange={(e) => setNewBrand(e.target.value)}
           />
           {errorMessage && <p className="error-message">{errorMessage}</p>}
@@ -147,11 +147,11 @@ const BrandModal = ({ isOpen, onClose }) => {
             <tbody>
               {brands.map((brand, index) => (
                 <tr
-                  key={brand.mathuonghieu}
+                  key={brand.ma_thuong_hieu}
                   onClick={() => handleBrandClick(index)}
                 >
-                  <td>{brand.mathuonghieu}</td>
-                  <td>{brand.tenthuonghieu}</td>
+                  <td>{brand.ma_thuong_hieu}</td>
+                  <td>{brand.ten_thuong_hieu}</td>
                   <td>
                     <button
                       className="btn-delete-modal"
