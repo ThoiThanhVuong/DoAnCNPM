@@ -5,7 +5,7 @@ const Brand = require("../models/BrandModel");
 exports.getAllBrands = async (req, res) => {
   try {
     const brands = await Brand.findAll({
-      attributes: ["mathuonghieu", "tenthuonghieu"], // Chỉ lấy cột mathuonghieu và tenthuonghieu
+      attributes: ["ma_thuong_hieu", "ten_thuong_hieu"], // Chỉ lấy cột mathuonghieu và tenthuonghieu
     });
     res.json(brands);
   } catch (error) {
