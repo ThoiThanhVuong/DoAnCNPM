@@ -4,7 +4,7 @@ import Textfield from "@atlaskit/textfield";
 import { FaSearch } from "react-icons/fa";
 import { useState } from "react";
 const ExportForm = () => {
-  const data = [
+  const dataPX = [
     {
       id: 1,
       manv: 1,
@@ -30,27 +30,27 @@ const ExportForm = () => {
       trangthai: 1,
     },
   ];
-  const [StartDate, setStartDate] = useState("");
-  const [EndDate, setEndDate] = useState("");
-  const [searchID, setSearchID] = useState("");
-  const [filteredData, setFilteredData] = useState(data);
-  const [GiaNho, setGiaNHo] = useState("")
-  const [GiaLon, setGiaLon] = useState("")
-  const SearchIDPX = () => {
+  const [StartDatePX, setStartDatePX] = useState("");
+  const [EndDatePX, setEndDatePX] = useState("");
+  const [searchIDPX, setSearchIDPX] = useState("");
+  const [filteredDataPX, setFilteredDataPX] = useState(dataPX);
+  const [GiaNhoPX, setGiaNhoPX] = useState("")
+  const [GiaLonPX, setGiaLonPX] = useState("")
+  const SearchPX = () => {
 
-    const results = data.filter((item) =>{
-      const checkID = item.id.toString().includes(searchID)
-      const tempdate = item.time.split("-")
-      const itemDate = new Date(`${tempdate[1]}-${tempdate[0]}-${tempdate[2]}`);// định dạng tháng/ngày/năm theo input 
-      const start = StartDate ? new Date(StartDate + 'T00:00:00') : null; // đặt về 00h ngày hôm đó
-      const end = EndDate ? new Date(EndDate + 'T23:59:59') : null; // đặt về cuối ngày hôm đó
-      const giaStart = Number(GiaNho)
-      const giaEnd = Number(GiaLon)
-      const checkGia = (!giaStart || item.tongtien >= giaStart) && (!giaEnd || item.tongtien <= giaEnd)
-      const checkNgay = (!start || itemDate >= start) && (!end || itemDate <= end)
-      return checkGia && checkNgay && checkID
+    const resultsPX = dataPX.filter((item) =>{
+      const checkIDPX = item.id.toString().includes(searchIDPX)
+      const tempdatePX = item.time.split("-")// cắt chuỗi theo dấu "-"
+      const itemDatePX = new Date(`${tempdatePX[1]}-${tempdatePX[0]}-${tempdatePX[2]}`);// định dạng tháng/ngày/năm theo input 
+      const startPX = StartDatePX ? new Date(StartDatePX + 'T00:00:00') : null; // đặt về 00h ngày hôm đó
+      const endPX = EndDatePX ? new Date(EndDatePX + 'T23:59:59') : null; // đặt về cuối ngày hôm đó
+      const giaStartPX = Number(GiaNhoPX)
+      const giaEndPX = Number(GiaLonPX)
+      const checkGiaPX = (!giaStartPX || item.tongtien >= giaStartPX) && (!giaEndPX || item.tongtien <= giaEndPX)
+      const checkNgayPX = (!startPX || itemDatePX >= startPX) && (!endPX || itemDatePX <= endPX)
+      return checkGiaPX && checkNgayPX && checkIDPX
   });
-    setFilteredData(results);
+    setFilteredDataPX(resultsPX);
   };
   return (
     <div>
@@ -61,36 +61,36 @@ const ExportForm = () => {
             <p>ID phiếu xuất:</p>
             <Textfield
             className="TF"
-            value={searchID}
-            onChange={(e) => setSearchID(e.target.value)}
+            value={searchIDPX}
+            onChange={(e) => setSearchIDPX(e.target.value)}
             ></Textfield>
           </div>
           <div className="custom-startDate">
             <p>Từ ngày:</p>
             <input type="date" 
-              value={StartDate}
-              onChange={(e)=> setStartDate(e.target.value)}/>
+              value={StartDatePX}
+              onChange={(e)=> setStartDatePX(e.target.value)}/>
           </div>
           <div className="custom-endDate">
             <p>Đến ngày:</p>
             <input type="date"
-            value={EndDate}
-            onChange={(e)=> setEndDate(e.target.value)}/>
+            value={EndDatePX}
+            onChange={(e)=> setEndDatePX(e.target.value)}/>
           </div>
           <div className="custom-SoTien">
             <p>Phân khúc tổng tiền:</p>
             <input type="text" 
-              value={GiaNho}
-              onChange={(e) => setGiaNHo(e.target.value)}
+              value={GiaNhoPX}
+              onChange={(e) => setGiaNhoPX(e.target.value)}
             />
             <p>-</p>
             <input type="text" 
-              value={GiaLon}
-              onChange={(e) => setGiaLon(e.target.value)}
+              value={GiaLonPX}
+              onChange={(e) => setGiaLonPX(e.target.value)}
             />
           </div>
           <div className="custom-icSearch">
-            <FaSearch className="icSearch" onClick={SearchIDPX}/>
+            <FaSearch className="icSearch" onClick={SearchPX}/>
           </div> 
       </div> 
       <div className="listPX">
@@ -105,7 +105,7 @@ const ExportForm = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((datatable) => (
+            {filteredDataPX.map((datatable) => (
               <tr key={datatable.id}>
                 <td style={{ width: "10%" }}>{datatable.id}</td>
                 <td style={{ width: "20%" }}>{datatable.manv}</td>
