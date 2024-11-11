@@ -186,7 +186,7 @@ const PermissionAccount = () => {
               <option value="4">Nhân viên kiểm toán</option>
             </select>
             {console.log("check before:", nameRoleChange)}
-            {console.log("check before:", roleID)}
+            {console.log("check before:", roleID.ma_quyen)}
           </div>
           <div className="edit-user-account_button">
             <button onClick={() => handleChangeRole(maNvID, roleID)}>

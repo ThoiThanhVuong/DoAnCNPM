@@ -1,15 +1,16 @@
 const Permission = require("../models/permissionModel");
 const Employee = require("../models/EmployeeModel");
+const FeaturePermission = require("../models/FeaturePermissionModel")
 
 exports.showAllPermission = async (req, res) => {
   try {
     const permission = await Employee.findAll({
       include: [
         {
-          model: Permission.Permission,
+          model: Permission,
           include: [
             {
-              model: Permission.FeaturePermission,
+              model: FeaturePermission,
               through: {
                 attributes: [],
               },
