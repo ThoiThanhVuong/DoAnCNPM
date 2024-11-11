@@ -1,24 +1,24 @@
-// models/BrandModel.js
+// models/OriginModel.js
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 
-const Brand = sequelize.define(
-  "Brand",
+const Origin = sequelize.define(
+  "Origin",
   {
-    ma_thuong_hieu: {
+    ma_xuat_xu: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    ten_thuong_hieu: {
+    ten_xuat_xu: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   },
   {
-    tableName: "thuong_hieu",
+    tableName: "xuat_xu",
     timestamps: false,
   }
 );
 
-module.exports = Brand;
+module.exports = Origin;

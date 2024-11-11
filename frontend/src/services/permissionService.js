@@ -12,6 +12,29 @@ const permissionService = {
       throw error;
     }
   },
+  updateRole: async (maNvID, roleID) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/permission/update_role/${maNvID}`,
+        roleID
+      );
+      return response.data;
+    } catch (error) {
+      console.log("error updating role: ", error);
+      throw error;
+    }
+  },
+  deleteRole: async (maNvID) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/permission/delete_role/${maNvID}`
+      );
+      return response.data;
+    } catch (error) {
+      console.log("Loi khi xoa nhan vien:", error);
+      throw error;
+    }
+  },
 };
 
 export default permissionService;

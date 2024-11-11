@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
-const db = require("../config/db");
-const permission = require("../models/permissionModel");
+const sequelize = require("../config/db");
+const permissionModel = require("../models/permissionModel");
 
-const Employee = db.define(
+const Employee = sequelize.define(
   "Employee",
   {
     ma_nv: {
@@ -26,6 +26,7 @@ const Employee = db.define(
     },
     ma_quyen: {
       type: DataTypes.INTEGER,
+      allowNull: true,
       // references: {
       //   model: "Permission",
       //   key: "ma_quyen",
@@ -33,9 +34,9 @@ const Employee = db.define(
 
       //Hoặc viết như này cũng được
       references: {
-        model: permission.Permission,
-        key: "ma_quyen",
-      },
+        model: permissionModel,
+        key: 'ma_quyen',
+      }
     },
     trang_thai: {
       type: DataTypes.INTEGER,
@@ -46,7 +47,7 @@ const Employee = db.define(
     timestamps: false,
   }
 );
-module.exports = Employee;
+module.exports= Employee ;
 // module.exports = {
 //   // Lấy tất cả nhân viên
 //   getAll: async () => {

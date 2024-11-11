@@ -1,3 +1,4 @@
+
 .Title {
   font-weight: 630;
   font-size: 30px;
@@ -7,9 +8,10 @@
   text-align: center;
   height: 270px;
   margin-top: 25px;
+  font-family: Poppins, Helvetica, sans-serif;
 }
 .boxFind p {
-  font-weight:500;
+  font-weight: 600;
   font-size: 20px;
   text-align: center;
 }
@@ -20,14 +22,14 @@
   margin-top: 0.5%;
   gap: 15px;
   height: 30px;
-  margin-left: 25px;
+  margin-left: 27px;
   margin-top: 20px;
 }
 .boxFind .custom-ID p {
   font-size: 15px;
 }
 .custom-ID .css-17nf42q {
-  max-width: 200px;
+  max-width: 199px;
   max-height: 30px;
   background-color: white;
 }
@@ -86,7 +88,7 @@
   gap: 15px;
   margin-top: 10px;
   height: 30px;
-  margin-left: 214px;
+  margin-left: 211px;
 }
 .boxFind .custom-SoTien p {
   font-size: 15px;
@@ -123,24 +125,34 @@
 
 .listPX {
   margin-top: 20px;
+  font-family: Poppins, Helvetica, sans-serif;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: auto;
 }
-table tbody tr td {
+.listPX table{
+  border: 1px solid white;
+  border-collapse: collapse;
+  border-radius: 10px;
+}
+.listPX table tbody tr td {
   text-align: center;
-  border: 1px solid black;
-  height: 30px;
+  height: 58px;
+  border: none !important;
+  border-top: 1px solid gray !important;
 }
-table tbody tr:hover {
+.listPX table tbody tr:hover {
   background-color: silver !important;
   cursor: pointer;
 }
-table tbody tr td:hover {
+.listPX table tbody tr td:hover {
   background-color: silver !important;
   cursor: pointer;
 }
-table thead tr {
-  height: 50px; 
+.listPX table thead tr {
+  height: 58px; 
 }
-table thead tr th {
-  border: 1px solid black;
+.listPX table thead tr th {
   font-weight: 600;
+  border: none;
 }

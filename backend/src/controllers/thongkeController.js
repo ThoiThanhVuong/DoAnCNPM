@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const {KhachHang,PhieuXuat,sequelize} =require('../models/index');
+const {KhachHang,PhieuXuat,sequelize} =require('../models/Relationship');
 const getThongKeKhachHang = async (req, res) => {
     const { text, timeStart, timeEnd } = req.query;
     try {

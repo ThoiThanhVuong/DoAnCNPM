@@ -13,7 +13,7 @@ const BrandModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/brands");
+        const response = await axios.get("http://localhost:5000/api/brands");
         setBrands(response.data);
       } catch (error) {
         console.error("Error fetching brands:", error);
@@ -27,21 +27,22 @@ const BrandModal = ({ isOpen, onClose }) => {
   }, [isOpen]);
 
   // Handle adding a new brand
-  const handleAddBrand = async () => {
-    if (newBrand.trim().length === 0) {
-      console.log("rỗng");
+  const handleAddBrand = async (e) => {
+    e.preventDefault(); // Ngừng hành động mặc định
+
+    if (!newBrand || newBrand.trim() === "") {
       setErrorMessage("Tên thương hiệu không được để trống");
       document.getElementById("brand-input").focus();
       return;
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/api/brands", {
-        tenthuonghieu: newBrand,
+      const response = await axios.post("http://localhost:5000/api/brands", {
+        ten_thuong_hieu: newBrand, // Sử dụng tên cột đúng
       });
       setBrands((prevBrands) => [...prevBrands, response.data]);
       setNewBrand("");
-      setErrorMessage("");
+      setErrorMessage(""); // Xóa thông báo lỗi sau khi thành công
     } catch (error) {
       if (error.response && error.response.status === 409) {
         setErrorMessage("Tên thương hiệu đã tồn tại");
@@ -53,7 +54,6 @@ const BrandModal = ({ isOpen, onClose }) => {
     }
   };
 
-  // Handle editing a brand
   const handleEditBrand = async () => {
     if (newBrand.trim() === "") {
       setErrorMessage("Tên thương hiệu không được để trống");
@@ -63,26 +63,43 @@ const BrandModal = ({ isOpen, onClose }) => {
 
     try {
       const brandToUpdate = brands[editIndex];
+
+      // Gửi yêu cầu PUT để cập nhật tên thương hiệu
       await axios.put(
-        `http://localhost:3000/api/brands/${brandToUpdate.mathuonghieu}`,
-        { tenthuonghieu: newBrand }
+        `http://localhost:5000/api/brands/${brandToUpdate.ma_thuong_hieu}`,
+        { ten_thuong_hieu: newBrand } // Cập nhật tên thương hiệu
       );
+
+      // Cập nhật lại danh sách thương hiệu trong state
       setBrands((prevBrands) =>
         prevBrands.map((brand, index) =>
-          index === editIndex ? { ...brand, tenthuonghieu: newBrand } : brand
+          index === editIndex ? { ...brand, ten_thuong_hieu: newBrand } : brand
         )
       );
+
+      // Reset các giá trị sau khi cập nhật thành công
       setNewBrand("");
       setEditIndex(null);
-      setErrorMessage("");
+      setErrorMessage(""); // Xóa thông báo lỗi nếu có
     } catch (error) {
-      if (error.response && error.response.status === 400) {
-        setErrorMessage("Tên thương hiệu đã tồn tại");
-        document.getElementById("brand-input").focus();
+      // Kiểm tra lỗi phản hồi từ backend
+      if (error.response) {
+        if (error.response.status === 409) {
+          // Lỗi khi tên thương hiệu đã tồn tại
+          setErrorMessage("Tên thương hiệu đã tồn tại");
+        } else if (error.response.status === 400) {
+          // Lỗi tên thương hiệu trống
+          setErrorMessage("Tên thương hiệu không được để trống");
+        } else {
+          setErrorMessage("Lỗi khi cập nhật thương hiệu");
+          console.error("Lỗi khi cập nhật thương hiệu:", error);
+        }
       } else {
-        setErrorMessage("Lỗi khi cập nhật thương hiệu");
-        console.error("Lỗi khi cập nhật thương hiệu:", error);
+        // Nếu có lỗi mạng (network error)
+        setErrorMessage("Lỗi mạng, vui lòng thử lại");
+        console.error("Lỗi mạng:", error);
       }
+      document.getElementById("brand-input").focus(); // Focus vào input nếu có lỗi
     }
   };
 
@@ -90,14 +107,14 @@ const BrandModal = ({ isOpen, onClose }) => {
   const handleDeleteBrand = async (index) => {
     const brandToDelete = brands[index];
     const confirmDelete = window.confirm(
-      `Bạn có chắc muốn xóa thương hiệu ${brandToDelete.tenthuonghieu}?`
+      `Bạn có chắc muốn xóa thương hiệu ${brandToDelete.ten_thuong_hieu}?`
     );
 
     if (!confirmDelete) return;
 
     try {
       await axios.delete(
-        `http://localhost:3000/api/brands/${brandToDelete.mathuonghieu}`
+        `http://localhost:5000/api/brands/${brandToDelete.ma_thuong_hieu}` // Xóa đúng theo mã thương hiệu
       );
       setBrands((prevBrands) => prevBrands.filter((_, i) => i !== index));
     } catch (error) {
@@ -109,7 +126,7 @@ const BrandModal = ({ isOpen, onClose }) => {
   // Handle selecting a brand for editing
   const handleBrandClick = (index) => {
     setEditIndex(index);
-    setNewBrand(brands[index].tenthuonghieu);
+    setNewBrand(brands[index].ten_thuong_hieu); // Lấy tên thương hiệu từ bảng
     setErrorMessage("");
   };
 
@@ -129,7 +146,7 @@ const BrandModal = ({ isOpen, onClose }) => {
             id="brand-input"
             type="text"
             placeholder="Nhập tên thương hiệu"
-            value={newBrand}
+            value={newBrand || ""}
             onChange={(e) => setNewBrand(e.target.value)}
           />
           {errorMessage && <p className="error-message">{errorMessage}</p>}
@@ -147,11 +164,11 @@ const BrandModal = ({ isOpen, onClose }) => {
             <tbody>
               {brands.map((brand, index) => (
                 <tr
-                  key={brand.mathuonghieu}
+                  key={brand.ma_thuong_hieu}
                   onClick={() => handleBrandClick(index)}
                 >
-                  <td>{brand.mathuonghieu}</td>
-                  <td>{brand.tenthuonghieu}</td>
+                  <td>{brand.ma_thuong_hieu}</td>
+                  <td>{brand.ten_thuong_hieu}</td>
                   <td>
                     <button
                       className="btn-delete-modal"
@@ -170,19 +187,11 @@ const BrandModal = ({ isOpen, onClose }) => {
         </div>
 
         <div className="button-container">
-          <button
-            className="add-btn-modal"
-            onClick={handleAddBrand}
-            disabled={newBrand.trim() === ""}
-          >
+          <button className="add-btn-modal" onClick={handleAddBrand}>
             Thêm
           </button>
 
-          <button
-            className="edit-btn-modal"
-            onClick={handleEditBrand}
-            disabled={editIndex === null || newBrand.trim() === ""}
-          >
+          <button className="edit-btn-modal" onClick={handleEditBrand}>
             Sửa
           </button>
         </div>

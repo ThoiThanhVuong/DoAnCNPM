@@ -1,24 +1,24 @@
-// models/BrandModel.js
+// models/ColorModel.js
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 
-const Brand = sequelize.define(
-  "Brand",
+const Color = sequelize.define(
+  "Color",
   {
-    ma_thuong_hieu: {
+    ma_mau: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    ten_thuong_hieu: {
+    ten_mau: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   },
   {
-    tableName: "thuong_hieu",
+    tableName: "mau_sac",
     timestamps: false,
   }
 );
 
-module.exports = Brand;
+module.exports = Color;
