@@ -34,5 +34,4 @@ const PhieuXuatModel = sequelize.define('PhieuXuatModel', {
         type: DataTypes.INTEGER,
     }
 }, { tableName: 'phieu_xuat', timestamps: false });
-PhieuXuatModel.belongsTo(Employee, {foreignKey: 'ma_nv', onDelete: 'CASCADE'});
 module.exports = PhieuXuatModel;
