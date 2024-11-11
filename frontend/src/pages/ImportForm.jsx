@@ -279,7 +279,7 @@ const PhieuNhap = () => {
       const giaEndPN = Number(GiaLonPN)
       const checkNgayPN = (!startPN || startPN <= valueTimePN) && (!endPN || endPN >= valueTimePN)
       const checkGiaPN = (!giaStartPN || giaStartPN <= item.tongtien) && (!giaEndPN || giaEndPN >= item.tongtien)
-      return checkIDPN && checkGiaPN && checkGiaPN
+      return checkIDPN && checkGiaPN && checkNgayPN
     })
     setFilteredDataPN(resultsPN)
   }
