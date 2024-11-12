@@ -76,6 +76,11 @@ const PermissionAccount = () => {
     }
   };
 
+  const [showFeature, setShowFeature] = useState(false);
+  const handleShowFeature = () => {
+    setShowFeature(!showFeature);
+  };
+
   return (
     <div>
       <div class="permission-container-account">
@@ -156,43 +161,85 @@ const PermissionAccount = () => {
         className="permission-edit-user-account"
         style={{ display: showEditUserAccount ? "block" : "none" }}
       >
-        <h1>Sửa Vai Trò Người Dùng</h1>
-        <div className="permission-edit-user-account_content">
-          <div className="permission-edit-user-account_content__content-items">
-            <label htmlFor="">Tên Tài Khoản:</label>
-            <input
-              type="text"
-              placeholder="Nhập tên tài khoản"
-              value={name.ten_nv}
-              readOnly
-            />
+        <div className="wrapper-content">
+          <h1>Sửa Vai Trò Người Dùng</h1>
+          <div className="permission-edit-user-account_content">
+            <div className="permission-edit-user-account_content__content-items">
+              <label htmlFor="">Tên Tài Khoản:</label>
+              <input
+                type="text"
+                placeholder="Nhập tên tài khoản"
+                value={name.ten_nv}
+                readOnly
+              />
+            </div>
+            <div className="permission-edit-user-account_content__content-items">
+              <label htmlFor="">Email:</label>
+              <input
+                type="text"
+                placeholder="Nhập email"
+                value={name.email}
+                readOnly
+              />
+            </div>
+            <div className="permission-edit-user-account_content__content-items">
+              <label htmlFor="">Chọn vai trò:</label>
+              <select value={nameRoleChange} onChange={handleRoleChange}>
+                <option></option>
+                <option value="1">Admin</option>
+                <option value="2">Quản lý</option>
+                <option value="3">Nhân viên kho</option>
+                <option value="4">Nhân viên kiểm toán</option>
+              </select>
+              {console.log("check before:", nameRoleChange)}
+              {console.log("check before:", roleID.ma_quyen)}
+            </div>
+            <div className="permission-edit-user-account_button">
+              <button onClick={() => handleChangeRole(maNvID, roleID)}>
+                Lưu
+              </button>
+              <button onClick={handleShowEditUserAccount}>Thoát</button>
+            </div>
           </div>
-          <div className="permission-edit-user-account_content__content-items">
-            <label htmlFor="">Email:</label>
-            <input
-              type="text"
-              placeholder="Nhập email"
-              value={name.email}
-              readOnly
-            />
-          </div>
-          <div className="permission-edit-user-account_content__content-items">
-            <label htmlFor="">Chọn vai trò:</label>
-            <select value={nameRoleChange} onChange={handleRoleChange}>
-              <option></option>
-              <option value="1">Admin</option>
-              <option value="2">Quản lý</option>
-              <option value="3">Nhân viên kho</option>
-              <option value="4">Nhân viên kiểm toán</option>
-            </select>
-            {console.log("check before:", nameRoleChange)}
-            {console.log("check before:", roleID.ma_quyen)}
-          </div>
-          <div className="permission-edit-user-account_button">
-            <button onClick={() => handleChangeRole(maNvID, roleID)}>
-              Lưu
-            </button>
-            <button onClick={handleShowEditUserAccount}>Thoát</button>
+        </div>
+      </div>
+
+      <div className="wrapper-btn">
+        <button className="show-feature-btn" onClick={handleShowFeature}>
+          Thay Đổi Chức Năng Quyền
+        </button>
+      </div>
+
+      <div
+        className="feature-permission"
+        style={{ display: showFeature ? "block" : "none" }}
+      >
+        <div className="feature-permission_content">
+          <table>
+            <tr>
+              <td>Vai Trò</td>
+              <td>Chức Năng</td>
+            </tr>
+            <tr>
+              <td>Admin</td>
+              <td>Chức Năng</td>
+            </tr>
+            <tr>
+              <td>Quản lý</td>
+              <td>Chức Năng</td>
+            </tr>
+            <tr>
+              <td>Nhân viên kho</td>
+              <td>Chức Năng</td>
+            </tr>
+            <tr>
+              <td>Nhân viên kiểm toán</td>
+              <td>Chức Năng</td>
+            </tr>
+          </table>
+          <div className="save-show-feature">
+            <button>Lưu</button>
+            <button onClick={handleShowFeature}>Thoát</button>
           </div>
         </div>
       </div>
