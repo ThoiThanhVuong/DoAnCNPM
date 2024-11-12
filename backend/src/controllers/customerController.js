@@ -44,14 +44,14 @@ const addCustomer = async (req, res) => {
 // Update an Customer by ma_kh
 const updateCustomer = async (req, res) => {
   const { ma_kh } = req.params;
-  const { name, adress, phone_number } = req.body;
+  const { ten_kh, dia_chi_kh, sdt_kh } = req.body;
   try {
     const updatedCustomer = await Customer.findByPk(ma_kh);
     if (!updatedCustomer) return res.status(404).json({ error: 'Không tìm thấy khách hàng' });
         
-    updatedCustomer.name = name;
-    updatedCustomer.adress = adress;
-    updatedCustomer.phone_number = phone_number;
+    updatedCustomer.ten_kh = ten_kh;
+    updatedCustomer.dia_chi_kh = dia_chi_kh;
+    updatedCustomer.sdt_kh = sdt_kh;
         await updatedCustomer.save();
 
         return res.json(updatedCustomer);
@@ -70,7 +70,8 @@ const deleteCustomer = async (req, res) => {
         await deletedCustomer.destroy();
         res.json({ message: 'Khách hàng đã được xóa' });
     } catch (error) {
-        res.status(500).json({ error: 'Lỗi không xóa được' });
+      console.error('Lỗi khi xóa khách hàng:', error);  // In chi tiết lỗi ra console
+      res.status(500).json({ error: `Lỗi không xóa được khách hàng: ${error.message}` });
     }
 };
 
