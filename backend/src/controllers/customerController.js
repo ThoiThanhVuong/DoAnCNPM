@@ -26,13 +26,13 @@ const getCustomerByMaKH = async (req, res) => {
 
 // Add a new Customer
 const addCustomer = async (req, res) => {
-  const { id,name, adress, phone_number } = req.body;
+  const { ma_kh,ten_kh,dia_chi_kh,sdt_kh } = req.body;
     try {
         const newCustomer = await Customer.create({
-            id,
-            name,
-            adress,
-            phone_number
+            ma_kh,
+            ten_kh,
+            dia_chi_kh,
+            sdt_kh
         });
         res.status(201).json(newCustomer);
         res.json({ message: 'Khách hàng đã được thêm' });
