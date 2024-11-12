@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 const PhieuXuatModel = require('../models/phieuXuatModel')
-const ProductModel = require('../models/ProductModel')
+const phienBanSanPham = require('./PhienBanSPModel')
 const WareHouse = require('../models/WareHouseModel');
 
 const detailExport = sequelize.define('detailExport', {
@@ -12,11 +12,11 @@ const detailExport = sequelize.define('detailExport', {
             key: 'ma_px',
         }
     },
-    ma_sp: {
+    ma_phien_ban_sp: {
         type: DataTypes.INTEGER,
         references:{
-            model : ProductModel,
-            key: 'ma_sp',
+            model : phienBanSanPham,
+            key: 'ma_phien_ban_sp',
         }
     },
     so_luong: {
@@ -36,7 +36,4 @@ const detailExport = sequelize.define('detailExport', {
     tableName: 'chi_tiet_hoa_don',
     timestamps: false,
 }) 
-detailExport.belongsTo(PhieuXuatModel, {foreignKey: 'ma_px', onDelete: 'CASCADE'});
-detailExport.belongsTo(ProductModel, {foreignKey: 'ma_sp', onDelete: 'CASCADE'});
-detailExport.belongsTo(WareHouse, {foreignKey: 'ma_kho', onDelete: 'CASCADE'});
 module.exports = detailExport;

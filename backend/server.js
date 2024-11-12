@@ -7,7 +7,6 @@ app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
 
   // Kết nối và đồng bộ cơ sở dữ liệu
-<<<<<<< HEAD
   // try {
   //   await sequelize.authenticate();
   //   await sequelize.sync({ alter: true });

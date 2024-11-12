@@ -1,5 +1,10 @@
-const { Op } = require('sequelize');
-const {KhachHang,PhieuXuat,Provider,importModel,sequelize} =require('../models/Relationship');
+const { Op, literal } = require('sequelize');
+const {
+  KhachHang,PhieuXuat,Provider,
+  importModel,PhienBanSanPham,
+  chiTietPhieuXuatModel,detailImportModel,
+  Ram,Rom,Color,
+  sequelize} =require('../models/Relationship');
 const getThongKeKhachHang = async (req, res) => {
     const { text, timeStart, timeEnd } = req.query;
     try {
@@ -67,6 +72,35 @@ const getThongKeKhachHang = async (req, res) => {
         group: ['provider.ma_ncc', 'provider.ten_ncc']
       });
       res.json(results);
+    }catch(error){
+      console.error(error);
+      res.status(500).json({ message: 'Error fetching provider statistics' });
+    }
+  }
+  const getThongKeTonKho = async (req, res) => {
+    const { text, timeStart, timeEnd } = req.query;
+    try{
+      const TextCondition={
+        [Op.or]:[
+          {ten_ncc: {[Op.like] : `%${text || ''}%`}},
+          {ma_ncc: {[Op.like] : `%${text || ''}%`}}
+        ]
+      };
+      const timeCondition ={};
+      if(timeStart && timeEnd){
+        phieuNhapCondition.thoi_gian_nhap={
+          [Op.between] : [new Date(timeStart), new Date(timeEnd)]
+        };
+      }
+      const results = await PhienBanSanPham.findAll({
+        attributes:[
+          'ma_phien_ban_sp',
+          [literal('product.ma_sp','masp')],
+          [literal('product.ten_sp','tensp')],
+          
+        ]
+      });
+      results.json(results);
     }catch(error){
       console.error(error);
       res.status(500).json({ message: 'Error fetching provider statistics' });

@@ -1,6 +1,9 @@
 const db = require("../config/db");
 const { DataTypes } = require("sequelize");
-
+const OriginModel = require('./OriginModel');
+const OperatingSystemModel =require('./OperatingSystemModel');
+const WareHouseModel = require('./WareHouseModel');
+const BrandModel = require('./BrandModel');
 const ProductModel = db.define(
   "ProductModel",
   {
@@ -42,7 +45,7 @@ const ProductModel = db.define(
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: "he_dieu_hanh",
+        model:OperatingSystemModel,
         key: "ma_hdh",
       },
     },
@@ -50,7 +53,7 @@ const ProductModel = db.define(
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: "thuong_hieu",
+        model: BrandModel,
         key: "ma_thuong_hieu",
       },
     },
@@ -58,15 +61,15 @@ const ProductModel = db.define(
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: "xuat_xu",
-        key: "ma_xuat_xu",
+        model: OriginModel,
+        key: 'ma_xuat_xu',
       },
     },
     khu_vuc_kho: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: "khu_vuc_kho",
+        model: WareHouseModel,
         key: "ma_kho",
       },
     },
