@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { FaEdit, FaTrash } from 'react-icons/fa';
-import '../style/Account.css';
+import React, { useState, useEffect } from "react";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import "../style/Account.css";
 
 const Account = () => {
   const [showAddAccount, setShowAddAccount] = useState(false);
@@ -8,23 +8,23 @@ const Account = () => {
   const [data, setData] = useState([]);
   const [currentAccount, setCurrentAccount] = useState(null);
   const [newAccountData, setNewAccountData] = useState({
-    ma_nv: '',
-    ten_nv: '',
-    gioi_tinh: '',
-    sdt: '',
-    email: '',
-    mat_khau: '',
-    ma_quyen: '',
+    ma_nv: "",
+    ten_nv: "",
+    gioi_tinh: "",
+    sdt: "",
+    email: "",
+    mat_khau: "",
+    ma_quyen: "",
     trang_thai: 1, // Default active
   });
 
   const [editAccountData, setEditAccountData] = useState({
-    ten_nv: '',
-    gioi_tinh: '',
-    sdt: '',
-    email: '',
-    mat_khau: '',
-    ma_quyen: '',
+    ten_nv: "",
+    gioi_tinh: "",
+    sdt: "",
+    email: "",
+    mat_khau: "",
+    ma_quyen: "",
     trang_thai: 1,
   });
 
@@ -34,11 +34,11 @@ const Account = () => {
 
   const fetchAccounts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/employee');
+      const response = await fetch("http://localhost:5000/api/employee");
       const accounts = await response.json();
       setData(accounts);
     } catch (error) {
-      console.error('Error fetching accounts:', error);
+      console.error("Error fetching accounts:", error);
     }
   };
 
@@ -59,57 +59,69 @@ const Account = () => {
       const ma_nv = generateEmployeeId();
       const newAccountWithEmployeeId = { ...newAccountData, ma_nv };
 
-      const response = await fetch('http://localhost:5000/api/employee', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("http://localhost:5000/api/employee", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newAccountWithEmployeeId),
       });
-      if (!response.ok) throw new Error('Failed to add account');
+      if (!response.ok) throw new Error("Failed to add account");
       const newAccount = await response.json();
       setData((prevData) => [...prevData, newAccount]);
       setShowAddAccount(false);
       setNewAccountData({
-        ma_nv: '',
-        ten_nv: '',
-        gioi_tinh: '',
-        sdt: '',
-        email: '',
-        mat_khau: '',
-        ma_quyen: '',
+        ma_nv: "",
+        ten_nv: "",
+        gioi_tinh: "",
+        sdt: "",
+        email: "",
+        mat_khau: "",
+        ma_quyen: "",
         trang_thai: 1,
       });
     } catch (error) {
-      console.error('Error adding account:', error);
+      console.error("Error adding account:", error);
     }
   };
 
   const handleEditAccount = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/employee/${currentAccount.ma_nv}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editAccountData),
-      });
-      if (!response.ok) throw new Error('Failed to update account');
-      setData((prevData) => prevData.map(account =>
-        account.ma_nv === currentAccount.ma_nv ? { ...account, ...editAccountData } : account
-      ));
+      const response = await fetch(
+        `http://localhost:5000/api/employee/${currentAccount.ma_nv}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(editAccountData),
+        }
+      );
+      if (!response.ok) throw new Error("Failed to update account");
+      setData((prevData) =>
+        prevData.map((account) =>
+          account.ma_nv === currentAccount.ma_nv
+            ? { ...account, ...editAccountData }
+            : account
+        )
+      );
       setShowEditAccount(false);
       setCurrentAccount(null);
     } catch (error) {
-      console.error('Error updating account:', error);
+      console.error("Error updating account:", error);
     }
   };
 
   const handleDeleteAccount = async (ma_nv) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/employees/${ma_nv}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) throw new Error('Failed to delete account');
-      setData((prevData) => prevData.filter(account => account.ma_nv !== ma_nv));
+      const response = await fetch(
+        `http://localhost:5000/api/employees/${ma_nv}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) throw new Error("Failed to delete account");
+      setData((prevData) =>
+        prevData.filter((account) => account.ma_nv !== ma_nv)
+      );
     } catch (error) {
-      console.error('Error deleting account:', error);
+      console.error("Error deleting account:", error);
     }
   };
 
@@ -151,7 +163,7 @@ const Account = () => {
       <div className="container-account">
         <h1>Quản Lí Tài Khoản</h1>
         <div className="container-account_content">
-          <table className='table'>
+          <table>
             <thead>
               <tr>
                 <th>ID</th>
@@ -176,16 +188,26 @@ const Account = () => {
                     <td>{account.email}</td>
                     <td>{account.mat_khau}</td>
                     <td>{account.ma_quyen}</td>
-                    <td>{account.trang_thai ? 'Hoạt động' : 'Ngừng hoạt động'}</td>
                     <td>
-                      <FaEdit className="edit" onClick={() => handleShowEditAccount(account)} />
-                      <FaTrash className="delete" onClick={() => handleDeleteAccount(account.ma_nv)} />
+                      {account.trang_thai ? "Hoạt động" : "Ngừng hoạt động"}
+                    </td>
+                    <td>
+                      <FaEdit
+                        className="edit"
+                        onClick={() => handleShowEditAccount(account)}
+                      />
+                      <FaTrash
+                        className="delete"
+                        onClick={() => handleDeleteAccount(account.ma_nv)}
+                      />
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="9" style={{ textAlign: 'center' }}>Không có dữ liệu</td>
+                  <td colSpan="9" style={{ textAlign: "center" }}>
+                    Không có dữ liệu
+                  </td>
                 </tr>
               )}
             </tbody>
@@ -203,9 +225,8 @@ const Account = () => {
             {/* First Column */}
             <div className="add-account_content__column">
               <div className="add-account_content__content-items">
-                <label htmlFor="ten_nv" className='label'>Tên Nhân Viên</label>
+                <label htmlFor="ten_nv">Tên Nhân Viên</label>
                 <input
-                  className='input'
                   type="text"
                   id="ten_nv"
                   name="ten_nv"
@@ -215,9 +236,8 @@ const Account = () => {
               </div>
 
               <div className="add-account_content__content-items">
-                <label htmlFor="gioi_tinh" className='label'>Giới Tính</label>
+                <label htmlFor="gioi_tinh">Giới Tính</label>
                 <input
-                  className='input'
                   type="text"
                   id="gioi_tinh"
                   name="gioi_tinh"
@@ -230,9 +250,8 @@ const Account = () => {
             {/* Second Column */}
             <div className="add-account_content__column">
               <div className="add-account_content__content-items">
-                <label htmlFor="sdt" className='label'>Số Điện Thoại</label>
+                <label htmlFor="sdt">Số Điện Thoại</label>
                 <input
-                  className='input'
                   type="text"
                   id="sdt"
                   name="sdt"
@@ -242,9 +261,8 @@ const Account = () => {
               </div>
 
               <div className="add-account_content__content-items">
-                <label htmlFor="email" className='label'>Email</label>
+                <label htmlFor="email">Email</label>
                 <input
-                  className='input'
                   type="email"
                   id="email"
                   name="email"
@@ -254,9 +272,8 @@ const Account = () => {
               </div>
 
               <div className="add-account_content__content-items">
-                <label htmlFor="mat_khau" className='label'>Mật Khẩu</label>
+                <label htmlFor="mat_khau">Mật Khẩu</label>
                 <input
-                  className='input'
                   type="password"
                   id="mat_khau"
                   name="mat_khau"
@@ -267,10 +284,9 @@ const Account = () => {
 
               {/* Mã Quyền field moved below Mật Khẩu */}
               <div className="add-account_content__content-items">
-                <label htmlFor="ma_quyen" className='label'>Mã Quyền</label>
+                <label htmlFor="ma_quyen">Mã Quyền</label>
                 <input
                   type="number"
-                  className='input'
                   id="ma_quyen"
                   name="ma_quyen"
                   value={newAccountData.ma_quyen}
@@ -294,10 +310,9 @@ const Account = () => {
           <div className="edit-account_content">
             <div className="edit-account_content__column">
               <div className="edit-account_content__content-items">
-                <label htmlFor="ten_nv" className='label'>Tên Nhân Viên</label>
+                <label htmlFor="ten_nv">Tên Nhân Viên</label>
                 <input
                   type="text"
-                  className='input'
                   id="ten_nv"
                   name="ten_nv"
                   value={editAccountData.ten_nv}
@@ -306,10 +321,9 @@ const Account = () => {
               </div>
 
               <div className="edit-account_content__content-items">
-                <label htmlFor="gioi_tinh" className='label'>Giới Tính</label>
+                <label htmlFor="gioi_tinh">Giới Tính</label>
                 <input
                   type="text"
-                  className='input'
                   id="gioi_tinh"
                   name="gioi_tinh"
                   value={editAccountData.gioi_tinh}
@@ -320,10 +334,9 @@ const Account = () => {
 
             <div className="edit-account_content__column">
               <div className="edit-account_content__content-items">
-                <label htmlFor="sdt" className='label'>Số Điện Thoại</label>
+                <label htmlFor="sdt">Số Điện Thoại</label>
                 <input
                   type="text"
-                  className='input'
                   id="sdt"
                   name="sdt"
                   value={editAccountData.sdt}
@@ -332,10 +345,9 @@ const Account = () => {
               </div>
 
               <div className="edit-account_content__content-items">
-                <label htmlFor="email" className='label'>Email</label>
+                <label htmlFor="email">Email</label>
                 <input
                   type="email"
-                  className='input'
                   id="email"
                   name="email"
                   value={editAccountData.email}
@@ -344,10 +356,9 @@ const Account = () => {
               </div>
 
               <div className="edit-account_content__content-items">
-                <label htmlFor="mat_khau" className='label'>Mật Khẩu</label>
+                <label htmlFor="mat_khau">Mật Khẩu</label>
                 <input
                   type="password"
-                  className='input'
                   id="mat_khau"
                   name="mat_khau"
                   value={editAccountData.mat_khau}
@@ -358,10 +369,9 @@ const Account = () => {
 
             <div className="edit-account_content__column">
               <div className="edit-account_content__content-items">
-                <label htmlFor="ma_quyen" className='label'>Mã Quyền</label>
+                <label htmlFor="ma_quyen">Mã Quyền</label>
                 <input
                   type="number"
-                  className='input'
                   id="ma_quyen"
                   name="ma_quyen"
                   value={editAccountData.ma_quyen}
@@ -370,10 +380,9 @@ const Account = () => {
               </div>
 
               <div className="edit-account_content__content-items">
-                <label htmlFor="trang_thai" className='label'>Trạng Thái</label>
+                <label htmlFor="trang_thai">Trạng Thái</label>
                 <select
                   id="trang_thai"
-                  className='select'
                   name="trang_thai"
                   value={editAccountData.trang_thai}
                   onChange={handleInputChange}

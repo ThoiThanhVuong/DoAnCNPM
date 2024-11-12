@@ -92,7 +92,7 @@ const PermissionAccount = () => {
               <tr>
                 <td>{item.ten_nv}</td>
                 <td>{item.email}</td>
-                <td>{item.ten_quyen}</td>
+                <td>{item.ten_quyen ? item.ten_quyen : "No Permission"}</td>
                 <td>
                   <FaEdit
                     className="edit-btn"

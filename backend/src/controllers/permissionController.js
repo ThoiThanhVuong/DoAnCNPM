@@ -1,6 +1,6 @@
 const Permission = require("../models/permissionModel");
 const Employee = require("../models/EmployeeModel");
-const FeaturePermission = require("../models/FeaturePermissionModel")
+const FeaturePermission = require("../models/FeaturePermissionModel");
 
 exports.showAllPermission = async (req, res) => {
   try {
@@ -46,6 +46,7 @@ exports.updateRole = async (req, res) => {
       return res.status(404).json({ error: "Không tìm thấy sản phẩm" });
     }
     // console.log(employee)
+    employee.trang_thai = 1;
     employee.ma_quyen = ma_quyen;
     await employee.save();
     console.log(ma_nv, ma_quyen);
@@ -61,6 +62,7 @@ exports.deleteRole = async (req, res) => {
   try {
     const employee = await Employee.findByPk(ma_nv);
     employee.ma_quyen = null;
+    employee.trang_thai = 0;
     await employee.save();
     res.json("da xoa thanh cong");
   } catch (error) {
