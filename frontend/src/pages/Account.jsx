@@ -151,7 +151,7 @@ const Account = () => {
       <div className="container-account">
         <h1>Quản Lí Tài Khoản</h1>
         <div className="container-account_content">
-          <table>
+          <table className='table'>
             <thead>
               <tr>
                 <th>ID</th>
@@ -203,8 +203,9 @@ const Account = () => {
             {/* First Column */}
             <div className="add-account_content__column">
               <div className="add-account_content__content-items">
-                <label htmlFor="ten_nv">Tên Nhân Viên</label>
+                <label htmlFor="ten_nv" className='label'>Tên Nhân Viên</label>
                 <input
+                  className='input'
                   type="text"
                   id="ten_nv"
                   name="ten_nv"
@@ -214,8 +215,9 @@ const Account = () => {
               </div>
 
               <div className="add-account_content__content-items">
-                <label htmlFor="gioi_tinh">Giới Tính</label>
+                <label htmlFor="gioi_tinh" className='label'>Giới Tính</label>
                 <input
+                  className='input'
                   type="text"
                   id="gioi_tinh"
                   name="gioi_tinh"
@@ -228,8 +230,9 @@ const Account = () => {
             {/* Second Column */}
             <div className="add-account_content__column">
               <div className="add-account_content__content-items">
-                <label htmlFor="sdt">Số Điện Thoại</label>
+                <label htmlFor="sdt" className='label'>Số Điện Thoại</label>
                 <input
+                  className='input'
                   type="text"
                   id="sdt"
                   name="sdt"
@@ -239,8 +242,9 @@ const Account = () => {
               </div>
 
               <div className="add-account_content__content-items">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email" className='label'>Email</label>
                 <input
+                  className='input'
                   type="email"
                   id="email"
                   name="email"
@@ -250,8 +254,9 @@ const Account = () => {
               </div>
 
               <div className="add-account_content__content-items">
-                <label htmlFor="mat_khau">Mật Khẩu</label>
+                <label htmlFor="mat_khau" className='label'>Mật Khẩu</label>
                 <input
+                  className='input'
                   type="password"
                   id="mat_khau"
                   name="mat_khau"
@@ -262,9 +267,10 @@ const Account = () => {
 
               {/* Mã Quyền field moved below Mật Khẩu */}
               <div className="add-account_content__content-items">
-                <label htmlFor="ma_quyen">Mã Quyền</label>
+                <label htmlFor="ma_quyen" className='label'>Mã Quyền</label>
                 <input
                   type="number"
+                  className='input'
                   id="ma_quyen"
                   name="ma_quyen"
                   value={newAccountData.ma_quyen}
@@ -288,9 +294,10 @@ const Account = () => {
           <div className="edit-account_content">
             <div className="edit-account_content__column">
               <div className="edit-account_content__content-items">
-                <label htmlFor="ten_nv">Tên Nhân Viên</label>
+                <label htmlFor="ten_nv" className='label'>Tên Nhân Viên</label>
                 <input
                   type="text"
+                  className='input'
                   id="ten_nv"
                   name="ten_nv"
                   value={editAccountData.ten_nv}
@@ -299,9 +306,10 @@ const Account = () => {
               </div>
 
               <div className="edit-account_content__content-items">
-                <label htmlFor="gioi_tinh">Giới Tính</label>
+                <label htmlFor="gioi_tinh" className='label'>Giới Tính</label>
                 <input
                   type="text"
+                  className='input'
                   id="gioi_tinh"
                   name="gioi_tinh"
                   value={editAccountData.gioi_tinh}
@@ -312,9 +320,10 @@ const Account = () => {
 
             <div className="edit-account_content__column">
               <div className="edit-account_content__content-items">
-                <label htmlFor="sdt">Số Điện Thoại</label>
+                <label htmlFor="sdt" className='label'>Số Điện Thoại</label>
                 <input
                   type="text"
+                  className='input'
                   id="sdt"
                   name="sdt"
                   value={editAccountData.sdt}
@@ -323,9 +332,10 @@ const Account = () => {
               </div>
 
               <div className="edit-account_content__content-items">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email" className='label'>Email</label>
                 <input
                   type="email"
+                  className='input'
                   id="email"
                   name="email"
                   value={editAccountData.email}
@@ -334,9 +344,10 @@ const Account = () => {
               </div>
 
               <div className="edit-account_content__content-items">
-                <label htmlFor="mat_khau">Mật Khẩu</label>
+                <label htmlFor="mat_khau" className='label'>Mật Khẩu</label>
                 <input
                   type="password"
+                  className='input'
                   id="mat_khau"
                   name="mat_khau"
                   value={editAccountData.mat_khau}
@@ -347,9 +358,10 @@ const Account = () => {
 
             <div className="edit-account_content__column">
               <div className="edit-account_content__content-items">
-                <label htmlFor="ma_quyen">Mã Quyền</label>
+                <label htmlFor="ma_quyen" className='label'>Mã Quyền</label>
                 <input
                   type="number"
+                  className='input'
                   id="ma_quyen"
                   name="ma_quyen"
                   value={editAccountData.ma_quyen}
@@ -358,9 +370,10 @@ const Account = () => {
               </div>
 
               <div className="edit-account_content__content-items">
-                <label htmlFor="trang_thai">Trạng Thái</label>
+                <label htmlFor="trang_thai" className='label'>Trạng Thái</label>
                 <select
                   id="trang_thai"
+                  className='select'
                   name="trang_thai"
                   value={editAccountData.trang_thai}
                   onChange={handleInputChange}

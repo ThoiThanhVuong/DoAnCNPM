@@ -1,125 +1,133 @@
 .container-account {
-    margin: 20px;
-  }
-  
-  .container-account_content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  table th, table td {
-    padding: 8px;
-    text-align: left;
-    border: 1px solid #ddd;
-  }
-  
-  .add-account_button {
-    margin-top: 20px;
-  }
-  
-  .add-account_button button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .add-account_button button:hover {
-    background-color: #45a049;
-  }
-  
-  .edit, .delete {
-    cursor: pointer;
-    margin: 0 5px;
-    font-size: 20px;
-  }
-  
-  .edit {
-    color: #4CAF50;
-  }
-  
-  .delete {
-    color: #f44336;
-  }
-  
-  .add-account, .edit-account {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .add-account_content, .edit-account_content {
-    background-color: white;
-    padding: 20px;
-    max-width: 600px;
-    width: 100%;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .add-account_content__column, .edit-account_content__column {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .add-account_content__content-items, .edit-account_content__content-items {
-    width: 48%;
-    margin-right: 2%;
-  }
-  
-  .add-account_content__content-items:last-child, .edit-account_content__content-items:last-child {
-    margin-right: 0;
-  }
-  
-  label {
-    font-weight: bold;
-  }
-  
-  input, select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-  }
-  
-  .add-account_buttons, .edit-account_buttons {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  button:last-child {
-    background-color: #f44336;
-  }
-  
-  button:last-child:hover {
-    background-color: #d32f2f;
-  }
-  
+  margin: 20px;
+}
+
+.container-account_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.add-account_button {
+  margin-top: 20px;
+}
+
+.add-account_button button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.add-account_button button:hover {
+  background-color: #45a049;
+}
+
+.edit,
+.delete {
+  cursor: pointer;
+  margin: 0 5px;
+  font-size: 20px;
+}
+
+.edit {
+  color: #4caf50;
+}
+
+.delete {
+  color: #f44336;
+}
+
+.add-account,
+.edit-account {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-account_content,
+.edit-account_content {
+  background-color: white;
+  padding: 20px;
+  max-width: 600px;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-account_content__column,
+.edit-account_content__column {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.add-account_content__content-items,
+.edit-account_content__content-items {
+  width: 48%;
+  margin-right: 2%;
+}
+
+.add-account_content__content-items:last-child,
+.edit-account_content__content-items:last-child {
+  margin-right: 0;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.add-account_buttons,
+.edit-account_buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+button:last-child {
+  background-color: #f44336;
+}
+
+button:last-child:hover {
+  background-color: #d32f2f;
+}

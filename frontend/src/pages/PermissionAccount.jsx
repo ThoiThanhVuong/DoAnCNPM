@@ -78,9 +78,9 @@ const PermissionAccount = () => {
 
   return (
     <div>
-      <div class="container-account">
+      <div class="permission-container-account">
         <h1>Quản Lí Người Dùng</h1>
-        <div class="container-account_content">
+        <div class="permission-container-account_content">
           <table>
             <tr>
               <td>Tên Tài Khoản</td>
@@ -95,7 +95,7 @@ const PermissionAccount = () => {
                 <td>{item.ten_quyen}</td>
                 <td>
                   <FaEdit
-                    className="edit"
+                    className="edit-btn"
                     onClick={() =>
                       handleShowEditUserAccount(
                         item.ma_nv,
@@ -106,7 +106,7 @@ const PermissionAccount = () => {
                     }
                   />
                   <FaTrash
-                    className="delete"
+                    className="delete-btn"
                     onClick={() =>
                       handleDeleteUserAccount(item.ma_nv, item.ma_quyen)
                     }
@@ -153,12 +153,12 @@ const PermissionAccount = () => {
       </div> */}
 
       <div
-        className="edit-user-account"
+        className="permission-edit-user-account"
         style={{ display: showEditUserAccount ? "block" : "none" }}
       >
         <h1>Sửa Vai Trò Người Dùng</h1>
-        <div className="edit-user-account_content">
-          <div className="edit-user-account_content__content-items">
+        <div className="permission-edit-user-account_content">
+          <div className="permission-edit-user-account_content__content-items">
             <label htmlFor="">Tên Tài Khoản:</label>
             <input
               type="text"
@@ -167,7 +167,7 @@ const PermissionAccount = () => {
               readOnly
             />
           </div>
-          <div className="edit-user-account_content__content-items">
+          <div className="permission-edit-user-account_content__content-items">
             <label htmlFor="">Email:</label>
             <input
               type="text"
@@ -176,7 +176,7 @@ const PermissionAccount = () => {
               readOnly
             />
           </div>
-          <div className="edit-user-account_content__content-items">
+          <div className="permission-edit-user-account_content__content-items">
             <label htmlFor="">Chọn vai trò:</label>
             <select value={nameRoleChange} onChange={handleRoleChange}>
               <option></option>
@@ -188,7 +188,7 @@ const PermissionAccount = () => {
             {console.log("check before:", nameRoleChange)}
             {console.log("check before:", roleID.ma_quyen)}
           </div>
-          <div className="edit-user-account_button">
+          <div className="permission-edit-user-account_button">
             <button onClick={() => handleChangeRole(maNvID, roleID)}>
               Lưu
             </button>
