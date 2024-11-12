@@ -81,6 +81,16 @@ const PermissionAccount = () => {
     setShowFeature(!showFeature);
   };
 
+  const [dataFeature, setDataFeature] = useState([]);
+  useEffect(() => {
+    const fetchDataFeature = async () => {
+      const data = await permissionService.showAllFeature();
+      setDataFeature(data);
+      console.log(data);
+    };
+    fetchDataFeature();
+  }, []);
+
   return (
     <div>
       <div class="permission-container-account">
@@ -93,32 +103,38 @@ const PermissionAccount = () => {
               <td>Vai Trò</td>
               <td>Thao Tác</td>
             </tr>
-            {dataShow.map((item) => (
+            {dataShow.length > 0 ? (
+              dataShow.map((item) => (
+                <tr>
+                  <td>{item.ten_nv}</td>
+                  <td>{item.email}</td>
+                  <td>{item.ten_quyen ? item.ten_quyen : "No Permission"}</td>
+                  <td>
+                    <FaEdit
+                      className="edit-btn"
+                      onClick={() =>
+                        handleShowEditUserAccount(
+                          item.ma_nv,
+                          item.ten_nv,
+                          item.email,
+                          item.ma_quyen
+                        )
+                      }
+                    />
+                    <FaTrash
+                      className="delete-btn"
+                      onClick={() =>
+                        handleDeleteUserAccount(item.ma_nv, item.ma_quyen)
+                      }
+                    />
+                  </td>
+                </tr>
+              ))
+            ) : (
               <tr>
-                <td>{item.ten_nv}</td>
-                <td>{item.email}</td>
-                <td>{item.ten_quyen ? item.ten_quyen : "No Permission"}</td>
-                <td>
-                  <FaEdit
-                    className="edit-btn"
-                    onClick={() =>
-                      handleShowEditUserAccount(
-                        item.ma_nv,
-                        item.ten_nv,
-                        item.email,
-                        item.ma_quyen
-                      )
-                    }
-                  />
-                  <FaTrash
-                    className="delete-btn"
-                    onClick={() =>
-                      handleDeleteUserAccount(item.ma_nv, item.ma_quyen)
-                    }
-                  />
-                </td>
+                <td colSpan="4">No Data</td>
               </tr>
-            ))}
+            )}
           </table>
           {/* <div class="container-account_button">
             <button onClick={handleShowAddUserAccount}>Thêm</button>
@@ -219,23 +235,32 @@ const PermissionAccount = () => {
             <tr>
               <td>Vai Trò</td>
               <td>Chức Năng</td>
+              <td>Lựa Chọn</td>
             </tr>
             <tr>
-              <td>Admin</td>
+              <td>
+                <select>
+                  <option value="">---Chọn quyền---</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Quản lý">Quản lý</option>
+                  <option value="Nhân viên kho">Nhân viên kho</option>
+                  <option value="Nhân viên kiểm toán">
+                    Nhân viên kiểm toán
+                  </option>
+                </select>
+              </td>
               <td>Chức Năng</td>
+              <td>
+                <input type="checkbox" />
+              </td>
             </tr>
-            <tr>
-              <td>Quản lý</td>
-              <td>Chức Năng</td>
-            </tr>
-            <tr>
-              <td>Nhân viên kho</td>
-              <td>Chức Năng</td>
-            </tr>
-            <tr>
-              <td>Nhân viên kiểm toán</td>
-              <td>Chức Năng</td>
-            </tr>
+            {dataFeature.map((item)=>(
+              <tr>
+                <td></td>
+                <td>{item.ten_quyen}</td>
+                <td></td>
+              </tr>
+            ))}
           </table>
           <div className="save-show-feature">
             <button>Lưu</button>
