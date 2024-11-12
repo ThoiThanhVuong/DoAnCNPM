@@ -8,8 +8,18 @@ const permissionService = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error creating permission:", error);
+      console.error("Error getting permission:", error);
       throw error;
+    }
+  },
+  showAllFeature: async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/permission/show_feature"
+      );
+      return response.data;
+    } catch (error) {
+      console.error("error getting feature:", error);
     }
   },
   updateRole: async (maNvID, roleID) => {

@@ -210,6 +210,9 @@
   background-color: white;
   border-radius: 10px;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+  input{
+    cursor: pointer;
+  }
 }
 .feature-permission_content table {
   width: 100%;
@@ -227,6 +230,9 @@
 .feature-permission_content table tr:first-child {
   color: black;
   background-color: rgba(0, 0, 0, 0.3);
+}
+.feature-permission_content select{
+  padding: 5px;
 }
 .save-show-feature{
   margin-top: 20px;

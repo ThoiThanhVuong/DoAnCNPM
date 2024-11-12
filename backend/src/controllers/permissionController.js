@@ -37,6 +37,26 @@ exports.showAllPermission = async (req, res) => {
   }
 };
 
+exports.showAllFeature = async (req, res) => {
+  try {
+    const feature = await Permission.findAll({
+      include: [
+        {
+          model: FeaturePermission,
+          through: {
+            attributes: [],
+          },
+          attributes: ["ten_chuc_nang"],
+        },
+      ],
+      attributes: ["ten_quyen"],
+    });
+    res.json(feature);
+  } catch (error) {
+    res.status(500).json({ error: "co loi khi tim chuc nang", error });
+  }
+};
+
 exports.updateRole = async (req, res) => {
   const { ma_nv } = req.params;
   const { ma_quyen } = req.body;
