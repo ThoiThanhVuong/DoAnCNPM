@@ -34,10 +34,9 @@ const addCustomer = async (req, res) => {
             dia_chi_kh,
             sdt_kh
         });
-        res.status(201).json(newCustomer);
-        res.json({ message: 'Khách hàng đã được thêm' });
+        return res.status(201).json({ message: 'Khách hàng đã được thêm' ,newCustomer});
     } catch (error) {
-        res.status(500).json({ error: 'Lỗi khi thêm khách hàng' });
+        return res.status(500).json({ error: 'Lỗi khi thêm khách hàng' });
     }
 };
 
@@ -54,9 +53,9 @@ const updateCustomer = async (req, res) => {
     updatedCustomer.sdt_kh = sdt_kh;
         await updatedCustomer.save();
 
-        return res.json(updatedCustomer);
+        return res.status(201).json({ message: 'Khách hàng đã được cập nhật thành công' ,updatedCustomer});
     } catch (error) {
-        res.status(500).json({ error: 'Lỗi khi cập nhật khách hàng' });
+      return res.status(500).json({ error: 'Lỗi khi cập nhật khách hàng' });
     }
 };
 
