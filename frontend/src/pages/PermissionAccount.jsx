@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import "../style/PermissionAccount.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import permissionService from "../services/permissionService";
@@ -90,6 +90,50 @@ const PermissionAccount = () => {
     };
     fetchDataFeature();
   }, []);
+
+  const [optionPermission, setOptionPermission] = useState("");
+  const handleShowFeatureFolowPermission = (e) => {
+    setOptionPermission(e.target.value);
+  };
+
+  const featureArray = useMemo(
+    () => [
+      "Quản lý sản phẩm",
+      "Quản lý khu vực kho",
+      "Quản lý nhân viên",
+      "Quản lý khách hàng",
+      "Quản lý nhà cung cấp",
+      "Quản lý tài khoản",
+      "Quản lý nhóm quyền",
+      "Quản lý thống kê",
+      "Quản lý nhập hàng",
+      "Quản lý xuất hàng",
+      "Quản lý thuộc tính",
+    ],
+    []
+  );
+  const [checkedPermissions, setCheckedPermissions] = useState({});
+  useEffect(() => {
+    const initialChecked = {};
+    const currentRole = dataFeature.find(
+      (item) => item.ten_quyen === optionPermission
+    );
+    if (currentRole) {
+      currentRole.FeaturePermissions.forEach((subItem) => {
+        initialChecked[subItem.ten_chuc_nang] = true;
+      });
+    }
+    featureArray.forEach((feature) => {
+      initialChecked[feature] = initialChecked[feature] || false; // Nếu không có thì set là false
+    });
+    setCheckedPermissions(initialChecked);
+  }, [dataFeature, optionPermission, featureArray]);
+  const handleCheckboxChange = (tenChucNang) => {
+    setCheckedPermissions((prev) => ({
+      ...prev,
+      [tenChucNang]: !prev[tenChucNang], // Đảo ngược trạng thái checkbox
+    }));
+  };
 
   return (
     <div>
@@ -239,8 +283,11 @@ const PermissionAccount = () => {
             </tr>
             <tr>
               <td>
-                <select>
-                  <option value="">---Chọn quyền---</option>
+                <select
+                  onChange={handleShowFeatureFolowPermission}
+                  value={optionPermission}
+                >
+                  <option value="">----- Chọn quyền -----</option>
                   <option value="Admin">Admin</option>
                   <option value="Quản lý">Quản lý</option>
                   <option value="Nhân viên kho">Nhân viên kho</option>
@@ -249,21 +296,48 @@ const PermissionAccount = () => {
                   </option>
                 </select>
               </td>
-              <td>Chức Năng</td>
-              <td>
-                <input type="checkbox" />
-              </td>
+              <td>---------------------</td>
+              <td>---------------------</td>
             </tr>
-            {dataFeature.map((item)=>(
-              <tr>
-                <td></td>
-                <td>{item.ten_quyen}</td>
-                <td></td>
-              </tr>
-            ))}
+            {/* {dataFeature.map((item) =>
+              optionPermission === item.ten_quyen
+                ? item.FeaturePermissions.map((subItem) => (
+                    <tr>
+                      <td></td>
+                      <td>{subItem.ten_chuc_nang}</td>
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={
+                            checkedPermissions[subItem.ten_chuc_nang] || false
+                          }
+                          onChange={() =>
+                            handleCheckboxChange(subItem.ten_chuc_nang)
+                          }
+                        />
+                      </td>
+                    </tr>
+                  ))
+                : null
+            )} */}
+            {optionPermission
+              ? featureArray.map((feature) => (
+                  <tr key={feature}>
+                    <td></td>
+                    <td>{feature}</td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={checkedPermissions[feature] || false}
+                        onChange={() => handleCheckboxChange(feature)}
+                      />
+                    </td>
+                  </tr>
+                ))
+              : null}
           </table>
           <div className="save-show-feature">
-            <button>Lưu</button>
+            {/* <button onClick={handleChangeFeature}>Lưu</button> */}
             <button onClick={handleShowFeature}>Thoát</button>
           </div>
         </div>
