@@ -1,6 +1,7 @@
 const Permission = require("../models/permissionModel");
 const Employee = require("../models/EmployeeModel");
 const FeaturePermission = require("../models/FeaturePermissionModel");
+const DetailPermission = require("../models/DetailPermission");
 
 exports.showAllPermission = async (req, res) => {
   try {
@@ -49,11 +50,46 @@ exports.showAllFeature = async (req, res) => {
           attributes: ["ten_chuc_nang"],
         },
       ],
-      attributes: ["ten_quyen"],
+      attributes: ["ma_quyen", "ten_quyen"],
     });
     res.json(feature);
   } catch (error) {
     res.status(500).json({ error: "co loi khi tim chuc nang", error });
+  }
+};
+
+exports.changeRole = async (req, res) => {
+  const { ma_quyen } = req.params;
+  const { listFeature } = req.body;
+  try {
+    const feature = await DetailPermission.findAll({
+      where: { ma_quyen: ma_quyen },
+      attributes: ["ma_quyen", "ma_chuc_nang"],
+    });
+    const formattedFeature = feature.map((item) => ({
+      ma_chuc_nang: item.ma_chuc_nang,
+    }));
+    const needToDelete = false;
+    if (listFeature.length >= formattedFeature.length) {
+      for (let i = 0; i < listFeature.length; i++) {
+        for (let j = 0; j < formattedFeature.length; j++) {
+          if (formattedFeature[j].ma_chuc_nang === listFeature[i]) {
+            needToDelete = false;
+            break;
+          }
+          needToDelete = true;
+        }
+        if(needToDelete){
+          const deleteFeature = await DetailPermission.findOne({where:{
+            ma_quyen: ma_quyen,
+            ma_chuc_nang: formattedFeature[i]
+          }})
+        }
+      }
+    }
+    res.json(formattedFeature);
+  } catch (error) {
+    res.status(500).json("loi khi thay doi chuc nang cua quyen:", error);
   }
 };
 

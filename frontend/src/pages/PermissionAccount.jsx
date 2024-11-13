@@ -92,10 +92,19 @@ const PermissionAccount = () => {
   }, []);
 
   const [optionPermission, setOptionPermission] = useState("");
+  const [optionRoleID, setOptionRoleID] = useState(0);
   const handleShowFeatureFolowPermission = (e) => {
     setOptionPermission(e.target.value);
+    if (e.target.value === "Admin") {
+      setOptionRoleID(1);
+    } else if (e.target.value === "Quản lý") {
+      setOptionRoleID(2);
+    } else if (e.target.value === "Nhân viên kho") {
+      setOptionRoleID(3);
+    } else if(e.target.value === "Nhân viên kiểm toán"){
+      setOptionRoleID(4);
+    }
   };
-
   const featureArray = useMemo(
     () => [
       "Quản lý sản phẩm",
@@ -128,11 +137,57 @@ const PermissionAccount = () => {
     });
     setCheckedPermissions(initialChecked);
   }, [dataFeature, optionPermission, featureArray]);
+  // const handleCheckboxChange = (tenChucNang) => {
+  //   setCheckedPermissions((prev) => ({
+  //     ...prev,
+  //     [tenChucNang]: !prev[tenChucNang], // Đảo ngược trạng thái checkbox
+  //   }));
+  // };
   const handleCheckboxChange = (tenChucNang) => {
-    setCheckedPermissions((prev) => ({
-      ...prev,
-      [tenChucNang]: !prev[tenChucNang], // Đảo ngược trạng thái checkbox
-    }));
+    setCheckedPermissions((prev) => {
+      const newChecked = {
+        ...prev,
+        [tenChucNang]: !prev[tenChucNang],
+      };
+      // Gọi hàm để lấy tên chức năng đã chọn
+      handleSelectedFeatures(newChecked);
+      return newChecked;
+    });
+  };
+  const [seletedFeature, setSelectedFeature] = useState({listFeature: []})
+  const handleSelectedFeatures = (permissions) => {
+    const selectedFeatures = Object.keys(permissions).filter(
+      (feature) => permissions[feature]
+    );
+    console.log("Tên chức năng đã chọn:", selectedFeatures);
+    const updatedSeletedFeature = selectedFeatures.map((item)=>{
+      return (
+        item === "Quản lý sản phẩm" ? 1 :
+        item === "Quản lý khu vực kho" ? 2 :
+        item === "Quản lý nhân viên" ? 3 :
+        item === "Quản lý khách hàng" ? 4 :
+        item === "Quản lý nhà cung cấp" ? 5 :
+        item === "Quản lý tài khoản" ? 6 :
+        item === "Quản lý nhóm quyền" ? 7 :
+        item === "Quản lý thống kê" ? 8 :
+        item === "Quản lý nhập hàng" ? 9 :
+        item === "Quản lý xuất hàng" ? 10 :
+        item === "Quản lý thuộc tính" ? 11 : null
+      )
+    })
+    setSelectedFeature({listFeature: updatedSeletedFeature})
+  };
+  useEffect(()=>{
+    console.log("array:", seletedFeature)
+  },[seletedFeature])
+
+  const handleChangeFeature = async () => {
+    try {
+      const response = await permissionService.changeRole(optionRoleID, seletedFeature)
+      console.log("Change feature successfull", response)
+    } catch (error) {
+      console.log("Error change feature:", error)
+    }
   };
 
   return (
@@ -337,7 +392,7 @@ const PermissionAccount = () => {
               : null}
           </table>
           <div className="save-show-feature">
-            {/* <button onClick={handleChangeFeature}>Lưu</button> */}
+            <button onClick={handleChangeFeature}>Lưu</button>
             <button onClick={handleShowFeature}>Thoát</button>
           </div>
         </div>

@@ -4,6 +4,7 @@ const permissionController = require("../controllers/permissionController");
 
 router.get("/show", permissionController.showAllPermission);
 router.get("/show_feature", permissionController.showAllFeature)
+router.get("/change_role/:ma_quyen", permissionController.changeRole)
 router.put("/update_role/:ma_nv", permissionController.updateRole)
 router.put("/delete_role/:ma_nv", permissionController.deleteRole)
 

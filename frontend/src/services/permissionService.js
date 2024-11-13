@@ -45,6 +45,18 @@ const permissionService = {
       throw error;
     }
   },
+  changeRole: async (roleID, listFeature) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/permission/change_role/${roleID}`,
+        listFeature
+      );
+      return response.data;
+    } catch (error) {
+      console.log("Loi khi thay doi chuc nang;", error);
+      throw error;
+    }
+  },
 };
 
 export default permissionService;
