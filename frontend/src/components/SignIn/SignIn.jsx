@@ -7,7 +7,7 @@ const SignIn = () => {
   return (
     <div className="container-signin">
       {/* <form action="" method=""> */}
-        <h1>Signin Form</h1>
+        <h1>Đăng Nhập</h1>
         <div className="form-control-signin">
           <input type="text" placeholder="Username" id="username" />
           <small></small>
