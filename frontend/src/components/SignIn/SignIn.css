@@ -46,5 +46,6 @@
     cursor: pointer;
 }
 .container-signin .btn-submit:hover{
-    background-color: lightskyblue;
+    color: lightskyblue;
+    background-color: black;
 }
