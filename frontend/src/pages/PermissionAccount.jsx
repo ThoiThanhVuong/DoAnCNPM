@@ -101,8 +101,10 @@ const PermissionAccount = () => {
       setOptionRoleID(2);
     } else if (e.target.value === "Nhân viên kho") {
       setOptionRoleID(3);
-    } else if(e.target.value === "Nhân viên kiểm toán"){
+    } else if (e.target.value === "Nhân viên kiểm toán") {
       setOptionRoleID(4);
+    } else {
+      setOptionRoleID(0);
     }
   };
   const featureArray = useMemo(
@@ -154,39 +156,57 @@ const PermissionAccount = () => {
       return newChecked;
     });
   };
-  const [seletedFeature, setSelectedFeature] = useState({listFeature: []})
+  const [seletedFeature, setSelectedFeature] = useState({ listFeature: [] });
   const handleSelectedFeatures = (permissions) => {
     const selectedFeatures = Object.keys(permissions).filter(
       (feature) => permissions[feature]
     );
     console.log("Tên chức năng đã chọn:", selectedFeatures);
-    const updatedSeletedFeature = selectedFeatures.map((item)=>{
-      return (
-        item === "Quản lý sản phẩm" ? 1 :
-        item === "Quản lý khu vực kho" ? 2 :
-        item === "Quản lý nhân viên" ? 3 :
-        item === "Quản lý khách hàng" ? 4 :
-        item === "Quản lý nhà cung cấp" ? 5 :
-        item === "Quản lý tài khoản" ? 6 :
-        item === "Quản lý nhóm quyền" ? 7 :
-        item === "Quản lý thống kê" ? 8 :
-        item === "Quản lý nhập hàng" ? 9 :
-        item === "Quản lý xuất hàng" ? 10 :
-        item === "Quản lý thuộc tính" ? 11 : null
-      )
-    })
-    setSelectedFeature({listFeature: updatedSeletedFeature})
+    const updatedSeletedFeature = selectedFeatures.map((item) => {
+      return item === "Quản lý sản phẩm"
+        ? 1
+        : item === "Quản lý khu vực kho"
+        ? 2
+        : item === "Quản lý nhân viên"
+        ? 3
+        : item === "Quản lý khách hàng"
+        ? 4
+        : item === "Quản lý nhà cung cấp"
+        ? 5
+        : item === "Quản lý tài khoản"
+        ? 6
+        : item === "Quản lý nhóm quyền"
+        ? 7
+        : item === "Quản lý thống kê"
+        ? 8
+        : item === "Quản lý nhập hàng"
+        ? 9
+        : item === "Quản lý xuất hàng"
+        ? 10
+        : item === "Quản lý thuộc tính"
+        ? 11
+        : null;
+    });
+    setSelectedFeature({ listFeature: updatedSeletedFeature });
   };
-  useEffect(()=>{
-    console.log("array:", seletedFeature)
-  },[seletedFeature])
+  useEffect(() => {
+    console.log("array:", seletedFeature);
+  }, [seletedFeature]);
 
   const handleChangeFeature = async () => {
+    if (optionRoleID === 0 || seletedFeature.listFeature.length === 0) {
+      return;
+    }
     try {
-      const response = await permissionService.changeRole(optionRoleID, seletedFeature)
-      console.log("Change feature successfull", response)
+      const response = await permissionService.changeRole(
+        optionRoleID,
+        seletedFeature
+      );
+      alert("Thay doi thanh cong");
+      window.location.reload();
+      console.log("Change feature successfull", response);
     } catch (error) {
-      console.log("Error change feature:", error)
+      console.log("Error change feature:", error);
     }
   };
 

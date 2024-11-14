@@ -61,33 +61,37 @@ exports.showAllFeature = async (req, res) => {
 exports.changeRole = async (req, res) => {
   const { ma_quyen } = req.params;
   const { listFeature } = req.body;
+  let hanh_dong;
+  console.log(listFeature, ma_quyen);
   try {
     const feature = await DetailPermission.findAll({
       where: { ma_quyen: ma_quyen },
-      attributes: ["ma_quyen", "ma_chuc_nang"],
     });
-    const formattedFeature = feature.map((item) => ({
-      ma_chuc_nang: item.ma_chuc_nang,
-    }));
-    const needToDelete = false;
-    if (listFeature.length >= formattedFeature.length) {
-      for (let i = 0; i < listFeature.length; i++) {
-        for (let j = 0; j < formattedFeature.length; j++) {
-          if (formattedFeature[j].ma_chuc_nang === listFeature[i]) {
-            needToDelete = false;
-            break;
-          }
-          needToDelete = true;
-        }
-        if(needToDelete){
-          const deleteFeature = await DetailPermission.findOne({where:{
-            ma_quyen: ma_quyen,
-            ma_chuc_nang: formattedFeature[i]
-          }})
-        }
-      }
+    console.log(JSON.stringify(feature, null, 2));
+    if (feature.length > 0) {
+      await DetailPermission.destroy({
+        where: {
+          ma_quyen: ma_quyen,
+        },
+      });
+      console.log("successfull");
     }
-    res.json(formattedFeature);
+    if (ma_quyen === "1" || ma_quyen === "2" || ma_quyen === "3") {
+      hanh_dong = "Thêm, sửa, xóa, xem";
+    } else if (ma_quyen === "4") {
+      hanh_dong = "xem";
+    }
+    console.log("hanh dong:", hanh_dong, typeof ma_quyen)
+    const createPromises = listFeature.map((ma_chuc_nang) => {
+      return DetailPermission.create({
+        ma_quyen,
+        ma_chuc_nang,
+        hanh_dong,
+      });
+    });
+    await Promise.all(createPromises);
+    console.log("Tạo thành công");
+    res.json("Thay doi thanh cong");
   } catch (error) {
     res.status(500).json("loi khi thay doi chuc nang cua quyen:", error);
   }
