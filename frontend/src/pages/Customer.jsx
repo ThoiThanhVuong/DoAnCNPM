@@ -32,8 +32,6 @@ const Customer = () => {
       console.error('Lỗi khi lấy dữ liệu');
     } 
       // Sau khi lấy xong dữ liệu, cập nhật trạng thái loading
-      
-  
   };
   useEffect(() => {
 
@@ -42,7 +40,6 @@ const Customer = () => {
   }, []);
 
   const addData = async () => {
-    try {
       const payload = {
         ma_kh: customerData.MKH,
         ten_kh: customerData.TKH,
@@ -60,12 +57,9 @@ const Customer = () => {
       // Reset form
       setCustomerData({ MKH: "", TKH: "", DC: "", SDT: "" });
       hiddenAdd();
-    } catch (error) {
-      console.error("Lỗi khi thêm khách hàng:", error);
-      setSuccessMessage("Đã xảy ra lỗi khi thêm khách hàng.");
-    } finally {
-      setTimeout(() => setSuccessMessage(""), 2000);
-    }
+      setTimeout(() => {
+        setSuccessMessage(""); // Ẩn thông báo
+      }, 2000);
   };
   
   
@@ -93,22 +87,63 @@ const Customer = () => {
     });
   };
   
+  const handleInputChange1 = (e) => {
+    const { name, value } = e.target;
+    setform({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-  const updateData = async (MKH) => {
+  const updateData = async () => {
+    setSuccessMessage("Sửa thành công!");
     const payload = {
-      ten_kh: customerData.TKH,
-      dia_chi_kh: customerData.DC,
-      sdt_kh: customerData.SDT,
+      ten_kh: formData.TKH,
+      dia_chi_kh: formData.DC,
+      sdt_kh: formData.SDT,
     }
-    await axios.put(`http://localhost:5000/api/customers/${MKH}`,payload);
+    await axios.put(`http://localhost:5000/api/customers/${formData.MKH}`,payload);
+    fetchCustomers()
+    setShow1(!showEditCustomer);
+    setTimeout(() => {
+      setSuccessMessage(""); // Ẩn thông báo
+    }, 2000);
   };
 
   const deleteData  = async (MKH) => {
     setSuccessMessage("Xóa thành công!");
-    // setTimeout(() => setSuccessMessage(""), 2000);
+
     await axios.delete(`http://localhost:5000/api/customers/${MKH}`);
     fetchCustomers()
+    setTimeout(() => {
+      setSuccessMessage(""); // Ẩn thông báo
+    }, 2000);
   };
+
+  const searchData  = async (e) => {
+    const { name, value } = e.target;
+    setCustomerData({
+      ...customerData,
+      [name]: value,
+    });
+    if (value) {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/customers/${value}`);
+
+        setData([response.data]);
+
+        // Thực hiện thêm các hành động với dữ liệu API, ví dụ: cập nhật state để hiển thị
+      } catch (error) {
+        
+      }
+    }else{
+      const response = await axios.get(`http://localhost:5000/api/customers`);
+      setData(response.data)
+    }
+    // await axios.get(`http://localhost:5000/api/customers/${customerData.MKH}`);
+    // console.log(await axios.get(`http://localhost:5000/api/customers/${customerData.MKH}`))
+    
+  }
 
   return (
     <div class="page_customer">
@@ -124,7 +159,7 @@ const Customer = () => {
       </div>
       <div class="operation">
         <div class="input-search">
-          <input placeholder="Search......"></input>
+          <input onChange={searchData}  name="MKH" type="text" value={customerData.MKH} placeholder="Search......"></input>
         </div>
 
         <div class="button-addCustomer">
@@ -200,21 +235,21 @@ const Customer = () => {
                   name="TKH"
                   type="text"
                   value={formData.TKH}
-                  onChange={handleInputChange}
+                  onChange={handleInputChange1}
                 ></input>
                 <input
                   placeholder="nhập Địa chỉ"
                   name="DC"
                   type="text"
                   value={formData.DC}
-                  onChange={handleInputChange}
+                  onChange={handleInputChange1}
                 ></input>
                 <input
                   placeholder="Nhập Số điện thoại"
                   name="SDT"
                   type="text"
                   value={formData.SDT}
-                  onChange={handleInputChange}
+                  onChange={handleInputChange1}
                 ></input>
               </div>
 
