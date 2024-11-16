@@ -135,7 +135,7 @@ const SignIn = () => {
     try {
       const response = await loginService.compareAccount(account);
       if (response) {
-        Cookies.set("token", "nothing");
+        console.log(Cookies.get("token"))
         alert(`CHÀO MỪNG "${response.ten_nv}" ĐÃ ĐĂNG NHẬP THÀNH CÔNG`);
         window.location.href = "/";
         console.log("thành công", response);

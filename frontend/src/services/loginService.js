@@ -5,7 +5,8 @@ const loginService = {
     try {
       const response = await axios.post(
         `http://localhost:5000/api/login/`,
-        account
+        account,
+        { withCredentials: true }
       );
       return response.data;
     } catch (error) {
@@ -15,11 +16,23 @@ const loginService = {
   },
   checkUsername: async (username) => {
     try {
-      const response = axios.post(
+      const response = await axios.post(
         `http://localhost:5000/api/login/checkUsername`,
         username
       );
-      return (await response).data;
+      return response.data;
+    } catch (error) {
+      console.log("error", error);
+      throw error;
+    }
+  },
+  getFeatureFromToken: async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/login/getFeatureFromToken`,
+        { withCredentials: true }
+      );
+      return response.data;
     } catch (error) {
       console.log("error", error);
       throw error;
