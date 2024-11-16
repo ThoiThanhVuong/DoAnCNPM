@@ -2,6 +2,7 @@
   "dependencies": {
     "@atlaskit/textfield": "^6.5.4",
     "chart.js": "^4.4.6",
+    "js-cookie": "^3.0.5",
     "react-chartjs-2": "^5.2.0"
   }
 }
