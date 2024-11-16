@@ -1,4 +1,5 @@
 const Employee = require("../models/EmployeeModel");
+const jwt = require("jsonwebtoken")
 
 exports.compareAccount = async (req, res) => {
   const { username, password } = req.body;
@@ -12,6 +13,7 @@ exports.compareAccount = async (req, res) => {
     if (!employee) {
       console.log("tai khoan khong hop le");
     }
+    
     res.json(employee);
   } catch (error) {
     res.status(500).json({ error: "tai khoan khong hop le", error });
