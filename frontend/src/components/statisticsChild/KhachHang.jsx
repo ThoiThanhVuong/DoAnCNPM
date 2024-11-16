@@ -6,7 +6,6 @@ const KhachHang = ()=> {
     const [timeStart, setTimeStart] = useState('');
     const [timeEnd, setTimeEnd] = useState('');
     const [data, setData] = useState([]);
-    const [error, setError] = useState('');
      // Hàm format giá tiền
      const formatCurrency = (value) => {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
@@ -31,7 +30,6 @@ const KhachHang = ()=> {
         setTimeStart('');
         setTimeEnd('');
         setData([]);
-        setError('');
         fetchKhachHang();
       };
     return (

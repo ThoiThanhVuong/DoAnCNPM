@@ -109,7 +109,7 @@ const ChartMonth =()=>{
       };
   return (
     <div className="Chart-page">
-          <div className="filter-container">
+          <div className="Filter-container">
             <label>Chọn năm thống kê:</label>
             <select value={selectedYear} onChange={handleChangeyear}>
               <option value={2021}>2021</option>
@@ -123,7 +123,7 @@ const ChartMonth =()=>{
           </div>
         
 
-    <div className="table-container">
+    <div className="table-chart-container">
       <table>
         <thead>
           <tr>

@@ -1,4 +1,4 @@
-const Provider = require('../models/ProviderModel'); // MySQL model
+const {Provider,sequelize} = require('../models/Relationship'); // MySQL model
 
 const getProvider = async (req, res) => {
   try {

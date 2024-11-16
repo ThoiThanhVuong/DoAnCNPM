@@ -80,7 +80,7 @@ const Year = () => {
 
   return (
     <div className="Chart-page">
-      <div className="filter-container">
+      <div className="Filter-container">
         <input
           type="text"
           placeholder="Từ năm"
@@ -102,7 +102,7 @@ const Year = () => {
         <Bar data={chartData} options={chartOptions} />
       </div>
 
-      <div className="table-container">
+      <div className="table-chart-container">
         <table>
           <thead>
             <tr>

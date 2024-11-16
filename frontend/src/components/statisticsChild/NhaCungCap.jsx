@@ -6,7 +6,6 @@ const NhaCungCap = ()=> {
     const [timeStart, setTimeStart] = useState('');
     const [timeEnd, setTimeEnd] = useState('');
     const [data, setData] = useState([]);
-    const [error, setError] = useState('');
      // Hàm format giá tiền
      const formatCurrency = (value) => {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
@@ -23,7 +22,7 @@ const NhaCungCap = ()=> {
         setTimeStart('');
         setTimeEnd('');
         setData([]);
-        setError('');
+  
         fetchProvider();
     }
     const handleSearch = () =>{

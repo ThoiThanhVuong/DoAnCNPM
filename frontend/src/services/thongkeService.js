@@ -20,6 +20,16 @@ const thongkeService = {
             console.error("Error fetching products:", error);
             return [];
         }
+    },
+    getThongKeTonKho : async (params) =>{
+        try{
+            const respone = await axios.get('http://localhost:5000/api/thongke/thongKeTonKho',{params});
+            return respone.data;
+        }catch(error){
+            console.error("Error fetching products:", error);
+            return [];
+        }
     }
+
 }
 export default thongkeService;

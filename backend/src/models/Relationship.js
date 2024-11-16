@@ -9,12 +9,11 @@ const DetailPermission = require('./DetailPermission');
 const ProviderModel = require('./providerModel');
 const importModel = require('./ImportModel');
 const ProductModel = require('./ProductModel');
-const phienBanSPModel = require('./PhienBanSPModel');
 const RamModel = require('./RamModel');
 const RomModel = require('./RomModel');
 const ColorModel = require('./ColorModel');
 const PhienBanSPModel = require('./PhienBanSPModel');
-const detailImportModel = require('./detailImportModel');
+const detailImport = require('./detailImportModel');
 const chiTietPhieuXuatModel = require('./chiTietPhieuXuatModel');
 // Thiết lập mối quan hệ Phiếu xuất
 CustomerModel.hasMany(PhieuXuatModel, { foreignKey: 'ma_kh', as: 'phieuXuats' });
@@ -41,26 +40,26 @@ importModel.belongsTo(ProviderModel,{foreignKey: 'ma_ncc',as:'provider'});
 EmployeeModel.hasMany(importModel,{foreignKey: 'ma_nv' , as:'phieuNhaps'});
 importModel.belongsTo(EmployeeModel,{foreignKey:'ma_nv' , as:'nhanvien'});
 // thiết lập mối quan hệ phiên bản sản phẩm và sản phẩm
-ProductModel.hasMany(phienBanSPModel,{foreignKey:'ma_sp' , as:'phienBanSanPhams'});
+ProductModel.hasMany(PhienBanSPModel,{foreignKey:'ma_sp' , as:'phienBanSanPhams'});
 PhienBanSPModel.belongsTo(ProductModel,{foreignKey:'ma_sp',as:'product'});
 //thiết lập mối quan hệ phiên bản sản phẩm và màu sắc
 ColorModel.hasMany(PhienBanSPModel,{foreignKey: 'ma_mau', as:'phienBanSanPhams'});
 PhienBanSPModel.belongsTo(ColorModel,{foreignKey:'ma_mau',as:'mauSac'});
 // thiết lập mối quan hệ phiên bản sản phẩm và RAM
-RamModel.hasMany(phienBanSPModel,{foreignKey:'ma_ram' ,as:'phienBanSanPhams'});
-phienBanSPModel.belongsTo(RamModel,{foreignKey:'ma_ram' , as:'ram'});
+RamModel.hasMany(PhienBanSPModel,{foreignKey:'ma_ram' ,as:'phienBanSanPhams'});
+PhienBanSPModel.belongsTo(RamModel,{foreignKey:'ma_ram' , as:'ram'});
 // thiết lập mối quan hệ phiên bản sản phẩm và ROM
-RomModel.hasMany(phienBanSPModel,{foreignKey:'ma_rom', as:'phienBanSanPhams'});
-phienBanSPModel.belongsTo(RomModel,{foreignKey:'ma_rom', as:'rom'});
+RomModel.hasMany(PhienBanSPModel,{foreignKey:'ma_rom', as:'phienBanSanPhams'});
+PhienBanSPModel.belongsTo(RomModel,{foreignKey:'ma_rom', as:'rom'});
 // thiết lập mối quan hệ phiên bản sản phẩm và chi tiết phiếu nhập
-phienBanSPModel.hasMany(detailImportModel,{foreignKey: 'ma_phien_ban_sp', as:'chiTietPhieuNhaps'});
-detailImportModel.belongsTo(phienBanSPModel,{foreignKey: 'ma_phien_ban_sp', as:'phienBanSanPham'});
+PhienBanSPModel.hasMany(detailImport,{foreignKey: 'ma_phien_ban_sp', as:'chiTietPhieuNhaps'});
+detailImport.belongsTo(PhienBanSPModel,{foreignKey: 'ma_phien_ban_sp', as:'phienBanSanPham'});
 // thiết lập mối quan hệ phiên bản sản phẩm và chi tiết phiếu xuất
-phienBanSPModel.hasMany(chiTietPhieuXuatModel,{foreignKey:'ma_phien_ban_sp',as:'chiTietPhieuXuats'});
-chiTietPhieuXuatModel.belongsTo(phienBanSPModel,{foreignKey:'ma_phien_ban_sp',as: 'phienBanSanPham'});
+PhienBanSPModel.hasMany(chiTietPhieuXuatModel,{foreignKey:'ma_phien_ban_sp',as:'chiTietPhieuXuats'});
+chiTietPhieuXuatModel.belongsTo(PhienBanSPModel,{foreignKey:'ma_phien_ban_sp',as: 'phienBanSanPham'});
 //thiết lập mối quan hệ phiếu nhập và chi tiết phiếu nhập
-importModel.hasMany(detailImportModel,{foreignKey: 'ma_pn',as:'chiTietPhieuNhaps'});
-detailImportModel.belongsTo(importModel,{foreignKey: 'ma_pn',as:'phieuNhap'});
+importModel.hasMany(detailImport,{foreignKey: 'ma_pn',as:'chiTietPhieuNhaps'});
+detailImport.belongsTo(importModel,{foreignKey: 'ma_pn',as:'phieuNhap'});
 //thiết lập mối quan hệ phiếu xuất và chi tiết phiếu xuất
 PhieuXuatModel.hasMany(chiTietPhieuXuatModel,{foreignKey:'ma_px',as:'chiTietPhieuXuats'});
 chiTietPhieuXuatModel.belongsTo(PhieuXuatModel,{foreignKey:'ma_px',as:'phieuXuat'});
@@ -76,11 +75,11 @@ module.exports = {
   DetailPermission,
   Provider:ProviderModel,
   importModel,
-  PhienBanSanPham: phienBanSPModel,
+ PhienBanSPModel,
   ProductModel,
   Ram: RamModel,
   Rom: RomModel,
   Color: ColorModel,
   chiTietPhieuXuatModel,
-  detailImportModel
+  detailImport
 };

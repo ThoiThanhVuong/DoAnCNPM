@@ -169,7 +169,7 @@ const DateOfMonth = () =>{
 
       return(
 <div className="Chart-page">
-          <div className="filter-container">
+          <div className="Filter-container">
             <label >Chọn tháng</label>
             <select value={selectedMonth} onChange={handleChangeMonth}>
               {
@@ -194,7 +194,7 @@ const DateOfMonth = () =>{
           </div>
         
 
-    <div className="table-container">
+    <div className="table-chart-container">
       <table>
         <thead>
           <tr>

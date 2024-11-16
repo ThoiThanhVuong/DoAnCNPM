@@ -33,7 +33,7 @@ const detailExport = sequelize.define('detailExport', {
         type: DataTypes.INTEGER,
     }
 }, {
-    tableName: 'chi_tiet_hoa_don',
+    tableName: 'chi_tiet_phieu_xuat',
     timestamps: false,
 }) 
 module.exports = detailExport;
