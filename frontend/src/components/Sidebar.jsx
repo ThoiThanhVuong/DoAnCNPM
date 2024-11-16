@@ -129,7 +129,10 @@ const Sidebar = ({ children }) => {
     const addedFeatures = new Set(); // Set để theo dõi các chức năng đã thêm
 
     for (let i = 0; i < menuItem.length; i++) {
-      if (menuItem[i].name === "Trang chủ") {
+      if (
+        menuItem[i].name === "Trang chủ" ||
+        menuItem[i].name === "Nhân viên"
+      ) {
         newMenuItems.push(menuItem[i]); // Thêm "Trang chủ" vào danh sách(Mặc định)
         addedFeatures.add(menuItem[i].feature); // Đánh dấu chức năng đã thêm
         continue;
