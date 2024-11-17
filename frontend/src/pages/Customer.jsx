@@ -35,7 +35,7 @@ const Customer = () => {
   };
   useEffect(() => {
 
-    // Gọi hàm fetch dữ liệu
+ 
     fetchCustomers();
   }, []);
 
