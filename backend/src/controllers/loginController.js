@@ -46,7 +46,7 @@ exports.checkUsername = async (req, res) => {
 };
 
 exports.getFeatureFromToken = async (req, res) => {
-  const token = req.cookies.token
+  const token = req.cookies.token;
   try {
     const decode = jwt.verify(token, "accountLogin");
     const permission = await Employee.findOne({
@@ -70,9 +70,13 @@ exports.getFeatureFromToken = async (req, res) => {
         ma_nv: decode.username,
       },
     });
-    const formattedPermission = permission.Permission.FeaturePermissions.map((item)=>({
-      ten_chuc_nang: item.ten_chuc_nang
-    }))
+    const formattedPermission = permission.Permission.FeaturePermissions.map(
+      (item) => ({
+        ten_chuc_nang: item.ten_chuc_nang,
+      })
+    );
     res.json(formattedPermission);
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({ error: "lay chuc nang tu token bi loi", error });
+  }
 };
