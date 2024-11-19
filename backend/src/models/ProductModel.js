@@ -1,6 +1,7 @@
 const db = require("../config/db");
 const { DataTypes } = require("sequelize");
 
+// Định nghĩa ProductModel
 const ProductModel = db.define(
   "ProductModel",
   {
