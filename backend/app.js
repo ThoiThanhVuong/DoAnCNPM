@@ -15,6 +15,7 @@ const ramRoutes = require("../backend/src/routes/ramRoutes.js");
 const romRoutes = require("../backend/src/routes/romRoutes.js");
 const providerRoutes = require("../backend/src/routes/providerRoutes.js");
 const loginRoutes = require("./src/routes/loginRoutes.js");
+const phieuxuatRoutes = require("./src/routes/phieuxuatRoutes.js");
 const warehouseRoutes = require("../backend/src/routes/WareHouseRoutes.js");
 
 const app = express();
@@ -48,6 +49,8 @@ app.use("/api/employee", employeeRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/providers", providerRoutes);
 app.use("/api/login", loginRoutes);
+
+app.use("/api/phieuxuat", phieuxuatRoutes);
 app.use("/api/warehouses", warehouseRoutes);
 
 module.exports = app;
