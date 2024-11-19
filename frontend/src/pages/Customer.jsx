@@ -34,8 +34,7 @@ const Customer = () => {
       // Sau khi lấy xong dữ liệu, cập nhật trạng thái loading
   };
   useEffect(() => {
-
-    // Gọi hàm fetch dữ liệu
+ 
     fetchCustomers();
   }, []);
 

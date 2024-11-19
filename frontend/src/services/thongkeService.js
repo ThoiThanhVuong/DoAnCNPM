@@ -29,7 +29,33 @@ const thongkeService = {
             console.error("Error fetching products:", error);
             return [];
         }
+    },
+    getThongKeTheoNam: async(params)=>{
+        try {
+            const response = await axios.get('http://localhost:5000/api/thongke/thongKeTheoNam',{params});
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching statistics",error);
+            return [];
+        }
+    },
+    getThongKeTheoThang: async(params)=>{
+        try {
+            const response = await axios.get('http://localhost:5000/api/thongke/thongKeTheoThang',{params});
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching statistics",error);
+            return [];
+        }
+    },
+    getThongKeTheoNgay: async(params)=>{
+        try {
+            const response = await axios.get('http://localhost:5000/api/thongke/thongKeTheoNgay',{params});
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching statistics",error);
+            return [];
+        }
     }
-
 }
 export default thongkeService;

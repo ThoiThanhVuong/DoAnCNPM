@@ -1,8 +1,12 @@
 const Warehouse = require('../models/WareHouseModel')
 
-exports.getAllWarehouse = async (req ,res) => {
+const getAllWarehouse = async (req ,res) => {
     try {
-        const warehouse =await Warehouse.findAll();
+        const warehouse =await Warehouse.findAll({
+            where: {
+                trang_thai :1
+            }
+        });
         res.json(warehouse);
     }
     catch (error) {
@@ -11,7 +15,7 @@ exports.getAllWarehouse = async (req ,res) => {
 };
 
 
-exports.getWarehouseByID = async (req,res) => {
+const getWarehouseByID = async (req,res) => {
     const {ma_kho} = req.params;
     try {
         const warehouse = await Warehouse.findByPk(ma_kho)
@@ -22,7 +26,7 @@ exports.getWarehouseByID = async (req,res) => {
     }
 };
 
-exports.createWarehouse = async (req,res) => {
+const createWarehouse = async (req,res) => {
     const {ma_kho,ten_kho,chu_thich,trang_thai} = req.body;
     try {
         const newWarehouse = await Warehouse.create({
@@ -37,7 +41,7 @@ exports.createWarehouse = async (req,res) => {
     }
 }
 
-exports.updateWarehouse = async (req,res) => {
+const updateWarehouse = async (req,res) => {
     const {ten_kho,chu_thich,trang_thai} = req.body;
     const {ma_kho} = req.params;
     try {
@@ -55,15 +59,27 @@ exports.updateWarehouse = async (req,res) => {
     }
 };
 
-exports.deleteWarehouse = async(req,res) => {
+const deleteWarehouse = async(req,res) => {
     const {ma_kho} = req.params;
     try {
-        const warehouse= Warehouse.findByPk(ma_kho);
+        console.log('ma kho can xoa trong control:'+ma_kho)
+        const warehouse= await Warehouse.findByPk(ma_kho);
+        console.log('tim kho can xoa trong control:'+warehouse)
         if(!warehouse) return res.status(404).json({error: 'Không tìm thấy kho'});
 
-        await warehouse.destroy();
+        warehouse.trang_thai = 0
+        await warehouse.save();
         res.json({ message: 'Kho đã được xóa thành công'})
     } catch (error) {
-        res.status(500).json({error: 'Lỗi khi xóa kho'})
+        console.log("loi khi xoa kho:,",error)
+        res.status(500).json({ error: 'Lỗi khi xóa kho', details: error.message });
     }
+}
+
+module.exports = {
+    getAllWarehouse,
+    getWarehouseByID,
+    createWarehouse,
+    updateWarehouse,
+    deleteWarehouse
 }
