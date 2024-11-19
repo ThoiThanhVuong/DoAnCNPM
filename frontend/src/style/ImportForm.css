@@ -49,6 +49,7 @@
 }
 .listSP table tbody tr td {
     text-align: center;
+    padding-top: 5px ;
     border-right: 10px solid white;
 }
 .listSP table tbody tr td:hover {
@@ -56,7 +57,7 @@
     background-color: none;
 }
 .listSP table tbody tr {
-    border-top: 2px solid gray !important;
+    border-top: 1px solid silver !important;
     transition: 0.5s;
     height: 50px;
 }
@@ -205,6 +206,7 @@
     background: rgb(255, 118, 118) !important;
 }
 .custom-btyn .bty{
+    padding: 0px 0px 0px 0px !important;
     width: 67.237px !important;
     background-color: rgb(227, 227, 227);
     height: 30px;
@@ -213,6 +215,7 @@
     transition: 0.4s;
 }
 .custom-btyn .btn{
+    padding: 0px 0px 0px 0px !important;
     width: 67.237px !important;
     background-color: rgb(227, 227, 227);
     height: 30px;
