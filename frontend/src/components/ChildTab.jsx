@@ -29,17 +29,12 @@ const ChildTab = ()=>{
                 >
                     Doanh thu theo ngày trong tháng
                 </button>
-                <button className={activeTab ==='NgayDenNgay' ? 'active' : ''}
-                        onClick={()=> handleTabClick('NgayDenNgay')}
-                >
-                    Doanh thu theo ngày đến ngày
-                </button>
+            
             </div>
             <div className='tab-content'>
                 {activeTab === 'TheoNam' && <div><TheoNam/></div>} 
                 {activeTab === 'TheoThang' && <div><ChartMonth/></div>} 
                 {activeTab === 'TheoNgay' && <div><ChartDateOfMonth/></div>} 
-                {activeTab === 'NgayDenNgay' && <div><h3>Tab Doanh thu từ ngày đến ngày</h3></div>} 
             </div>
         </div>
     );

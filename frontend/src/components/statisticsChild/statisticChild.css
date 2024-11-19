@@ -42,6 +42,7 @@
  display:flex;
  justify-content: space-between;
  align-items: center;
+ flex-wrap: wrap;
 }
 .buttons-container button{
     width:100%;
@@ -53,11 +54,12 @@
     border: none;
     cursor: pointer;
 }
-.buttons-container button:first-child{
+.buttons-container button{
     background-color:#59A869 ;
 }
 .buttons-container button:last-child{
     background-color:#DB5860;
+
     
 }
 .table-container{

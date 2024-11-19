@@ -1,73 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 import '../Chart/Chart.css';
+import * as XLSX from 'xlsx'
+import thongkeService from '../../services/thongkeService';
 
-const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-
-const getDaysInMonth = (year, month) => {
-    if (month === 2) { 
-      
-      return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0) ? 29 : 28;
-    }
-    // Months with 31 days
-    if ([1, 3, 5, 7, 8, 10, 12].includes(month)) return 31;
-    // Months with 30 days
-    return 30;
-  };
-  
-  // Function to create random data for each day in a given month and year
-  const generateRandomDataForMonth = (year, month) => {
-    const days = getDaysInMonth(year, month);
-    return Array.from({ length: days }, () => {
-      const cost = getRandomInt(1000000, 50000000); // Random cost between 1M and 50M
-      const revenue = getRandomInt(cost, cost + 20000000); // Random revenue at least equal to cost, up to 20M more
-      const profit = revenue - cost; // Profit as the difference between revenue and cost
-      return { cost, revenue, profit };
-    });
-  };
-const data ={
-    2021:{'Tháng 1': generateRandomDataForMonth(2021,1),
-        'Tháng 2': generateRandomDataForMonth(2021,2),
-        'Tháng 3': generateRandomDataForMonth(2021,3),
-        'Tháng 4': generateRandomDataForMonth(2021,4),
-        'Tháng 5': generateRandomDataForMonth(2021,5),
-        'Tháng 6': generateRandomDataForMonth(2021,6),
-        'Tháng 7': generateRandomDataForMonth(2021,7),
-        'Tháng 8': generateRandomDataForMonth(2021,8),
-        'Tháng 9': generateRandomDataForMonth(2021,9),
-        'Tháng 10': generateRandomDataForMonth(2021,10),
-        'Tháng 11': generateRandomDataForMonth(2021,11),
-        'Tháng 12': generateRandomDataForMonth(2021,12),
-    },
-    2022:{'Tháng 1': generateRandomDataForMonth(2022,1),
-        'Tháng 2': generateRandomDataForMonth(2022,2),
-        'Tháng 3': generateRandomDataForMonth(2022,3),
-        'Tháng 4': generateRandomDataForMonth(2022,4),
-        'Tháng 5': generateRandomDataForMonth(2022,5),
-        'Tháng 6': generateRandomDataForMonth(2022,6),
-        'Tháng 7': generateRandomDataForMonth(2022,7),
-        'Tháng 8': generateRandomDataForMonth(2022,8),
-        'Tháng 9': generateRandomDataForMonth(2022,9),
-        'Tháng 10': generateRandomDataForMonth(2022,10),
-        'Tháng 11': generateRandomDataForMonth(2022,11),
-        'Tháng 12': generateRandomDataForMonth(2022,12),
-    },
-    2023:{'Tháng 1': generateRandomDataForMonth(2023,1),
-        'Tháng 2': generateRandomDataForMonth(2023,2),
-        'Tháng 3': generateRandomDataForMonth(2023,3),
-        'Tháng 4': generateRandomDataForMonth(2023,4),
-        'Tháng 5': generateRandomDataForMonth(2023,5),
-        'Tháng 6': generateRandomDataForMonth(2023,6),
-        'Tháng 7': generateRandomDataForMonth(2023,7),
-        'Tháng 8': generateRandomDataForMonth(2023,8),
-        'Tháng 9': generateRandomDataForMonth(2023,9),
-        'Tháng 10': generateRandomDataForMonth(2023,10),
-        'Tháng 11': generateRandomDataForMonth(2023,11),
-        'Tháng 12': generateRandomDataForMonth(2023,12),
-    } 
-}
 const sumDataInGroups = (data) => {
   const result = [];
   const groupSize=3;
@@ -75,11 +13,11 @@ const sumDataInGroups = (data) => {
     const group = data.slice(i, i + groupSize);
     const summedGroup = group.reduce(
       (acc, day) => ({
-        cost: acc.cost + day.cost,
-        revenue: acc.revenue + day.revenue,
-        profit: acc.profit + day.profit,
+        chiphi: acc.chiphi + day.chiphi,
+        doanhthu: acc.doanhthu + day.doanhthu,
+        loi_nhuan: acc.loi_nhuan + day.loi_nhuan,
       }),
-      { cost: 0, revenue: 0, profit: 0 }
+      { chiphi: 0, doanhthu: 0, loi_nhuan: 0 }
     );
     result.push(summedGroup);
   }
@@ -87,64 +25,97 @@ const sumDataInGroups = (data) => {
     const lastGroup =result.pop();
     const secondLastGroup =result.pop();
       result.push({
-        cost: secondLastGroup.cost + lastGroup.cost,
-        revenue: secondLastGroup.revenue + lastGroup.revenue,
-        profit: secondLastGroup.profit + lastGroup.profit,
+        chiphi: secondLastGroup.chiphi + lastGroup.chiphi,
+        doanhthu: secondLastGroup.doanhthu + lastGroup.doanhthu,
+        loi_nhuan: secondLastGroup.loi_nhuan + lastGroup.loi_nhuan,
       })
   }
   return result;
 };
 const DateOfMonth = () =>{
-    const [selectedMonth, setSelectedMonth] = useState('Tháng 1');
-    const [selectedYear, setSelectedYear] = useState(2023);
+    const [selectedMonth, setSelectedMonth] = useState("11");
+    const [selectedYear, setSelectedYear] = useState(2024);
+    const [data,setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+     // Hàm format giá tiền
+     const formatCurrency = (value) => {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+    };
+
+    const fetchDataDataOfMonth = async (params={}) =>{
+      setLoading(true);
+      const data = await thongkeService.getThongKeTheoNgay({year:selectedYear, month:selectedMonth});
+      setData(data);
+    }
+    useEffect(()=>{
+      fetchDataDataOfMonth();
+    },[selectedYear, selectedMonth]);
+
     const handleChangeyear=(e)=>{
         setSelectedYear(parseInt(e.target.value))
     }
+    
     const handleChangeMonth =(e) => setSelectedMonth(e.target.value);
-    const handleExportExcel = (e)=>{
-      
-    }
-    const groupedData = sumDataInGroups(data[selectedYear][selectedMonth]);
-    const chartData ={
+
+    const handleExportExcel = () =>{
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "ThongKeDoanhThuNgayCuaThang");
+      // 3. Xuất tệp Excel
+      XLSX.writeFile(workbook, "ThongKeDoanhThuNgayCuaThang.xlsx");
+  }
+  const groupedData = sumDataInGroups(data);
+  const chartData ={
         labels : groupedData.map((_, index) =>{
           const startDay = index * 3 + 1;
           let endDay = (index + 1) * 3;
 
         // Nếu đây là nhóm cuối cùng và số ngày cuối không chia hết cho 3
-        if (index === groupedData.length - 1 && data[selectedYear][selectedMonth].length % 3 !== 0) {
-            endDay = data[selectedYear][selectedMonth].length;
+        if (index === groupedData.length - 1 && data.length % 3 !== 0) {
+            endDay = data.length;
         }
           return `Ngày ${startDay}-${endDay}`;
         }),
         datasets :[
             {
                 label:'Vốn',
-                data:groupedData.map((group) => group.cost),
+                data:groupedData.map((group) => group.chiphi),
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
             },
             {
                 label : 'Doanh thu',
-                data:groupedData.map((group) => group.revenue),
+                data:groupedData.map((group) => group.doanhthu),
                 backgroundColor: 'rgba(54, 162, 235, 0.5)',
               },
               {
                 label: 'Lợi nhuận',
-                data:groupedData.map((group) => group.profit),
+                data:groupedData.map((group) => group.loi_nhuan),
                 backgroundColor: 'rgba(153, 102, 255, 0.5)',
               },
         ] 
         
     };
+    const allValues = [
+      ...data.map(item => item.chiphi),
+      ...data.map(item => item.doanhthu),
+      ...data.map(item => item.loi_nhuan),
+    ];
+
+    const minValue = Math.min(...allValues);
+    const maxValue = Math.max(...allValues);
     const chartOptions = {
         responsive: true,
         maintainAspectRatio: false,
 
         scales: {
           y: {
-            beginAtZero: true,
+            beginAtZero:false,
+            min: minValue - (Math.abs(minValue) * 0.3),
+            max: maxValue + (Math.abs(maxValue) * 0.3),
             ticks: {
               callback: function (value) {
-                return `${value.toLocaleString()}đ`;
+                return `${formatCurrency(value)}`;
               },
             },
           },
@@ -172,20 +143,19 @@ const DateOfMonth = () =>{
           <div className="Filter-container">
             <label >Chọn tháng</label>
             <select value={selectedMonth} onChange={handleChangeMonth}>
-              {
-                Object.keys(data[selectedYear]).map((month)=>(
-                  <option key={month} value={month}>
-                    {month}
-                  </option>
-                )
-               )
-              }
+            {[...Array(12)].map((_, i) => (
+            <option key={i + 1} value={i + 1}>
+              {i + 1}
+            </option>
+          ))}
             </select>
             <label>Chọn năm:</label>
             <select value={selectedYear} onChange={handleChangeyear}>
-              <option value={2021}>2021</option>
-              <option value={2022}>2022</option>
-              <option value={2023}>2023</option>
+            {[2021, 2022, 2023, 2024].map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
             </select>
             <button onClick={handleExportExcel}>Xuất excel</button>
           </div>
@@ -198,19 +168,19 @@ const DateOfMonth = () =>{
       <table>
         <thead>
           <tr>
-            <th>Ng</th>
+            <th>Ngày</th>
             <th>Chi Phí</th>
             <th>Doanh thu</th>
             <th>Lợi nhuận</th>
           </tr>
         </thead>
         <tbody>
-          {data[selectedYear][selectedMonth].map((row, index) => (
+          {data.map((item, index) => (
             <tr key={index}>
-              <td>{row.month}</td>
-              <td>{row.cost.toLocaleString()}đ</td>
-              <td>{row.revenue.toLocaleString()}đ</td>
-              <td>{row.profit.toLocaleString()}đ</td>
+              <td>{item.ngay}</td>
+              <td>{formatCurrency(item.chiphi)}</td>
+              <td>{formatCurrency(item.doanhthu)}</td>
+              <td>{formatCurrency(item.loi_nhuan)}</td>
             </tr>
           ))}
         </tbody>

@@ -1,6 +1,7 @@
 import React,{useEffect, useState} from "react";
 import '../statisticsChild/statisticChild.css';
 import thongkeService from "../../services/thongkeService";
+import * as XLSX from 'xlsx'
 const NhaCungCap = ()=> {
     const [text, setText] = useState('');
     const [timeStart, setTimeStart] = useState('');
@@ -17,6 +18,13 @@ const NhaCungCap = ()=> {
     useEffect(()=>{
         fetchProvider();
     },[]);
+    const handleExportExcel = () =>{
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "ThongKeNhaCungCap");
+        // 3. Xuất tệp Excel
+        XLSX.writeFile(workbook, "ThongKeNhaCungCap.xlsx");
+    }
     const handleReset = () =>{
         setText('');
         setTimeStart('');
@@ -52,6 +60,7 @@ const NhaCungCap = ()=> {
                 <div className="buttons-container">
                     <button onClick={handleSearch}>Tìm kiếm</button>
                     <button onClick={handleReset}>Làm mới</button>
+                    <button onClick={handleExportExcel}>Xuất Excel</button>
                 </div>
             </div>
             <div className="table-container">

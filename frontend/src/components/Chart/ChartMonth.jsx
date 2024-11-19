@@ -1,91 +1,78 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 import '../Chart/Chart.css';
-const data = {
-  2021: [
-    { month: 'Tháng 1', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 2', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 3', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 4', cost: 200000000, revenue: 250000000, profit: 50000000 },
-    { month: 'Tháng 5', cost: 180000000, revenue: 230000000, profit: 50000000 },
-    { month: 'Tháng 6', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 7', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 8', cost: 100000000, revenue: 120000000, profit: 20000000 },
-    { month: 'Tháng 9', cost: 150000000, revenue: 200000000, profit: 50000000 },
-    { month: 'Tháng 10', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 11', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 12', cost: 0, revenue: 0, profit: 0 },
-  ],
-  2022: [
-    { month: 'Tháng 1', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 2', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 3', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 4', cost: 250000000, revenue: 300000000, profit: 50000000 },
-    { month: 'Tháng 5', cost: 220000000, revenue: 270000000, profit: 50000000 },
-    { month: 'Tháng 6', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 7', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 8', cost: 100000000, revenue: 120000000, profit: 20000000 },
-    { month: 'Tháng 9', cost: 180000000, revenue: 250000000, profit: 70000000 },
-    { month: 'Tháng 10', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 11', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 12', cost: 0, revenue: 0, profit: 0 },
-  ],
-  2023: [
-    { month: 'Tháng 1', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 2', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 3', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 4', cost: 346000000, revenue: 384500000, profit: 38500000 },
-    { month: 'Tháng 5', cost: 258200000, revenue: 299060000, profit: 40860000 },
-    { month: 'Tháng 6', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 7', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 8', cost: 100000000, revenue: 150000000, profit: 50000000 },
-    { month: 'Tháng 9', cost: 200000000, revenue: 280000000, profit: 80000000 },
-    { month: 'Tháng 10', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 11', cost: 0, revenue: 0, profit: 0 },
-    { month: 'Tháng 12', cost: 0, revenue: 0, profit: 0 },
-  ]
-};
+import * as XLSX from 'xlsx';
+import thongkeService from '../../services/thongkeService';
 
 const ChartMonth =()=>{
-    const [selectedYear ,setSelectedYear] =useState(2023);
-    const handleExportExcel = () => {
-        // Xử lý logic xuất excel
-      };
-      const handleChangeyear =(e) =>{
-        setSelectedYear(parseInt(e.target.value));
-      }
+    const [selectedYear ,setSelectedYear] =useState(2024);
+    const [data,setData] = useState([]);
+      // Hàm format giá tiền
+      const formatCurrency = (value) => {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+    };
+    const fetchDataMonth = async (params={}) =>{
+      const data = await thongkeService.getThongKeTheoThang(params);
+      setData(data);
+    };
+    useEffect(()=>{
+      fetchDataMonth({year: selectedYear});
+    },[selectedYear])
+    const handleExportExcel = () =>{
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "ThongKeDoanhThuTheothang");
+      // 3. Xuất tệp Excel
+      XLSX.writeFile(workbook, "ThongKeDoanhThuTheothang.xlsx");
+    } 
+    
+    const handleChangeyear =(e) =>{
+      const year = parseInt(e.target.value);
+      setSelectedYear(year);
+      fetchDataMonth({ year:year});
+    }
+    const filteredData = data.filter(item => item.nam === selectedYear);
     const chartData = {
-      labels : data[selectedYear].map(item => item.month),
+      labels : filteredData.map(item => item.thang),
       datasets : [
         {
           label :'Vốn',
-          data: data[selectedYear].map(item =>item.cost),
+          data: filteredData.map(item =>item.chiphi),
           backgroundColor: 'rgba(255, 99, 132, 0.5)',
         },
         {
           label : 'Doanh thu',
-          data:data[selectedYear].map(item => item.revenue),
+          data:filteredData.map(item => item.doanhthu),
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
         },
         {
           label: 'Lợi nhuận',
-          data: data[selectedYear].map(item => item.profit),
+          data: filteredData.map(item => item.loi_nhuan),
           backgroundColor: 'rgba(153, 102, 255, 0.5)',
         },
       ],
 
     } ;
-      const chartOptions = {
+    const allValues = [
+      ...filteredData.map(item => item.chiphi),
+      ...filteredData.map(item => item.doanhthu),
+      ...filteredData.map(item => item.loi_nhuan),
+    ];
+    const minValue = Math.min(...allValues);
+    const maxValue = Math.max(...allValues);
+    const chartOptions = {
         responsive: true,
         maintainAspectRatio: false,
 
         scales: {
           y: {
-            beginAtZero: true,
+            beginAtZero:false,
+            suggestedMin: minValue - (Math.abs(minValue) * 0.1),
+            suggestedMax: maxValue + (Math.abs(maxValue) * 0.1), 
             ticks: {
               callback: function (value) {
-                return `${value.toLocaleString()}đ`;
+                return `${formatCurrency(value)}`;
               },
             },
           },
@@ -112,9 +99,9 @@ const ChartMonth =()=>{
           <div className="Filter-container">
             <label>Chọn năm thống kê:</label>
             <select value={selectedYear} onChange={handleChangeyear}>
-              <option value={2021}>2021</option>
-              <option value={2022}>2022</option>
+              <option selected value={2022}>2022</option>
               <option value={2023}>2023</option>
+              <option value={2024}>2024</option>
             </select>
             <button onClick={handleExportExcel}>Xuất excel</button>
           </div>
@@ -134,12 +121,12 @@ const ChartMonth =()=>{
           </tr>
         </thead>
         <tbody>
-          {data[selectedYear].map((row, index) => (
+          {filteredData.map((item, index) => (
             <tr key={index}>
-              <td>{row.month}</td>
-              <td>{row.cost.toLocaleString()}đ</td>
-              <td>{row.revenue.toLocaleString()}đ</td>
-              <td>{row.profit.toLocaleString()}đ</td>
+              <td>{item.thang}</td>
+              <td>{formatCurrency(item.chiphi)}</td>
+              <td>{formatCurrency(item.doanhthu)}</td>
+              <td>{formatCurrency(item.loi_nhuan)}</td>
             </tr>
           ))}
         </tbody>
