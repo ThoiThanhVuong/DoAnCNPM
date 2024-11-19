@@ -1,14 +1,12 @@
 const db = require("../config/db");
 const { DataTypes } = require("sequelize");
-<<<<<<< HEAD
+
+const OriginModel = require("./OriginModel");
+const OperatingSystemModel = require("./OperatingSystemModel");
+const WareHouseModel = require("./WareHouseModel");
+const BrandModel = require("./BrandModel");
 
 // Định nghĩa ProductModel
-=======
-const OriginModel = require('./OriginModel');
-const OperatingSystemModel =require('./OperatingSystemModel');
-const WareHouseModel = require('./WareHouseModel');
-const BrandModel = require('./BrandModel');
->>>>>>> 390245f060a22729737d6709eea45df87f9f0099
 const ProductModel = db.define(
   "ProductModel",
   {
@@ -50,7 +48,7 @@ const ProductModel = db.define(
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model:OperatingSystemModel,
+        model: OperatingSystemModel,
         key: "ma_hdh",
       },
     },
@@ -67,7 +65,7 @@ const ProductModel = db.define(
       allowNull: true,
       references: {
         model: OriginModel,
-        key: 'ma_xuat_xu',
+        key: "ma_xuat_xu",
       },
     },
     khu_vuc_kho: {
