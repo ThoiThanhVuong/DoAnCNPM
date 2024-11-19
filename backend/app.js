@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const productRoutes = require("../backend/src/routes/productRoutes.js");
 const brandRoutes = require("../backend/src/routes/brandRoutes.js");
 const permissionRoutes = require("../backend/src/routes/permissionRoutes.js");
@@ -12,10 +13,21 @@ const osRoutes = require("../backend/src/routes/osRoutes.js");
 const colorRoutes = require("../backend/src/routes/colorRoutes.js");
 const ramRoutes = require("../backend/src/routes/ramRoutes.js");
 const romRoutes = require("../backend/src/routes/romRoutes.js");
+const providerRoutes = require("../backend/src/routes/providerRoutes.js");
+const loginRoutes = require("./src/routes/loginRoutes.js");
+const warehouseRoutes = require("../backend/src/routes/WareHouseRoutes.js");
 
 const app = express();
 
-app.use(cors());
+//middleware cho phep get/set cookie
+app.use(cookieParser());
+//middleware de cho phep frontend truy cap vao route cua backend, dong thoi cho phep gui cookie
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 // Middleware để parse JSON
 app.use(bodyParser.json());
 
@@ -34,5 +46,8 @@ app.use("/api/permission", permissionRoutes);
 app.use("/api/thongke", thongkeRoutes);
 app.use("/api/employee", employeeRoutes);
 app.use("/api/customers", customerRoutes);
+app.use("/api/providers", providerRoutes);
+app.use("/api/login", loginRoutes);
+app.use("/api/warehouses", warehouseRoutes);
 
 module.exports = app;

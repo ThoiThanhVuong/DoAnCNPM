@@ -8,14 +8,23 @@
   align-items: center;
 }
 
+<<<<<<< HEAD
 table {
+=======
+.container-account_content table {
+>>>>>>> 390245f060a22729737d6709eea45df87f9f0099
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
 }
 
+<<<<<<< HEAD
 table th,
 table td {
+=======
+.container-account_content table th,
+.container-account_content table td {
+>>>>>>> 390245f060a22729737d6709eea45df87f9f0099
   padding: 8px;
   text-align: left;
   border: 1px solid #ddd;
@@ -92,12 +101,23 @@ table td {
   margin-right: 0;
 }
 
+<<<<<<< HEAD
 label {
   font-weight: bold;
 }
 
 input,
 select {
+=======
+.add-account_content__content-items label,
+.edit-account_content__content-items label {
+  font-weight: bold;
+}
+
+.add-account_content__content-items input,
+.edit-account_content__content-items input,
+.edit-account_content__content-items select {
+>>>>>>> 390245f060a22729737d6709eea45df87f9f0099
   width: 100%;
   padding: 8px;
   margin-top: 5px;

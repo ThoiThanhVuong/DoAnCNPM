@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `phieu_nhap` (
   KEY `ma_nha_cung_cap` (`ma_ncc`) USING BTREE,
   CONSTRAINT `fk_phieu_nhap_ma_ncc` FOREIGN KEY (`ma_ncc`) REFERENCES `nha_cung_cap` (`ma_ncc`),
   CONSTRAINT `fk_phieu_nhap_ma_nv` FOREIGN KEY (`ma_nv`) REFERENCES `nhan_vien` (`ma_nv`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 INSERT INTO `phieu_nhap` (`ma_pn`,`ma_nv`,`ma_ncc`, `thoi_gian_nhap`,`tong_tien`,`trang_thai`)
 VALUES
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `phieu_xuat` (
   KEY `ma_khach_hang` (`ma_kh`) USING BTREE,
   CONSTRAINT `fk_hoa_don_ma_kh` FOREIGN KEY (`ma_kh`) REFERENCES `khach_hang` (`ma_kh`),
   CONSTRAINT `fk_hoa_don_ma_nv` FOREIGN KEY (`ma_nv`) REFERENCES `nhan_vien` (`ma_nv`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 INSERT INTO `phieu_xuat` (`ma_px`,`ma_nv`,`ma_kh`, `thoi_gian_xuat`, `tong_tien`,`trang_thai`)
 VALUES
@@ -264,12 +264,12 @@ CREATE TABLE IF NOT EXISTS `nhan_vien` (
   `sdt` varchar(11) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `mat_khau` varchar(255) DEFAULT NULL,
-  `ma_quyen` int(11) NOT NULL,
+  `ma_quyen` int(11) DEFAULT NULL,
   `trang_thai` int(1) DEFAULT NULL,
   PRIMARY KEY (`ma_nv`),
   KEY `fk_quyen` (`ma_quyen`),
   FOREIGN KEY (`ma_quyen`) REFERENCES `nhom_quyen` (`ma_quyen`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Thêm dữ liệu mẫu cho bảng `nhan_vien`
 INSERT INTO `nhan_vien` (`ma_nv`,`ten_nv`, `gioi_tinh`, `sdt`, `email`, `mat_khau`, `ma_quyen`, `trang_thai`) VALUES

@@ -1,6 +1,7 @@
 const Permission = require("../models/permissionModel");
 const Employee = require("../models/EmployeeModel");
-const FeaturePermission = require("../models/FeaturePermissionModel")
+const FeaturePermission = require("../models/FeaturePermissionModel");
+const DetailPermission = require("../models/DetailPermission");
 
 exports.showAllPermission = async (req, res) => {
   try {
@@ -37,6 +38,65 @@ exports.showAllPermission = async (req, res) => {
   }
 };
 
+exports.showAllFeature = async (req, res) => {
+  try {
+    const feature = await Permission.findAll({
+      include: [
+        {
+          model: FeaturePermission,
+          through: {
+            attributes: [],
+          },
+          attributes: ["ten_chuc_nang"],
+        },
+      ],
+      attributes: ["ma_quyen", "ten_quyen"],
+    });
+    res.json(feature);
+  } catch (error) {
+    res.status(500).json({ error: "co loi khi tim chuc nang", error });
+  }
+};
+
+exports.changeRole = async (req, res) => {
+  const { ma_quyen } = req.params;
+  const { listFeature } = req.body;
+  let hanh_dong;
+  console.log(listFeature, ma_quyen);
+  try {
+    const feature = await DetailPermission.findAll({
+      where: { ma_quyen: ma_quyen },
+    });
+    console.log(JSON.stringify(feature, null, 2));
+    if (feature.length > 0) {
+      await DetailPermission.destroy({
+        where: {
+          ma_quyen: ma_quyen,
+        },
+      });
+      console.log("successfull");
+    }
+    if (ma_quyen === "1" || ma_quyen === "2" || ma_quyen === "3") {
+      hanh_dong = "Thêm, sửa, xóa, xem";
+    } else if (ma_quyen === "4") {
+      hanh_dong = "xem";
+    }
+    console.log("hanh dong:", hanh_dong, typeof ma_quyen)
+    const createPromises = listFeature.map((ma_chuc_nang) => {
+      return DetailPermission.create({
+        ma_quyen,
+        ma_chuc_nang,
+        hanh_dong,
+      });
+    });
+    await Promise.all(createPromises);
+    console.log("Tạo thành công");
+    res.json("Thay doi thanh cong");
+  } catch (error) {
+    res.status(500).json("loi khi thay doi chuc nang cua quyen:", error);
+  }
+};
+
 exports.updateRole = async (req, res) => {
   const { ma_nv } = req.params;
   const { ma_quyen } = req.body;
@@ -46,6 +106,7 @@ exports.updateRole = async (req, res) => {
       return res.status(404).json({ error: "Không tìm thấy sản phẩm" });
     }
     // console.log(employee)
+    employee.trang_thai = 1;
     employee.ma_quyen = ma_quyen;
     await employee.save();
     console.log(ma_nv, ma_quyen);
@@ -61,6 +122,7 @@ exports.deleteRole = async (req, res) => {
   try {
     const employee = await Employee.findByPk(ma_nv);
     employee.ma_quyen = null;
+    employee.trang_thai = 0;
     await employee.save();
     res.json("da xoa thanh cong");
   } catch (error) {

@@ -1,41 +1,69 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 import '../Chart/Chart.css';
-
-const data = [
-  { name: '2018', von: 0, doanhthu: 0, loinhuan: 0 },
-  { name: '2019', von: 0, doanhthu: 0, loinhuan: 0 },
-  { name: '2020', von: 0, doanhthu: 0, loinhuan: 0 },
-  { name: '2021', von: 0, doanhthu: 0, loinhuan: 0 },
-  { name: '2022', von: 0, doanhthu: 0, loinhuan: 0 },
-  { name: '2023', von: 604200000, doanhthu: 683560000, loinhuan: 79360000 },
-];
+import * as XLSX from 'xlsx';
+import thongkeService from '../../services/thongkeService';
 
 const Year = () => {
   const [fromYear, setFromYear] = useState('');
   const [toYear, setToYear] = useState('');
-
-  const handleStatistics = () => {
-    // Xử lý logic thống kê
+  const [data, setData] = useState([]);
+  // Tham chiếu đến các ô input
+  const fromYearRef = useRef(null);
+  const toYearRef = useRef(null);
+    // Hàm format giá tiền
+    const formatCurrency = (value) => {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
   };
 
+  const FetchStatisticYear = async (params={}) => {
+    const data = await thongkeService.getThongKeTheoNam(params);
+    setData(data);
+  };
+   useEffect(()=>{
+    FetchStatisticYear();
+   },[]);
   const handleReset = () => {
     setFromYear('');
     setToYear('');
+    setData([]);
+    FetchStatisticYear();
   };
-  
-  const handleExportExcel = () => {
-    // Xử lý logic xuất excel
-  };
+  const handleStatistic = () =>{
+    const yearStart = fromYear.trim();
+    const yearEnd = toYear.trim();
+    if(!yearStart&&!yearEnd){
+      alert("Vui lòng chọn năm thống kê");
+      fromYearRef.current.focus();
+      return;
+    } 
+    if(yearEnd){
+      if(yearStart > yearEnd){
+        alert('ngày bắt đầu không được lớn hơn ngày kết thúc');
+        fromYearRef.current.focus();
+        return;
+      }
+      else{
+        FetchStatisticYear({yearStart:yearStart,yearEnd:yearEnd});
+      }
+    } 
+  }
+  const handleExportExcel = () =>{
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "ThongKeDoanhThuTheoNam");
+    // 3. Xuất tệp Excel
+    XLSX.writeFile(workbook, "ThongKeDoanhThuTheoNam.xlsx");
+}
 
   // Dữ liệu cho biểu đồ Bar Chart
   const chartData = {
-    labels: data.map(item => item.name),
+    labels: data.map(item => item.nam),
     datasets: [
       {
         label: 'Vốn',
-        data: data.map(item => item.von),
+        data: data.map(item => item.chiphi),
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
@@ -45,7 +73,7 @@ const Year = () => {
       },
       {
         label: 'Lợi nhuận',
-        data: data.map(item => item.loinhuan),
+        data: data.map(item => item.loi_nhuan),
         backgroundColor: 'rgba(153, 102, 255, 0.5)',
       },
     ],
@@ -75,25 +103,34 @@ const Year = () => {
           },
         },
       },
+      x: {
+        stacked: false,
+        grid: {
+          display: false,
+        },
+        barThickness: 12,
+      },
     },
   };
 
   return (
     <div className="Chart-page">
-      <div className="filter-container">
+      <div className="Filter-container">
         <input
           type="text"
           placeholder="Từ năm"
           value={fromYear}
           onChange={(e) => setFromYear(e.target.value)}
+          ref={fromYearRef}
         />
         <input
           type="text"
           placeholder="Đến năm"
           value={toYear}
           onChange={(e) => setToYear(e.target.value)}
+          ref={toYearRef}
         />
-        <button onClick={handleStatistics}>Thống kê</button>
+        <button onClick={handleStatistic}>Thống kê</button>
         <button onClick={handleReset}>Làm mới</button>
         <button onClick={handleExportExcel}>Xuất excel</button>
       </div>
@@ -102,7 +139,7 @@ const Year = () => {
         <Bar data={chartData} options={chartOptions} />
       </div>
 
-      <div className="table-container">
+      <div className="table-chart-container">
         <table>
           <thead>
             <tr>
@@ -113,12 +150,12 @@ const Year = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((row, index) => (
+            {data.map((item, index) => (
               <tr key={index}>
-                <td>{row.name}</td>
-                <td>{row.von.toLocaleString()}đ</td>
-                <td>{row.doanhthu.toLocaleString()}đ</td>
-                <td>{row.loinhuan.toLocaleString()}đ</td>
+                <td>{item.nam}</td>
+                <td>{formatCurrency(item.chiphi)}</td>
+                <td>{formatCurrency(item.doanhthu)}</td>
+                <td>{formatCurrency(item.loi_nhuan)}</td>
               </tr>
             ))}
           </tbody>

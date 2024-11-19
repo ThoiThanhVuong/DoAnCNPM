@@ -8,8 +8,18 @@ const permissionService = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error creating permission:", error);
+      console.error("Error getting permission:", error);
       throw error;
+    }
+  },
+  showAllFeature: async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/permission/show_feature"
+      );
+      return response.data;
+    } catch (error) {
+      console.error("error getting feature:", error);
     }
   },
   updateRole: async (maNvID, roleID) => {
@@ -32,6 +42,18 @@ const permissionService = {
       return response.data;
     } catch (error) {
       console.log("Loi khi xoa nhan vien:", error);
+      throw error;
+    }
+  },
+  changeRole: async (roleID, listFeature) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/permission/change_role/${roleID}`,
+        listFeature
+      );
+      return response.data;
+    } catch (error) {
+      console.log("Loi khi thay doi chuc nang;", error);
       throw error;
     }
   },

@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 const Import = require('../models/ImportModel')
-const ProductModel = require('../models/ProductModel')
+const phienBanSanPham = require('./PhienBanSPModel')
 const WareHouse = require('../models/WareHouseModel')
 
 const detailImport = sequelize.define('DetailImport', {
@@ -12,11 +12,11 @@ const detailImport = sequelize.define('DetailImport', {
             key: 'ma_pn',
         }
     },
-    ma_sp: {
+    ma_phien_ban_sp: {
         type: DataTypes.INTEGER,
         references:{
-            model : ProductModel,
-            key: 'ma_sp',
+            model : phienBanSanPham,
+            key: 'ma_phien_ban_sp',
         }
     },
     so_luong: {
@@ -36,7 +36,5 @@ const detailImport = sequelize.define('DetailImport', {
     tableName: 'chi_tiet_phieu_nhap',
     timestamps: false,
 }) 
-detailImport.belongsTo(Import, {foreignKey: 'ma_pn', onDelete: 'CASCADE'});
-detailImport.belongsTo(ProductModel, {foreignKey: 'ma_sp', onDelete: 'CASCADE'});
 detailImport.belongsTo(WareHouse, {foreignKey: 'ma_kho', onDelete: 'CASCADE'});
 module.exports = detailImport;

@@ -1,38 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import '../style/Employee.css';
-import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const Employee = () => {
   const [employeeData, setEmployeeData] = useState({});
   const [showPasswordChange, setShowPasswordChange] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [newEmployeeData, setNewEmployeeData] = useState({
-    ten_nv: '',
-    gioi_tinh: '',
-    sdt: '',
-    email: ''
-  });
-  const [editEmployeeData, setEditEmployeeData] = useState({
-    sdt: '',
-    email: ''
-  });
-  const [showAddEmployee, setShowAddEmployee] = useState(false);
-  const [showEditEmployee, setShowEditEmployee] = useState(false);
-  const [currentEmployee, setCurrentEmployee] = useState(null);
+  const manv = localStorage.getItem("ma_nv"); // Lấy ten_nv từ localStorage
 
   // Lấy thông tin nhân viên hiện tại từ API
   useEffect(() => {
-    fetch('/api/employee')
-      .then((response) => response.json())
-      .then((data) => setEmployeeData(data))
-      .catch((error) => console.error('Error fetching employee data:', error));
-  }, []);
+    if (manv) {
+      // Dùng manv để gọi API và lấy dữ liệu nhân viên
+      fetch(`http://localhost:5000/api/employee/${manv}`)
+        .then((response) => response.json())
+        .then((data) => setEmployeeData(data))
+        .catch((error) => console.error('Error fetching employee data:', error));
+    }
+  }, [manv]);
 
   // Xử lý thay đổi mật khẩu
   const handlePasswordChange = () => {
     if (newPassword === confirmPassword) {
-      fetch('/api/change-password', {
+      fetch('http://localhost:5000/api/change-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,83 +42,6 @@ const Employee = () => {
     }
   };
 
-  // Lấy danh sách nhân viên từ API
-  const fetchEmployees = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/employee');
-      const employees = await response.json();
-      setEmployeeData(employees);
-    } catch (error) {
-      console.error('Error fetching employees:', error);
-    }
-  };
-
-  // Hiển thị form thêm nhân viên
-  const handleShowAddEmployee = () => {
-    setShowAddEmployee(!showAddEmployee);
-  };
-
-  // Hiển thị form chỉnh sửa nhân viên
-  const handleShowEditEmployee = (employee) => {
-    setCurrentEmployee(employee);
-    setEditEmployeeData({
-      sdt: employee.sdt,
-      email: employee.email,
-    });
-    setShowEditEmployee(true);
-  };
-
-  // Thêm nhân viên mới
-  const handleAddEmployee = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/employee', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newEmployeeData),
-      });
-      if (!response.ok) throw new Error('Failed to add employee');
-      await fetchEmployees(); // Re-fetch employees after adding
-      setShowAddEmployee(false);
-      setNewEmployeeData({
-        ten_nv: '',
-        gioi_tinh: '',
-        sdt: '',
-        email: '',
-      });
-    } catch (error) {
-      console.error('Error adding employee:', error);
-    }
-  };
-
-  // Chỉnh sửa thông tin nhân viên
-  const handleEditEmployee = async () => {
-    try {
-      const response = await fetch(`http://localhost:5000/employee/${currentEmployee.ma_nv}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editEmployeeData),
-      });
-      if (!response.ok) throw new Error('Failed to update employee');
-      await fetchEmployees(); // Re-fetch employees after editing
-      setShowEditEmployee(false);
-      setCurrentEmployee(null);
-    } catch (error) {
-      console.error('Error updating employee:', error);
-    }
-  };
-
-  // Xóa nhân viên
-  const handleDeleteEmployee = async (ma_nv) => {
-    try {
-      const response = await fetch(`http://localhost:5000/employee/${ma_nv}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) throw new Error('Failed to delete employee');
-      await fetchEmployees(); // Re-fetch employees after deletion
-    } catch (error) {
-      console.error('Error deleting employee:', error);
-    }
-  };
 
   return (
     <div className="employee-container">

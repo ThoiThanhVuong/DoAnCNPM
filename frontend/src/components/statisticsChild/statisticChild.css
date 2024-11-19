@@ -11,6 +11,7 @@
     display: flex;
     flex-direction: row;
     background: #F0F7FA;
+    position: relative;
 }
 .filters-container{
     width:25%;
@@ -41,6 +42,7 @@
  display:flex;
  justify-content: space-between;
  align-items: center;
+ flex-wrap: wrap;
 }
 .buttons-container button{
     width:100%;
@@ -50,25 +52,29 @@
     border-radius: 10px;
     color:#fff;
     border: none;
+    cursor: pointer;
 }
-.buttons-container button:first-child{
+.buttons-container button{
     background-color:#59A869 ;
 }
 .buttons-container button:last-child{
     background-color:#DB5860;
+
     
 }
 .table-container{
     width:calc(75% - 10px);
     background: #fff;
     border-radius: 10px;
-    height:100%;
+    min-height:100%;
     overflow-y: auto;
+
 }
 .table-container table{
     width:100%;
     border-collapse: collapse;
     position: relative;
+    height:100%;
 }
 .table-container thead{
     position:sticky;
@@ -79,7 +85,7 @@
   .table-container td {
     border: 1px solid #ddd;
     padding: 10px;
-    text-align: left;
+    text-align: center;
   }
   .table-container th {
     background-color: #f5f5f5;
