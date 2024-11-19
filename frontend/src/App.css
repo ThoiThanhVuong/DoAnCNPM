@@ -2,10 +2,12 @@
   margin: 0;
   padding: 0;
   text-decoration: none;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
 }
 .container {
   display: flex;
+  height: 100vh;
+  overflow-y: hidden;
 }
 main {
   width: 100%;

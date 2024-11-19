@@ -6,7 +6,7 @@ import { FaPlus } from "react-icons/fa";
 import { FaEdit } from 'react-icons/fa';
 import { useState } from "react";
 import { FaTrash, FaCheck } from 'react-icons/fa';
-import productService from '../services/productService'
+import productService from '../services/productService';
 
 
 const SoLuongGiaNhap = ({handleCancel,handleOK, soLuong, setSoluong, giaNhap, setGiaNhap}) =>{
@@ -46,11 +46,14 @@ const NhapHang = () => {
   useEffect (() => {
     const fetchProducts = async () => {
       const data = await productService.getAllProducts();
-      setDataProduct(data);
+      setDataProduct(data.data);
     }; 
     fetchProducts();
   }, [])
 
+  const show = () => {
+    console.log(" du lieu",dataProduct)
+  }
   const handleToggleNotification = (id) => {
     setShowNotification(id);
     setShowOverlay(true);
@@ -100,15 +103,16 @@ const NhapHang = () => {
               </tr>
             </thead>
               <tbody>
+              {show()}
               {dataProduct.map((datatable) => (
                 <tr key={datatable.id}>
                   <td style={{ width: "5%" }}>{datatable.ma_sp}</td>
                   <td style={{ width: "15%" }}>{datatable.ten_sp}</td>
                   <td style={{ width: "10%" }}>{datatable.chip_xu_ly}</td>
-                  <td style={{ width: "15%" }}>{datatable.hdh}</td>
+                  <td style={{ width: "15%" }}>{datatable.operatingSystem.ten_hdh}</td>
                   <td style={{ width: "10%" }}>{datatable.dung_luong_pin}</td>
-                  <td style={{ width: "15%" }}>{datatable.thuong_hieu}</td>
-                  <td style={{ width: "15%" }}>{datatable.xuat_xu}</td>
+                  <td style={{ width: "15%" }}>{datatable.brand.ten_thuong_hieu}</td>
+                  <td style={{ width: "15%" }}>{datatable.origin.ten_xuat_xu}</td>
                   <td style={{ width: "10%" }}>
                     <div className="custom-icAdd">
                       <FaPlus className="iconAdd" onClick={() => handleToggleNotification(datatable.ma_sp)}/>
