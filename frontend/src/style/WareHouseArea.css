@@ -1,125 +1,231 @@
+.container-area {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container_banner {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.container_content {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.add-area,
+.edit-area {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.add-area_banner,
+.edit-area_banner {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.add-area_content,
+.edit-area_content {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-area_content__content-items,
+.edit-area_content__content-items {
+  margin-bottom: 15px;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"] {
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-area_button,
+.edit-area_button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.detail,
+.edit,
+.delete {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.detail:hover,
+.edit:hover,
+.delete:hover {
+  color: #007bff;
+}
 .warehouse-area {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .warehouse-area__container {
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .warehouse-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-  }
-  
-  .warehouse-button.add {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .warehouse-button.add:hover {
-    background-color: #45a049;
-  }
-  
-  .warehouse-area__container__banner {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .warehouse-area__container__table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .warehouse-area__header-cell,
-  .warehouse-area__data-cell {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-  }
-  
-  .warehouse-area__header-cell {
-    background-color: #f2f2f2;
-    font-weight: bold;
-  }
-  
-  .warehouse-area__detail-icon,
-  .warehouse-area__edit-icon,
-  .warehouse-area__delete-icon {
-    cursor: pointer;
-    margin: 0 5px;
-  }
-  
-  .warehouse-area__edit-icon {
-    color: #2196F3;
-  }
-  
-  .warehouse-area__delete-icon {
-    color: #f44336;
-  }
-  
-  .warehouse-area__add-form,
-  .warehouse-area__edit-form {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .warehouse-area__add-form-banner,
-  .warehouse-area__edit-form-banner {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .warehouse-area__form-item {
-    margin-bottom: 15px;
-  }
-  
-  .warehouse-area__form-item-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .warehouse-area__form-item-input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  .warehouse-area__form-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  
-  .warehouse-button.confirm {
-    background-color: #2196F3;
-    color: white;
-  }
-  
-  .warehouse-button.confirm:hover {
-    background-color: #0b7dda;
-  }
-  
-  .warehouse-button.exit {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  .warehouse-button.exit:hover {
-    background-color: #da190b;
-  }
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.warehouse-area__container {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.warehouse-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.warehouse-button.add {
+  background-color: #4caf50;
+  color: white;
+}
+
+.warehouse-button.add:hover {
+  background-color: #45a049;
+}
+
+.warehouse-area__container__banner {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.warehouse-area__container__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.warehouse-area__header-cell,
+.warehouse-area__data-cell {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.warehouse-area__header-cell {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.warehouse-area__detail-icon,
+.warehouse-area__edit-icon,
+.warehouse-area__delete-icon {
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.warehouse-area__edit-icon {
+  color: #2196f3;
+}
+
+.warehouse-area__delete-icon {
+  color: #f44336;
+}
+
+.warehouse-area__add-form,
+.warehouse-area__edit-form {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.warehouse-area__add-form-banner,
+.warehouse-area__edit-form-banner {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.warehouse-area__form-item {
+  margin-bottom: 15px;
+}
+
+.warehouse-area__form-item-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.warehouse-area__form-item-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.warehouse-area__form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.warehouse-button.confirm {
+  background-color: #2196f3;
+  color: white;
+}
+
+.warehouse-button.confirm:hover {
+  background-color: #0b7dda;
+}
+
+.warehouse-button.exit {
+  background-color: #f44336;
+  color: white;
+}
+
+.warehouse-button.exit:hover {
+  background-color: #da190b;
+}
