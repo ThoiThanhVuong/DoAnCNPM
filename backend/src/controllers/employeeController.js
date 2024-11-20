@@ -81,6 +81,17 @@ const deleteEmployee = async (req, res) => {
   }
 };
 
+const countEmployee = async (req, res) => {
+    try {
+      console.log('Debug: Bắt đầu đếm nhân viên');
+      const employeeCount = await Employee.count();
+      console.log('Debug: Tổng số nhân viên:', employeeCount);
+      res.status(200).json({ count: employeeCount })
+    } catch (error) {
+      console.error('Error counting employees:', error);
+      throw error;
+    }
+ };
 
 module.exports = {
   getEmployees,
@@ -88,4 +99,5 @@ module.exports = {
   addEmployee,
   updateEmployee,
   deleteEmployee,
+  countEmployee
 };
