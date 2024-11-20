@@ -9,6 +9,10 @@
   z-index: 999; /* Nằm dưới modal */
   display: none; /* Ẩn mặc định */
 }
+.error-message {
+  color: red;
+  animation: fadeIn 0.5s ease;
+}
 
 /* Hiển thị lớp phủ khi modal mở */
 .modal-overlay.active {
@@ -47,7 +51,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 70%; /* Độ rộng modal */
-  max-width: 800px;
+  max-width: 1000px;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -72,7 +76,11 @@
 .add-product-modal form {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3 cột */
-  gap: 10px; /* Khoảng cách giữa các trường */
+  gap: 20px; /* Khoảng cách giữa các trường */
+}
+.add-product-modal label {
+  margin-bottom: 10px;
+  font-weight: bold;
 }
 
 /* Trường nhập liệu (input, select) */

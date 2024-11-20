@@ -49,7 +49,6 @@ app.use("/api/employee", employeeRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/providers", providerRoutes);
 app.use("/api/login", loginRoutes);
-
 app.use("/api/phieuxuat", phieuxuatRoutes);
 app.use("/api/warehouses", warehouseRoutes);
 
