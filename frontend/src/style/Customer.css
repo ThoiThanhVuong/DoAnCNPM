@@ -192,6 +192,22 @@ iterface_edit */
   animation: slideInOut 2s forwards;
 }
 
+.error-message{
+  color: white;
+  font-weight: bold;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: red;
+  position: fixed;
+  top: 100px;
+  right: -300px; /* Bắt đầu từ ngoài màn hình */
+  width: 200px;
+  opacity: 0;
+  animation: slideInOut 2s forwards;
+  z-index: 10;
+}
+
 @keyframes slideInOut {
   0% {
     right: -300px;
