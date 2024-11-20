@@ -8,8 +8,14 @@ const permissionRoutes = require("../backend/src/routes/permissionRoutes.js");
 const thongkeRoutes = require("../backend/src/routes/thongkeRoutes.js");
 const employeeRoutes = require("../backend/src/routes/employeeRoutes.js");
 const customerRoutes = require("../backend/src/routes/customerRoutes.js");
+const originRoutes = require("../backend/src/routes/originRoutes");
+const osRoutes = require("../backend/src/routes/osRoutes.js");
+const colorRoutes = require("../backend/src/routes/colorRoutes.js");
+const ramRoutes = require("../backend/src/routes/ramRoutes.js");
+const romRoutes = require("../backend/src/routes/romRoutes.js");
 const providerRoutes = require("../backend/src/routes/providerRoutes.js");
 const loginRoutes = require("./src/routes/loginRoutes.js");
+const phieuxuatRoutes = require("./src/routes/phieuxuatRoutes.js");
 const warehouseRoutes = require("../backend/src/routes/WareHouseRoutes.js");
 
 const app = express();
@@ -32,12 +38,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Định nghĩa các route api
 app.use("/api/products", productRoutes);
 app.use("/api/brands", brandRoutes);
+app.use("/api/origins", originRoutes);
+app.use("/api/os", osRoutes);
+app.use("/api/color", colorRoutes);
+app.use("/api/ram", ramRoutes);
+app.use("/api/rom", romRoutes);
 app.use("/api/permission", permissionRoutes);
 app.use("/api/thongke", thongkeRoutes);
 app.use("/api/employee", employeeRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/providers", providerRoutes);
 app.use("/api/login", loginRoutes);
-app.use("/api/warehouses",warehouseRoutes);
+
+app.use("/api/phieuxuat", phieuxuatRoutes);
+app.use("/api/warehouses", warehouseRoutes);
 
 module.exports = app;

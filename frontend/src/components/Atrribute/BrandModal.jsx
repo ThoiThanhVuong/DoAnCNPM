@@ -28,7 +28,7 @@ const BrandModal = ({ isOpen, onClose }) => {
 
   // Handle adding a new brand
   const handleAddBrand = async (e) => {
-    e.preventDefault(); // Ngừng hành động mặc định
+    e.preventDefault();
 
     if (!newBrand || newBrand.trim() === "") {
       setErrorMessage("Tên thương hiệu không được để trống");

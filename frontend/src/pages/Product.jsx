@@ -1,86 +1,87 @@
 import React, { useEffect, useState } from "react";
 import "../style/product.css";
-import { FaPlus, FaEdit, FaTrash, FaFileExcel } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaInfoCircle } from "react-icons/fa";
+import AddProductModal from "../components/Product/AddProductModal";
+import axios from "axios";
 
 const Product = () => {
-  const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchBy, setSearchBy] = useState("name"); // Mặc định tìm theo tên sản phẩm
-
-  // Dữ liệu thử nghiệm để đổ vào bảng
-  const sampleData = [
-    {
-      id: 1,
-      code: "1",
-      name: "iPhone 14",
-      quantity: 100,
-      brand: "Apple",
-      os: "iOS",
-      screenSize: "6.1 inches",
-      processor: "A15 Bionic",
-      battery: "3279 mAh",
-      origin: "USA",
-      warehouseArea: "A1"
-    },
-    {
-      id: 2,
-      code: "2",
-      name: "Samsung Galaxy S23",
-      quantity: 150,
-      brand: "Samsung",
-      os: "Android",
-      screenSize: "6.2 inches",
-      processor: "Exynos 2200",
-      battery: "3900 mAh",
-      origin: "Korea",
-      warehouseArea: "B2"
-    },
-    {
-      id: 3,
-      code: "3",
-      name: "Google Pixel 8",
-      quantity: 200,
-      brand: "Google",
-      os: "Android",
-      screenSize: "6.3 inches",
-      processor: "Tensor G3",
-      battery: "4600 mAh",
-      origin: "USA",
-      warehouseArea: "C3"
-    }
-  ];
-
-  useEffect(() => {
-    // Gán dữ liệu mẫu vào state
-    setProducts(sampleData);
-  }, []);
-
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
+  const [products, setProducts] = useState([]); // Dữ liệu sản phẩm
+  const [filteredProducts, setFilteredProducts] = useState([]); // Dữ liệu sản phẩm đã lọc
+  const [searchQuery, setSearchQuery] = useState(""); // Từ khóa tìm kiếm
+  const [searchBy, setSearchBy] = useState("name"); // Tiêu chí tìm kiếm (tên sản phẩm, thương hiệu, xuất xứ)
+  const [showModal, setShowModal] = useState(false);
+  const handleAddProduct = () => {
+    setShowModal(true);
   };
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  useEffect(() => {
+    // Lấy dữ liệu từ backend
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/products"); // Cập nhật URL API của bạn
+        setProducts(response.data.data); // Giả sử dữ liệu trả về có dạng { data: [...] }
+        setFilteredProducts(response.data.data); // Mặc định là hiển thị tất cả sản phẩm
+      } catch (err) {
+        console.error("Lỗi khi lấy dữ liệu sản phẩm:", err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Hàm xử lý tìm kiếm
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+
+    // Lọc sản phẩm theo tiêu chí
+    const filtered = products.filter((product) => {
+      if (searchBy === "name") {
+        return product.ten_sp?.toLowerCase().includes(query);
+      } else if (searchBy === "brand") {
+        return product.brand?.ten_thuong_hieu?.toLowerCase().includes(query);
+      } else if (searchBy === "origin") {
+        return product.origin?.ten_xuat_xu?.toLowerCase().includes(query);
+      }
+      return false;
+    });
+
+    setFilteredProducts(filtered);
+  };
+
+  // Hàm thay đổi tiêu chí tìm kiếm
   const handleSearchByChange = (e) => {
     setSearchBy(e.target.value);
   };
-
-  const filteredProducts = products.filter((product) => {
-    return (
-      product[searchBy].toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
 
   return (
     <div className="product-list">
       <h2>Danh Sách Sản Phẩm</h2>
       <div className="toolbar">
         <div className="product-actions">
-          <button className="btn-add-product"><FaPlus /> Thêm</button>
-          <button className="btn-edit-product"><FaEdit /> Sửa</button>
-          <button className="btn-delete-product"><FaTrash /> Xóa</button>
-          {/*<button className="btn-export-excel"><FaFileExcel /> Xuất Excel</button>*/}
+          <button onClick={handleAddProduct} className="btn-add-product">
+            <FaPlus /> Thêm
+          </button>
+          <button className="btn-edit-product">
+            <FaEdit /> Sửa
+          </button>
+          <button className="btn-delete-product">
+            <FaTrash /> Xóa
+          </button>
+          <button className="btn-detail-product">
+            <FaInfoCircle /> Chi tiết
+          </button>
         </div>
         <div className="search-filter">
-          <select name="searchBy" value={searchBy} onChange={handleSearchByChange}>
+          <select
+            name="searchBy"
+            value={searchBy}
+            onChange={handleSearchByChange}
+          >
             <option value="name">Tên sản phẩm</option>
             <option value="origin">Xuất xứ</option>
             <option value="brand">Thương hiệu</option>
@@ -88,43 +89,58 @@ const Product = () => {
           <input
             type="text"
             placeholder="Tìm kiếm..."
-            value={searchTerm}
+            value={searchQuery}
             onChange={handleSearch}
           />
         </div>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Mã SP</th>
-            <th>Tên sản phẩm</th>
-            <th>Số lượng tồn</th>
-            <th>Thương hiệu</th>
-            <th>Hệ điều hành</th>
-            <th>Kích thước màn</th>
-            <th>Chip xử lý</th>
-            <th>Dung lượng pin</th>
-            <th>Xuất xứ</th>
-            <th>Khu vực kho</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredProducts.map((product) => (
-            <tr key={product.id}>
-              <td>{product.code}</td>
-              <td>{product.name}</td>
-              <td>{product.quantity}</td>
-              <td>{product.brand}</td>
-              <td>{product.os}</td>
-              <td>{product.screenSize}</td>
-              <td>{product.processor}</td>
-              <td>{product.battery}</td>
-              <td>{product.origin}</td>
-              <td>{product.warehouseArea}</td>
+      <div className="table-products">
+        <table>
+          <thead className="rows">
+            <tr>
+              <th>Mã SP</th>
+              <th>Tên sản phẩm</th>
+              <th>Số lượng tồn</th>
+              <th>Thương hiệu</th>
+              <th>Hệ điều hành</th>
+              <th>Kích thước màn</th>
+              <th>Chip xử lý</th>
+              <th>Dung lượng pin</th>
+              <th>Xuất xứ</th>
+              <th>Khu vực kho</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredProducts.map((product) => (
+              <tr key={product.ma_sp}>
+                <td>{product.ma_sp}</td>
+                <td>{product.ten_sp || "Không có thông tin"}</td>
+                <td>{product.so_luong_ton || "Không có thông tin"}</td>
+                <td>
+                  {product.brand?.ten_thuong_hieu || "Không có thông tin"}
+                </td>
+                <td>
+                  {product.operatingSystem?.ten_hdh || "Không có thông tin"}
+                </td>
+                <td>
+                  {product.kich_thuoc_man
+                    ? `${product.kich_thuoc_man} inch`
+                    : "Không có thông tin"}
+                </td>
+                <td>{product.chip_xu_ly || "Không có thông tin"}</td>
+                <td>
+                  {product.dung_luong_pin
+                    ? `${product.dung_luong_pin} mAh`
+                    : "Không có thông tin"}
+                </td>
+                <td>{product.origin?.ten_xuat_xu || "Không có thông tin"}</td>
+                <td>{product.storageArea?.ten_kho || "Không có thông tin"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <AddProductModal show={showModal} onClose={handleCloseModal} />
     </div>
   );
 };

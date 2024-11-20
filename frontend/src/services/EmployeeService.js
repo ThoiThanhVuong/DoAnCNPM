@@ -1,6 +1,6 @@
 // frontend/src/services/EmployeeService.js
 
-import axios from 'axios';
+import axios from 'axios'; 
 
 // Tạo một đối tượng axios với base URL từ backend
 const apiUrl = 'http://localhost:5000/api/employees'; // Địa chỉ backend của bạn

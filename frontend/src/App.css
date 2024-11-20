@@ -1,63 +1,66 @@
-*{
+* {
   margin: 0;
   padding: 0;
   text-decoration: none;
+  /* overflow-y: hidden; */
 }
-.container{
-  display:flex;
+.container {
+  display: flex;
+  height: 100vh;
+  overflow-y: hidden;
 }
-main{
-  width:100%;
-  padding:20px;
+main {
+  width: 100%;
+  padding: 20px;
   height: 130vh;
 }
-main.signin{
+main.signin {
   background: linear-gradient(120deg, #3ca7ee, #9b408f);
 }
-.sidebar{
+.sidebar {
   background: #000;
-  color:#fff;
-  height:150vh;
-  width:250px;
+  color: #fff;
+  height: 150vh;
+  width: 250px;
   transition: all 0.5s;
 }
-.top_section{
-  display:flex;
+.top_section {
+  display: flex;
   align-items: center;
-  padding:20px 15px;
+  padding: 20px 15px;
 }
-.logo{
+.logo {
   font-size: 25px;
 }
-.bars{
-  display:flex;
+.bars {
+  display: flex;
   font-size: 25px;
-  margin-left:90px;
+  margin-left: 90px;
   cursor: pointer;
 }
-.link{
-  display:flex;
-  color:#fff;
-  padding:10px 5px;
-  gap:12px;
+.link {
+  display: flex;
+  color: #fff;
+  padding: 10px 5px;
+  gap: 12px;
   transition: all 0.5s;
-
 }
-.link:hover{
+.link:hover {
   background: lightskyblue;
-  color:#000;
+  color: #000;
 }
-.active{
+.active {
   background: lightskyblue;
-  color:#000;
+  color: #000;
 }
-.icon, .link_text{
+.icon,
+.link_text {
   font-size: 18px;
 }
-.signin-open-btn{
+.signin-open-btn {
   margin-top: 100px;
   text-align: center;
-  button{
+  button {
     padding: 15px 20px;
     margin-top: 10px;
     border: none;
@@ -67,11 +70,11 @@ main.signin{
     font-size: 20px;
     transition: 0.1s;
   }
-  button:hover{
+  button:hover {
     background-color: #c3c1c1;
   }
 }
-.container-signin{
+.container-signin {
   margin: 0 auto;
   margin-top: 100px;
 }
