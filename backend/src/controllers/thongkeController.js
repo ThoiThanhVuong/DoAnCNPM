@@ -530,19 +530,16 @@ const getThongKeTheoNgay = async (req, res) => {
       })
     );
     res.status(200).json(results);
-  } catch (error) {
-    console.error("Lỗi trong quá trình thống kê theo tháng:", error);
-    res
-      .status(500)
-      .json({ message: "Đã xảy ra lỗi trong quá trình thống kê." });
+    }catch (error) {
+      console.error("Lỗi trong quá trình thống kê theo tháng:", error);
+      res.status(500).json({ message: "Đã xảy ra lỗi trong quá trình thống kê." });
+    }
   }
-};
-
-module.exports = {
-  getThongKeKhachHang,
+  
+module.exports = { getThongKeKhachHang ,
   getThongKeProvider,
   getThongKeTonKho,
   getThongKeTheoNam,
   getThongKeTheoThang,
-  getThongKeTheoNgay,
+  getThongKeTheoNgay
 };

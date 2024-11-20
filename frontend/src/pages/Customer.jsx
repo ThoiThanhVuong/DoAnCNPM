@@ -45,27 +45,31 @@ const Customer = () => {
         dia_chi_kh: customerData.DC,
         sdt_kh: customerData.SDT,
       };
-      const response = await axios.post("http://localhost:5000/api/customers", payload);
-  
-      setSuccessMessage("Khách hàng đã được thêm thành công!");
-      console.log("Thêm khách hàng thành công:", response.data);
-  
-      // Cập nhật lại danh sách khách hàng
-      fetchCustomers()
-  
-      // Reset form
-      setCustomerData({ MKH: "", TKH: "", DC: "", SDT: "" });
-      hiddenAdd();
-      setTimeout(() => {
-        setSuccessMessage(""); // Ẩn thông báo
-      }, 2000);
+
+      try {
+        const response = await axios.post("http://localhost:5000/api/customers", payload);
+        setSuccessMessage("Khách hàng đã được thêm thành công!");
+        console.log("Thêm khách hàng thành công:", response.data);
+        
+        // Cập nhật lại danh sách khách hàng
+        fetchCustomers()
+        
+        // Reset form
+        setCustomerData({ MKH: "", TKH: "", DC: "", SDT: "" });
+        hiddenAdd();
+      } catch (error) {
+        console.error("lỗi")
+        setTimeout(() => {
+          setSuccessMessage("Lỗi thêm khách hàng"); // Ẩn thông báo
+        }, 2000);
+      }
   };
   
   
 
   const hiddenAdd = () => {
     setShow(!showAddCustomer);
-    setform({ ma_kh: " ", ten_kh: " ", dia_chi_kh: " ", sdt_kh: " " });
+    setCustomerData({ MKH: "", TKH: "", DC: "", SDT: "" });
   };
 
   const hiddenEdit = (item) => {

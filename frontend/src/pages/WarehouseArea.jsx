@@ -39,7 +39,7 @@ const WarehouseArea = () => {
 
     const handleEditWarehouse = async () => {
         try {
-            await WarehouseService.updateItem(currentWarehouse.id,{
+            await WarehouseService.updateItem(currentWarehouse.id, {
                 ten_kho: currentWarehouse.name,
                 chu_thich: currentWarehouse.note,
                 trang_thai: 1
@@ -51,27 +51,20 @@ const WarehouseArea = () => {
         }
     };
 
-    // const handleDeleteWarehouse = async (id) => {
-    //     try {
-    //         await WarehouseService.deleteItem(id);
-    //         fetchWarehouses();
-    //     } catch (error) {
-    //         console.error('Error deleting warehouse:', error);
-    //     }
-    // };
     const handleDeleteWarehouse = async (id) => {
         if (window.confirm("Bạn có chắc chắn muốn xóa kho này không?")) {
             try {
-                console.log("Deleting warehouse with ID:", id); // Thêm log để kiểm tra ID
+                console.log("Deleting warehouse with ID:", id);
                 await WarehouseService.deleteItem(id);
-                console.log("Warehouse deleted successfully"); // Thêm log để xác nhận xóa thành công
-                fetchWarehouses(); // Cập nhật lại danh sách kho sau khi xóa
+                console.log("Warehouse deleted successfully");
+                fetchWarehouses();
             } catch (error) {
                 console.error('Error deleting warehouse:', error);
                 alert("Có lỗi xảy ra khi xóa kho. Vui lòng thử lại.");
             }
         }
     };
+
     const showAddArea = () => {
         setActive('showAddArea');
         setCurrentWarehouse({ id: null, name: '', note: '' });
@@ -79,38 +72,40 @@ const WarehouseArea = () => {
 
     const showEditArea = (warehouse) => {
         setActive('showEditArea');
-        setCurrentWarehouse({id:warehouse.ma_kho,
-            name:warehouse.ten_kho,
-            note:warehouse.chu_thich});
+        setCurrentWarehouse({
+            id: warehouse.ma_kho,
+            name: warehouse.ten_kho,
+            note: warehouse.chu_thich
+        });
     };
 
     return (
-        <div>
+        <div className="warehouse-area">
             {active === 'showWarehouse' && (
-                <div className="container-area">
-                    <button onClick={showAddArea} style={{ display: 'flex' }}>Thêm</button>
-                    <h1 className='container_banner'>Quản lý khu vực kho</h1>
-                    <div className='container_content'>
-                        <table>
+                <div className="warehouse-area__container">
+                    <button onClick={showAddArea} className="warehouse-button add">Thêm</button>
+                    <h1 className='warehouse-area__container__banner'>Quản lý khu vực kho</h1>
+                    <div className='warehouse-area__container__content'>
+                        <table className="warehouse-area__container__table">
                             <thead>
                                 <tr>
-                                    <th>Mã kho</th>
-                                    <th>Khu vực kho</th>
-                                    <th>Ghi chú</th>
-                                    <th>Chi tiết</th>
-                                    <th>Thao tác</th>
+                                    <th className='warehouse-area__header-cell'>Mã kho</th>
+                                    <th className='warehouse-area__header-cell'>Khu vực kho</th>
+                                    <th className='warehouse-area__header-cell'>Ghi chú</th>
+                                    <th className='warehouse-area__header-cell'>Chi tiết</th>
+                                    <th className='warehouse-area__header-cell'>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {warehouses.map((warehouse) => (
                                     <tr key={warehouse.id}>
-                                        <td>{warehouse.ma_kho}</td>
-                                        <td>{warehouse.ten_kho}</td>
-                                        <td>{warehouse.chu_thich}</td>
-                                        <td><BiSolidDetail className='detail' /></td>
-                                        <td>
-                                            <FaEdit className='edit' onClick={() => showEditArea(warehouse)} />
-                                            <FaTrash className='delete' onClick={() => handleDeleteWarehouse(warehouse.ma_kho)} />
+                                        <td className='warehouse-area__data-cell'>{warehouse.ma_kho}</td>
+                                        <td className='warehouse-area__data-cell'>{warehouse.ten_kho}</td>
+                                        <td className='warehouse-area__data-cell'>{warehouse.chu_thich}</td>
+                                        <td className='warehouse-area__data-cell'><BiSolidDetail className='warehouse-area__detail-icon' /></td>
+                                        <td className='warehouse-area__data-cell'>
+                                            <FaEdit className='warehouse-area__edit-icon' onClick={() => showEditArea(warehouse)} />
+                                            <FaTrash className='warehouse-area__delete-icon' onClick={() => handleDeleteWarehouse(warehouse.ma_kho)} />
                                         </td>
                                     </tr>
                                 ))}
@@ -120,12 +115,13 @@ const WarehouseArea = () => {
                 </div>
             )}
             {active === 'showAddArea' && (
-                <div className='add-area'>
-                    <h1 className='add-area_banner'>Thêm khu vực kho</h1>
-                    <div className='add-area_content'>
-                        <div className='add-area_content__content-items'>
-                            <label htmlFor="warehouse-name">Tên khu vực kho</label>
+                <div className='warehouse-area__add-form'>
+                    <h1 className='warehouse-area__add-form-banner'>Thêm khu vực kho</h1>
+                    <div className='warehouse-area__add-form-content'>
+                        <div className='warehouse-area__form-item'>
+                            <label className='warehouse-area__form-item-label' htmlFor="warehouse-name">Tên khu vực kho</label>
                             <input
+                                className='warehouse-area__form-item-input'
                                 type="text"
                                 id='warehouse-name'
                                 placeholder='Nhập tên khu vực kho'
@@ -133,9 +129,10 @@ const WarehouseArea = () => {
                                 onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, name: e.target.value })}
                             />
                         </div>
-                        <div className='add-area_content__content-items'>
-                            <label htmlFor="warehouse-note">Ghi chú</label>
+                        <div className='warehouse-area__form-item'>
+                            <label className='warehouse-area__form-item-label' htmlFor="warehouse-note">Ghi chú</label>
                             <input
+                                className='warehouse-area__form-item-input'
                                 type="text"
                                 id='warehouse-note'
                                 placeholder='Nhập ghi chú'
@@ -143,42 +140,42 @@ const WarehouseArea = () => {
                                 onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, note: e.target.value })}
                             />
                         </div>
-                        <div className='add-area_button'>
-                            <button onClick={handleAddWarehouse}>Lưu</button>
-                            <button onClick={() => setActive('showWarehouse')}>Thoát</button>
+                        <div className='warehouse-area__form-buttons'>
+                            <button className='warehouse-button confirm' onClick={handleAddWarehouse}>Lưu</button>
+                            <button className='warehouse-button exit' onClick={() => setActive('showWarehouse')}>Thoát</button>
                         </div>
                     </div>
                 </div>
             )}
             {active === 'showEditArea' && (
-                <div className='edit-area'>
-                    <h1 className='edit-area_banner'>Thông tin khu vực kho</h1>
-                    <div className='edit-area_content'>
-                        <div className='edit-area_content__content-items'>
-                            <label htmlFor="warehouse-name_edit">Tên khu vực kho</label>
+                <div className='warehouse-area__edit-form'>
+                    <h1 className='warehouse-area__edit-form-banner'>Thông tin khu vực kho</h1>
+                    <div className='warehouse-area__edit-form-content'>
+                        <div className='warehouse-area__form-item'>
+                            <label className='warehouse-area__form-item-label' htmlFor="warehouse-name_edit">Tên khu vực kho</label>
                             <input
+                                className='warehouse-area__form-item-input'
                                 type="text"
                                 id='warehouse-name_edit'
                                 placeholder='Nhập tên khu vực kho'
                                 value={currentWarehouse.name}
-
                                 onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, name: e.target.value })}
                             />
                         </div>
-                        <div className='edit-area_content__content-items'>
-                            <label htmlFor="warehouse-note_edit">Ghi chú</label>
+                        <div className='warehouse-area__form-item'>
+                            <label className='warehouse-area__form-item-label' htmlFor="warehouse-note_edit">Ghi chú</label>
                             <input
+                                className='warehouse-area__form-item-input'
                                 type="text"
                                 id='warehouse-note_edit'
                                 placeholder='Nhập ghi chú'
                                 value={currentWarehouse.note}
-
                                 onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, note: e.target.value })}
                             />
                         </div>
-                        <div className='edit-area_button'>
-                            <button onClick={handleEditWarehouse}>Lưu</button>
-                            <button onClick={() => setActive('showWarehouse')}>Thoát</button>
+                        <div className='warehouse-area__form-buttons'>
+                            <button className='warehouse-button confirm' onClick={handleEditWarehouse}>Lưu</button>
+                            <button className='warehouse-button exit' onClick={() => setActive('showWarehouse')}>Thoát</button>
                         </div>
                     </div>
                 </div>

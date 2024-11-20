@@ -49,7 +49,6 @@
 }
 .listSP table tbody tr td {
     text-align: center;
-    padding-top: 5px ;
     border-right: 10px solid white;
 }
 .listSP table tbody tr td:hover {
@@ -59,18 +58,22 @@
 .listSP table tbody tr {
     border-top: 1px solid silver !important;
     transition: 0.5s;
-    height: 50px;
+    height: 50px !important;
 }
 .listSP table tbody tr:hover{
     background-color: none !important;
 }
 .listSP table thead tr {
     height: 60px !important;
-    background-color: lightskyblue ;
+    /* background-color: lightskyblue ; */
 }
 .listSP table thead tr th {
+    padding: 0px !important;
+    height: 60px !important;
     font-weight: 570;
     border: 5px solid white;
+    background-color: lightskyblue;
+    text-align: center;
 }
 .listSP table tbody tr .iconAdd{
     padding: 5px 5px 5px 5px;
@@ -95,10 +98,10 @@
 }
 .listSP{
     height: 300px;
-    overflow-y: auto;
+    overflow-y: auto !important;
     border-radius: 10px !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow-x: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    overflow-x: hidden !important;
 }
 /* Tùy chỉnh thanh cuộn cho Chrome, Safari, và Edge */
 .listSP::-webkit-scrollbar {
@@ -240,12 +243,16 @@
   .custom-GN .ipGN{
     height: 35px !important;
   }
+.custom-queue{
+    margin-top: 10px !important;
+}
 .queue{
     max-height: 250px;
     overflow-y: auto;
     border-radius: 10px !important;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow-x: hidden;
+    margin: 0px !important;
 }
 .queue table{
     border-collapse: collapse ;
@@ -266,11 +273,12 @@
     background-color: rgb(255, 255, 255) !important;
 }
 .queue table thead tr {
-    background: lightskyblue;
+    background: lightskyblue !important;
     height: 50px;
 }
 .queue table thead tr th{
     border: 5px solid white;
+    background: lightskyblue !important;
 }
 .queue table tbody tr .iconAdd{
     padding: 5px 5px 5px 5px;
