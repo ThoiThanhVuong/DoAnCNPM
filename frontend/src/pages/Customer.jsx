@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../style/Customer.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios";
+import { isNumber } from "chart.js/helpers";
 
 const Customer = () => {
   const [Data, setData] = useState([]);
@@ -9,70 +10,74 @@ const Customer = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [showEditCustomer, setShow1] = useState(false);
   const [formData, setform] = useState({
-    ma_kh: " ",
-    ten_kh: " ",
-    dia_chi_kh: " ",
-    sdt_kh: " ",
+    MKH: " ",
+    TKH: " ",
+    DC: " ",
+    SDT: " ",
   });
-  const [customerData, setCustomerData] = useState({
-    MKH: "",
-    TKH: "",
-    DC: "",
-    SDT: "",
+  const [search, setSearch] = useState({
+    Name: "",
   });
   const fetchCustomers = async () => {
     try {
       // Gửi yêu cầu GET đến API để lấy danh sách khách hàng
-      const response = await axios.get('http://localhost:5000/api/customers');
-      
+      const response = await axios.get("http://localhost:5000/api/customers");
+
       // Cập nhật state customers với dữ liệu trả về
       setData(response.data);
     } catch (err) {
       // Nếu có lỗi, set error
-      console.error('Lỗi khi lấy dữ liệu');
-    } 
-      // Sau khi lấy xong dữ liệu, cập nhật trạng thái loading
+      console.error("Lỗi khi lấy dữ liệu");
+      setData();
+    }
+    // Sau khi lấy xong dữ liệu, cập nhật trạng thái loading
   };
   useEffect(() => {
- 
     fetchCustomers();
   }, []);
 
   const addData = async () => {
-      const payload = {
-        ma_kh: customerData.MKH,
-        ten_kh: customerData.TKH,
-        dia_chi_kh: customerData.DC,
-        sdt_kh: customerData.SDT,
-      };
+    const payload = {
+      ma_kh: formData.MKH,
+      ten_kh: formData.TKH,
+      dia_chi_kh: formData.DC,
+      sdt_kh: formData.SDT,
+    };
+    console.log(payload);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/customers",
+        payload
+      );
 
-      try {
-        const response = await axios.post("http://localhost:5000/api/customers", payload);
         setSuccessMessage("Khách hàng đã được thêm thành công!");
-        console.log("Thêm khách hàng thành công:", response.data);
-        
-        // Cập nhật lại danh sách khách hàng
-        fetchCustomers()
-        
-        // Reset form
-        setCustomerData({ MKH: "", TKH: "", DC: "", SDT: "" });
-        hiddenAdd();
-      } catch (error) {
-        console.error("lỗi")
+
+
         setTimeout(() => {
-          setSuccessMessage("Lỗi thêm khách hàng"); // Ẩn thông báo
+          setSuccessMessage(""); // Ẩn thông báo
         }, 2000);
-      }
+      // Cập nhật lại danh sách khách hàng
+      fetchCustomers();
+      hiddenAdd();
+    } catch (error) {
+      console.error("lỗi");
+      setTimeout(() => {
+        setSuccessMessage("Lỗi thêm khách hàng"); // Ẩn thông báo
+      }, 2000);
+    }
   };
-  
-  
 
   const hiddenAdd = () => {
     setShow(!showAddCustomer);
-    setCustomerData({ MKH: "", TKH: "", DC: "", SDT: "" });
+    setform({
+      MKH: " ",
+      TKH: " ",
+      DC: " ",
+      SDT: " ",
+    });
   };
 
-  const hiddenEdit = (item) => {
+  const handleEdit = (item) => {
     setShow1(!showEditCustomer);
     setform({
       MKH: item.ma_kh,
@@ -82,15 +87,17 @@ const Customer = () => {
     });
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCustomerData({
-      ...customerData,
-      [name]: value,
+  const hiddenEdit = () => {
+    setShow1(!showEditCustomer);
+    setform({
+      MKH: " ",
+      TKH: " ",
+      DC: " ",
+      SDT: " ",
     });
   };
-  
-  const handleInputChange1 = (e) => {
+
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setform({
       ...formData,
@@ -104,49 +111,53 @@ const Customer = () => {
       ten_kh: formData.TKH,
       dia_chi_kh: formData.DC,
       sdt_kh: formData.SDT,
-    }
-    await axios.put(`http://localhost:5000/api/customers/${formData.MKH}`,payload);
-    fetchCustomers()
+    };
+    await axios.put(
+      `http://localhost:5000/api/customers/${formData.MKH}`,
+      payload
+    );
+    fetchCustomers();
     setShow1(!showEditCustomer);
     setTimeout(() => {
       setSuccessMessage(""); // Ẩn thông báo
     }, 2000);
   };
 
-  const deleteData  = async (MKH) => {
+  const deleteData = async (MKH) => {
     setSuccessMessage("Xóa thành công!");
-
     await axios.delete(`http://localhost:5000/api/customers/${MKH}`);
-    fetchCustomers()
+    fetchCustomers();
     setTimeout(() => {
       setSuccessMessage(""); // Ẩn thông báo
     }, 2000);
   };
 
-  const searchData  = async (e) => {
+  const searchData = async (e) => {
     const { name, value } = e.target;
-    setCustomerData({
-      ...customerData,
+    setSearch({
+      ...search,
       [name]: value,
     });
-    if (value) {
-      try {
-        const response = await axios.get(`http://localhost:5000/api/customers/${value}`);
-
-        setData([response.data]);
-
-        // Thực hiện thêm các hành động với dữ liệu API, ví dụ: cập nhật state để hiển thị
-      } catch (error) {
-        
-      }
-    }else{
-      const response = await axios.get(`http://localhost:5000/api/customers`);
-      setData(response.data)
-    }
-    // await axios.get(`http://localhost:5000/api/customers/${customerData.MKH}`);
-    // console.log(await axios.get(`http://localhost:5000/api/customers/${customerData.MKH}`))
+    const response = (await axios.get(`http://localhost:5000/api/customers`)).data;
     
-  }
+    if (value) {
+      if (isNaN(value)) {
+        const KH_search = response.filter((response) =>
+          response.ten_kh.toLowerCase().includes(value.toLowerCase())
+        );
+        console.log(KH_search);
+        setData(KH_search);
+      } else {
+        const KH_search = response.filter((response) =>
+          response.ma_kh.toString().includes(value.toString())
+        );
+        setData(KH_search);
+      }
+    } else {
+      const response = await axios.get(`http://localhost:5000/api/customers`);
+      setData(response.data);
+    }
+  };
 
   return (
     <div class="page_customer">
@@ -162,7 +173,13 @@ const Customer = () => {
       </div>
       <div class="operation">
         <div class="input-search">
-          <input onChange={searchData}  name="MKH" type="text" value={customerData.MKH} placeholder="Search......"></input>
+          <input
+            onChange={searchData}
+            name="MKH"
+            type="text"
+            value={search.MKH}
+            placeholder="Search......"
+          ></input>
         </div>
 
         <div class="button-addCustomer">
@@ -184,30 +201,35 @@ const Customer = () => {
                   placeholder="Nhập Mã Khách Hàng"
                   name="MKH"
                   type="number"
-                  value={customerData.MKH}
+                  value={formData.MKH}
                   onChange={handleInputChange}
                 ></input>
+                <small className="smallUsername">Nhập thông tin</small>
+
                 <input
                   placeholder="Nhập Tên"
                   name="TKH"
                   type="text"
-                  value={customerData.TKH}
+                  value={formData.TKH}
                   onChange={handleInputChange}
                 ></input>
+                <div>vui lòng nhập thông tin</div>
                 <input
                   placeholder="nhập Địa chỉ"
                   name="DC"
                   type="text"
-                  value={customerData.DC}
+                  value={formData.DC}
                   onChange={handleInputChange}
                 ></input>
+                <div>vui lòng nhập thông tin</div>
                 <input
                   placeholder="Nhập Số điện thoại"
                   name="SDT"
                   type="text"
-                  value={customerData.SDT}
+                  value={formData.SDT}
                   onChange={handleInputChange}
                 ></input>
+                <div>vui lòng nhập thông tin</div>
               </div>
               <div class="button-addCustomer-interface">
                 <button type="button" onClick={hiddenAdd}>
@@ -226,7 +248,7 @@ const Customer = () => {
         class="interface_edit"
         style={{ display: showEditCustomer ? "block" : "none" }}
       >
-        <div class="overlay " onClick={() => hiddenEdit(" ")}></div>
+        <div class="overlay " onClick={() => hiddenEdit()}></div>
         <div class="form_interface">
           <form class="form_interface_add">
             <div>
@@ -238,26 +260,26 @@ const Customer = () => {
                   name="TKH"
                   type="text"
                   value={formData.TKH}
-                  onChange={handleInputChange1}
+                  onChange={handleInputChange}
                 ></input>
                 <input
                   placeholder="nhập Địa chỉ"
                   name="DC"
                   type="text"
                   value={formData.DC}
-                  onChange={handleInputChange1}
+                  onChange={handleInputChange}
                 ></input>
                 <input
                   placeholder="Nhập Số điện thoại"
                   name="SDT"
                   type="text"
                   value={formData.SDT}
-                  onChange={handleInputChange1}
+                  onChange={handleInputChange}
                 ></input>
               </div>
 
               <div class="button-addCustomer-interface">
-                <button type="button" onClick={() => hiddenEdit(" ")}>
+                <button type="button" onClick={() => hiddenEdit()}>
                   Thoát
                 </button>
                 <button type="button" onClick={updateData}>
@@ -285,8 +307,8 @@ const Customer = () => {
               <td>{item.dia_chi_kh}</td>
               <td>{item.sdt_kh}</td>
               <td>
-                <FaEdit onClick={() => hiddenEdit(item)}></FaEdit>{" "}
-                <FaTrash  onClick={() => deleteData(item.ma_kh)}></FaTrash>
+                <FaEdit onClick={() => handleEdit(item)}></FaEdit>{" "}
+                <FaTrash onClick={() => deleteData(item.ma_kh)}></FaTrash>
               </td>
             </tr>
           ))}

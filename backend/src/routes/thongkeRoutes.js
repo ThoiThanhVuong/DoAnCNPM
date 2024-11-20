@@ -7,6 +7,6 @@ router.get('/thongKeTonKho',thongkeController.getThongKeTonKho);
 router.get('/thongKeTheoNam',thongkeController.getThongKeTheoNam);
 router.get('/thongKeTheoThang',thongkeController.getThongKeTheoThang);
 router.get('/thongKeTheoNgay',thongkeController.getThongKeTheoNgay);
-router.get('/thongKe7NgayGanNhat',thongkeController.getThongKe7NgayGanNhat);
-router.get('/thongKeTuNgayDenNgay',thongkeController.getThongKeTuNgayDenNgay);
+// router.get('/thongKe7NgayGanNhat',thongkeController.getThongKe7NgayGanNhat);
+// router.get('/thongKeTuNgayDenNgay',thongkeController.getThongKeTuNgayDenNgay);
 module.exports = router;
