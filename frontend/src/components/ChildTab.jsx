@@ -4,6 +4,7 @@ import TheoNam from '../components/Chart/Year.jsx';
 import './Chart/ChartMonth.jsx'
 import ChartMonth from './Chart/ChartMonth.jsx';
 import ChartDateOfMonth from '../components/Chart/DateOfMonth.jsx';
+import DateToDate from './Chart/DateToDate.jsx';
 const ChildTab = ()=>{
     const [activeTab, setActiveTab] = useState('TheoNam');
 
@@ -29,12 +30,17 @@ const ChildTab = ()=>{
                 >
                     Doanh thu theo ngày trong tháng
                 </button>
-            
+                <button className={activeTab ==='NgayDenNgay' ? 'active' : ''}
+                        onClick={()=> handleTabClick('NgayDenNgay')}
+                >
+                    Doanh thu từ ngày đến ngày
+                </button>
             </div>
             <div className='tab-content'>
                 {activeTab === 'TheoNam' && <div><TheoNam/></div>} 
                 {activeTab === 'TheoThang' && <div><ChartMonth/></div>} 
                 {activeTab === 'TheoNgay' && <div><ChartDateOfMonth/></div>} 
+                {activeTab === 'NgayDenNgay' && <div><DateToDate/></div>}
             </div>
         </div>
     );

@@ -73,11 +73,19 @@ const deleteCustomer = async (req, res) => {
       res.status(500).json({ error: `Lỗi không xóa được khách hàng: ${error.message}` });
     }
 };
-
+const getCountCustomer = async (req, res) => {
+    try {
+        const customerCount = await Customer.count();
+        res.json({ customerCount: customerCount});
+    } catch (error) {
+      console.error("lỗi khi đếm số lượng",error);
+    }
+}
 module.exports = {
   getCustomer,
   getCustomerByMaKH,
   addCustomer,
   updateCustomer,
   deleteCustomer,
+  getCountCustomer
 };

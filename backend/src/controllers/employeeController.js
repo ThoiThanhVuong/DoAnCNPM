@@ -82,8 +82,8 @@ const deleteEmployee = async (req, res) => {
 };
 
 const countEmployee = async (req, res) => {
+     console.log('counnt');
     try {
-      console.log('Debug: Bắt đầu đếm nhân viên');
       const employeeCount = await Employee.count();
       console.log('Debug: Tổng số nhân viên:', employeeCount);
       res.status(200).json({ count: employeeCount })
@@ -92,7 +92,6 @@ const countEmployee = async (req, res) => {
       throw error;
     }
  };
-
 module.exports = {
   getEmployees,
   getEmployeeByMaNV,

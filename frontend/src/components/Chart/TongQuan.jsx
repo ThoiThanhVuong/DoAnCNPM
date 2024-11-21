@@ -3,10 +3,15 @@ import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
 import '../Chart/Overview.css';
 import thongkeService from '../../services/thongkeService';
-import Employee from '../../pages/Employee';
+import {getCountEmployee} from '../../services/EmployeeService';
+import CustomerService from '../../services/customerService';
+import productService from '../../services/productService';
 const TongQuan = () =>{
     const [data,setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [dataCustomer,setDataCustomer] = useState([]);
+    const [dataEmployee,setDataEmployee] = useState([]);
+    const [dataProduct,setDataProduct] = useState([]);
     useEffect(() => {
         const fetchThongKeData = async () => {
             try {
@@ -18,8 +23,35 @@ const TongQuan = () =>{
                 setLoading(false); 
             }
         };
+        const fetchCustomer = async () => {
+            try {
+                const result = await CustomerService.getCountCustomer();
+                setDataCustomer(result);
+            } catch (error) {
+                console.error("Error fetching data Customer:", error);
+            }
+        };
+        const fetchEmployee = async () =>{
+            try {
+                const result = await getCountEmployee();
+                setDataEmployee(result);
+            } catch (error) {
+                console.error("Error fetching data Employee:", error);
+            }
+        };
+        const fetchProduct = async () =>{
+            try {
+                const result = await productService.getCountProduct();
+                setDataProduct(result);
+            } catch (error) {
+                console.error("Error fetching data Product:", error);
+            }
+        };
 
         fetchThongKeData();
+        fetchCustomer();
+        fetchEmployee();
+        fetchProduct();
     }, []); 
     // Hàm format giá tiền
     const formatCurrency = (value) => {
@@ -96,21 +128,21 @@ const TongQuan = () =>{
                 <div className='statistic-item'>
                     <div className='stats-icon'>icon</div>
                     <div className='stats-info'>
-                        <h3>14</h3>
+                        <h3>{dataProduct.countProduct}</h3>
                         <p>Sản phẩm hiện có trong kho</p>
                     </div>
                 </div>
                 <div className='statistic-item'>
                     <div className='stats-icon'></div>
                     <div className='stats-info'>
-                        <h3>14</h3>
+                        <h3>{dataCustomer.customerCount}</h3>
                         <p>Khách từ trước đến nay</p>
                     </div>
                 </div>
                 <div className='statistic-item'>
                     <div className='stats-icon'></div>
                     <div className='stats-info'>
-                        <h3>14</h3>
+                        <h3>{dataEmployee.count}</h3>
                         <p>Nhân viên đang hoạt động</p>
                     </div>
                 </div>

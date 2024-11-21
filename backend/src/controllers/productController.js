@@ -57,3 +57,12 @@ exports.getAllProducts = async (req, res) => {
     });
   }
 };
+exports.getCountProduct = async (req, res) => {
+  try {
+    const response =await Product.count();
+    res.json({countProduct:response});
+  } catch (error) {
+    console.error("fail count product", error);
+    throw error;
+  }
+}

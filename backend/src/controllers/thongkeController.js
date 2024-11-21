@@ -531,15 +531,166 @@ const getThongKeTheoNgay = async (req, res) => {
     );
     res.status(200).json(results);
     }catch (error) {
-      console.error("Lỗi trong quá trình thống kê theo tháng:", error);
+      console.error("Lỗi trong quá trình thống kê theo ngày trong tháng:", error);
       res.status(500).json({ message: "Đã xảy ra lỗi trong quá trình thống kê." });
     }
   }
-  
-module.exports = { getThongKeKhachHang ,
+const getThongKe7NgayGanNhat = async (req, res) => { 
+  try {
+    const today = new Date();
+    const sevenDays = new Date(today);
+    sevenDays.setDate(today.getDate() - 7);
+    const days=[];
+    for(let d=new Date(sevenDays);d <= today; d.setDate(d.getDate() + 1)){
+      days.push(d.toISOString().slice(0,10));
+    };
+    // Lấy thống kê cho từng ngày
+    const results = await Promise.all(
+      days.map(async (formattedDate) => {
+        // Tính chi phí trong ngày
+        const chiphi = await detailImport.findAll({
+          attributes: [[literal("SUM(so_luong * gia_nhap)"), "chiphi"]],
+          include: [
+            {
+              model: importModel,
+              as: "phieuNhap",
+              attributes: [],
+              where: {
+                thoi_gian_nhap: {
+                  [Op.between]: [
+                    `${formattedDate} 00:00:00`,
+                    `${formattedDate} 23:59:59`,
+                  ],
+                },
+              },
+            },
+          ],
+          raw: true,
+        });
+
+        // Tính doanh thu trong ngày
+        const doanhthu = await chiTietPhieuXuatModel.findAll({
+          attributes: [[literal("SUM(so_luong * gia_xuat)"), "doanhthu"]],
+          include: [
+            {
+              model: PhieuXuat,
+              as: "phieuXuat",
+              attributes: [],
+              where: {
+                thoi_gian_xuat: {
+                  [Op.between]: [
+                    `${formattedDate} 00:00:00`,
+                    `${formattedDate} 23:59:59`,
+                  ],
+                },
+              },
+            },
+          ],
+          raw: true,
+        });
+
+        // Tính toán kết quả
+        const chiphiValue = parseFloat(chiphi[0]?.chiphi || 0);
+        const doanhthuValue = parseFloat(doanhthu[0]?.doanhthu || 0);
+        const loiNhuan = doanhthuValue - chiphiValue;
+
+        // Trả về kết quả cho ngày
+        return {
+          ngay: formattedDate,
+          chiphi: chiphiValue,
+          doanhthu: doanhthuValue,
+          loi_nhuan: loiNhuan,
+        };
+      })
+    );
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("Lỗi trong quá trình thống kê 7 ngày gần nhất:", error);
+      res.status(500).json({ message: "Đã xảy ra lỗi trong quá trình thống kê." });
+  }
+}
+const getThongKeNgayDenNgay= async (req, res) => {
+  try {
+    const {start,end} = req.query;
+    const today = new Date();
+    let startDate= start ? new Date(start) : new Date(today.setDate(today.getDate()-15));
+    let endDate= end ? new Date(end) : new Date();
+    const days=[];
+    for(let d=new Date(startDate); d<=endDate; d.setDate(d.getDate()+1) ) {
+      days.push(d.toISOString().slice(0,10));
+    }
+     // Lấy thống kê cho từng ngày
+     const results = await Promise.all(
+      days.map(async (formattedDate) => {
+        // Tính chi phí trong ngày
+        const chiphi = await detailImport.findAll({
+          attributes: [[literal("SUM(so_luong * gia_nhap)"), "chiphi"]],
+          include: [
+            {
+              model: importModel,
+              as: "phieuNhap",
+              attributes: [],
+              where: {
+                thoi_gian_nhap: {
+                  [Op.between]: [
+                    `${formattedDate} 00:00:00`,
+                    `${formattedDate} 23:59:59`,
+                  ],
+                },
+              },
+            },
+          ],
+          raw: true,
+        });
+
+        // Tính doanh thu trong ngày
+        const doanhthu = await chiTietPhieuXuatModel.findAll({
+          attributes: [[literal("SUM(so_luong * gia_xuat)"), "doanhthu"]],
+          include: [
+            {
+              model: PhieuXuat,
+              as: "phieuXuat",
+              attributes: [],
+              where: {
+                thoi_gian_xuat: {
+                  [Op.between]: [
+                    `${formattedDate} 00:00:00`,
+                    `${formattedDate} 23:59:59`,
+                  ],
+                },
+              },
+            },
+          ],
+          raw: true,
+        });
+
+        // Tính toán kết quả
+        const chiphiValue = parseFloat(chiphi[0]?.chiphi || 0);
+        const doanhthuValue = parseFloat(doanhthu[0]?.doanhthu || 0);
+        const loiNhuan = doanhthuValue - chiphiValue;
+
+        // Trả về kết quả cho ngày
+        return {
+          ngay: formattedDate,
+          chiphi: chiphiValue,
+          doanhthu: doanhthuValue,
+          loi_nhuan: loiNhuan,
+        };
+      })
+    );
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("Lỗi trong quá trình thống kê từ ngày đến ngày:", error);
+      res.status(500).json({ message: "Đã xảy ra lỗi trong quá trình thống kê." });
+  }
+}
+module.exports = { 
+  getThongKeKhachHang ,
   getThongKeProvider,
   getThongKeTonKho,
   getThongKeTheoNam,
   getThongKeTheoThang,
-  getThongKeTheoNgay
+  getThongKeTheoNgay,
+  getThongKe7NgayGanNhat,
+  getThongKeNgayDenNgay
 };
