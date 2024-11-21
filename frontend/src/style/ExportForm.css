@@ -157,6 +157,7 @@
   height: 58px; 
 }
 .listPX table thead tr th {
+  text-align: center !important;
   font-weight: 600;
   border: none;
 }

@@ -286,6 +286,7 @@
     height: 50px;
 }
 .queue table thead tr th{
+    text-align: center !important;
     border: 5px solid white;
     background: lightskyblue !important;
 }
