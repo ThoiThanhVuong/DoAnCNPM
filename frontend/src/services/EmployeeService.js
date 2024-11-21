@@ -3,7 +3,7 @@
 import axios from 'axios'; 
 
 // Tạo một đối tượng axios với base URL từ backend
-const apiUrl = 'http://localhost:5000/api/employees'; // Địa chỉ backend của bạn
+const apiUrl = 'http://localhost:5000/api/employee'; // Địa chỉ backend của bạn
 
 // Lấy tất cả nhân viên
 export const getEmployees = async () => {
@@ -59,3 +59,12 @@ export const deleteEmployee = async (ma_nv) => {
     throw error;
   }
 };
+export const getCountEmployee = async (params) =>{
+  try {
+    const response = await axios.get(`${apiUrl}/countEmployee`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error count employee :`, error);
+    throw error;
+  }
+}

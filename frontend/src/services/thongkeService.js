@@ -56,6 +56,25 @@ const thongkeService = {
             console.error("Error fetching statistics",error);
             return [];
         }
+    },
+    getThongKe7NgayGanNhat: async(params)=>{
+        try {
+            const response = await axios.get('http://localhost:5000/api/thongke/thongKe7NgayGanNhat',{params});
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching statistics",error);
+            return [];
+        }
+    },
+    getThongKeNgayDenNgay: async(params)=>{
+        try {
+            const response = await axios.get('http://localhost:5000/api/thongke/thongKeNgayDenNgay',{params});
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching statistics",error);
+            return [];
+        }
     }
+    
 }
 export default thongkeService;

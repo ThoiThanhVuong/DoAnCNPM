@@ -25,7 +25,7 @@ const Account = () => {
     email: "",
     mat_khau: "",
     ma_quyen: "",
-    trang_thai: 1,
+    trang_thai: "",
   });
 
   useEffect(() => {
@@ -55,19 +55,38 @@ const Account = () => {
   };
 
   const handleAddAccount = async () => {
+    // Kiểm tra xem dữ liệu đã đủ chưa
+    if (
+      !newAccountData.ten_nv ||
+      !newAccountData.email ||
+      !newAccountData.mat_khau ||
+      !newAccountData.sdt ||
+      !newAccountData.gioi_tinh
+    ) {
+      alert("Vui lòng điền đầy đủ thông tin.");
+      return;
+    }
+  
     try {
       const ma_nv = generateEmployeeId();
       const newAccountWithEmployeeId = { ...newAccountData, ma_nv };
-
+  
       const response = await fetch("http://localhost:5000/api/employee", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newAccountWithEmployeeId),
       });
+  
+      // Kiểm tra xem phản hồi từ API có thành công không
       if (!response.ok) throw new Error("Failed to add account");
+  
       const newAccount = await response.json();
+  
+      // Cập nhật danh sách dữ liệu và đóng form thêm tài khoản
       setData((prevData) => [...prevData, newAccount]);
       setShowAddAccount(false);
+  
+      // Reset lại dữ liệu sau khi thêm tài khoản thành công
       setNewAccountData({
         ma_nv: "",
         ten_nv: "",
@@ -78,8 +97,11 @@ const Account = () => {
         ma_quyen: "",
         trang_thai: 1,
       });
+  
+      alert("Tạo tài khoản thành công!");
     } catch (error) {
       console.error("Error adding account:", error);
+      alert("Đã có lỗi xảy ra. Vui lòng thử lại.");
     }
   };
 
@@ -103,6 +125,7 @@ const Account = () => {
       );
       setShowEditAccount(false);
       setCurrentAccount(null);
+      alert("Thay đổi thành công!");
     } catch (error) {
       console.error("Error updating account:", error);
     }
@@ -120,6 +143,7 @@ const Account = () => {
       setData((prevData) =>
         prevData.filter((account) => account.ma_nv !== ma_nv)
       );
+      alert("Đuổi việc thành công!");
     } catch (error) {
       console.error("Error deleting account:", error);
     }
@@ -293,13 +317,12 @@ const Account = () => {
                   onChange={handleInputChange}
                 />
               </div>
+              {/* Action Buttons */}
+              <div className="add-account_buttons">
+                <button onClick={handleAddAccount}>Thêm</button>
+                <button onClick={() => setShowAddAccount(false)}>Hủy</button>
+              </div>
             </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="add-account_buttons">
-            <button onClick={handleAddAccount}>Thêm</button>
-            <button onClick={() => setShowAddAccount(false)}>Hủy</button>
           </div>
         </div>
       )}

@@ -8,67 +8,92 @@ const Customer = () => {
   const [showAddCustomer, setShow] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [showEditCustomer, setShow1] = useState(false);
+  const [showError, setError] = useState("");
+  const [showAYS,setAYS] =useState(false);
   const [formData, setform] = useState({
-    ma_kh: " ",
-    ten_kh: " ",
-    dia_chi_kh: " ",
-    sdt_kh: " ",
-  });
-  const [customerData, setCustomerData] = useState({
     MKH: "",
     TKH: "",
     DC: "",
     SDT: "",
   });
+  const [search, setSearch] = useState({
+    MKH: "",
+  });
   const fetchCustomers = async () => {
     try {
       // Gửi yêu cầu GET đến API để lấy danh sách khách hàng
-      const response = await axios.get('http://localhost:5000/api/customers');
-      
+      const response = await axios.get("http://localhost:5000/api/customers");
+
       // Cập nhật state customers với dữ liệu trả về
       setData(response.data);
     } catch (err) {
       // Nếu có lỗi, set error
-      console.error('Lỗi khi lấy dữ liệu');
-    } 
-      // Sau khi lấy xong dữ liệu, cập nhật trạng thái loading
+      console.error("Lỗi khi lấy dữ liệu");
+      setData();
+    }
+    // Sau khi lấy xong dữ liệu, cập nhật trạng thái loading
   };
   useEffect(() => {
- 
     fetchCustomers();
   }, []);
 
   const addData = async () => {
-      const payload = {
-        ma_kh: customerData.MKH,
-        ten_kh: customerData.TKH,
-        dia_chi_kh: customerData.DC,
-        sdt_kh: customerData.SDT,
-      };
-      const response = await axios.post("http://localhost:5000/api/customers", payload);
-  
-      setSuccessMessage("Khách hàng đã được thêm thành công!");
-      console.log("Thêm khách hàng thành công:", response.data);
-  
-      // Cập nhật lại danh sách khách hàng
-      fetchCustomers()
-  
-      // Reset form
-      setCustomerData({ MKH: "", TKH: "", DC: "", SDT: "" });
-      hiddenAdd();
+    const payload = {
+      ma_kh: formData.MKH,
+      ten_kh: formData.TKH,
+      dia_chi_kh: formData.DC,
+      sdt_kh: formData.SDT,
+    };
+    console.log(validatePhoneNumber(formData.SDT))
+    if (!formData.TKH || !formData.TKH || !formData.DC || !formData.SDT) {
+      setError("vui long nhap thong tin!");
       setTimeout(() => {
-        setSuccessMessage(""); // Ẩn thông báo
+        setError("");
       }, 2000);
+    } else {
+      if(!validatePhoneNumber(formData.SDT)){
+        setError("vui long nhap dung SDT");
+      setTimeout(() => {
+        setError("");
+      }, 2000);
+      }else{
+      try {
+        await axios.post("http://localhost:5000/api/customers", payload);
+
+        setSuccessMessage("Khách hàng đã được thêm thành công!");
+        setTimeout(() => {
+          setSuccessMessage(""); // Ẩn thông báo
+        }, 2000);
+        // Cập nhật lại danh sách khách hàng
+        fetchCustomers();
+        hiddenAdd();
+      } catch (error) {
+        setError("Loi trung ma khach hang");
+        setTimeout(() => {
+          setError(""); // Ẩn thông báo
+        }, 2000);
+      }
+    }
+  }
   };
-  
-  
+   // Hàm kiểm tra số điện thoại
+   const validatePhoneNumber = (phone) => {
+    const regex = /^(\+84|84|0)(3|5|7|8|9)[0-9]{8}$/; // Định dạng hợp lệ hơn
+ // Định dạng cho số điện thoại Việt Nam
+    return regex.test(phone);
+  };
 
   const hiddenAdd = () => {
     setShow(!showAddCustomer);
-    setform({ ma_kh: " ", ten_kh: " ", dia_chi_kh: " ", sdt_kh: " " });
+    setform({
+      MKH: "",
+      TKH: "",
+      DC: "",
+      SDT: "",
+    });
   };
 
-  const hiddenEdit = (item) => {
+  const handleEdit = (item) => {
     setShow1(!showEditCustomer);
     setform({
       MKH: item.ma_kh,
@@ -78,15 +103,17 @@ const Customer = () => {
     });
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCustomerData({
-      ...customerData,
-      [name]: value,
+  const hiddenEdit = () => {
+    setShow1(!showEditCustomer);
+    setform({
+      MKH: "",
+      TKH: "",
+      DC: "",
+      SDT: "",
     });
   };
-  
-  const handleInputChange1 = (e) => {
+
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setform({
       ...formData,
@@ -95,59 +122,100 @@ const Customer = () => {
   };
 
   const updateData = async () => {
-    setSuccessMessage("Sửa thành công!");
-    const payload = {
-      ten_kh: formData.TKH,
-      dia_chi_kh: formData.DC,
-      sdt_kh: formData.SDT,
+
+    if(!formData.TKH||!formData.DC||!formData.SDT){
+      setError("vui long nhap thong tin!");
+      setTimeout(() => {
+        setError("");
+      }, 2000);
+    }else{
+      if(!validatePhoneNumber(formData.SDT)){
+        setError("vui long nhap dung SDT!");
+        setTimeout(() => {
+          setError("");
+        }, 2000);
+      }else{
+
+        setSuccessMessage("Sửa thành công!");
+        const payload = {
+          ten_kh: formData.TKH,
+          dia_chi_kh: formData.DC,
+          sdt_kh: formData.SDT,
+        };
+        await axios.put(
+          `http://localhost:5000/api/customers/${formData.MKH}`,
+          payload
+        );
+        fetchCustomers();
+        setShow1(!showEditCustomer);
+
+        setSearch({MKH:""})
+        setTimeout(() => {
+          setSuccessMessage(""); // Ẩn thông báo
+        }, 2000);
+      };
+      }
     }
-    await axios.put(`http://localhost:5000/api/customers/${formData.MKH}`,payload);
-    fetchCustomers()
-    setShow1(!showEditCustomer);
-    setTimeout(() => {
-      setSuccessMessage(""); // Ẩn thông báo
-    }, 2000);
-  };
 
-  const deleteData  = async (MKH) => {
+  const deleteData = async (MKH) => {
     setSuccessMessage("Xóa thành công!");
-
     await axios.delete(`http://localhost:5000/api/customers/${MKH}`);
-    fetchCustomers()
+    fetchCustomers();
+    setform({
+      MKH: "",
+      TKH: "",
+      DC: "",
+      SDT: "",
+    });
+    setAYS(!showAYS);
+    setSearch({MKH:""})
     setTimeout(() => {
       setSuccessMessage(""); // Ẩn thông báo
     }, 2000);
+    console.log(MKH)
   };
 
-  const searchData  = async (e) => {
+  const handleAYS = (MKH) =>{
+    setAYS(!showAYS);
+    setform({
+      MKH: MKH,
+      TKH: "",
+      DC: "",
+      SDT: "",
+    });
+  }
+
+  const searchData = async (e) => {
     const { name, value } = e.target;
-    setCustomerData({
-      ...customerData,
+    setSearch({
+      ...search,
       [name]: value,
     });
+    const response = (await axios.get(`http://localhost:5000/api/customers`))
+      .data;
+
     if (value) {
-      try {
-        const response = await axios.get(`http://localhost:5000/api/customers/${value}`);
-
-        setData([response.data]);
-
-        // Thực hiện thêm các hành động với dữ liệu API, ví dụ: cập nhật state để hiển thị
-      } catch (error) {
-        
+      if (isNaN(value)) {
+        const KH_search = response.filter((response) =>
+          response.ten_kh.toLowerCase().includes(value.toLowerCase())
+        );
+        console.log(KH_search);
+        setData(KH_search);
+      } else {
+        const KH_search = response.filter((response) =>
+          response.ma_kh.toString().includes(value.toString())
+        );
+        setData(KH_search);
       }
-    }else{
+    } else {
       const response = await axios.get(`http://localhost:5000/api/customers`);
-      setData(response.data)
+      setData(response.data);
     }
-    // await axios.get(`http://localhost:5000/api/customers/${customerData.MKH}`);
-    // console.log(await axios.get(`http://localhost:5000/api/customers/${customerData.MKH}`))
-    
-  }
+  };
 
   return (
     <div class="page_customer">
       <div>
-        {/* Thông báo thêm thành công với animation */}
         {successMessage && (
           <div className="success-message">{successMessage}</div>
         )}
@@ -158,19 +226,29 @@ const Customer = () => {
       </div>
       <div class="operation">
         <div class="input-search">
-          <input onChange={searchData}  name="MKH" type="text" value={customerData.MKH} placeholder="Search......"></input>
+          <input
+            onChange={searchData}
+            name="MKH"
+            type="text"
+            value={search.MKH}
+            placeholder="Search......"
+          ></input>
         </div>
 
         <div class="button-addCustomer">
           <button onClick={hiddenAdd}>Thêm</button>
         </div>
       </div>
-
+        {/* form Thêm */}
       <div
         class="interface_add"
         style={{ display: showAddCustomer ? "block" : "none" }}
       >
-        <div class="overlay " onClick={hiddenAdd}></div>
+        <div>
+          <div class="overlay " onClick={hiddenAdd}></div>
+          {/* Thông báo thêm thành công với animation */}
+          {showError && <div className="error-message">{showError}</div>}
+        </div>
         <div class="form_interface">
           <form class="form_interface_add">
             <div>
@@ -180,28 +258,28 @@ const Customer = () => {
                   placeholder="Nhập Mã Khách Hàng"
                   name="MKH"
                   type="number"
-                  value={customerData.MKH}
+                  value={formData.MKH}
                   onChange={handleInputChange}
                 ></input>
                 <input
                   placeholder="Nhập Tên"
                   name="TKH"
                   type="text"
-                  value={customerData.TKH}
+                  value={formData.TKH}
                   onChange={handleInputChange}
                 ></input>
                 <input
                   placeholder="nhập Địa chỉ"
                   name="DC"
                   type="text"
-                  value={customerData.DC}
+                  value={formData.DC}
                   onChange={handleInputChange}
                 ></input>
                 <input
                   placeholder="Nhập Số điện thoại"
                   name="SDT"
                   type="text"
-                  value={customerData.SDT}
+                  value={formData.SDT}
                   onChange={handleInputChange}
                 ></input>
               </div>
@@ -217,12 +295,14 @@ const Customer = () => {
           </form>
         </div>
       </div>
-
+        {/* form Sửa */}
       <div
         class="interface_edit"
         style={{ display: showEditCustomer ? "block" : "none" }}
       >
-        <div class="overlay " onClick={() => hiddenEdit(" ")}></div>
+        <div class="overlay " onClick={() => hiddenEdit()}></div>
+        {/* Thông báo thêm thành công với animation */}
+        {showError && <div className="error-message">{showError}</div>}
         <div class="form_interface">
           <form class="form_interface_add">
             <div>
@@ -234,26 +314,26 @@ const Customer = () => {
                   name="TKH"
                   type="text"
                   value={formData.TKH}
-                  onChange={handleInputChange1}
+                  onChange={handleInputChange}
                 ></input>
                 <input
                   placeholder="nhập Địa chỉ"
                   name="DC"
                   type="text"
                   value={formData.DC}
-                  onChange={handleInputChange1}
+                  onChange={handleInputChange}
                 ></input>
                 <input
                   placeholder="Nhập Số điện thoại"
                   name="SDT"
                   type="text"
                   value={formData.SDT}
-                  onChange={handleInputChange1}
+                  onChange={handleInputChange}
                 ></input>
               </div>
 
               <div class="button-addCustomer-interface">
-                <button type="button" onClick={() => hiddenEdit(" ")}>
+                <button type="button" onClick={() => hiddenEdit()}>
                   Thoát
                 </button>
                 <button type="button" onClick={updateData}>
@@ -264,10 +344,28 @@ const Customer = () => {
           </form>
         </div>
       </div>
-
+        {/* form are you sure */}
+        <div
+        class="interface_ays"
+        style={{ display: showAYS ? "block" : "none" }}
+      >
+        <div class="overlay " onClick={() => handleAYS("")}></div>
+        <div class="form_interface">
+          <form class="form_interface_ays">
+            <h1>Are You Sure</h1>
+            
+            <div class="button-addCustomer-interface">
+            <button type="button" onClick={() => handleAYS("")}>No</button>
+            <button type="button" onClick={() => deleteData(formData.MKH)}>Yes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+        {/* form contend */}
       <div class="content_customer">
         <table>
-          <tr>
+          <thead>
+        <tr class="QH">
             <td>Mã khách hàng</td>
             <td>Tên khách hàng</td>
             <td>Địa chỉ</td>
@@ -281,11 +379,12 @@ const Customer = () => {
               <td>{item.dia_chi_kh}</td>
               <td>{item.sdt_kh}</td>
               <td>
-                <FaEdit onClick={() => hiddenEdit(item)}></FaEdit>{" "}
-                <FaTrash  onClick={() => deleteData(item.ma_kh)}></FaTrash>
+                <FaEdit onClick={() => handleEdit(item)}></FaEdit>{" "}
+                <FaTrash onClick={() => handleAYS(item.ma_kh)}></FaTrash>
               </td>
             </tr>
           ))}
+          </thead>
         </table>
       </div>
     </div>

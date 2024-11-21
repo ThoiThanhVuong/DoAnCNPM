@@ -6,7 +6,10 @@ const Employee = () => {
   const [showPasswordChange, setShowPasswordChange] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const manv = localStorage.getItem("ma_nv"); // Lấy ten_nv từ localStorage
+  const manv = localStorage.getItem("ma_nv"); // Lấy ma_nv từ localStorage
+  const [editAccountData, setEditAccountData] = useState({
+    mat_khau: "", // Mật khẩu cũ khi bắt đầu
+  });
 
   // Lấy thông tin nhân viên hiện tại từ API
   useEffect(() => {
@@ -20,28 +23,39 @@ const Employee = () => {
   }, [manv]);
 
   // Xử lý thay đổi mật khẩu
-  const handlePasswordChange = () => {
-    if (newPassword === confirmPassword) {
-      fetch('http://localhost:5000/api/change-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ newPassword }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          alert(data.message || 'Đổi mật khẩu thành công');
-          setShowPasswordChange(false);
-          setNewPassword('');
-          setConfirmPassword('');
-        })
-        .catch((error) => console.error('Error changing password:', error));
-    } else {
-      alert('Mật khẩu không khớp. Vui lòng thử lại.');
+  const handlePasswordChange = async () => {
+    if (newPassword !== confirmPassword) {
+      alert("Mật khẩu mới và xác nhận mật khẩu không khớp.");
+      return;
+    }
+
+    const updatedAccountData = { ...editAccountData, mat_khau: newPassword };
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/employee/${manv}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedAccountData),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to update account");
+
+      // Cập nhật lại dữ liệu trong state sau khi thay đổi mật khẩu thành công
+      setEmployeeData((prevData) => ({
+        ...prevData,
+        mat_khau: newPassword, // cập nhật mật khẩu mới
+      }));
+
+      setShowPasswordChange(false); // Đóng form thay đổi mật khẩu
+      alert("Đổi mật khẩu thành công!");
+    } catch (error) {
+      console.error("Error updating account:", error);
+      alert("Đã có lỗi xảy ra. Vui lòng thử lại.");
     }
   };
-
 
   return (
     <div className="employee-container">

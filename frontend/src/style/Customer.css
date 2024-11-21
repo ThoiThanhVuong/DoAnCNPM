@@ -16,8 +16,18 @@
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    overflow: auto;
+    max-height: 500px; /* Chiều cao tối đa của bảng */
   }
+  .content_customer thead{
+    position: sticky;
+    top: 0;
+}
+
+.QH td{
+  font-weight: 900;
+  color: #000000;
+}
   
   .content_customer table {
     width: 100%;
@@ -27,7 +37,7 @@
   .content_customer th,
   .content_customer td {
     padding: 12px 15px;
-    border-bottom: 1px solid #e0e0e0;
+    border: 1px solid #e0e0e0;
   }
   
   .content_customer th {
@@ -190,6 +200,47 @@ iterface_edit */
   width: 200px;
   opacity: 0;
   animation: slideInOut 2s forwards;
+}
+
+.error-message{
+  color: white;
+  font-weight: bold;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: red;
+  position: fixed;
+  top: 100px;
+  right: -300px; /* Bắt đầu từ ngoài màn hình */
+  width: 200px;
+  opacity: 0;
+  animation: slideInOut 2s forwards;
+  z-index: 10;
+}
+
+/* Are you sure */
+.interface_ays{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.form_interface_ays{
+  margin-top: 20%;
+  background-color: #fff;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1001;
+            width: 30%;
+
 }
 
 @keyframes slideInOut {

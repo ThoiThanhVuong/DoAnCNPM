@@ -19,7 +19,17 @@ const productService = {
             console.error('Error creating product:', error);
             throw error;
         }
+    },
+    getCountProduct : async (params) =>{
+        try {
+            const response =await axios.get(`${API_URL}/countProduct`);
+            return response.data;
+        } catch (error) {
+            console.error('Error getting count product:', error);
+            return [];
+        }
     }
+    
 };
 
 
