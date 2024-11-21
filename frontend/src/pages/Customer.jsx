@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "../style/Customer.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
-
 
 const Customer = () => {
   const [Data, setData] = useState([]);
   const [showAddCustomer, setShow] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [showEditCustomer, setShow1] = useState(false);
-  const [showError, setError]=useState(false);
+  const [showError, setError] = useState(false);
   const [formData, setform] = useState({
     MKH: "",
     TKH: "",
@@ -45,33 +43,39 @@ const Customer = () => {
       dia_chi_kh: formData.DC,
       sdt_kh: formData.SDT,
     };
-    // console.log(payload);
-    
-    if(!formData.TKH){
-      setError("nhap mã Khách hàng")
+    const response = (await axios.get(`http://localhost:5000/api/customers`))
+      .data;
+    console.log(response[0].ma_kh)
+    if (!formData.TKH || !formData.TKH || !formData.DC || !formData.SDT) {
+      setError("vui long nhap thong tin!");
+      setTimeout(() => {
+        setError("");
+      }, 4000);
+    } else {
+      if(response.ma_kh === formData.MKH){
+        setError("loi do trung ma khach hang!");
+      setTimeout(() => {
+        setError("");
+      }, 4000);
+      }else{
+      try {
+        await axios.post("http://localhost:5000/api/customers", payload);
 
+        setSuccessMessage("Khách hàng đã được thêm thành công!");
+        setTimeout(() => {
+          setSuccessMessage(""); // Ẩn thông báo
+        }, 2000);
+        // Cập nhật lại danh sách khách hàng
+        fetchCustomers();
+        hiddenAdd();
+      } catch (error) {
+        console.error("lỗi");
+        setTimeout(() => {
+          setSuccessMessage("Lỗi thêm khách hàng"); // Ẩn thông báo
+        }, 2000);
+      }
     }
-
-    setTimeout(() => {
-      setError(""); // Ẩn thông báo
-    }, 4000);
-
-    // try {
-    //   await axios.post("http://localhost:5000/api/customers", payload);
-
-    //   setSuccessMessage("Khách hàng đã được thêm thành công!");
-    //   setTimeout(() => {
-    //     setSuccessMessage(""); // Ẩn thông báo
-    //   }, 2000);
-    //   // Cập nhật lại danh sách khách hàng
-    //   fetchCustomers();
-    //   hiddenAdd();
-    // } catch (error) {
-    //   console.error("lỗi");
-    //   setTimeout(() => {
-    //     setSuccessMessage("Lỗi thêm khách hàng"); // Ẩn thông báo
-    //   }, 2000);
-    // }
+    }
   };
 
   const hiddenAdd = () => {
@@ -170,7 +174,6 @@ const Customer = () => {
   return (
     <div class="page_customer">
       <div>
-       
         {successMessage && (
           <div className="success-message">{successMessage}</div>
         )}
@@ -199,15 +202,11 @@ const Customer = () => {
         class="interface_add"
         style={{ display: showAddCustomer ? "block" : "none" }}
       >
-        
         <div>
-
-        <div class="overlay " onClick={hiddenAdd}></div>
-        {/* Thông báo thêm thành công với animation */}
-        {showError && (
-          <div className="error-message">{showError}</div>
-        )}
-      </div>
+          <div class="overlay " onClick={hiddenAdd}></div>
+          {/* Thông báo thêm thành công với animation */}
+          {showError && <div className="error-message">{showError}</div>}
+        </div>
         <div class="form_interface">
           <form class="form_interface_add">
             <div>
