@@ -8,7 +8,8 @@ const Customer = () => {
   const [showAddCustomer, setShow] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [showEditCustomer, setShow1] = useState(false);
-  const [showError, setError] = useState(false);
+  const [showError, setError] = useState("");
+  const [showAYS,setAYS] =useState(false);
   const [formData, setform] = useState({
     MKH: "",
     TKH: "",
@@ -16,7 +17,7 @@ const Customer = () => {
     SDT: "",
   });
   const [search, setSearch] = useState({
-    Name: "",
+    MKH: "",
   });
   const fetchCustomers = async () => {
     try {
@@ -43,20 +44,18 @@ const Customer = () => {
       dia_chi_kh: formData.DC,
       sdt_kh: formData.SDT,
     };
-    const response = (await axios.get(`http://localhost:5000/api/customers`))
-      .data;
-    console.log(response[0].ma_kh)
+    console.log(validatePhoneNumber(formData.SDT))
     if (!formData.TKH || !formData.TKH || !formData.DC || !formData.SDT) {
       setError("vui long nhap thong tin!");
       setTimeout(() => {
         setError("");
-      }, 4000);
+      }, 2000);
     } else {
-      if(response.ma_kh === formData.MKH){
-        setError("loi do trung ma khach hang!");
+      if(!validatePhoneNumber(formData.SDT)){
+        setError("vui long nhap dung SDT");
       setTimeout(() => {
         setError("");
-      }, 4000);
+      }, 2000);
       }else{
       try {
         await axios.post("http://localhost:5000/api/customers", payload);
@@ -69,13 +68,19 @@ const Customer = () => {
         fetchCustomers();
         hiddenAdd();
       } catch (error) {
-        console.error("lỗi");
+        setError("Loi trung ma khach hang");
         setTimeout(() => {
-          setSuccessMessage("Lỗi thêm khách hàng"); // Ẩn thông báo
+          setError(""); // Ẩn thông báo
         }, 2000);
       }
     }
-    }
+  }
+  };
+   // Hàm kiểm tra số điện thoại
+   const validatePhoneNumber = (phone) => {
+    const regex = /^(\+84|84|0)(3|5|7|8|9)[0-9]{8}$/; // Định dạng hợp lệ hơn
+ // Định dạng cho số điện thoại Việt Nam
+    return regex.test(phone);
   };
 
   const hiddenAdd = () => {
@@ -117,31 +122,68 @@ const Customer = () => {
   };
 
   const updateData = async () => {
-    setSuccessMessage("Sửa thành công!");
-    const payload = {
-      ten_kh: formData.TKH,
-      dia_chi_kh: formData.DC,
-      sdt_kh: formData.SDT,
-    };
-    await axios.put(
-      `http://localhost:5000/api/customers/${formData.MKH}`,
-      payload
-    );
-    fetchCustomers();
-    setShow1(!showEditCustomer);
-    setTimeout(() => {
-      setSuccessMessage(""); // Ẩn thông báo
-    }, 2000);
-  };
+
+    if(!formData.TKH||!formData.DC||!formData.SDT){
+      setError("vui long nhap thong tin!");
+      setTimeout(() => {
+        setError("");
+      }, 2000);
+    }else{
+      if(!validatePhoneNumber(formData.SDT)){
+        setError("vui long nhap dung SDT!");
+        setTimeout(() => {
+          setError("");
+        }, 2000);
+      }else{
+
+        setSuccessMessage("Sửa thành công!");
+        const payload = {
+          ten_kh: formData.TKH,
+          dia_chi_kh: formData.DC,
+          sdt_kh: formData.SDT,
+        };
+        await axios.put(
+          `http://localhost:5000/api/customers/${formData.MKH}`,
+          payload
+        );
+        fetchCustomers();
+        setShow1(!showEditCustomer);
+
+        setSearch({MKH:""})
+        setTimeout(() => {
+          setSuccessMessage(""); // Ẩn thông báo
+        }, 2000);
+      };
+      }
+    }
 
   const deleteData = async (MKH) => {
     setSuccessMessage("Xóa thành công!");
     await axios.delete(`http://localhost:5000/api/customers/${MKH}`);
     fetchCustomers();
+    setform({
+      MKH: "",
+      TKH: "",
+      DC: "",
+      SDT: "",
+    });
+    setAYS(!showAYS);
+    setSearch({MKH:""})
     setTimeout(() => {
       setSuccessMessage(""); // Ẩn thông báo
     }, 2000);
+    console.log(MKH)
   };
+
+  const handleAYS = (MKH) =>{
+    setAYS(!showAYS);
+    setform({
+      MKH: MKH,
+      TKH: "",
+      DC: "",
+      SDT: "",
+    });
+  }
 
   const searchData = async (e) => {
     const { name, value } = e.target;
@@ -197,7 +239,7 @@ const Customer = () => {
           <button onClick={hiddenAdd}>Thêm</button>
         </div>
       </div>
-
+        {/* form Thêm */}
       <div
         class="interface_add"
         style={{ display: showAddCustomer ? "block" : "none" }}
@@ -253,12 +295,14 @@ const Customer = () => {
           </form>
         </div>
       </div>
-
+        {/* form Sửa */}
       <div
         class="interface_edit"
         style={{ display: showEditCustomer ? "block" : "none" }}
       >
         <div class="overlay " onClick={() => hiddenEdit()}></div>
+        {/* Thông báo thêm thành công với animation */}
+        {showError && <div className="error-message">{showError}</div>}
         <div class="form_interface">
           <form class="form_interface_add">
             <div>
@@ -300,10 +344,28 @@ const Customer = () => {
           </form>
         </div>
       </div>
-
+        {/* form are you sure */}
+        <div
+        class="interface_ays"
+        style={{ display: showAYS ? "block" : "none" }}
+      >
+        <div class="overlay " onClick={() => handleAYS("")}></div>
+        <div class="form_interface">
+          <form class="form_interface_ays">
+            <h1>Are You Sure</h1>
+            
+            <div class="button-addCustomer-interface">
+            <button type="button" onClick={() => handleAYS("")}>No</button>
+            <button type="button" onClick={() => deleteData(formData.MKH)}>Yes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+        {/* form contend */}
       <div class="content_customer">
         <table>
-          <tr>
+          <thead>
+        <tr class="QH">
             <td>Mã khách hàng</td>
             <td>Tên khách hàng</td>
             <td>Địa chỉ</td>
@@ -318,10 +380,11 @@ const Customer = () => {
               <td>{item.sdt_kh}</td>
               <td>
                 <FaEdit onClick={() => handleEdit(item)}></FaEdit>{" "}
-                <FaTrash onClick={() => deleteData(item.ma_kh)}></FaTrash>
+                <FaTrash onClick={() => handleAYS(item.ma_kh)}></FaTrash>
               </td>
             </tr>
           ))}
+          </thead>
         </table>
       </div>
     </div>
