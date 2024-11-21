@@ -19,9 +19,9 @@ exports.getExportByID = async (req, res) => {
         const ExportID = await Export.findByPk(ma_px);
         if(!ExportID)
         {
-            return res.status(404).json({message: 'Không tìm thấy phiếu xuất'})
+            res.status(404).json({message: 'Không tìm thấy phiếu xuất'})
         }
-        return res.json(ExportID)
+        res.json(ExportID)
     }
     catch(err){
         res.status(500).json({message: ' Tải phiếu xuất lỗi ', error: err.message});

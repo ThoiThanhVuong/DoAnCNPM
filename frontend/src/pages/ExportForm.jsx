@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
 import "../style/ExportForm.css";
+import "../style/ImportForm.css";
+import "../style/Customer.css";
 import Textfield from "@atlaskit/textfield";
 import { FaSearch } from "react-icons/fa";
 import { useState } from "react";
 import { getExports } from "../services/phieuxuatService";
+import { getDetailPX} from "../services/chitietPhieuXuatService";
+
 const ExportForm = () => {
   const [dataExport, setDataExport] = useState([]);
   const [StartDatePX, setStartDatePX] = useState("");
@@ -12,6 +16,27 @@ const ExportForm = () => {
   const [GiaNhoPX, setGiaNhoPX] = useState("");
   const [GiaLonPX, setGiaLonPX] = useState("");
   const [filteredDataPX, setFilteredDataPX] = useState([]);
+  const [showdetail, setShowDetail] = useState();
+  const [dataDetailPX, setDataDetailPX] = useState([]);
+  const [showOVlay, setShowOVlay] = useState(false);
+
+  const handleRowClick = (id) => {
+    setShowDetail(id);
+    GETDATA(id);
+    setShowOVlay(true)
+  };
+  const handleCancel = () => {
+    setShowDetail(null);
+    setShowOVlay(false);
+  }
+
+  const GETDATA = async (id) => {
+    const data = await getDetailPX(id);
+    if (data) {
+      console.log("Lấy được dữ liệu: ", data);
+      setDataDetailPX(data);
+    }
+  };
 
   useEffect(() => {
     const fectchExport = async () => {
@@ -110,18 +135,62 @@ const ExportForm = () => {
           </thead>
           <tbody>
             {filteredDataPX.map((datatable) => (
-              <tr key={datatable.ma_px}>
-                <td style={{ width: "10%" }}>{datatable.ma_px}</td>
-                <td style={{ width: "20%" }}>{datatable.ma_nv}</td>
-                <td style={{ width: "20%" }}>{datatable.ma_kh}</td>
-                <td style={{ width: "20%" }}>{datatable.thoi_gian_xuat}</td>
-                <td style={{ width: "30%" }}>{datatable.tong_tien}</td>
+              <tr key={datatable.ma_px} onClick={()=>handleRowClick(datatable.ma_px)}>
+                <td >{datatable.ma_px}</td>
+                <td >{datatable.ma_nv}</td>
+                <td >{datatable.ma_kh}</td>
+                <td >{datatable.thoi_gian_xuat}</td>
+                <td >{datatable.tong_tien.toLocaleString("vi-VN")} VNĐ</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      {showOVlay && (
+        <div>
+          <div className="overlay" onClick={handleCancel}></div>
+          <DetailPX data={dataDetailPX} handleCancel={handleCancel} />
+        </div>
+      )}
     </div>
   );
 };
+const DetailPX = ({data, handleCancel}) =>{
+  if (!data || data.length === 0) {
+    return null; // Hoặc hiển thị một thông báo lỗi phù hợp
+  }
+  const totalMoney = data.reduce((total, item) => {
+    return total + item.so_luong * item.gia_xuat;
+  }, 0);
+  return(
+    <div className="detailPX">
+      <div className="boxCTPX">
+        <h3>Chi tiết hóa đơn</h3>
+        <h4>Mã hóa đơn: {data[0].ma_px}</h4>
+        <div className="content_customer format_table_CTPX">
+          <table>
+            <thead>
+              <tr>
+                <th>Mã sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá bán</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((datatable)=>(
+                <tr>
+                  <td>{datatable.ma_phien_ban_sp}</td>
+                  <td>{datatable.so_luong}</td>
+                  <td>{datatable.gia_xuat.toLocaleString("vi-VN")}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="totalMoney">Tổng Tiền: {totalMoney.toLocaleString("vi-VN")} VNĐ </div>
+        <div className="btn-OK" onClick={handleCancel}>Đồng ý</div>
+      </div>
+    </div>
+  )
+}
 export default ExportForm;

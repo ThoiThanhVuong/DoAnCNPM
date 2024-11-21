@@ -19,7 +19,7 @@ const WareHouse = require("./WareHouseModel");
 const ColorModel = require("./ColorModel");
 const PhienBanSPModel = require("./PhienBanSPModel");
 const detailImport = require("./detailImportModel");
-const chiTietPhieuXuatModel = require("./chiTietPhieuXuatModel");
+const chiTietPhieuXuatModel = require("./chitietPhieuXuatModel");
 // Thiết lập mối quan hệ Phiếu xuất
 CustomerModel.hasMany(PhieuXuatModel, {
   foreignKey: "ma_kh",
@@ -129,23 +129,23 @@ chiTietPhieuXuatModel.belongsTo(PhieuXuatModel, {
 module.exports = {
   sequelize,
   KhachHang: CustomerModel,
-  EmployeeModel,
+  EmployeeModel: EmployeeModel,
   PhieuXuat: PhieuXuatModel,
   Permission: PermissionModel,
   FeaturePermission: FeaturePermissionModel,
   DetailPermission,
-  ProductModel,
+  ProductModel: ProductModel,
   OperatingSystem,
   Brand,
   Origin,
   WareHouse,
   Provider: ProviderModel,
   importModel,
-  PhienBanSPModel,
-  ProductModel,
+  PhienBanSPModel: PhienBanSPModel,
+  ProductModel: ProductModel,
   Ram: RamModel,
   Rom: RomModel,
   Color: ColorModel,
-  chiTietPhieuXuatModel,
+  chiTietPhieuXuatModel: chiTietPhieuXuatModel,
   detailImport,
 };

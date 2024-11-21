@@ -1,7 +1,7 @@
 const {Provider,sequelize} = require('../models/Relationship'); // MySQL model
 
 const getProvider = async (req, res) => {
-  try {
+  try { 
     const provider = await Provider.findAll();
     res.status(200).json(provider);
   } catch (error) {

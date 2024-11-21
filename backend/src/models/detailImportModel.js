@@ -7,6 +7,7 @@ const WareHouse = require('../models/WareHouseModel')
 const detailImport = sequelize.define('DetailImport', {
     ma_pn: {
         type: DataTypes.INTEGER,
+        primaryKey:true,
         references:{
             model : Import,
             key: 'ma_pn',
@@ -14,6 +15,7 @@ const detailImport = sequelize.define('DetailImport', {
     },
     ma_phien_ban_sp: {
         type: DataTypes.INTEGER,
+        primaryKey:true,
         references:{
             model : phienBanSanPham,
             key: 'ma_phien_ban_sp',
