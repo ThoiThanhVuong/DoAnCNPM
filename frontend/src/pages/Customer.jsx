@@ -246,7 +246,7 @@ const Customer = () => {
       >
         <div>
           <div class="overlay " onClick={hiddenAdd}></div>
-          {/* Thông báo thêm thành công với animation */}
+          {/* Thông báo với animation */}
           {showError && <div className="error-message">{showError}</div>}
         </div>
         <div class="form_interface">

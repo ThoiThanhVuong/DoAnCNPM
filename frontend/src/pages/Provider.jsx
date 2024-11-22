@@ -6,7 +6,9 @@ import axios from "axios";
 const Provider = () => {
   const [Data, setData] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
+  const [showError, setError] = useState("");
   const [showAdd, setShow] = useState(false);
+  const [showAYS,setAYS] =useState(false);
   const [search,setSearch] = useState({MNCC:""})
   const [formData, setform] = useState({
     MNCC: " ",
@@ -35,13 +37,22 @@ const Provider = () => {
   //Thêm Nhà Cung Cấp
   const addProvider = async () => {
     if(!formData.MNCC||!formData.TNCC||!formData.DC||!formData.Email||!formData.SDT){
-      console.log("lỗi");
+      setError("Vui lòng nhập thông tin!");
+      setTimeout(() => {
+      setError(""); // Ẩn thông báo
+      }, 2000);
     }else{
       if(!validatePhoneNumber(formData.SDT)){
-        console.log("lỗi sdt");
+        setError("Vui lòng nhập đúng SDT!");
+        setTimeout(() => {
+        setError(""); // Ẩn thông báo
+        }, 2000);
       }else{
         if(!validateEmail(formData.Email)){
-          console.log("lỗi email");
+        setError("Vui lòng nhập đúng Email!");
+        setTimeout(() => {
+        setError(""); // Ẩn thông báo
+        }, 2000);
         }else{
           try {
             const payload ={
@@ -52,11 +63,17 @@ const Provider = () => {
               sdt_ncc : formData.SDT
             }
             await axios.post("http://localhost:5000/api/providers",payload)
-            console.log("thêm thành công");
+            setSuccessMessage("Thêm thành công");
+            setTimeout(() => {
+              setSuccessMessage(""); // Ẩn thông báo
+            }, 1500);
             fetchProviders();
             hiddenAdd();
           } catch (error) {
-            console.log("lỗi trung mncc");
+            setError("Mã Nhà Cung Cấp bị Trùng!");
+            setTimeout(() => {
+            setError(""); // Ẩn thông báo
+            }, 2000);
           }
         }
       }
@@ -78,13 +95,22 @@ const Provider = () => {
 //cập nhật Nhà cung cấp
   const updateProvider = async() =>{
     if(!formData.TNCC||!formData.DC||!formData.Email||!formData.SDT){
-      console.log("lỗi");
+      setError("Vui lòng nhập thông tin!");
+      setTimeout(() => {
+      setError(""); // Ẩn thông báo
+      }, 2000);
     }else{
       if(!validateEmail(formData.Email)){
-        console.log("lỗi email");
+        setError("Vui lòng nhập đúng Email!");
+        setTimeout(() => {
+        setError(""); // Ẩn thông báo
+        }, 2000);
       }else{
         if(!validatePhoneNumber(formData.SDT)){
-          console.log("lỗi sdt")
+          setError("Vui lòng nhập đúng SDT!");
+          setTimeout(() => {
+          setError(""); // Ẩn thông báo
+          }, 2000);
         }else{
           const payload ={
             ten_ncc : formData.TNCC,
@@ -96,7 +122,10 @@ const Provider = () => {
             `http://localhost:5000/api/providers/${formData.MNCC}`,
             payload
           );
-          console.log("cập nhật thành công")
+          setSuccessMessage("Sửa thành công");
+            setTimeout(() => {
+              setSuccessMessage(""); // Ẩn thông báo
+            }, 1500);
           hiddenEdit("");
           fetchProviders();
         }
@@ -113,8 +142,13 @@ const Provider = () => {
       DC: "",
       SDT: "",
     });
-    console.log("xóa thành công")
+    setSuccessMessage("Xóa thành công");
+    setTimeout(() => {
+    setSuccessMessage(""); // Ẩn thông báo
+    }, 1500);
     fetchProviders();
+    handleAYS("");
+    console.log(formData)
   }
 
 //tìm kiếm nhà cung cấp
@@ -144,6 +178,19 @@ const searchProvider = async(e) =>{
         setData(response.data);
       }
 
+}
+
+
+
+const handleAYS = (MNCC) =>{
+  setAYS(!showAYS);
+  setform({
+    MNCC: MNCC,
+    TNCC: "",
+    DC: "",
+    Email:"",
+    SDT: ""
+  });
 }
 
   const hiddenAdd = () => {
@@ -194,6 +241,8 @@ const searchProvider = async(e) =>{
         style={{ display: showAdd ? "block" : "none" }}
       >
         <div class="overlay " onClick={hiddenAdd}></div>
+        {/* Thông báo với animation */}
+        {showError && <div className="error-message">{showError}</div>}
         <div class="form_interface">
           <form class="form_interface_add">
             <div>
@@ -251,6 +300,8 @@ const searchProvider = async(e) =>{
         style={{ display: showEditCustomer ? "block" : "none" }}
       >
         <div class="overlay " onClick={() => hiddenEdit(" ")}></div>
+        {/* Thông báo với animation */}
+        {showError && <div className="error-message">{showError}</div>}
         <div class="form_interface">
           <form class="form_interface_add">
             <div>
@@ -298,9 +349,27 @@ const searchProvider = async(e) =>{
         </div>
       </div>
 
+      <div
+        class="interface_ays"
+        style={{ display: showAYS ? "block" : "none" }}
+      >
+        <div class="overlay " onClick={() => handleAYS("")}></div>
+        <div class="form_interface">
+          <form class="form_interface_ays">
+            <h1>Are You Sure</h1>
+            
+            <div class="button-addCustomer-interface">
+            <button type="button" onClick={() => handleAYS("")}>No</button>
+            <button type="button" onClick={() => deleteProvider(formData.MNCC)}>Yes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
       <div class="content_customer">
         <table>
-          <tr>
+        <thead>
+          <tr className="QH">
             <td>Mã Nhà Cung Cấp</td>
             <td>Tên Nhà Cung Cấp</td>
             <td>Địa chỉ</td>
@@ -308,6 +377,7 @@ const searchProvider = async(e) =>{
             <td>Số điện thoại</td>
             <td>Thao Tác</td>
           </tr>
+          </thead>
           {Data.map((item, index) => (
             <tr key={index}>
               <td>{item.ma_ncc}</td>
@@ -317,7 +387,7 @@ const searchProvider = async(e) =>{
               <td>{item.sdt_ncc}</td>
               <td>
                 <FaEdit onClick={() => hiddenEdit(item)}></FaEdit>{" "}
-                <FaTrash onClick={() => deleteProvider(item.ma_ncc)}></FaTrash>
+                <FaTrash onClick={() => handleAYS(item.ma_ncc)}></FaTrash>
               </td>
             </tr>
           ))}
