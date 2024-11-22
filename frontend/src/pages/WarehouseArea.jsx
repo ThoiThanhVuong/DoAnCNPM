@@ -10,7 +10,12 @@ const WarehouseArea = () => {
     const [currentWarehouse, setCurrentWarehouse] = useState({ id: null, name: '', note: '' });
     const [showAddForm, setShowAddForm] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false);
-
+    const [filterWarehouses, setFilterWarehouses] = useState([])
+    const [searchTerm, setSearchTerm] = useState('')
+    const [errors, setErrors] = useState({
+        nameError: '',
+        noteError: ''
+      });
 
     useEffect(() => {
         fetchWarehouses();
@@ -21,28 +26,32 @@ const WarehouseArea = () => {
             const data = await WarehouseService.getAllItems();
             console.log(data);
             setWarehouses(data);
+            setFilterWarehouses(data); // filter data
         } catch (error) {
             console.error('Error fetching warehouses:', error);
         }
     };
 
-    const handleAddWarehouse = async () => {
-        try {
-            await WarehouseService.addItem({
-                ten_kho: currentWarehouse.name,
-                chu_thich: currentWarehouse.note,
-                trang_thai: 1
-            });
-            fetchWarehouses();
-            // setActive('showWarehouse');
-            setShowAddForm(false); //
-        } catch (error) {
-            console.error('Error adding warehouse:', error);
+    const handleAddWarehouse = async (e) => {
+        if(validate()){
+            try {
+                await WarehouseService.addItem({
+                    ten_kho: currentWarehouse.name,
+                    chu_thich: currentWarehouse.note,
+                    trang_thai: 1
+                });
+                fetchWarehouses();
+                // setActive('showWarehouse');
+                setShowAddForm(false); //
+            } catch (error) {
+                console.error('Error adding warehouse:', error);
+            }
         }
     };
 
     const handleEditWarehouse = async () => {
-        try {
+        if(validate()){
+            try {
             await WarehouseService.updateItem(currentWarehouse.id, {
                 ten_kho: currentWarehouse.name,
                 chu_thich: currentWarehouse.note,
@@ -53,6 +62,7 @@ const WarehouseArea = () => {
             setShowEditForm(false); 
         } catch (error) {
             console.error('Error updating warehouse:', error);
+        }
         }
     };
 
@@ -70,6 +80,16 @@ const WarehouseArea = () => {
         }
     };
 
+    const handleSearchWarehouse = (e) => {
+        const value = e.target.value;
+    
+        const result = warehouses.filter((warehouse) => 
+            warehouse.ten_kho.toLowerCase().includes(value.toLowerCase()) ||
+            warehouse.chu_thich.toLowerCase().includes(value.toLowerCase())
+        );
+        setFilterWarehouses(result);
+        setSearchTerm(value);
+    };
     const showAddArea = () => {
         // setActive('showAddArea');
         setShowAddForm(true); //
@@ -85,13 +105,33 @@ const WarehouseArea = () => {
             note: warehouse.chu_thich
         });
     };
+    const validate = () => {
+        let isValid = true;
+        let nameError = '';
+        let noteError = '';
+    
+        if (!currentWarehouse.name.trim()) {
+          nameError = 'Tên khu vực kho không được bỏ trống';
+          isValid = false;
+        }
+    
+        if (!currentWarehouse.note.trim()) {
+          noteError = 'Ghi chú không được bỏ trống';
+          isValid = false;
+        }
+    
+        setErrors({
+          nameError,
+          noteError
+        })};
+
 
     return (
         <div className="warehouse-area">
             {active === 'showWarehouse' && (
                 <div className="warehouse-area__container">
                     <div className='warehouse-area_search-and-add'>
-                        <input type="text" placeholder='search...' className='warehouse-search' />
+                        <input type="text" placeholder='search...' className='warehouse-search' onChange={handleSearchWarehouse}/>
                         <button onClick={showAddArea} className="warehouse-button add">Thêm</button>
                     </div>
                     <h1 className='warehouse-area__container__banner'>Quản lý khu vực kho</h1>
@@ -102,17 +142,17 @@ const WarehouseArea = () => {
                                     <th className='warehouse-area__header-cell'>Mã kho</th>
                                     <th className='warehouse-area__header-cell'>Khu vực kho</th>
                                     <th className='warehouse-area__header-cell'>Ghi chú</th>
-                                    <th className='warehouse-area__header-cell'>Chi tiết</th>
+                                    {/* <th className='warehouse-area__header-cell'>Chi tiết</th> */}
                                     <th className='warehouse-area__header-cell'>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {warehouses.map((warehouse) => (
+                                {filterWarehouses.map((warehouse) => (
                                     <tr key={warehouse.id}>
                                         <td className='warehouse-area__data-cell'>{warehouse.ma_kho}</td>
                                         <td className='warehouse-area__data-cell'>{warehouse.ten_kho}</td>
                                         <td className='warehouse-area__data-cell'>{warehouse.chu_thich}</td>
-                                        <td className='warehouse-area__data-cell'><BiSolidDetail className='warehouse-area__detail-icon' /></td>
+                                        {/* <td className='warehouse-area__data-cell'><BiSolidDetail className='warehouse-area__detail-icon' /></td> */}
                                         <td className='warehouse-area__data-cell'>
                                             <FaEdit className='warehouse-area__edit-icon' onClick={() => showEditArea(warehouse)} />
                                             <FaTrash className='warehouse-area__delete-icon' onClick={() => handleDeleteWarehouse(warehouse.ma_kho)} />
@@ -139,6 +179,7 @@ const WarehouseArea = () => {
                                     value={currentWarehouse.name}
                                     onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, name: e.target.value })}
                                 />
+                                {errors.nameError && <p style={{ color: 'red' }}>{errors.nameError}</p>}
                             </div>
                             <div className='warehouse-area__form-item'>
                                 <label className='warehouse-area__form-item-label' htmlFor="warehouse-note">Ghi chú</label>
@@ -150,10 +191,11 @@ const WarehouseArea = () => {
                                     value={currentWarehouse.note}
                                     onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, note: e.target.value })}
                                 />
+                                {errors.nameError && <p style={{ color: 'red' }}>{errors.nameError}</p>}
                             </div>
                             <div className='warehouse-area__form-buttons'>
                                 <button className='warehouse-button confirm' onClick={handleAddWarehouse}>Lưu</button>
-                                <button className='warehouse-button exit' onClick={() => setShowAddForm(false)}>Thoát</button>
+                                <button className='warehouse-button exit' onClick={() => {setShowAddForm(false); setErrors({ nameError: '', noteError: '' });}}>Thoát</button>
                             </div>
                         </div>
                     </div>
@@ -174,6 +216,7 @@ const WarehouseArea = () => {
                                     value={currentWarehouse.name}
                                     onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, name: e.target.value })}
                                 />
+                                    {errors.nameError && <p style={{ color: 'red' }}>{errors.nameError}</p>}
                             </div>
                             <div className='warehouse-area__form-item'>
                                 <label className='warehouse-area__form-item-label' htmlFor="warehouse-note_edit">Ghi chú</label>
@@ -188,7 +231,7 @@ const WarehouseArea = () => {
                             </div>
                             <div className='warehouse-area__form-buttons'>
                                 <button className='warehouse-button confirm' onClick={handleEditWarehouse}>Lưu</button>
-                                <button className='warehouse-button exit' onClick={() => setShowEditForm(false)}>Thoát</button>
+                                <button className='warehouse-button exit' onClick={() => {setShowEditForm(false); setErrors({ nameError: '', noteError: '' });}}>Thoát</button>
                             </div>
                         </div>
                     </div>

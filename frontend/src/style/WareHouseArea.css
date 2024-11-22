@@ -261,3 +261,10 @@
   border-radius: 8px;
   width: 400px;
 }
+.warehouse-area__container__content{
+  max-height: 400px; /* Giới hạn chiều cao của div */
+  overflow-y: auto;  /* Cho phép cuộn dọc khi nội dung vượt quá chiều cao */
+  border: 1px solid #ddd; /* Tùy chọn: Thêm viền cho div */
+  padding: 10px; /* Tùy chọn: Thêm một chút padding bên trong div */
+
+}
