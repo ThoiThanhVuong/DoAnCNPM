@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../style/Employee.css';
+import Cookies from "js-cookie";
 
 const Employee = () => {
   const [employeeData, setEmployeeData] = useState({});
@@ -10,6 +11,10 @@ const Employee = () => {
   const [editAccountData, setEditAccountData] = useState({
     mat_khau: "", // Mật khẩu cũ khi bắt đầu
   });
+  const handleBackToLogin = () => {
+    Cookies.remove("token");
+    window.location.reload();
+  };
 
   // Lấy thông tin nhân viên hiện tại từ API
   useEffect(() => {
@@ -26,6 +31,10 @@ const Employee = () => {
   const handlePasswordChange = async () => {
     if (newPassword !== confirmPassword) {
       alert("Mật khẩu mới và xác nhận mật khẩu không khớp.");
+      return;
+    }
+    if (newPassword === employeeData.mat_khau) {
+      alert("Mật khẩu mới không được trùng với mật khẩu cũ.");
       return;
     }
 
@@ -85,6 +94,7 @@ const Employee = () => {
         <button onClick={() => setShowPasswordChange(!showPasswordChange)}>
           Đổi Mật Khẩu
         </button>
+        <button onClick={handleBackToLogin}>LOGOUT</button>
       </div>
 
       {showPasswordChange && (
