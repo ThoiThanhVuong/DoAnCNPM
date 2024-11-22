@@ -8,6 +8,9 @@ const WarehouseArea = () => {
     const [active, setActive] = useState('showWarehouse');
     const [warehouses, setWarehouses] = useState([]);
     const [currentWarehouse, setCurrentWarehouse] = useState({ id: null, name: '', note: '' });
+    const [showAddForm, setShowAddForm] = useState(false);
+    const [showEditForm, setShowEditForm] = useState(false);
+
 
     useEffect(() => {
         fetchWarehouses();
@@ -31,7 +34,8 @@ const WarehouseArea = () => {
                 trang_thai: 1
             });
             fetchWarehouses();
-            setActive('showWarehouse');
+            // setActive('showWarehouse');
+            setShowAddForm(false); //
         } catch (error) {
             console.error('Error adding warehouse:', error);
         }
@@ -45,7 +49,8 @@ const WarehouseArea = () => {
                 trang_thai: 1
             });
             fetchWarehouses();
-            setActive('showWarehouse');
+            // setActive('showWarehouse');
+            setShowEditForm(false); 
         } catch (error) {
             console.error('Error updating warehouse:', error);
         }
@@ -66,12 +71,14 @@ const WarehouseArea = () => {
     };
 
     const showAddArea = () => {
-        setActive('showAddArea');
+        // setActive('showAddArea');
+        setShowAddForm(true); //
         setCurrentWarehouse({ id: null, name: '', note: '' });
     };
 
     const showEditArea = (warehouse) => {
-        setActive('showEditArea');
+        // setActive('showEditArea');
+        setShowEditForm(true); 
         setCurrentWarehouse({
             id: warehouse.ma_kho,
             name: warehouse.ten_kho,
@@ -83,7 +90,10 @@ const WarehouseArea = () => {
         <div className="warehouse-area">
             {active === 'showWarehouse' && (
                 <div className="warehouse-area__container">
-                    <button onClick={showAddArea} className="warehouse-button add">Thêm</button>
+                    <div className='warehouse-area_search-and-add'>
+                        <input type="text" placeholder='search...' className='warehouse-search' />
+                        <button onClick={showAddArea} className="warehouse-button add">Thêm</button>
+                    </div>
                     <h1 className='warehouse-area__container__banner'>Quản lý khu vực kho</h1>
                     <div className='warehouse-area__container__content'>
                         <table className="warehouse-area__container__table">
@@ -114,68 +124,72 @@ const WarehouseArea = () => {
                     </div>
                 </div>
             )}
-            {active === 'showAddArea' && (
-                <div className='warehouse-area__add-form'>
-                    <h1 className='warehouse-area__add-form-banner'>Thêm khu vực kho</h1>
-                    <div className='warehouse-area__add-form-content'>
-                        <div className='warehouse-area__form-item'>
-                            <label className='warehouse-area__form-item-label' htmlFor="warehouse-name">Tên khu vực kho</label>
-                            <input
-                                className='warehouse-area__form-item-input'
-                                type="text"
-                                id='warehouse-name'
-                                placeholder='Nhập tên khu vực kho'
-                                value={currentWarehouse.name}
-                                onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, name: e.target.value })}
-                            />
-                        </div>
-                        <div className='warehouse-area__form-item'>
-                            <label className='warehouse-area__form-item-label' htmlFor="warehouse-note">Ghi chú</label>
-                            <input
-                                className='warehouse-area__form-item-input'
-                                type="text"
-                                id='warehouse-note'
-                                placeholder='Nhập ghi chú'
-                                value={currentWarehouse.note}
-                                onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, note: e.target.value })}
-                            />
-                        </div>
-                        <div className='warehouse-area__form-buttons'>
-                            <button className='warehouse-button confirm' onClick={handleAddWarehouse}>Lưu</button>
-                            <button className='warehouse-button exit' onClick={() => setActive('showWarehouse')}>Thoát</button>
+            {showAddForm && (
+                <div className='overlay'>
+                    <div className='warehouse-area__add-form'>
+                        <h1 className='warehouse-area__add-form-banner'>Thêm khu vực kho</h1>
+                        <div className='warehouse-area__add-form-content'>
+                            <div className='warehouse-area__form-item'>
+                                <label className='warehouse-area__form-item-label' htmlFor="warehouse-name">Tên khu vực kho</label>
+                                <input
+                                    className='warehouse-area__form-item-input'
+                                    type="text"
+                                    id='warehouse-name'
+                                    placeholder='Nhập tên khu vực kho'
+                                    value={currentWarehouse.name}
+                                    onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, name: e.target.value })}
+                                />
+                            </div>
+                            <div className='warehouse-area__form-item'>
+                                <label className='warehouse-area__form-item-label' htmlFor="warehouse-note">Ghi chú</label>
+                                <input
+                                    className='warehouse-area__form-item-input'
+                                    type="text"
+                                    id='warehouse-note'
+                                    placeholder='Nhập ghi chú'
+                                    value={currentWarehouse.note}
+                                    onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, note: e.target.value })}
+                                />
+                            </div>
+                            <div className='warehouse-area__form-buttons'>
+                                <button className='warehouse-button confirm' onClick={handleAddWarehouse}>Lưu</button>
+                                <button className='warehouse-button exit' onClick={() => setShowAddForm(false)}>Thoát</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             )}
-            {active === 'showEditArea' && (
-                <div className='warehouse-area__edit-form'>
-                    <h1 className='warehouse-area__edit-form-banner'>Thông tin khu vực kho</h1>
-                    <div className='warehouse-area__edit-form-content'>
-                        <div className='warehouse-area__form-item'>
-                            <label className='warehouse-area__form-item-label' htmlFor="warehouse-name_edit">Tên khu vực kho</label>
-                            <input
-                                className='warehouse-area__form-item-input'
-                                type="text"
-                                id='warehouse-name_edit'
-                                placeholder='Nhập tên khu vực kho'
-                                value={currentWarehouse.name}
-                                onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, name: e.target.value })}
-                            />
-                        </div>
-                        <div className='warehouse-area__form-item'>
-                            <label className='warehouse-area__form-item-label' htmlFor="warehouse-note_edit">Ghi chú</label>
-                            <input
-                                className='warehouse-area__form-item-input'
-                                type="text"
-                                id='warehouse-note_edit'
-                                placeholder='Nhập ghi chú'
-                                value={currentWarehouse.note}
-                                onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, note: e.target.value })}
-                            />
-                        </div>
-                        <div className='warehouse-area__form-buttons'>
-                            <button className='warehouse-button confirm' onClick={handleEditWarehouse}>Lưu</button>
-                            <button className='warehouse-button exit' onClick={() => setActive('showWarehouse')}>Thoát</button>
+            {showEditForm && (
+                <div className='overlay'>
+                    <div className='warehouse-area__edit-form'>
+                        <h1 className='warehouse-area__edit-form-banner'>Thông tin khu vực kho</h1>
+                        <div className='warehouse-area__edit-form-content'>
+                            <div className='warehouse-area__form-item'>
+                                <label className='warehouse-area__form-item-label' htmlFor="warehouse-name_edit">Tên khu vực kho</label>
+                                <input
+                                    className='warehouse-area__form-item-input'
+                                    type="text"
+                                    id='warehouse-name_edit'
+                                    placeholder='Nhập tên khu vực kho'
+                                    value={currentWarehouse.name}
+                                    onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, name: e.target.value })}
+                                />
+                            </div>
+                            <div className='warehouse-area__form-item'>
+                                <label className='warehouse-area__form-item-label' htmlFor="warehouse-note_edit">Ghi chú</label>
+                                <input
+                                    className='warehouse-area__form-item-input'
+                                    type="text"
+                                    id='warehouse-note_edit'
+                                    placeholder='Nhập ghi chú'
+                                    value={currentWarehouse.note}
+                                    onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, note: e.target.value })}
+                                />
+                            </div>
+                            <div className='warehouse-area__form-buttons'>
+                                <button className='warehouse-button confirm' onClick={handleEditWarehouse}>Lưu</button>
+                                <button className='warehouse-button exit' onClick={() => setShowEditForm(false)}>Thoát</button>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -15,36 +15,23 @@
   overflow-x: auto;
 }
 
-table {
+.warehouse-area__container__table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
 }
 
-th,
-td {
+.warehouse-area__header-cell,
+.warehouse-area__data-cell {
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
 
-th {
+.warehouse-area__header-cell {
   background-color: #f2f2f2;
 }
 
-button {
-  padding: 10px 20px;
-  margin: 5px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #45a049;
-}
 
 .add-area,
 .edit-area {
@@ -73,12 +60,12 @@ button:hover {
   margin-bottom: 15px;
 }
 
-label {
+.warehouse-area__form-item-label {
   margin-bottom: 5px;
   font-weight: bold;
 }
 
-input[type="text"] {
+.warehouse-area__form-item-input {
   padding: 8px;
   width: 100%;
   box-sizing: border-box;
@@ -124,11 +111,21 @@ input[type="text"] {
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.3s ease;
+  /* background-color: #45a049; */
 }
 
 .warehouse-button.add {
   background-color: #4caf50;
   color: white;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+
 }
 
 .warehouse-button.add:hover {
@@ -228,4 +225,39 @@ input[type="text"] {
 
 .warehouse-button.exit:hover {
   background-color: #da190b;
+}
+.warehouse-area_search-and-add {
+  display: flex; /* Sử dụng Flexbox */
+  justify-content: space-between; /* Đặt khoảng cách tối đa giữa các phần tử */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  padding: 10px; /* Khoảng cách bên trong */
+  gap: 10px; /* Khoảng cách giữa các phần tử */
+  width: 100%; /* Chiếm toàn bộ chiều rộng */
+  box-sizing: border-box; /* Tính toán padding trong width */
+}
+
+.warehouse-search {
+  flex: 1; /* Để trường tìm kiếm co giãn chiếm không gian còn lại */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-form-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
 }
