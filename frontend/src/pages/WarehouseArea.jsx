@@ -33,6 +33,7 @@ const WarehouseArea = () => {
     };
 
     const handleAddWarehouse = async (e) => {
+        e.preventDefault();
         if(validate()){
             try {
                 await WarehouseService.addItem({
@@ -43,8 +44,10 @@ const WarehouseArea = () => {
                 fetchWarehouses();
                 // setActive('showWarehouse');
                 setShowAddForm(false); //
+                alert('Thêm kho mới thành công')
             } catch (error) {
                 console.error('Error adding warehouse:', error);
+                alert('Thêm kho mới thất bại')
             }
         }
     };
@@ -57,11 +60,13 @@ const WarehouseArea = () => {
                 chu_thich: currentWarehouse.note,
                 trang_thai: 1
             });
+            alert('Sửa thành công')
             fetchWarehouses();
             // setActive('showWarehouse');
             setShowEditForm(false); 
         } catch (error) {
             console.error('Error updating warehouse:', error);
+            alert('Sửa thất bại')
         }
         }
     };
@@ -123,7 +128,9 @@ const WarehouseArea = () => {
         setErrors({
           nameError,
           noteError
-        })};
+        })
+        return isValid;
+    };
 
 
     return (
