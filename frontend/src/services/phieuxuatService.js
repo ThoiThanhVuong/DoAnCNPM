@@ -10,3 +10,10 @@ export const getExports = async () => {
         console.error(err)
         }
 };
+export const addExport = async (exportData) =>{
+    try {
+        await axios.post(apiURL, exportData);
+      } catch (error) {
+        console.error('Lỗi thêm phiếu xuất:', error);
+      }
+}

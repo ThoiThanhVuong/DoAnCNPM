@@ -28,6 +28,14 @@ const productService = {
             console.error('Error getting count product:', error);
             return [];
         }
+    },
+    updatedTonKho : async (ma_sp, so_luong_moi) =>{
+        try {
+            await axios.patch(`${API_URL}/${ma_sp}`, so_luong_moi);
+          } catch (error) {
+            console.error(error);
+          }
+    
     }
     
 };

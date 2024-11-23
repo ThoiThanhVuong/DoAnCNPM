@@ -1,8 +1,9 @@
 
 .Title {
   font-weight: 630;
-  font-size: 30px;
+  font-size: 25px;
   font-family: Poppins, Helvetica, sans-serif;
+  margin: 10px;
 }
 .boxFind {
   text-align: center;
@@ -88,13 +89,14 @@
   gap: 15px;
   margin-top: 10px;
   height: 30px;
-  margin-left: 211px;
+  margin-left: 209px;
 }
 .boxFind .custom-SoTien p {
   font-size: 15px;
+  white-space: nowrap;
 }
 .boxFind .custom-SoTien input {
-  width: 199px !important;
+  width: 198px !important;
   height: 30px !important;
   border: 1px solid gray;
   border-radius: 3px;
@@ -216,8 +218,11 @@
 .format_table_CTPX {
   max-width: 325px !important;
   overflow-x: hidden !important;
-  height: 250px;
-  overflow-y: auto;
+  max-height: 250px !important;
+  overflow-y: auto !important;
+}
+.format_table_CTPX table thead tr th{
+  text-align: center;
 }
 .btn-OK{
     padding: 0px 0px 0px 0px !important;

@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
+import NewReleasesIcon from '@mui/icons-material/NewReleases';
 import "../style/ImportForm.css";
+import "../style/ExportForm.css"
 import Textfield from "@atlaskit/textfield";
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
@@ -7,8 +9,12 @@ import { FaEdit } from 'react-icons/fa';
 import { useState } from "react";
 import { FaTrash, FaCheck, FaStore } from 'react-icons/fa';
 import productService from '../services/productService';
-import {getpbSP}  from "../services/phienbanSanPhamService";
+import {getpbSP, updatedTonKho}  from "../services/phienbanSanPhamService";
 import {getAllprovider} from "../services/providerService"
+import {getImports, addImport} from "../services/importService"
+import {getDetailPN} from "../services/detailImportService"
+
+import axios from "axios";
 
 
 const SoLuongGiaNhap = ({handleCancel,handleOK, soLuong, setSoluong, giaNhap, setGiaNhap, error}) =>{
@@ -47,17 +53,16 @@ const NhapHang = () => {
   const [showNotification, setShowNotification] = useState();
   const [showOverlay, setShowOverlay] = useState(false);
   const [error, setError] = useState("")
-  const [selectedSupplier, setSelectedSupplier] = useState();
+  const [selectedSupplier, setSelectedSupplier] = useState(1);
   const [dataProvider, setdataProvider] = useState([])
 
   useEffect (() => {
     const fetchProducts = async () => {
-      const dataProd = await productService.getAllProducts();
+      const dataProd = await productService.getAllProducts(); // sản phẩm
       setDataProduct(dataProd.data);
-      const dataPB = await getpbSP();
+      const dataPB = await getpbSP();// phiên bản sp
       setdataPBSanPham(dataPB)
-      const dataPV = await getAllprovider();
-      console.log("NCC: ",dataPV)
+      const dataPV = await getAllprovider();// nhà cung cấp
       setdataProvider(dataPV)
     }; 
     fetchProducts();
@@ -74,6 +79,7 @@ const NhapHang = () => {
   };
 
   const handleCancel = () => {
+    setError("")
     setShowNotification(null);
     setShowOverlay(false);
     setGiaNhap("")
@@ -138,12 +144,24 @@ const NhapHang = () => {
   }
 
   const DuyetPN = () => {
-    const newPN = {
-      ma_pn: 1,
-      ma_nv: 1,
-      ma_ncc: 1,
-      thoi_gian_nhap: 1,
-      tong_tien: 1,
+    if(queueData)
+    {
+      const newD = new Date();
+      const totalTien = queueData.reduce((total, item) => total + item.tong_tien, 0);
+      const newPN = {
+        ma_nv: localStorage.getItem("ma_nv"),
+        ma_ncc: selectedSupplier,
+        thoi_gian_nhap: newD,
+        tong_tien: totalTien,
+        chi_tiet_phieu_nhap: queueData,
+      }
+      console.log(newPN)
+      addImport(newPN)
+      setQueuedata([])
+      alert("Duyệt đơn nhập thành công")
+    }
+    else{
+      alert("Vui lòng thêm sản phẩm vào hàng chờ")
     }
   }
 
@@ -238,6 +256,10 @@ const NhapHang = () => {
           </table>
         </div>
         <div className="ev">
+          {/* <button className="evAll0">
+            <NewReleasesIcon style={{ color: 'red' }} className="icAll" />
+            <p>Nhập SP mới</p> 
+          </button> */}
           <button className="evAll1" onClick={deleteAll}>
             <FaTrash className="icAll"/>
             <p>Xóa tất cả</p>
@@ -245,12 +267,12 @@ const NhapHang = () => {
           <select className="supplier" value={selectedSupplier} onChange={(e)=>setSelectedSupplier(e.target.value)}>
               {dataProvider.map((supplier) => (
               <option key={supplier.ma_ncc} value={supplier.ma_ncc}>
-              {supplier.ma_ncc}: {supplier.ten_ncc}
+              {supplier.ma_ncc}. {supplier.ten_ncc}
           </option>
           ))}
           </select>
-          <button className="evAll3">
-            <FaStore className="icAll"/>
+          <button className="evAll3" onClick={DuyetPN}>
+            <FaCheck className="icAll"/>
             <p>Duyệt</p>
           </button>
         </div>
@@ -261,51 +283,62 @@ const NhapHang = () => {
 };
 
 const PhieuNhap = () => {
-  const dataPN = [
-    {
-      id: 1,
-      manv: 1,
-      mancc: 23,
-      time: "3-10-2024",
-      tongtien: 10,
-      trangthai: 1,
-    },
-    {
-      id: 2,
-      manv: 1,
-      mancc: 23,
-      time: "2-10-2024",
-      tongtien: 20,
-      trangthai: 1,
-    },
-    {
-      id: 3,
-      manv: 1,
-      mancc: 23,
-      time: "4-10-2024",
-      tongtien: 30,
-      trangthai: 1,
-    },
-  ];
-
+  const [dataPN, setdataPN] = useState([])
   const [StartDatePN, setStartDatePN] = useState("");
   const [EndDatePN, setEndDatePN] = useState("");
   const [searchIDPN, setSearchIDPN] = useState("");
   const [filteredDataPN, setFilteredDataPN] = useState(dataPN);
   const [GiaNhoPN, setGiaNhoPN] = useState("")
   const [GiaLonPN, setGiaLonPN] = useState("")
+  const [datadetailPN, setdataDetailPN ] = useState([])
+  const [showOVlay, setShowOVlay] = useState(false);
+
+  useEffect(() => {
+    const fectchImport = async () => {
+      const data = await getImports();
+      const formattedData = data.map((item) => {
+        const date = new Date(item.thoi_gian_nhap); // Chuyển đổi chuỗi ngày thành đối tượng Date
+        // Định dạng lại ngày theo kiểu "DD/MM/YYYY"
+        const formattedDate = `${date.getDate()}/${
+          date.getMonth() + 1
+        }/${date.getFullYear()}`;
+        return { ...item, thoi_gian_nhap: formattedDate }; // Trả về item với ngày đã được định dạng lại
+      });
+      console.log("one hit", formattedData)
+      setdataPN(formattedData);
+      setFilteredDataPN(formattedData);
+    };
+    fectchImport();
+  }, []);
+
+  const GETDATA = async (id) => {
+    const data = await getDetailPN(id);
+    if (data) {
+      setdataDetailPN(data);
+    }
+  };
+  const handleCancel = () => {
+    //setShowDetail(null);
+    setShowOVlay(false);
+  };
+  const handleRowClick = (id) => {
+    //setShowDetail(id);
+    GETDATA(id);
+    setShowOVlay(true)
+  };
+
 
   const searchPN = () =>{
     const resultsPN = dataPN.filter((item)=>{
-      const checkIDPN =  !searchIDPN || item.id.toString().includes(searchIDPN)// trả về true hoặc false
-      const tempDatePN = item.time.split("-")
+      const checkIDPN =  !searchIDPN || item.ma_pn.toString().includes(searchIDPN)// trả về true hoặc false
+      const tempDatePN = item.thoi_gian_nhap.split("/")
       const valueTimePN = new Date(`${tempDatePN[1]}-${tempDatePN[0]}-${tempDatePN[2]}`)
       const startPN = StartDatePN ? new Date(StartDatePN  + 'T00:00:00') : null
       const endPN = EndDatePN ? new Date(EndDatePN + 'T23:59:59') : null
       const giaStartPN = Number(GiaNhoPN)
       const giaEndPN = Number(GiaLonPN)
       const checkNgayPN = (!startPN || startPN <= valueTimePN) && (!endPN || endPN >= valueTimePN)
-      const checkGiaPN = (!giaStartPN || giaStartPN <= item.tongtien) && (!giaEndPN || giaEndPN >= item.tongtien)
+      const checkGiaPN = (!giaStartPN || giaStartPN <= item.tong_tien) && (!giaEndPN || giaEndPN >= item.tong_tien)
       return checkIDPN && checkGiaPN && checkNgayPN
     })
     setFilteredDataPN(resultsPN)
@@ -316,7 +349,7 @@ const PhieuNhap = () => {
       <div className="Title">Danh Sách Phiếu Nhập</div>
       <div className="boxFind">
           <p>Tìm kiếm</p>
-          <div className="custom-ID">
+          <div className="custom-ID fixID">
             <p>ID phiếu nhập:</p>
             <Textfield
             className="TF"
@@ -366,20 +399,26 @@ const PhieuNhap = () => {
               <th style={{ width: "20%" }}>Thời gian nhập</th>
               <th style={{ width: "30%" }}>Tổng tiền</th>
             </tr>
-          </thead>
+          </thead> 
           <tbody>
             {filteredDataPN.map((datatable) => (
-              <tr key={datatable.id}>
-                <td style={{ width: "10%" }}>{datatable.id}</td>
-                <td style={{ width: "20%" }}>{datatable.manv}</td>
-                <td style={{ width: "20%" }}>{datatable.mancc}</td>
-                <td style={{ width: "20%" }}>{datatable.time}</td>
-                <td style={{ width: "30%" }}>{datatable.tongtien}</td>
+              <tr key={datatable.id} onClick={()=>handleRowClick(datatable.ma_pn)}>
+                <td style={{ width: "10%" }}>{datatable.ma_pn}</td>
+                <td style={{ width: "20%" }}>{datatable.ma_nv}</td>
+                <td style={{ width: "20%" }}>{datatable.ma_ncc}</td>
+                <td style={{ width: "20%" }}>{datatable.thoi_gian_nhap}</td>
+                <td style={{ width: "30%" }}>{datatable.tong_tien.toLocaleString("vi-VN")} VNĐ</td>
               </tr>
             ))}
           </tbody>
-        </table>
+        </table> 
       </div>
+      {showOVlay && (
+        <div>
+          <div className="overlay" onClick={handleCancel}></div>
+          <DetailPN data={datadetailPN} handleCancel={handleCancel} />
+        </div>
+      )}
     </div>
 
   )
@@ -405,5 +444,43 @@ const ImportForm = () => {
     </div>
   );
 };
+const DetailPN = ({data, handleCancel}) =>{  
+  if (!data || data.length === 0) {
+    return null; // Hoặc hiển thị một thông báo lỗi phù hợp
+  }
+  const totalMoney = data.reduce((total, item) => {
+    return total + item.so_luong * item.gia_nhap;
+  }, 0);
+  return(
+    <div className="detailPX">
+      <div className="boxCTPX">
+        <h3>Chi tiết hóa đơn</h3>
+        <h4>Mã hóa đơn: {data[0].ma_px}</h4>
+        <div className="content_customer format_table_CTPX">
+          <table>
+            <thead>
+              <tr>
+                <th>Mã phiên bản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá nhập</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((datatable)=>(
+                <tr>
+                  <td>{datatable.ma_phien_ban_sp}</td>
+                  <td>{datatable.so_luong}</td>
+                  <td>{datatable.gia_nhap.toLocaleString("vi-VN")}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="totalMoney">Tổng Tiền: {totalMoney.toLocaleString("vi-VN")} VNĐ </div>
+        <div className="btn-OK" onClick={handleCancel}>Đồng ý</div>
+      </div>
+    </div>
+  )
+}
 export default ImportForm;
 

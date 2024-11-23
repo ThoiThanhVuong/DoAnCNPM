@@ -5,10 +5,15 @@ import "../style/Customer.css";
 import Textfield from "@atlaskit/textfield";
 import { FaSearch } from "react-icons/fa";
 import { useState } from "react";
-import { getExports } from "../services/phieuxuatService";
+import { getExports, addExport } from "../services/phieuxuatService";
 import { getDetailPX} from "../services/chitietPhieuXuatService";
+import productService from '../services/productService';
+import {getpbSP, updatedTonKho}  from "../services/phienbanSanPhamService";
+import CustomerService from "../services/customerService";
+import { FaTrash, FaCheck, FaStore } from 'react-icons/fa';
+import { FaPlus } from "react-icons/fa";
 
-const ExportForm = () => {
+const PhieuXuat = () => {
   const [dataExport, setDataExport] = useState([]);
   const [StartDatePX, setStartDatePX] = useState("");
   const [EndDatePX, setEndDatePX] = useState("");
@@ -16,24 +21,23 @@ const ExportForm = () => {
   const [GiaNhoPX, setGiaNhoPX] = useState("");
   const [GiaLonPX, setGiaLonPX] = useState("");
   const [filteredDataPX, setFilteredDataPX] = useState([]);
-  const [showdetail, setShowDetail] = useState();
+  //const [showdetail, setShowDetail] = useState();
   const [dataDetailPX, setDataDetailPX] = useState([]);
   const [showOVlay, setShowOVlay] = useState(false);
 
   const handleRowClick = (id) => {
-    setShowDetail(id);
+    //setShowDetail(id);
     GETDATA(id);
     setShowOVlay(true)
   };
   const handleCancel = () => {
-    setShowDetail(null);
+    //setShowDetail(null);
     setShowOVlay(false);
   }
 
   const GETDATA = async (id) => {
     const data = await getDetailPX(id);
     if (data) {
-      console.log("Lấy được dữ liệu: ", data);
       setDataDetailPX(data);
     }
   };
@@ -111,7 +115,7 @@ const ExportForm = () => {
             value={GiaNhoPX}
             onChange={(e) => setGiaNhoPX(e.target.value)}
           />
-          <p>-</p>
+          <span>-</span>
           <input
             type="text"
             value={GiaLonPX}
@@ -193,4 +197,303 @@ const DetailPX = ({data, handleCancel}) =>{
     </div>
   )
 }
+
+const SoLuongGiaNhap = ({handleCancel,handleOK, soLuong, setSoluong, error}) =>{
+  return (
+    <div className="ctn">
+      <div className="custom-SL-GN">
+        <div className="custom-SL">
+          <p>Nhập số lượng:</p>
+          <input type="text" className="ipSL" placeholder="Nhập số lượng"
+            value={soLuong}
+            onChange={(e)=>setSoluong(e.target.value)}
+          />
+          {error && <p className="err">{error}</p>} {/* Hiển thị lỗi */}
+        </div>
+        {/* <div className="custom-GN">
+          <p>Giá nhập vào:</p>
+          <input type="text" className="ipGN" placeholder="Giá muốn nhập vào"
+           value={giaNhap}
+           onChange={(e)=>setGiaNhap(e.target.value)}
+           />
+        </div> */}
+        <div className="custom-btyn">
+          <button className="bty" onClick={handleOK}>Đồng ý</button>
+          <button className="btn" onClick={handleCancel}>Hủy</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+
+const XuatHang = () => {
+  const [dataProduct, setDataProduct] = useState([])
+  const [dataPBSanPham, setdataPBSanPham] = useState([])
+  const [queueData, setQueuedata] = useState([])
+  const [soLuong, setSoluong] = useState("")
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [error, setError] = useState("")
+  const [selectedKH, setSelectedKH] = useState(1);
+  const [dataKH, setdataKH] = useState([])
+  const [showNotification, setShowNotification] = useState();
+
+  useEffect (() => {
+    const fetchProducts = async () => {
+      const dataProd = await productService.getAllProducts(); // sản phẩm
+      setDataProduct(dataProd.data);
+      const dataPB = await getpbSP();// phiên bản sp
+      setdataPBSanPham(dataPB)
+      const dataCustom = await CustomerService.getAllCustom();
+      setdataKH(dataCustom)
+    }; 
+    fetchProducts();
+  }, [])
+
+
+  const findNameProd = (ma_sp) => {
+    const product = dataProduct.find((item) => item.ma_sp === ma_sp);
+    return product ? product.ten_sp : "";
+  };
+
+  const handleToggleNotification = (ma_phien_ban_sp) => {
+    setShowNotification(ma_phien_ban_sp);
+    setShowOverlay(true);
+  };
+  const handleCancel = () => {
+    setError("")
+    setShowNotification(null);
+    setShowOverlay(false);
+    setSoluong("")
+  };
+
+
+
+
+  const handleOK = (showNotification) => {
+     const checkNguyenDuong = () => {
+       if( !soLuong || !soLuong.match(/^(?!0)\d+$/))
+       {
+         setError("Số lượng phải là số nguyên dương và lớn hơn 0")
+         return;
+       }
+       else{
+         setError("")
+         const data = dataPBSanPham.find((item)=>item.ma_phien_ban_sp === showNotification)
+         const newData ={
+           ma_sp : data.ma_sp,
+           ma_phien_ban_sp: data.ma_phien_ban_sp,
+           ten_sp : dataProduct.find((item) => item.ma_sp === data.ma_sp)?.ten_sp,
+           so_luong: parseInt(soLuong),
+           gia_xuat: data.gia_xuat,
+           tong_tien: parseInt(soLuong) * parseInt(data.gia_xuat)
+         };
+         const dataSL = queueData.find((item)=>item.ma_phien_ban_sp === newData.ma_phien_ban_sp)
+         if(dataSL)
+           {
+            if(parseInt(dataSL.so_luong) + parseInt(soLuong) > data.ton_kho){
+              setError("Tổng số lượng xuất phải bé hơn số lượng tồn kho")
+              return;
+            }
+            else{
+              const updatedQueue = queueData.map((item) =>
+                item.ma_phien_ban_sp === data.ma_phien_ban_sp ?
+                {
+                  ...item,
+                  so_luong: parseInt(item.so_luong) + parseInt(soLuong),
+                  tong_tien: (parseInt(item.so_luong) + parseInt(soLuong)) * parseInt(item.gia_xuat),
+                } : item
+              )
+              setQueuedata(updatedQueue);
+              handleCancel();
+            }
+           }
+           else
+           {
+            setQueuedata([...queueData, newData]);
+            handleCancel();
+           }
+         }
+       }
+     checkNguyenDuong()
+   }
+    
+
+  const deleteIQueue = (ma_phien_ban_sp) => {
+    const updatedData = queueData.filter((item) => item.ma_phien_ban_sp !== ma_phien_ban_sp);
+    setQueuedata(updatedData);
+  };
+
+  if(!dataPBSanPham || dataPBSanPham.length === 0)
+    {
+      return null;
+    }
+
+    if(!dataKH || dataKH.length === 0)
+    {
+        return null;
+    }
+    const deleteAll = () =>{
+      setQueuedata([])
+    }
+    const DuyetPN = () => {
+      if(queueData)
+      {
+        const newD = new Date();
+        const totalTien = queueData.reduce((total, item) => total + item.tong_tien, 0);
+        const newPX = {
+          ma_nv: localStorage.getItem("ma_nv"),
+          ma_kh: selectedKH,
+          thoi_gian_xuat: newD,
+          tong_tien: totalTien,
+          chi_tiet_phieu_xuat: queueData,
+        }
+        console.log(newPX)
+        addExport(newPX)
+        setQueuedata([])
+        alert("Duyệt đơn xuất thành công")
+      }
+      else{
+        alert("Vui lòng thêm sản phẩm vào hàng chờ")
+      }
+    }
+
+    return (
+      <div className="cardNhapHang">
+        <div className="custom-listSP">
+          <p>Danh sách sản phẩm</p>
+          <div className="listSP">
+            <table>  
+              <thead>
+                <tr>
+                  <th>Mã sản phẩm</th>
+                  <th>Mã phiên bản</th>
+                  <th>Tên sản phẩm</th>
+                  <th>Giá nhập</th>
+                  <th>Giá xuất</th>
+                  <th>tồn kho</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+                <tbody>
+                {dataPBSanPham.map((datatable) => (
+                  <tr key={datatable.ma_phien_ban_sp}>
+                    <td style={{ width: "10%" }}>{datatable.ma_sp}</td>
+                    <td style={{ width: "10%" }}>{datatable.ma_phien_ban_sp}</td>
+                    <td style={{ width: "25%" }}>{findNameProd(datatable.ma_sp)}</td>
+                    <td style={{ width: "15%" }}>{datatable.gia_nhap.toLocaleString("vi-VN")} VNĐ</td>
+                    <td style={{ width: "15%" }}>{datatable.gia_xuat.toLocaleString("vi-VN")} VNĐ</td>
+                    <td style={{ width: "15%" }}>{datatable.ton_kho}</td>
+                    <td style={{ width: "10%" }}>
+                      <div className="custom-icAdd">
+                        <FaPlus className="iconAdd" onClick={() => handleToggleNotification(datatable.ma_phien_ban_sp)}/>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            { showOverlay && (<div>
+              <div className="overlay"></div>
+                <SoLuongGiaNhap handleCancel={handleCancel} 
+                handleOK={()=>handleOK(showNotification)} 
+                soLuong={soLuong} 
+                setSoluong={setSoluong} 
+                error={error}
+                />
+              </div>)
+            }
+          </div>
+        </div>
+  
+        <div className="custom-queue">
+          <p>Hàng chờ nhập</p>
+          <div className="custom-tb-evtb">
+          <div className="queue">
+            <table style={{ width: "100%"}}>
+              <thead>
+                <tr>
+                  <th style={{width: "10%"}}>Mã sản phẩm</th>
+                  <th style={{width: "10%"}}>Mã phiên bản</th>
+                  <th style={{width: "20%"}}>Tên sản phẩm</th>
+                  <th style={{width: "15%"}}>Đơn giá xuất</th>
+                  <th style={{width: "10%"}}>Số lượng</th>
+                  <th style={{width: "20%"}}>Tổng tiền (VND)</th>
+                  <th style={{width: "15%"}}>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  queueData.map((dataQueue)=>
+                  (
+                    <tr key={dataQueue.masp}>
+                      <td style={{width: "10%"}}>{dataQueue.ma_sp}</td>
+                      <td style={{width: "10%"}}>{dataQueue.ma_phien_ban_sp}</td>
+                      <td style={{width: "20%"}}>{dataQueue.ten_sp}</td>
+                      <td style={{width: "15%"}}>{dataQueue.gia_xuat.toLocaleString("vi-VN")} VNĐ</td>
+                      <td style={{width: "10%"}}>{dataQueue.so_luong}</td>
+                      <td style={{width: "20%"}}>{dataQueue.tong_tien.toLocaleString("vi-VN")} VNĐ</td>
+                      <td style={{width: "15%"}}>
+                        <div className="custom-icon">
+                          <FaTrash className="icDelete"
+                          onClick={() => deleteIQueue(dataQueue.ma_phien_ban_sp)}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
+          <div className="ev">
+            <button className="evAll1" onClick={deleteAll}>
+              <FaTrash className="icAll"/>
+              <p>Xóa tất cả</p>
+            </button>
+            <select className="supplier" value={selectedKH} onChange={(e)=>setSelectedKH(e.target.value)}>
+                {dataKH.map((supplier) => (
+                <option key={supplier.ma_ncc} value={supplier.ma_ncc}>
+                {supplier.ma_kh}. {supplier.ten_kh}
+            </option>
+            ))}
+            </select>
+            <button className="evAll3" onClick={DuyetPN}>
+              <FaCheck className="icAll"/>
+              <p>Duyệt</p>
+            </button>
+          </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+
+
+
+
+
+
+const ExportForm = () => {
+  const [activeTab, setActiveTab] = useState("xuathang")
+  const handleTab = (tabName) =>
+  {
+    setActiveTab(tabName)
+  }
+  return (
+    <div>
+      <div className="title-Selection">
+        <p className={`titleNH ${activeTab === "xuathang" ? "selectTab" : ""}`}
+        onClick={() => handleTab("xuathang")}
+        >Xuất hàng</p>
+        <p className={`titlePN ${activeTab === "phieuxuat" ? "selectTab" : ""}`}
+        onClick={() => handleTab("phieuxuat")}
+        >Phiếu Xuất</p>
+      </div>
+      { activeTab === "xuathang" ? <XuatHang/> : <PhieuXuat/>}
+    </div>
+  )
+}
+
 export default ExportForm;

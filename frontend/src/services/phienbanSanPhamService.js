@@ -9,4 +9,12 @@ export const getpbSP = async () => {
     catch(err){
         console.error(err)
         }
-}; 
+};
+
+export const updatedTonKho = async (ma_phien_ban_sp, so_luong_moi) =>{
+    try {
+        await axios.patch(`${apiURL}/${ma_phien_ban_sp}`, so_luong_moi);
+      } catch (error) {
+        console.error(error);
+      }
+}

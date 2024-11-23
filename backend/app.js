@@ -19,6 +19,8 @@ const phieuxuatRoutes = require("./src/routes/phieuxuatRoutes.js");
 const warehouseRoutes = require("../backend/src/routes/WareHouseRoutes.js");
 const chitietphieuxuatRoutes = require("./src/routes/chitietPhieuXuatRoutes.js")
 const pbSanPhamRoutes = require("./src/routes/phienbanSPRoutes.js")
+const importRoutes = require("./src/routes/importRoutes.js")
+const detailImport = require("./src/routes/detailImportRoutes.js")
 
 const app = express();
 
@@ -55,4 +57,6 @@ app.use("/api/phieuxuat", phieuxuatRoutes);
 app.use("/api/warehouses", warehouseRoutes);
 app.use("/api/chitietphieuxuat", chitietphieuxuatRoutes);
 app.use("/api/pbsp", pbSanPhamRoutes)
+app.use("/api/import", importRoutes)
+app.use("/api/dtimport", detailImport)
 module.exports = app;

@@ -66,3 +66,22 @@ exports.getCountProduct = async (req, res) => {
     throw error;
   }
 }
+
+exports.updatedCountProduct = async (req, res) => {
+
+  const {ma_sp} = req.params;
+    const {so_luong_moi} = req.body;
+    try{
+        const Prd = await Product.findByPk(ma_sp);
+        if(!Prd)
+            return res.status(404).json({ message: 'Sản phẩm không tồn tại!' });
+        const newSL = Prd.so_luong_ton + so_luong_moi;
+        Prd.so_luong_ton = newSL;
+        await Prd.save();
+        res.status(200).json({ message: 'Cập nhật số lượng tồn kho sản phẩm thành công'});
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Đã xảy ra lỗi khi cập nhật số lượng tồn kho!' });
+    }
+}
