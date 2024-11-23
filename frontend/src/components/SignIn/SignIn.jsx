@@ -135,7 +135,7 @@ const SignIn = () => {
     try {
       const response = await loginService.compareAccount(account);
       if (response) {
-        console.log(Cookies.get("token"))
+        console.log(Cookies.get("token"));
         localStorage.setItem("ma_nv", response.ma_nv);
         alert(`CHÀO MỪNG "${response.ten_nv}" ĐÃ ĐĂNG NHẬP THÀNH CÔNG`);
         window.location.href = "/";
@@ -145,6 +145,15 @@ const SignIn = () => {
         try {
           const getUsername = await loginService.checkUsername(account);
           console.log(getUsername);
+          if (getUsername && !getUsername.ma_quyen) {
+            alert("TÊN TÀI KHOẢN KHÔNG CÒN QUYỀN TRUY CẬP");
+            setAccount({ username: "", password: "" });
+            smallUsernameRef.current.classList.add("error");
+            smallPasswordRef.current.classList.add("error");
+            smallUsernameRef.current.innerText = "Không được để trống";
+            smallPasswordRef.current.innerText = "Không được để trống";
+            spanUsernameRef.current.style.bottom = "18px";
+          }
           if (!account.username && !account.password) {
             usernameRef.current.classList.add("error");
             passwordRef.current.classList.add("error");
@@ -163,7 +172,8 @@ const SignIn = () => {
             spanUsernameRef.current.style.bottom = "18px";
           } else if (
             account.username === getUsername.ma_nv &&
-            !account.password
+            !account.password &&
+            getUsername.ma_quyen
           ) {
             usernameRef.current.classList.remove("error");
             passwordRef.current.classList.add("error");
@@ -174,7 +184,8 @@ const SignIn = () => {
             spanUsernameRef.current.style.bottom = "0px";
           } else if (
             account.username === getUsername.ma_nv &&
-            account.password !== getUsername.mat_khau
+            account.password !== getUsername.mat_khau &&
+            getUsername.ma_quyen
           ) {
             usernameRef.current.classList.remove("error");
             passwordRef.current.classList.add("error");

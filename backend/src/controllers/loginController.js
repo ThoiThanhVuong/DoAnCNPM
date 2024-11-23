@@ -2,6 +2,7 @@ const Employee = require("../models/EmployeeModel");
 const Permission = require("../models/permissionModel");
 const FeaturePermission = require("../models/FeaturePermissionModel");
 const jwt = require("jsonwebtoken");
+const { Op } = require("sequelize");
 
 exports.compareAccount = async (req, res) => {
   const { username, password } = req.body;
@@ -10,6 +11,9 @@ exports.compareAccount = async (req, res) => {
       where: {
         ma_nv: username,
         mat_khau: password,
+        ma_quyen: {
+          [Op.ne]: null,
+        },
       },
     });
     if (!employee) {
