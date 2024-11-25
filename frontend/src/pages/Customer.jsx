@@ -10,6 +10,7 @@ const Customer = () => {
   const [showEditCustomer, setShow1] = useState(false);
   const [showError, setError] = useState("");
   const [showAYS,setAYS] =useState(false);
+  const [customerIds,setCustomerIds] =useState ([])
   const [formData, setform] = useState({
     MKH: "",
     TKH: "",
@@ -26,6 +27,8 @@ const Customer = () => {
 
       // Cập nhật state customers với dữ liệu trả về
       setData(response.data);
+      // Cập nhật state customerIDs với dữ liệu trả về
+      setCustomerIds(response.data.map((item)=>item.ma_kh))
     } catch (err) {
       // Nếu có lỗi, set error
       console.error("Lỗi khi lấy dữ liệu");
@@ -86,11 +89,17 @@ const Customer = () => {
   const hiddenAdd = () => {
     setShow(!showAddCustomer);
     setform({
-      MKH: "",
+      MKH: generateNewCustomerId(),
       TKH: "",
       DC: "",
       SDT: "",
     });
+  };
+
+  const generateNewCustomerId = () => {
+    if (customerIds.length === 0) return 1; // Nếu chưa có ID, bắt đầu từ KH1
+    const lastId = customerIds[customerIds.length - 1]; // Lấy ID cuối cùng
+    return `${lastId + 1}`; // Tăng giá trị số và thêm tiền tố
   };
 
   const handleEdit = (item) => {
@@ -257,6 +266,7 @@ const Customer = () => {
                 <input
                   placeholder="Nhập Mã Khách Hàng"
                   name="MKH"
+                  readOnly
                   type="number"
                   value={formData.MKH}
                   onChange={handleInputChange}
