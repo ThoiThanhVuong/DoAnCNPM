@@ -145,7 +145,7 @@ const SignIn = () => {
         try {
           const getUsername = await loginService.checkUsername(account);
           console.log(getUsername);
-          if (getUsername && !getUsername.ma_quyen) {
+          if (getUsername && getUsername.trang_thai === 0) {
             alert("TÊN TÀI KHOẢN KHÔNG CÒN QUYỀN TRUY CẬP");
             setAccount({ username: "", password: "" });
             smallUsernameRef.current.classList.add("error");
@@ -173,7 +173,7 @@ const SignIn = () => {
           } else if (
             account.username === getUsername.ma_nv &&
             !account.password &&
-            getUsername.ma_quyen
+            getUsername.trang_thai === 1
           ) {
             usernameRef.current.classList.remove("error");
             passwordRef.current.classList.add("error");
@@ -185,7 +185,7 @@ const SignIn = () => {
           } else if (
             account.username === getUsername.ma_nv &&
             account.password !== getUsername.mat_khau &&
-            getUsername.ma_quyen
+            getUsername.trang_thai === 1
           ) {
             usernameRef.current.classList.remove("error");
             passwordRef.current.classList.add("error");

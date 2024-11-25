@@ -227,7 +227,10 @@ const PermissionAccount = () => {
                 <tr>
                   <td>{item.ten_nv}</td>
                   <td>{item.email}</td>
-                  <td>{item.ten_quyen ? item.ten_quyen : "No Permission"}</td>
+                  {/* <td>{item.ten_quyen ? item.ten_quyen : "No Permission"}</td> */}
+                  <td>
+                    {item.trang_thai === 1 ? item.ten_quyen : <b>INVALID</b>}
+                  </td>
                   <td>
                     {item.ten_quyen !== "Admin" ? (
                       <>
@@ -249,9 +252,7 @@ const PermissionAccount = () => {
                           }
                         />{" "}
                       </>
-                    ) : (
-                      null
-                    )}
+                    ) : null}
                   </td>
                 </tr>
               ))

@@ -11,8 +11,8 @@ exports.compareAccount = async (req, res) => {
       where: {
         ma_nv: username,
         mat_khau: password,
-        ma_quyen: {
-          [Op.ne]: null,
+        trang_thai: {
+          [Op.ne]: 0,
         },
       },
     });

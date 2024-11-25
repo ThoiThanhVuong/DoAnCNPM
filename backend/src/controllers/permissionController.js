@@ -45,12 +45,13 @@ exports.showAllPermission = async (req, res) => {
           attributes: ["ma_quyen", "ten_quyen"],
         },
       ],
-      attributes: ["ma_nv", "ten_nv", "email"],
+      attributes: ["ma_nv", "ten_nv", "email", "trang_thai"],
     });
     const formattedResult = permission.map((item) => ({
       ma_nv: item.ma_nv,
       ten_nv: item.ten_nv,
       email: item.email,
+      trang_thai: item.trang_thai,
       ma_quyen: item.Permission ? item.Permission.ma_quyen : null,
       ten_quyen: item.Permission ? item.Permission.ten_quyen : null,
     }));
@@ -145,7 +146,7 @@ exports.deleteRole = async (req, res) => {
   console.log(ma_nv);
   try {
     const employee = await Employee.findByPk(ma_nv);
-    employee.ma_quyen = null;
+    // employee.ma_quyen = null;
     employee.trang_thai = 0;
     await employee.save();
     res.json("da xoa thanh cong");
