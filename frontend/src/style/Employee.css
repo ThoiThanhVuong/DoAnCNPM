@@ -26,7 +26,7 @@
     color: #444;
   }
   
-  .employee-info .info-item {
+  .employee-info .em-info-item {
     display: flex;
     justify-content: space-between;
     font-size: 16px;
@@ -56,7 +56,7 @@
   }
   
   /* Phần đổi mật khẩu */
-  .password-change {
+  .em-password-change {
     margin-top: 20px;
     padding: 15px;
     background-color: #e9ecef;
@@ -66,7 +66,7 @@
     gap: 15px;
   }
   
-  .password-change h3 {
+  .em-password-change h3 {
     font-size: 20px;
     color: #333;
     margin-bottom: 10px;
@@ -74,7 +74,7 @@
   }
   
   /* Định dạng cho các ô nhập mật khẩu */
-  .password-change input[type="password"] {
+  .em-password-change input[type="password"] {
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
@@ -84,7 +84,7 @@
   }
   
   /* Định dạng nút lưu và hủy trong phần đổi mật khẩu */
-  .password-change button {
+  .em-password-change button {
     padding: 10px;
     font-size: 16px;
     border: none;
@@ -93,21 +93,21 @@
     transition: background-color 0.3s;
   }
   
-  .password-change button:nth-child(3) {
+  .em-password-change button:nth-child(3) {
     background-color: #28a745;
     color: white;
   }
   
-  .password-change button:nth-child(3):hover {
+  .em-password-change button:nth-child(3):hover {
     background-color: #218838;
   }
   
-  .password-change button:nth-child(4) {
+  .em-password-change button:nth-child(4) {
     background-color: #dc3545;
     color: white;
   }
   
-  .password-change button:nth-child(4):hover {
+  .em-password-change button:nth-child(4):hover {
     background-color: #c82333;
   }
   

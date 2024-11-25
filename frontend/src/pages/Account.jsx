@@ -217,11 +217,11 @@ const Account = () => {
                     </td>
                     <td>
                       <FaEdit
-                        className="edit"
+                        className="edit-acc"
                         onClick={() => handleShowEditAccount(account)}
                       />
                       <FaTrash
-                        className="delete"
+                        className="delete-acc"
                         onClick={() => handleDeleteAccount(account.ma_nv)}
                       />
                     </td>

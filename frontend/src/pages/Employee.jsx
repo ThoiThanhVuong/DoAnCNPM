@@ -70,25 +70,25 @@ const Employee = () => {
     <div className="employee-container">
       <h2>Thông Tin Nhân Viên</h2>
       <div className="employee-info">
-        <div className="info-item">
+        <div className="em-info-item">
           <strong>Mã Nhân Viên:</strong> <span>{employeeData.ma_nv}</span>
         </div>
-        <div className="info-item">
+        <div className="em-info-item">
           <strong>Tên Nhân Viên:</strong> <span>{employeeData.ten_nv}</span>
         </div>
-        <div className="info-item">
+        <div className="em-info-item">
           <strong>Giới Tính:</strong> <span>{employeeData.gioi_tinh}</span>
         </div>
-        <div className="info-item">
+        <div className="em-info-item">
           <strong>Số Điện Thoại:</strong> <span>{employeeData.sdt}</span>
         </div>
-        <div className="info-item">
+        <div className="em-info-item">
           <strong>Email:</strong> <span>{employeeData.email}</span>
         </div>
-        <div className="info-item">
+        <div className="em-info-item">
           <strong>Mã Quyền:</strong> <span>{employeeData.ma_quyen}</span>
         </div>
-        <div className="info-item">
+        <div className="em-info-item">
           <strong>Trạng Thái:</strong> <span>{employeeData.trang_thai === 1 ? 'Kích hoạt' : 'Không kích hoạt'}</span>
         </div>
         <button onClick={() => setShowPasswordChange(!showPasswordChange)}>
@@ -98,7 +98,7 @@ const Employee = () => {
       </div>
 
       {showPasswordChange && (
-        <div className="password-change">
+        <div className="em-password-change">
           <h3>Đổi Mật Khẩu</h3>
           <input
             type="password"
