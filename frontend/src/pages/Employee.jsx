@@ -95,7 +95,7 @@ const Employee = () => {
           <strong>Email:</strong> <span>{employeeData.email}</span>
         </div>
         <div className="em-info-item">
-          <strong>Mã Quyền:</strong> <span>{permissionName || employeeData.ma_quyen}</span>
+          <strong>Tên Quyền:</strong> <span>{permissionName || employeeData.ma_quyen}</span>
         </div>
         <div className="em-info-item">
           <strong>Trạng Thái:</strong> <span>{employeeData.trang_thai === 1 ? 'Kích hoạt' : 'Không kích hoạt'}</span>

@@ -111,11 +111,11 @@ const PermissionAccount = () => {
     () => [
       "Quản lý sản phẩm",
       "Quản lý khu vực kho",
-      "Quản lý nhân viên",
+      // "Quản lý nhân viên",
       "Quản lý khách hàng",
       "Quản lý nhà cung cấp",
-      "Quản lý tài khoản",
-      "Quản lý nhóm quyền",
+      // "Quản lý tài khoản",
+      // "Quản lý nhóm quyền",
       "Quản lý thống kê",
       "Quản lý nhập hàng",
       "Quản lý xuất hàng",
@@ -229,23 +229,29 @@ const PermissionAccount = () => {
                   <td>{item.email}</td>
                   <td>{item.ten_quyen ? item.ten_quyen : "No Permission"}</td>
                   <td>
-                    <FaEdit
-                      className="edit-btn"
-                      onClick={() =>
-                        handleShowEditUserAccount(
-                          item.ma_nv,
-                          item.ten_nv,
-                          item.email,
-                          item.ma_quyen
-                        )
-                      }
-                    />
-                    <FaTrash
-                      className="delete-btn"
-                      onClick={() =>
-                        handleDeleteUserAccount(item.ma_nv, item.ma_quyen)
-                      }
-                    />
+                    {item.ten_quyen !== "Admin" ? (
+                      <>
+                        <FaEdit
+                          className="edit-btn"
+                          onClick={() =>
+                            handleShowEditUserAccount(
+                              item.ma_nv,
+                              item.ten_nv,
+                              item.email,
+                              item.ma_quyen
+                            )
+                          }
+                        />
+                        <FaTrash
+                          className="delete-btn"
+                          onClick={() =>
+                            handleDeleteUserAccount(item.ma_nv, item.ma_quyen)
+                          }
+                        />{" "}
+                      </>
+                    ) : (
+                      null
+                    )}
                   </td>
                 </tr>
               ))
@@ -321,7 +327,7 @@ const PermissionAccount = () => {
               <label htmlFor="">Chọn vai trò:</label>
               <select value={nameRoleChange} onChange={handleRoleChange}>
                 <option></option>
-                <option value="1">Admin</option>
+                {/* <option value="1">Admin</option> */}
                 <option value="2">Quản lý</option>
                 <option value="3">Nhân viên kho</option>
                 <option value="4">Nhân viên kiểm toán</option>
