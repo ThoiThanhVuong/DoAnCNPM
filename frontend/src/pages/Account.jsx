@@ -5,7 +5,6 @@ import "../style/Account.css";
 const Account = () => {
   const [showAddAccount, setShowAddAccount] = useState(false);
   const [showEditAccount, setShowEditAccount] = useState(false);
-  const [permissionName, setPermissionName] = useState(''); // Thêm state để lưu tên quyền
   const [data, setData] = useState([]);
   const [currentAccount, setCurrentAccount] = useState(null);
   const [newAccountData, setNewAccountData] = useState({
@@ -16,7 +15,7 @@ const Account = () => {
     email: "",
     mat_khau: "",
     ma_quyen: "",
-    trang_thai: 1, // Default active
+    trang_thai: 1,
   });
 
   const [editAccountData, setEditAccountData] = useState({
@@ -67,10 +66,15 @@ const Account = () => {
       alert("Vui lòng điền đầy đủ thông tin.");
       return;
     }
-  
+    const validationError = validateAccountData(newAccountData);
+    if (validationError) {
+      alert(validationError);
+      return;
+    }
+    
     try {
       const ma_nv = generateEmployeeId();
-      const newAccountWithEmployeeId = { ...newAccountData, ma_nv };
+      const newAccountWithEmployeeId = {...newAccountData, ma_nv};
   
       const response = await fetch("http://localhost:5000/api/employee", {
         method: "POST",
@@ -107,6 +111,11 @@ const Account = () => {
   };
 
   const handleEditAccount = async () => {
+    const validationError = validateAccountData(newAccountData);
+    if (validationError) {
+      alert(validationError);
+      return;
+    }
     try {
       const response = await fetch(
         `http://localhost:5000/api/employee/${currentAccount.ma_nv}`,
@@ -183,6 +192,21 @@ const Account = () => {
     }
   };
 
+  const validateAccountData = (data) => {
+    const { ten_nv, email, mat_khau, sdt, gioi_tinh, ma_quyen } = data;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]{10}$/;
+  
+    if (!ten_nv.trim()) return "Tên nhân viên không được để trống.";
+    if (!emailRegex.test(email)) return "Email không hợp lệ.";
+    if (mat_khau.length < 6) return "Mật khẩu phải có ít nhất 6 ký tự.";
+    if (!mat_khau.trim()) return "Mật khẩu không được để trống.";
+    if (!phoneRegex.test(sdt)) return "Số điện thoại không hợp lệ.";
+    if (!gioi_tinh.trim()) return "Giới tính không được để trống.";
+    if (!ma_quyen.trim()) return "Mã quyền không được để trống.";
+    return null;
+  };
+  
   return (
     <div>
       <div className="container-account">

@@ -150,3 +150,31 @@ button:last-child {
 button:last-child:hover {
   background-color: #d32f2f;
 }
+
+.container-account_content {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.left-section,
+.right-section {
+  flex: 1;
+}
+
+.right-section table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.right-section th, 
+.right-section td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.right-section h2 {
+  margin-bottom: 10px;
+  text-align: center;
+}

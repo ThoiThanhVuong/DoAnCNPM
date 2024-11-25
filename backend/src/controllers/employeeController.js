@@ -25,23 +25,38 @@ const getEmployeeByMaNV = async (req, res) => {
 };
 
 // Add a new employee
+// Add a new employee
 const addEmployee = async (req, res) => {
-  const { ten_nv, gioi_tinh, sđt, email, mat_khau, ma_quyen } = req.body; // Các thuộc tính cần thêm
+  const { ma_nv, ten_nv, gioi_tinh, sdt, email, mat_khau, ma_quyen, trang_thai } = req.body;
+
+  // Kiểm tra dữ liệu đầu vào
+  if (!ten_nv || !gioi_tinh || !sdt || !email || !mat_khau || !ma_quyen || !trang_thai) {
+    return res.status(400).json({ error: 'Thiếu thông tin bắt buộc' });
+  }
+
   try {
+    // Thêm nhân viên mới
     const newEmployee = await Employee.create({
+      ma_nv,
       ten_nv,
       gioi_tinh,
-      department,
-      sđt,
+      sdt,
       email,
       mat_khau,
-      ma_quyen
+      ma_quyen,
+      trang_thai
     });
+
+    // Trả về nhân viên mới thêm
     res.status(201).json(newEmployee);
   } catch (error) {
+    // Log lỗi và trả về lỗi chi tiết
+    console.error('Error adding employee:', error);
     res.status(500).json({ error: 'Lỗi khi thêm nhân viên', details: error.message });
   }
 };
+
+
 
 
 // Update an employee by ma_nv
