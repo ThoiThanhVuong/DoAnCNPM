@@ -3,6 +3,30 @@ const Employee = require("../models/EmployeeModel");
 const FeaturePermission = require("../models/FeaturePermissionModel");
 const DetailPermission = require("../models/DetailPermission");
 
+
+exports.getPermissionByMaQuyen = async (req, res) => {
+  const { ma_quyen } = req.params; // Lấy ma_quyen từ tham số URL
+  
+  try {
+    // Lấy thông tin quyền từ bảng Permission
+    const permission = await Permission.findOne({
+      where: { ma_quyen: ma_quyen },
+      attributes: ['ma_quyen', 'ten_quyen'], // Chỉ lấy ma_quyen và ten_quyen
+    });
+
+    // Kiểm tra nếu không tìm thấy quyền nào
+    if (!permission) {
+      return res.status(404).json({ message: "Không tìm thấy quyền với ma_quyen: " + ma_quyen });
+    }
+
+    // Trả kết quả về cho client
+    res.json(permission);
+
+  } catch (error) {
+    res.status(500).json({ error: "Có lỗi khi lấy thông tin quyền", error });
+  }
+};
+
 exports.showAllPermission = async (req, res) => {
   try {
     const permission = await Employee.findAll({

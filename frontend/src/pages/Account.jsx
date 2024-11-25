@@ -5,6 +5,7 @@ import "../style/Account.css";
 const Account = () => {
   const [showAddAccount, setShowAddAccount] = useState(false);
   const [showEditAccount, setShowEditAccount] = useState(false);
+  const [permissionName, setPermissionName] = useState(''); // Thêm state để lưu tên quyền
   const [data, setData] = useState([]);
   const [currentAccount, setCurrentAccount] = useState(null);
   const [newAccountData, setNewAccountData] = useState({

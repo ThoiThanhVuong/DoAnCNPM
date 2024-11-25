@@ -4,30 +4,39 @@ import Cookies from "js-cookie";
 
 const Employee = () => {
   const [employeeData, setEmployeeData] = useState({});
+  const [permissionName, setPermissionName] = useState('');
   const [showPasswordChange, setShowPasswordChange] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const manv = localStorage.getItem("ma_nv"); // Lấy ma_nv từ localStorage
+  const [showNewPassword, setShowNewPassword] = useState(false); // Trạng thái hiển thị mật khẩu mới
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Trạng thái hiển thị mật khẩu xác nhận
+  const manv = localStorage.getItem("ma_nv");
   const [editAccountData, setEditAccountData] = useState({
-    mat_khau: "", // Mật khẩu cũ khi bắt đầu
+    mat_khau: "",
   });
+
   const handleBackToLogin = () => {
     Cookies.remove("token");
     window.location.reload();
   };
 
-  // Lấy thông tin nhân viên hiện tại từ API
   useEffect(() => {
     if (manv) {
-      // Dùng manv để gọi API và lấy dữ liệu nhân viên
       fetch(`http://localhost:5000/api/employee/${manv}`)
         .then((response) => response.json())
-        .then((data) => setEmployeeData(data))
+        .then((data) => {
+          setEmployeeData(data);
+          fetch(`http://localhost:5000/api/permission/layten/${data.ma_quyen}`)
+            .then((response) => response.json())
+            .then((permissionData) => {
+              setPermissionName(permissionData.ten_quyen);
+            })
+            .catch((error) => console.error('Error fetching permission name:', error));
+        })
         .catch((error) => console.error('Error fetching employee data:', error));
     }
   }, [manv]);
 
-  // Xử lý thay đổi mật khẩu
   const handlePasswordChange = async () => {
     if (newPassword !== confirmPassword) {
       alert("Mật khẩu mới và xác nhận mật khẩu không khớp.");
@@ -52,13 +61,12 @@ const Employee = () => {
 
       if (!response.ok) throw new Error("Failed to update account");
 
-      // Cập nhật lại dữ liệu trong state sau khi thay đổi mật khẩu thành công
       setEmployeeData((prevData) => ({
         ...prevData,
-        mat_khau: newPassword, // cập nhật mật khẩu mới
+        mat_khau: newPassword,
       }));
 
-      setShowPasswordChange(false); // Đóng form thay đổi mật khẩu
+      setShowPasswordChange(false);
       alert("Đổi mật khẩu thành công!");
     } catch (error) {
       console.error("Error updating account:", error);
@@ -70,6 +78,7 @@ const Employee = () => {
     <div className="employee-container">
       <h2>Thông Tin Nhân Viên</h2>
       <div className="employee-info">
+        {/* Thông tin nhân viên */}
         <div className="em-info-item">
           <strong>Mã Nhân Viên:</strong> <span>{employeeData.ma_nv}</span>
         </div>
@@ -86,7 +95,7 @@ const Employee = () => {
           <strong>Email:</strong> <span>{employeeData.email}</span>
         </div>
         <div className="em-info-item">
-          <strong>Mã Quyền:</strong> <span>{employeeData.ma_quyen}</span>
+          <strong>Mã Quyền:</strong> <span>{permissionName || employeeData.ma_quyen}</span>
         </div>
         <div className="em-info-item">
           <strong>Trạng Thái:</strong> <span>{employeeData.trang_thai === 1 ? 'Kích hoạt' : 'Không kích hoạt'}</span>
@@ -100,18 +109,35 @@ const Employee = () => {
       {showPasswordChange && (
         <div className="em-password-change">
           <h3>Đổi Mật Khẩu</h3>
-          <input
-            type="password"
-            placeholder="Mật khẩu mới"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Xác nhận mật khẩu"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+          <div className="password-input">
+            <input
+              type={showNewPassword ? "text" : "password"}
+              placeholder="Mật khẩu mới"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <span
+              className="toggle-password"
+              onClick={() => setShowNewPassword(!showNewPassword)}
+            >
+              {showNewPassword ? "👁️" : "👁️‍🗨️"}
+            </span>
+          </div>
+          <div className="password-input">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Xác nhận mật khẩu"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <span
+              className="toggle-password"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? "👁️" : "👁️‍🗨️"}
+            </span>
+          </div>
+
           <button onClick={handlePasswordChange}>Lưu</button>
           <button onClick={() => setShowPasswordChange(false)}>Hủy</button>
         </div>
