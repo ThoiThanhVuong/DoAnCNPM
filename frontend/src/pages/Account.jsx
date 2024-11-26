@@ -231,13 +231,14 @@ const Account = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9]{10}$/;
   
-    if (!ten_nv.trim()) return "Tên nhân viên không được để trống.";
-    if (!emailRegex.test(email)) return "Email không hợp lệ.";
+    if (!ten_nv || !ten_nv.trim()) return "Tên nhân viên không được để trống.";
+    if (!email || !emailRegex.test(email)) return "Email không hợp lệ.";
+    if (!mat_khau || !mat_khau.trim()) return "Mật khẩu không được để trống.";
     if (mat_khau.length < 6) return "Mật khẩu phải có ít nhất 6 ký tự.";
-    if (!mat_khau.trim()) return "Mật khẩu không được để trống.";
-    if (!phoneRegex.test(sdt)) return "Số điện thoại không hợp lệ.";
-    if (!gioi_tinh.trim()) return "Giới tính không được để trống.";
-    if (!ma_quyen.trim()) return "Mã quyền không được để trống.";
+    if (!sdt || !phoneRegex.test(sdt)) return "Số điện thoại không hợp lệ.";
+    if (!gioi_tinh || !gioi_tinh.trim()) return "Giới tính không được để trống.";
+    if (!ma_quyen || !ma_quyen.trim()) return "Mã quyền không được để trống.";
+    
     return null;
   };
   
