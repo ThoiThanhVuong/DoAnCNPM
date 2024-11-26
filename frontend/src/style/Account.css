@@ -1,5 +1,7 @@
 .container-account {
   margin: 20px;
+  text-align: center; /* Canh giữa theo chiều ngang */
+  vertical-align: middle; /* Canh giữa theo chiều dọc */
 }
 
 .container-account_content {
@@ -19,6 +21,8 @@
   padding: 8px;
   text-align: left;
   border: 1px solid #ddd;
+  text-align: center; /* Canh giữa theo chiều ngang */
+  vertical-align: middle; /* Canh giữa theo chiều dọc */
 }
 
 .add-account_button {
@@ -178,3 +182,34 @@ button:last-child:hover {
   margin-bottom: 10px;
   text-align: center;
 }
+
+.search-acc-container {
+  display: flex;
+  justify-content: flex-start; /* Căn trái, nếu cần chỉnh giữa thì đổi thành 'center' */
+  align-items: center;
+  margin-bottom: 20px; /* Tạo khoảng cách giữa ô tìm kiếm và bảng */
+}
+
+.search-acc-input {
+  padding: 8px;
+  font-size: 16px;
+  width: 250px; /* Độ rộng của ô tìm kiếm */
+  margin-right: 10px; /* Khoảng cách với nút tìm kiếm */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.search-acc-button {
+  padding: 8px 12px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff; /* Màu xanh dương */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-acc-button:hover {
+  background-color: #0056b3; /* Đậm hơn khi hover */
+}
+
