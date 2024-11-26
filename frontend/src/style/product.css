@@ -94,6 +94,9 @@
 .btn-delete-product {
   background-color: #e74c3c;
 }
+.btn-detail-product{
+  background-color: #333;
+}
 
 .btn-add-product:hover {
   background-color: #2d6639; /* Tối hơn khi hover */

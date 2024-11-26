@@ -15,6 +15,7 @@ const AddProductModal = ({ show, onClose }) => {
   const [rom, setRom] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
+  //
   const [configurations, setConfigurations] = useState([]);
   const [editIndex, setEditIndex] = useState(null); // Để lưu index của cấu hình đang sửa
   const [formData, setFormData] = useState({
@@ -183,6 +184,9 @@ const AddProductModal = ({ show, onClose }) => {
   };
 
   const handleNextTab = () => {
+    if (!validateProductForm()) {
+      return;
+    }
     setIsNextTabVisible(true);
   };
   const closeNextTab = () => {
@@ -234,10 +238,60 @@ const AddProductModal = ({ show, onClose }) => {
     setIsNextTabVisible(false); // Reset về tab đầu tiên
   };
 
-  const handleSubmitProduct = () => {
-    // Logic submit dữ liệu sản phẩm vào API
-    console.log("Form data to submit:", formData);
-    // Sau khi gửi thành công có thể reset form hoặc đóng modal
+  const handleSubmitProduct = async () => {
+    // Kiểm tra nếu form sản phẩm hợp lệ
+
+    try {
+      // 1. Thêm sản phẩm vào bảng san_pham
+      const productData = {
+        ten_sp: formData.productName,
+        chip_xu_ly: formData.chip,
+        dung_luong_pin: formData.battery,
+        kich_thuoc_man: formData.screenSize,
+        camera_truoc: formData.frontCamera,
+        camera_sau: formData.rearCamera,
+        hdh: formData.os,
+        thuong_hieu: formData.brand,
+        xuat_xu: formData.origin,
+        khu_vuc_kho: formData.region,
+        so_luong_ton: 0,
+        trang_thai: 1,
+        hinh_anh: selectedImage ? selectedImage : "default.jpg", // Giả sử bạn có ảnh mặc định
+      };
+
+      const productResponse = await axios.post(
+        "http://localhost:5000/api/products", // Địa chỉ API để thêm sản phẩm
+        productData
+      );
+
+      const productId = productResponse.data.ma_sp; // Lấy ID sản phẩm vừa thêm
+
+      // 2. Thêm cấu hình sản phẩm vào bảng phien_ban_san_pham
+      const configurationsData = configurations.map((config) => ({
+        ma_sp: productId,
+        ma_ram: ram.find((r) => r.kich_thuoc_ram === config.ram)?.ma_ram,
+        ma_rom: rom.find((r) => r.kich_thuoc_rom === config.rom)?.ma_rom,
+        ma_mau: colors.find((c) => c.ten_mau === config.color)?.ma_mau,
+        gia_nhap: config.priceImport,
+        gia_xuat: config.priceSell,
+        ton_kho: 0, // Bạn có thể thay giá trị tồn kho tùy theo logic của mình
+      }));
+
+      const configResponse = await axios.post(
+        "http://localhost:5000/api/api/pbsp", // Địa chỉ API để thêm cấu hình sản phẩm
+        configurationsData
+      );
+
+      console.log("Sản phẩm và cấu hình đã được thêm thành công!");
+
+      // Reset lại form và các trạng thái sau khi thêm
+      resetForm();
+      resetForm_nextTab();
+      setConfigurations([]);
+      onClose();
+    } catch (error) {
+      console.error("Lỗi khi thêm sản phẩm và cấu hình:", error);
+    }
   };
 
   return (

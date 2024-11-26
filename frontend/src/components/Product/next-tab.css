@@ -42,6 +42,7 @@
   display: flex;
   justify-content: center;
   margin-top: 8px;
+  gap: 15px;
 }
 
 .action-buttons-sp .btn {
@@ -126,8 +127,10 @@
   color: #fff;
 }
 .aciton-add-products {
+  margin-top: 10px;
   display: flex;
   justify-content: center;
+  gap: 15px;
 }
 .aciton-add-products .add-prodduct {
   padding: 10px 10px;
