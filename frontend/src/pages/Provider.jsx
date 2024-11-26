@@ -162,7 +162,7 @@ const searchProvider = async(e) =>{
       [name]: value,
     })
     const response = (await axios.get(`http://localhost:5000/api/providers`))
-      .data;
+      .data.filter((item)=>item.trang_thai == 1);
 
       if (value) {
         if (isNaN(value)) {
@@ -178,7 +178,7 @@ const searchProvider = async(e) =>{
         }
       } else {
         const response = await axios.get(`http://localhost:5000/api/providers`);
-        setData(response.data);
+        setData(response.data.filter((item)=>item.trang_thai == 1));
       }
 
 }

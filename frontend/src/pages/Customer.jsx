@@ -200,7 +200,7 @@ const Customer = () => {
       [name]: value,
     });
     const response = (await axios.get(`http://localhost:5000/api/customers`))
-      .data;
+      .data.filter((item)=> item.trang_thai==1);
 
     if (value) {
       if (isNaN(value)) {
@@ -217,7 +217,7 @@ const Customer = () => {
       }
     } else {
       const response = await axios.get(`http://localhost:5000/api/customers`);
-      setData(response.data);
+      setData(response.data.filter((item)=> item.trang_thai==1));
     }
   };
 

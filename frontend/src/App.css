@@ -13,7 +13,7 @@
 main {
   width: 100%;
   padding: 20px;
-  height: 130vh;
+  height: 100vh;
 }
 main.signin {
   background: linear-gradient(120deg, #3ca7ee, #9b408f);
@@ -21,7 +21,7 @@ main.signin {
 .sidebar {
   background: #000;
   color: #fff;
-  height: 150vh;
+  height: 100vh;
   width: 250px;
   transition: all 0.5s;
 }
