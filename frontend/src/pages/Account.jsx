@@ -336,7 +336,6 @@ const Account = () => {
 
       {showAddAccount && (
         <div className="add-account">
-          <h2>Thêm Tài Khoản</h2>
           <div className="add-account_content">
             {/* First Column */}
             <div className="add-account_content__column">
@@ -421,7 +420,6 @@ const Account = () => {
 
       {showSearchResult && searchedAccount && (
         <div className="add-account">
-          <h2>Thông Tin Nhân Viên</h2>
           <div className="add-account_content">
             {/* First Column */}
             <div className="add-account_content__column">
