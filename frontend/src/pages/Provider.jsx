@@ -10,6 +10,7 @@ const Provider = () => {
   const [showAdd, setShow] = useState(false);
   const [showAYS,setAYS] =useState(false);
   const [search,setSearch] = useState({MNCC:""})
+  const [providerIds,setProviderIds] =useState ([])
   const [formData, setform] = useState({
     MNCC: " ",
     TNCC: "",
@@ -23,7 +24,9 @@ const Provider = () => {
   const fetchProviders = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/providers");
-      setData(response.data);
+      setData(response.data.filter((item)=> item.trang_thai == 1));
+       // Cập nhật state customerIDs với dữ liệu trả về
+       setProviderIds(response.data.map((item)=>item.ma_ncc))
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu");
       setData();
@@ -179,7 +182,12 @@ const searchProvider = async(e) =>{
       }
 
 }
-
+//Tự tạo Mã nhà cung cấp
+const generateNewCustomerId = () => {
+  if (providerIds.length === 0) return 1; // Nếu chưa có ID, bắt đầu từ KH1
+  const lastId = providerIds[providerIds.length - 1]; // Lấy ID cuối cùng
+  return `${lastId + 1}`; // Tăng giá trị số và thêm tiền tố
+};
 
 
 const handleAYS = (MNCC) =>{
@@ -195,7 +203,7 @@ const handleAYS = (MNCC) =>{
 
   const hiddenAdd = () => {
     setShow(!showAdd);
-    setform({ MNCC: "", TNCC: "", DC: "", Email: "", SDT: "" });
+    setform({ MNCC: generateNewCustomerId(), TNCC: "", DC: "", Email: "", SDT: "" });
   };
 
   const handleInputChange = (e) => {
@@ -252,6 +260,8 @@ const handleAYS = (MNCC) =>{
                   placeholder="Nhập Mã Nhà Cung Cấp"
                   name="MNCC"
                   type="number"
+                  readOnly
+                  className="inputshow_notcomment"
                   value={formData.MNCC}
                   onChange={handleInputChange}
                 ></input>

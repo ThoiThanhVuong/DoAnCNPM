@@ -137,6 +137,14 @@ interface ADD */
 
 }
 
+.inputshow_notcomment{
+  background-color: #f0f0f0; /* Màu nền xám nhạt */
+  border: 1px solid #ccc;    /* Đường viền xám nhạt */
+  color: #888;              /* Màu chữ mờ hơn */
+  cursor: not-allowed;  
+  outline: none;
+}
+
 .interface_add-content{
   display: flex;
   flex-direction: column;

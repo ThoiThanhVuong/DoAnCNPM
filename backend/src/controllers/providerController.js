@@ -65,11 +65,13 @@ const deleteProvider = async (req, res) => {
   const { ma_ncc } = req.params;
   try {
     const deleteProvider = await Provider.findByPk(ma_ncc);
-    if (!deleteProvider) return res.status(404).json({ error: 'Không tìm thấy Nhà cung cấp' });
+    // if (!deleteProvider) return res.status(404).json({ error: 'Không tìm thấy Nhà cung cấp' });
         
-        await deleteProvider.destroy();
-        return res.json({ message: 'Nhà cung cấp đã được xóa' });
-    } catch (error) {
+    //     await deleteProvider.destroy();
+    deleteProvider.trang_thai=0,
+    await deleteProvider.save();
+    return res.json({ message: 'Nhà cung cấp đã được xóa' });
+  } catch (error) {
       console.error('Lỗi khi xóa Nhà cung cấp:', error);  // In chi tiết lỗi ra console
       return res.status(500).json({ error: `Lỗi không xóa được Nhà cung cấp: ${error.message}` });
     }

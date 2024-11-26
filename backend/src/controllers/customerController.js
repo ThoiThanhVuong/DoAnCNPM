@@ -64,9 +64,11 @@ const deleteCustomer = async (req, res) => {
   const { ma_kh } = req.params;
   try {
     const deletedCustomer = await Customer.findByPk(ma_kh);
-    if (!deletedCustomer) return res.status(404).json({ error: 'Không tìm thấy khách hàng' });
+    // if (!deletedCustomer) return res.status(404).json({ error: 'Không tìm thấy khách hàng' });
         
-        await deletedCustomer.destroy();
+    //     await deletedCustomer.destroy();
+    deletedCustomer.trang_thai=0;
+    await deletedCustomer.save();
         res.json({ message: 'Khách hàng đã được xóa' });
     } catch (error) {
       console.error('Lỗi khi xóa khách hàng:', error);  // In chi tiết lỗi ra console

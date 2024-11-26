@@ -16,5 +16,9 @@ const CustomerModel = sequelize.define('Customer', {
     sdt_kh: {
         type: DataTypes.STRING,
     },
+    trang_thai: {
+      type: DataTypes.INTEGER,
+      defaultValue: 1,
+    }
 }, { tableName: 'khach_hang', timestamps: false });
 module.exports = CustomerModel;

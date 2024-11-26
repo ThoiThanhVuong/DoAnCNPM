@@ -20,5 +20,9 @@ const Provider = sequelize.define('Provider', {
     sdt_ncc: {
         type: DataTypes.STRING,
     },
+    trang_thai: {
+      type: DataTypes.INTEGER,
+      defaultValue: 1,
+    },
 }, { tableName: 'nha_cung_cap', timestamps: false, });
 module.exports = Provider;
