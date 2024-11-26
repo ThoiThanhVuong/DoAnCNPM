@@ -6,6 +6,7 @@ import thongkeService from '../../services/thongkeService';
 import {getCountEmployee} from '../../services/EmployeeService';
 import CustomerService from '../../services/customerService';
 import productService from '../../services/productService';
+import { FaMobileScreenButton,FaUser ,FaUserTie  } from "react-icons/fa6";
 const TongQuan = () =>{
     const [data,setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -126,21 +127,21 @@ const TongQuan = () =>{
         <div className='Overview-container'>
             <header className='overview-header'>
                 <div className='statistic-item'>
-                    <div className='stats-icon'>icon</div>
+                    <div className='stats-icon'><FaMobileScreenButton/></div>
                     <div className='stats-info'>
                         <h3>{dataProduct.countProduct}</h3>
                         <p>Sản phẩm hiện có trong kho</p>
                     </div>
                 </div>
                 <div className='statistic-item'>
-                    <div className='stats-icon'></div>
+                    <div className='stats-icon'><FaUserTie/></div>
                     <div className='stats-info'>
                         <h3>{dataCustomer.customerCount}</h3>
                         <p>Khách từ trước đến nay</p>
                     </div>
                 </div>
                 <div className='statistic-item'>
-                    <div className='stats-icon'></div>
+                    <div className='stats-icon'><FaUser/></div>
                     <div className='stats-info'>
                         <h3>{dataEmployee.count}</h3>
                         <p>Nhân viên đang hoạt động</p>

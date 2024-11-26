@@ -3,7 +3,6 @@ const models = require("../models/Relationship")
 
 exports.getDetailExport = async(req, res) =>{
     const {ma_px} = req.params
-    console.log(ma_px)
     try{
         const detailExportByID = await models.chiTietPhieuXuatModel.findAll({
             where: { 
