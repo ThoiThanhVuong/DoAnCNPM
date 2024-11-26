@@ -3,6 +3,8 @@ import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 import '../Chart/Chart.css';
 import * as XLSX from 'xlsx';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import thongkeService from '../../services/thongkeService';
 
 const Year = () => {
@@ -34,18 +36,19 @@ const Year = () => {
     const yearStart = fromYear.trim();
     const yearEnd = toYear.trim();
     if(!yearStart&&!yearEnd){
-      alert("Vui lòng chọn năm thống kê");
+      toast.error("Vui lòng chọn năm thống kê");
       fromYearRef.current.focus();
       return;
     } 
     if(yearEnd){
       if(yearStart > yearEnd){
-        alert('ngày bắt đầu không được lớn hơn ngày kết thúc');
+        toast.error('ngày bắt đầu không được lớn hơn ngày kết thúc');
         fromYearRef.current.focus();
         return;
       }
       else{
         FetchStatisticYear({yearStart:yearStart,yearEnd:yearEnd});
+        toast.success("thống kê thành công")
       }
     } 
   }
@@ -161,6 +164,13 @@ const Year = () => {
           </tbody>
         </table>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000} // Tự động đóng sau 5 giây
+        hideProgressBar={true} // Ẩn thanh tiến trình
+        newestOnTop={true} // Hiển thị thông báo mới nhất trên cùng
+        closeButton={false} // Tắt nút đóng
+      />
     </div>
   );
 };

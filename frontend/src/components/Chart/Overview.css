@@ -17,11 +17,19 @@
     background-color: #f4f4f4;
     border-radius: 8px;
 }
-.statistic-item {
-    text-align: left;
-}
-.stats-info{
 
+.statistic-item {
+    display: flex;
+   
+    text-align: left;
+    align-items: center;
+}
+.stats-icon{
+    font-size: 30px;
+    margin-right: 10px;
+}
+.stats-info h3{
+    font-size: 22px;
 }
 .overview-chart { 
     width: 100%; 
