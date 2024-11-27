@@ -298,17 +298,18 @@ CREATE TABLE IF NOT EXISTS `khach_hang` (
   `ten_kh` varchar(255) DEFAULT NULL,
   `dia_chi_kh` varchar(255) DEFAULT NULL,
   `sdt_kh` varchar(12) DEFAULT NULL,
+  `trang_thai` int(11) DEFAULT NULL,
   PRIMARY KEY (`ma_kh`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `khach_hang` (`ten_kh`,`dia_chi_kh`,`sdt_kh`) VALUES
-('Nguyễn Văn A','Gia Đức, Ân Đức, Hoài Ân, Bình Định','0387913347'),
-('Trần Nhất Nhất','205 Trần Hưng Đạo, Phường 10, Quận 5, Thành phố Hồ Chí Minh','0123456789'),
-('Hoàng Gia Bo','Khoa Trường, Hoài Ân, Bình Định','0987654321'),
-('Nguyễn Thị Minh Anh','123 Phố Huế, Quận Hai Bà Trưng, Hà Nội','0935123456'),
-('Trần Đức Minh','789 Đường Lê Hồng Phong, Thành phố Đà Nẵng','0983456789'),
-('Phạm Thanh Hằng','102 Lê Duẩn, Thành phố Hải Phòng','0965876543'),
-('Hoàng Đức Anh','321 Lý Thường Kiệt, Thành phố Cần Thơ','0946789012');
+INSERT INTO `khach_hang` (`ten_kh`,`dia_chi_kh`,`sdt_kh`,`trang_thai`) VALUES
+('Nguyễn Văn A','Gia Đức, Ân Đức, Hoài Ân, Bình Định','0387913347',1),
+('Trần Nhất Nhất','205 Trần Hưng Đạo, Phường 10, Quận 5, Thành phố Hồ Chí Minh','0123456789',1),
+('Hoàng Gia Bo','Khoa Trường, Hoài Ân, Bình Định','0987654321',1),
+('Nguyễn Thị Minh Anh','123 Phố Huế, Quận Hai Bà Trưng, Hà Nội','0935123456',1),
+('Trần Đức Minh','789 Đường Lê Hồng Phong, Thành phố Đà Nẵng','0983456789',1),
+('Phạm Thanh Hằng','102 Lê Duẩn, Thành phố Hải Phòng','0965876543',1),
+('Hoàng Đức Anh','321 Lý Thường Kiệt, Thành phố Cần Thơ','0946789012',1);
 
 -- Dumping structure for table quanlikhohang.nha_cung_cap
 CREATE TABLE IF NOT EXISTS `nha_cung_cap` (
@@ -317,22 +318,23 @@ CREATE TABLE IF NOT EXISTS `nha_cung_cap` (
   `dia_chi` varchar(255) DEFAULT NULL,
   `email_ncc` varchar(255) DEFAULT NULL,
   `sdt_ncc` varchar(11) DEFAULT NULL,
+  `trang_thai` int(11) DEFAULT NULL,
   PRIMARY KEY (`ma_ncc`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Thêm dữ liệu mẫu cho bảng `nha_cung_cap`
-INSERT INTO `nha_cung_cap` (`ten_ncc`, `dia_chi`, `email_ncc`, `sdt_ncc`) VALUES
-('Công ty Apple', 'Mỹ', 'contact@apple.com', '0987654321'),
-('Samsung Việt Nam', 'Hà Nội', 'contact@samsung.vn', '0123456789'),
-('Công ty Oppo','27 Đ. Nguyễn Trung Trực, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh','oppovietnam@oppo.vn','0456345234'),
-('Công ty Xiaomi','Trung Quốc','contact@xiaomi.com','0956281536'),
-('Công ty Sony','Trung Quốc','contact@sony.com','0877744422'),
-('Công ty Huawei','Trung Quốc','contact@huawei.com','0956242544'),
-('Công ty Google','Mỹ','contact@google.com','0233462128'),
-('Công ty Asus','Đài Loan','contact@asus.com','0956666111'),
-('Công ty Nokia','Phòng 703, Tầng7, Tòa Nhà Metropolitan, 235 Đồng Khởi, P. Bến Nghé, Q. 1, Tp. Hồ Chí Minh (TPHCM)','chau.nguyen@nokia.com','02838236894'),
-('Công ty Realme','Trung Quốc','contact@realme.com','0111222333'),
-('Công ty Poco','Trung Quốc','contact@poco.com','0112567211');
+INSERT INTO `nha_cung_cap` (`ten_ncc`, `dia_chi`, `email_ncc`, `sdt_ncc`,`trang_thai`) VALUES
+('Công ty Apple', 'Mỹ', 'contact@apple.com', '0987654321',1),
+('Samsung Việt Nam', 'Hà Nội', 'contact@samsung.vn', '0123456789',1),
+('Công ty Oppo','27 Đ. Nguyễn Trung Trực, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh','oppovietnam@oppo.vn','0456345234',1),
+('Công ty Xiaomi','Trung Quốc','contact@xiaomi.com','0956281536',1),
+('Công ty Sony','Trung Quốc','contact@sony.com','0877744422',1),
+('Công ty Huawei','Trung Quốc','contact@huawei.com','0956242544',1),
+('Công ty Google','Mỹ','contact@google.com','0233462128',1),
+('Công ty Asus','Đài Loan','contact@asus.com','0956666111',1),
+('Công ty Nokia','Phòng 703, Tầng7, Tòa Nhà Metropolitan, 235 Đồng Khởi, P. Bến Nghé, Q. 1, Tp. Hồ Chí Minh (TPHCM)','chau.nguyen@nokia.com','02838236894',1),
+('Công ty Realme','Trung Quốc','contact@realme.com','0111222333',1),
+('Công ty Poco','Trung Quốc','contact@poco.com','0112567211',1);
 
 -- Dumping structure for table quanlikhohang.khu_vuc_kho
 CREATE TABLE IF NOT EXISTS `khu_vuc_kho` (
