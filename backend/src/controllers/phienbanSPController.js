@@ -3,7 +3,11 @@ const pbSP = require("../models/Relationship")
 
 exports.getAllPBSP = async(req, res) => {
     try{
-        const phienbanSP = await pbSP.PhienBanSPModel.findAll()
+        const phienbanSP = await pbSP.PhienBanSPModel.findAll({
+            where: {
+                trang_thai: 1
+            }
+        })
         res.json(phienbanSP)
     }
     catch(err){
