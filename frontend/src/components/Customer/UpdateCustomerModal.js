@@ -57,7 +57,7 @@ const UpdateCustomerModal = ({
         );
         fetchCustomers();
         setShow1(!showEditCustomer);
-
+        
         setTimeout(() => {
           setSuccessMessage(""); // Ẩn thông báo
         }, 2000);

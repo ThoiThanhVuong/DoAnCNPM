@@ -28,6 +28,14 @@
   font-weight: 700;
   color: #000000;
   background-color: lightskyblue;
+  width: 20%;
+}
+
+.row_QH td{
+  font-weight: 700;
+  color: #000000;
+  background-color: lightskyblue;
+  width: 20%; 
 }
   
   .content_customer table {

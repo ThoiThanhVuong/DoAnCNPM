@@ -67,7 +67,10 @@ const deleteCustomer = async (req, res) => {
     // if (!deletedCustomer) return res.status(404).json({ error: 'Không tìm thấy khách hàng' });
         
     //     await deletedCustomer.destroy();
-    deletedCustomer.trang_thai=0;
+    if(deletedCustomer.trang_thai==1)
+      deletedCustomer.trang_thai=0;
+    else
+      deletedCustomer.trang_thai=1;
     await deletedCustomer.save();
         res.json({ message: 'Khách hàng đã được xóa' });
     } catch (error) {
