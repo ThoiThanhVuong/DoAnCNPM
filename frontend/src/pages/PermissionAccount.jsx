@@ -57,9 +57,9 @@ const PermissionAccount = () => {
     }
   };
 
-  const handleDeleteUserAccount = async (ma_nv, ma_quyen) => {
+  const handleDeleteUserAccount = async (ma_nv, trang_thai) => {
     console.log(ma_nv);
-    if (ma_quyen === null) {
+    if (trang_thai === 0) {
       return;
     }
     const confirmDelete = window.confirm(
@@ -248,7 +248,7 @@ const PermissionAccount = () => {
                         <FaTrash
                           className="delete-btn"
                           onClick={() =>
-                            handleDeleteUserAccount(item.ma_nv, item.ma_quyen)
+                            handleDeleteUserAccount(item.ma_nv, item.trang_thai)
                           }
                         />{" "}
                       </>
