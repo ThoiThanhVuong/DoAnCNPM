@@ -66,6 +66,38 @@
   margin-bottom: 20px;
   justify-content: space-between; 
 }
+/* form ds ẩn hiện */
+.operation_KH{
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  border-bottom: 2px solid #e0e0e0; /* Đường kẻ dưới */
+  margin-bottom: 20px;
+}
+
+.button_KH{
+  flex: 1; /* Chia đều không gian */
+  padding: 1rem; /* Tương đương với py-4 */
+  text-align: center;
+  border: none;
+  font-size: 1.2rem; /* Tương đương với text-sm */
+  background-color: transparent;
+  cursor: pointer;
+  color: #6b7280; /* Tương đương với text-gray-500 */
+  border-bottom: 2px solid transparent;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.button_KH :hover{
+  color: #374151; /* Tương đương với text-gray-700 */
+  border-bottom-color: #d1d5db; /* Tương đương với border-gray-300 */
+}
+
+.button_KH.active {
+  border-bottom-color: #000000; /* Tương đương với border-primary */
+  color: #000000; /* Tương đương với text-primary */
+  font-weight: 500; /* Tương đương với font-medium */
+}
 
   .button-addCustomer button {
     background-color: #000000 ;
@@ -209,6 +241,7 @@ iterface_edit */
   width: 200px;
   opacity: 0;
   animation: slideInOut 2s forwards;
+  z-index: 10;
 }
 
 .error-message{
