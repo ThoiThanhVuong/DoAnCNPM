@@ -17,7 +17,7 @@
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: auto;
-    max-height: 500px; /* Chiều cao tối đa của bảng */
+    max-height: 400px; /* Chiều cao tối đa của bảng */
   }
   .content_customer thead{
     position: sticky;

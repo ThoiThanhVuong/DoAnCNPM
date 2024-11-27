@@ -68,7 +68,10 @@ const deleteProvider = async (req, res) => {
     // if (!deleteProvider) return res.status(404).json({ error: 'Không tìm thấy Nhà cung cấp' });
         
     //     await deleteProvider.destroy();
-    deleteProvider.trang_thai=0,
+    if(deleteProvider.trang_thai==1)
+      deleteProvider.trang_thai=0;
+    else
+      deleteProvider.trang_thai=1;
     await deleteProvider.save();
     return res.json({ message: 'Nhà cung cấp đã được xóa' });
   } catch (error) {

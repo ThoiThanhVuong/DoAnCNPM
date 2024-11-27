@@ -30,6 +30,7 @@ const Customer = () => {
       // Gửi yêu cầu GET đến API để lấy danh sách khách hàng
       const response = await axios.get("http://localhost:5000/api/customers");
 
+      console.log(response)
       // Cập nhật state customers với dữ liệu trả về
       setData(response.data.filter((item) => item.trang_thai == 1));
       setCustomerHidden(response.data.filter((item) => item.trang_thai == 0));
