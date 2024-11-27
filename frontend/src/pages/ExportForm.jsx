@@ -337,7 +337,7 @@ const XuatHang = () => {
       setQueuedata([])
     }
     const DuyetPN = () => {
-      if(queueData)
+      if(queueData.length !== 0)
       {
         const newD = new Date();
         const totalTien = queueData.reduce((total, item) => total + item.tong_tien, 0);

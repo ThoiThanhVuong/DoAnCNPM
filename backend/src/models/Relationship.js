@@ -142,7 +142,6 @@ module.exports = {
   Provider: ProviderModel,
   importModel: importModel,
   PhienBanSPModel: PhienBanSPModel,
-  ProductModel: ProductModel,
   Ram: RamModel,
   Rom: RomModel,
   Color: ColorModel,

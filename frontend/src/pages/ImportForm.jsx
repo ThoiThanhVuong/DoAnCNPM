@@ -144,7 +144,8 @@ const NhapHang = () => {
   }
 
   const DuyetPN = () => {
-    if(queueData)
+    console.log("test",queueData)
+    if(queueData.length !== 0)
     {
       const newD = new Date();
       const totalTien = queueData.reduce((total, item) => total + item.tong_tien, 0);
@@ -155,7 +156,6 @@ const NhapHang = () => {
         tong_tien: totalTien,
         chi_tiet_phieu_nhap: queueData,
       }
-      console.log(newPN)
       addImport(newPN)
       setQueuedata([])
       alert("Duyệt đơn nhập thành công")

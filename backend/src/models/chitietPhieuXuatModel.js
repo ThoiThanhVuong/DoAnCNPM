@@ -3,6 +3,7 @@ const sequelize = require('../config/db');
 // const PhieuXuatModel = require('../models/phieuXuatModel');
 // const SanPhamModel = require('./ProductModel');
 // const WareHouse = require('../models/WareHouseModel');
+
 const models = require('../models/Relationship')
 
 const detailExport = sequelize.define('detailExport', {

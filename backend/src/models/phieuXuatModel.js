@@ -2,7 +2,9 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 // const CustomerModel = require('../models/CustomerModel');
 // const Employee =require('../models/EmployeeModel');
-const models = require('../models/Relationship')
+const KhachHang = require('./CustomerModel')
+const NhanVien = require('./EmployeeModel')
+//const models = require('../models/Relationship')
 
 
 const PhieuXuatModel = sequelize.define('PhieuXuatModel', {
@@ -14,14 +16,14 @@ const PhieuXuatModel = sequelize.define('PhieuXuatModel', {
     ma_kh: {
         type: DataTypes.INTEGER,
         references: {
-            model: models.KhachHang,
+            model: KhachHang,
             key: 'ma_kh',
         },
     },
     ma_nv: {
         type: DataTypes.INTEGER,
         references:{
-            model : models.EmployeeModel,
+            model : NhanVien,
             key: 'ma_nv',
         }
     },
