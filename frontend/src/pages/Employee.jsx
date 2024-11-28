@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import '../style/Employee.css';
+import React, { useState, useEffect } from "react";
+import "../style/Employee.css";
 import Cookies from "js-cookie";
 
 const Employee = () => {
   const [employeeData, setEmployeeData] = useState({});
-  const [permissionName, setPermissionName] = useState('');
+  const [permissionName, setPermissionName] = useState("");
   const [showPasswordChange, setShowPasswordChange] = useState(false);
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false); // Trạng thái hiển thị mật khẩu mới
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Trạng thái hiển thị mật khẩu xác nhận
   const manv = localStorage.getItem("ma_nv");
@@ -16,6 +16,8 @@ const Employee = () => {
   });
 
   const handleBackToLogin = () => {
+    const confirmLogout = window.confirm("Xac nhan dang xuat?");
+    if (!confirmLogout) return;
     Cookies.remove("token");
     window.location.reload();
   };
@@ -31,9 +33,13 @@ const Employee = () => {
             .then((permissionData) => {
               setPermissionName(permissionData.ten_quyen);
             })
-            .catch((error) => console.error('Error fetching permission name:', error));
+            .catch((error) =>
+              console.error("Error fetching permission name:", error)
+            );
         })
-        .catch((error) => console.error('Error fetching employee data:', error));
+        .catch((error) =>
+          console.error("Error fetching employee data:", error)
+        );
     }
   }, [manv]);
 
@@ -95,10 +101,14 @@ const Employee = () => {
           <strong>Email:</strong> <span>{employeeData.email}</span>
         </div>
         <div className="em-info-item">
-          <strong>Tên Quyền:</strong> <span>{permissionName || employeeData.ma_quyen}</span>
+          <strong>Tên Quyền:</strong>{" "}
+          <span>{permissionName || employeeData.ma_quyen}</span>
         </div>
         <div className="em-info-item">
-          <strong>Trạng Thái:</strong> <span>{employeeData.trang_thai === 1 ? 'Kích hoạt' : 'Không kích hoạt'}</span>
+          <strong>Trạng Thái:</strong>{" "}
+          <span>
+            {employeeData.trang_thai === 1 ? "Kích hoạt" : "Không kích hoạt"}
+          </span>
         </div>
         <button onClick={() => setShowPasswordChange(!showPasswordChange)}>
           Đổi Mật Khẩu

@@ -72,13 +72,13 @@ const Sidebar = ({ children }) => {
       {
         path: "/employee",
         name: "Nhân viên",
-        icon: <FaUserFriends />,
+        icon: <FaUserCircle />,
         feature: "Quản lý nhân viên",
       },
       {
         path: "/account",
         name: "Tài khoản",
-        icon: <FaUserCircle />,
+        icon: <FaUserFriends />,
         feature: "Quản lý tài khoản",
       },
       {
