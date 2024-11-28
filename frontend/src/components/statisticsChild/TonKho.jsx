@@ -33,9 +33,6 @@ const TonKho = ()=> {
      const handleSearch = () =>{
         const formattedTimeStart = timeStart ? new Date(timeStart).toISOString().split('T')[0] : '';
         const formattedTimeEnd = timeEnd ? new Date(timeEnd).toISOString().split('T')[0] : '';
-        console.log(formattedTimeStart);
-        console.log(formattedTimeEnd);
-        console.log(text);
         fetchTonKho({text, timeStart:formattedTimeStart , timeEnd : formattedTimeEnd});
 
     };
@@ -81,7 +78,7 @@ const TonKho = ()=> {
                         {
                             data.length > 0 ? (
                                 data.map((item,index)=>(
-                                    <tr key={`${item.ma_sp} - ${item.ma_phien_ban_sp}`}>
+                                    <tr key={`${item.ma_sp}`}>
                                         <td>{index+1}</td>
                                         <td>{item.ma_sp}</td>
                                         <td>{item.ten_sp}</td>

@@ -120,7 +120,8 @@ const getThongKeTonKho = async (req, res) => {
     const results = await PhienBanSPModel.findAll({
       attributes: [
         "ma_sp",
-        "ma_phien_ban_sp",
+        [sequelize.col("product.ten_sp"), "ten_sp"],
+      
         // Số lượng đầu kỳ
         [
           sequelize.literal(`(
@@ -129,7 +130,8 @@ const getThongKeTonKho = async (req, res) => {
               INNER JOIN phieu_nhap AS phieuNhap  ON nhapDau.ma_pn = phieuNhap.ma_pn
               LEFT JOIN chi_tiet_phieu_xuat AS xuatDau  
               ON nhapDau.ma_phien_ban_sp = xuatDau.ma_phien_ban_sp
-              WHERE nhapDau.ma_phien_ban_sp = PhienBanSPModel.ma_phien_ban_sp
+              INNER JOIN phien_ban_san_pham AS pbsp ON pbsp.ma_phien_ban_sp = nhapDau.ma_phien_ban_sp
+              WHERE pbsp.ma_sp = PhienBanSPModel.ma_sp
               AND phieuNhap.thoi_gian_nhap < '${timeStart || "1900-01-01"}'
             )`),
           "so_luong_dau_ky",
@@ -141,7 +143,8 @@ const getThongKeTonKho = async (req, res) => {
               FROM chi_tiet_phieu_nhap
               INNER JOIN phieu_nhap 
               ON phieu_nhap.ma_pn = chi_tiet_phieu_nhap.ma_pn
-              WHERE chi_tiet_phieu_nhap.ma_phien_ban_sp = PhienBanSPModel.ma_phien_ban_sp
+              INNER JOIN phien_ban_san_pham AS pbsp ON chi_tiet_phieu_nhap.ma_phien_ban_sp = pbsp.ma_phien_ban_sp
+              WHERE pbsp.ma_sp = PhienBanSPModel.ma_sp
               ${timeConditionNhap}
             )`),
           "so_luong_nhap",
@@ -153,7 +156,8 @@ const getThongKeTonKho = async (req, res) => {
               FROM chi_tiet_phieu_xuat
               INNER JOIN phieu_xuat 
               ON phieu_xuat.ma_px = chi_tiet_phieu_xuat.ma_px
-              WHERE chi_tiet_phieu_xuat.ma_phien_ban_sp = PhienBanSPModel.ma_phien_ban_sp
+              INNER JOIN phien_ban_san_pham AS pbsp ON chi_tiet_phieu_xuat.ma_phien_ban_sp = pbsp.ma_phien_ban_sp
+              WHERE pbsp.ma_sp = PhienBanSPModel.ma_sp
               ${timeConditionXuat}
             )`),
           "so_luong_xuat",
@@ -166,37 +170,35 @@ const getThongKeTonKho = async (req, res) => {
                INNER JOIN phieu_nhap AS phieuNhap  ON nhapDau.ma_pn = phieuNhap.ma_pn
                LEFT JOIN chi_tiet_phieu_xuat AS xuatDau
                ON nhapDau.ma_phien_ban_sp = xuatDau.ma_phien_ban_sp
-               WHERE nhapDau.ma_phien_ban_sp = PhienBanSPModel.ma_phien_ban_sp
+               INNER JOIN phien_ban_san_pham AS pbsp ON nhapDau.ma_phien_ban_sp = pbsp.ma_phien_ban_sp
+               WHERE pbsp.ma_sp = PhienBanSPModel.ma_sp
                AND phieuNhap.thoi_gian_nhap < '${timeStart || "1900-01-01"}')
               +
               (SELECT COALESCE(SUM(so_luong), 0)
                FROM chi_tiet_phieu_nhap
                INNER JOIN phieu_nhap 
                ON phieu_nhap.ma_pn = chi_tiet_phieu_nhap.ma_pn
-               WHERE chi_tiet_phieu_nhap.ma_phien_ban_sp = PhienBanSPModel.ma_phien_ban_sp
+               INNER JOIN phien_ban_san_pham AS pbsp ON chi_tiet_phieu_nhap.ma_phien_ban_sp = pbsp.ma_phien_ban_sp
+               WHERE pbsp.ma_sp = PhienBanSPModel.ma_sp
                ${timeConditionNhap})
               -
               (SELECT COALESCE(SUM(so_luong), 0)
                FROM chi_tiet_phieu_xuat
                INNER JOIN phieu_xuat 
                ON phieu_xuat.ma_px = chi_tiet_phieu_xuat.ma_px
-               WHERE chi_tiet_phieu_xuat.ma_phien_ban_sp = PhienBanSPModel.ma_phien_ban_sp
+               INNER JOIN phien_ban_san_pham AS pbsp ON chi_tiet_phieu_xuat.ma_phien_ban_sp = pbsp.ma_phien_ban_sp
+               WHERE pbsp.ma_sp = PhienBanSPModel.ma_sp
                ${timeConditionXuat})
             )`),
           "so_luong_cuoi_ky",
         ],
-        [sequelize.col("product.ten_sp"), "ten_sp"],
-        "ram.kich_thuoc_ram",
-        "rom.kich_thuoc_rom",
-        "mauSac.ten_mau",
+        
       ],
       where: TextCondition,
       include: [
         { model: ProductModel, as: "product", attributes: [] },
-        { model: Ram, as: "ram", attributes: ["kich_thuoc_ram"] },
-        { model: Rom, as: "rom", attributes: ["kich_thuoc_rom"] },
-        { model: Color, as: "mauSac", attributes: ["ten_mau"] },
       ],
+      group: ["ma_sp", "product.ten_sp"],
       order: [["ma_sp", "ASC"]],
     });
 
