@@ -184,9 +184,12 @@
 .wrapper-btn .show-feature-btn {
   background-color: black;
   outline: none;
-  border-radius: 5px;
+  border: none;
+  border-radius: 7px;
   margin-top: 30px;
   cursor: pointer;
+  color: white;
+  padding: 10px 20px;
 }
 .wrapper-btn .show-feature-btn:hover {
   background-color: black;
@@ -238,15 +241,19 @@
   margin-top: 20px;
 }
 .save-show-feature button{
+  padding: 10px 15px;
   background-color: black;
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 5px;
   cursor: pointer;
-  border-radius: 7px;
-  margin-left: 10px;
 }
 .save-show-feature button:last-child{
   background-color: white;
   color: black;
   border: 1px solid rgba(0, 0, 0, 0.3);
+  margin-left: 10px;
 }
 .save-show-feature button:last-child:hover{
   background-color: rgba(0, 0, 0, 0.3);
