@@ -15,7 +15,6 @@ const Customer = () => {
   const [showAYS, setAYS] = useState(false);
   const [customerIds, setCustomerIds] = useState([]);
   const [isActive, setIsActive] = useState(true);
-  const [showButtonAdd,setButtonAdd] =useState(false);
   const [formData, setform] = useState({
     MKH: "",
     TKH: "",
@@ -228,7 +227,7 @@ const Customer = () => {
             </thead>
           </table>
         </div>
-
+              
         {/* form Khách hàng ẩn */}
         <div style={{ display: !isActive ? "block" : "none" }}>
           <table>

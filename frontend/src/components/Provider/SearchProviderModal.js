@@ -1,7 +1,7 @@
 import React, { useState} from "react";
 
 import axios from "axios";
-const SearchProviderModal = ({setSearch,search,setData}) =>{
+const SearchProviderModal = ({setSearch,search,setData,isActive,setProviderHidden}) =>{
 
       //tìm kiếm nhà cung cấp
   const searchProvider = async (e) => {
@@ -12,28 +12,28 @@ const SearchProviderModal = ({setSearch,search,setData}) =>{
     });
     const response = (
       await axios.get(`http://localhost:5000/api/providers`)
-    ).data.filter((item) => item.trang_thai == 1);
+    ).data.filter((item) => item.trang_thai === (isActive ? 1 : 0 ));
 
     if (value) {
       if (isNaN(value)) {
         const NCC_search = response.filter((response) =>
           response.ten_ncc.toLowerCase().includes(value.toLowerCase())
         );
-        setData(NCC_search);
+        (isActive ? setData(NCC_search) : setProviderHidden(NCC_search));
       } else {
         const NCC_search = response.filter((response) =>
           response.ma_ncc.toString().includes(value.toString())
         );
-        setData(NCC_search);
+        (isActive ? setData(NCC_search) : setProviderHidden(NCC_search));
       }
     } else {
       const response = await axios.get(`http://localhost:5000/api/providers`);
-      setData(response.data.filter((item) => item.trang_thai == 1));
+      (isActive ? setData(response.data.filter((item) => item.trang_thai == 1)) : setProviderHidden(response.data.filter((item) => item.trang_thai === 0))) 
     }
   };
     return (
         <div class="input-search">
-          <input type="text" onChange={searchProvider} placeholder="Search......"></input>
+          <input value={search.MNCC} name="MNCC" type="text" onChange={searchProvider} placeholder="Search......"></input>
         </div>
 
     )

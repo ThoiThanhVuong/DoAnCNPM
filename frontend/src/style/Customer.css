@@ -26,16 +26,18 @@
 
 .QH td{
   font-weight: 700;
-  color: #000000;
   background-color: lightskyblue;
   width: 20%;
+  position: sticky;
+  top: 0;
 }
 
 .row_QH td{
   font-weight: 700;
-  color: #000000;
   background-color: lightskyblue;
-  width: 20%; 
+  width: 20%;
+  position: sticky;
+  top: 0; 
 }
   
   .content_customer table {
@@ -44,17 +46,13 @@
   }
   
   .content_customer th,
-  .content_customer td {
-    padding: 12px 15px;
+  .content_customer tr td {
+    padding: 15px 15px;
     border: 1px solid #e0e0e0;
   }
-  
-  .content_customer th {
-    background-color: #f8f8f8;
-    font-weight: bold;
-    color: #333;
-    text-transform: uppercase;
-    font-size: 14px;
+
+  .content_customer .row_QH td{
+    padding: 25px 25px;
   }
   
   .content_customer tr:hover {
