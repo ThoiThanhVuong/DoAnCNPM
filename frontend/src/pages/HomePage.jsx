@@ -22,49 +22,49 @@ const HomePage = () => {
       {
         path: "/product",
         title: "Sản phẩm",
-        description: "mo ta gi do",
+        description: "Hiển thị danh sách điện thoại có trong kho và Kiểm soát theo dõi số lượng hàng trong kho",
         image: <FaMobileAlt />,
         feature: "Quản lý sản phẩm",
       },
       {
         path: "/attribute",
         title: "Thuộc tính",
-        description: "mo ta gi do",
+        description: "Thông tin cơ bản của một sản phẩm",
         image: <FaFilter />,
         feature: "Quản lý thuộc tính",
       },
       {
         path: "/warehouseArea",
         title: "Khu vực kho",
-        description: "mo ta gi do",
+        description: "Liệt kê các doanh mục và mặt hàng trong kho",
         image: <FaMapMarkedAlt />,
         feature: "Quản lý khu vực kho",
       },
       {
         path: "/importForm",
         title: "Phiếu nhập",
-        description: "mo ta gi do",
+        description: "Tạo các phiếu nhập sản phẩm từ nhà cung cấp và quản lý danh sách phiếu nhập",
         image: <FaFileImport />,
         feature: "Quản lý nhập hàng",
       },
       {
         path: "/exportForm",
         title: "Phiếu xuất",
-        description: "mo ta gi do",
+        description: "Tạo các phiếu xuất sản phẩm cho khách hàng và quản lý danh sách phiếu xuất",
         image: <FaFileExport />,
         feature: "Quản lý xuất hàng",
       },
       {
         path: "/customer",
         title: "Khách hàng",
-        description: "mo ta gi do",
+        description: "Liệt kê danh sách khách hàng có quan hệ kinh doanh ",
         image: <FaUser />,
         feature: "Quản lý khách hàng",
       },
       {
         path: "/provider",
         title: "Nhà cung cấp",
-        description: "mo ta gi do",
+        description: "Liệt kê danh sách nhà cung cấp có quan hệ kinh doanh",
         image: <FaAddressCard />,
         feature: "Quản lý nhà cung cấp",
       },
@@ -92,7 +92,7 @@ const HomePage = () => {
       {
         path: "/statistics",
         title: "Thống kê",
-        description: "mo ta gi do",
+        description: "Thống kê báo cáo danh thu,tồn kho",
         image: <FaChartBar />,
         feature: "Quản lý thống kê",
       },
@@ -104,7 +104,6 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await loginService.getFeatureFromToken();
-      console.log(response);
       setDataMenu(response);
     };
     fetchData();

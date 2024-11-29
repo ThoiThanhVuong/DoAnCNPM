@@ -14,6 +14,9 @@ const Origin = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    trang_thai:{
+      type: DataTypes.INTEGER,
+    },
   },
   {
     tableName: "xuat_xu",

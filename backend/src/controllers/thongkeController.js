@@ -192,6 +192,17 @@ const getThongKeTonKho = async (req, res) => {
             )`),
           "so_luong_cuoi_ky",
         ],
+        // [
+        //   sequelize.literal(`
+        //     (
+        //       SELECT COALESCE(SUM(ton_kho), 0)
+        //        FROM phien_ban_san_pham AS pbsp ,san_pham
+        //        WHERE pbsp.ma_sp = san_pham.ma_sp AND pbsp.ma_sp = PhienBanSPModel.ma_sp
+        //        Group by pbsp.ma_sp
+        //     )
+        //   `),
+        //   "so_luong_ton",
+        // ],
         
       ],
       where: TextCondition,
