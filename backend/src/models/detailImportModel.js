@@ -1,15 +1,15 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
-const rlss = require('../models/Relationship')
-//const WareHouse = require('../models/WareHouseModel')
+const importModel = require('./ImportModel')
+const PhienBanSPModel = require('./PhienBanSPModel')
 
 const detailImport = sequelize.define('detailImport', {
     ma_pn: {
         type: DataTypes.INTEGER,
         primaryKey:true,
         references:{
-            model : rlss.importModel ,
+            model : importModel ,
             key: 'ma_pn',
         }
     },
@@ -17,7 +17,7 @@ const detailImport = sequelize.define('detailImport', {
         type: DataTypes.INTEGER,
         primaryKey:true,
         references:{
-            model : rlss.PhienBanSPModel ,
+            model : PhienBanSPModel ,
             key: 'ma_phien_ban_sp',
         }
     },
