@@ -224,6 +224,9 @@
 .format_table_CTPX table thead tr th{
   text-align: center;
 }
+.format_table_CTPX table{
+  border: none;
+}
 .btn-OK{
     padding: 0px 0px 0px 0px !important;
     width: 67.237px !important;

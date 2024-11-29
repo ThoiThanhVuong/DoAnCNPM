@@ -394,7 +394,7 @@ const XuatHang = () => {
               </tbody>
             </table>
             { showOverlay && (<div>
-              <div className="overlay"></div>
+              <div className="overlay" onClick={handleCancel}></div>
                 <SoLuongGiaNhap handleCancel={handleCancel} 
                 handleOK={()=>handleOK(showNotification)} 
                 soLuong={soLuong} 

@@ -201,7 +201,7 @@ const NhapHang = () => {
             </tbody>
           </table>
           { showOverlay && (<div>
-            <div className="overlay"></div>
+            <div className="overlay" onClick={handleCancel}></div>
               <SoLuongGiaNhap handleCancel={handleCancel} 
               handleOK={()=>handleOK(showNotification)} 
               soLuong={soLuong} 
@@ -304,7 +304,6 @@ const PhieuNhap = () => {
         }/${date.getFullYear()}`;
         return { ...item, thoi_gian_nhap: formattedDate }; // Trả về item với ngày đã được định dạng lại
       });
-      console.log("one hit", formattedData)
       setdataPN(formattedData);
       setFilteredDataPN(formattedData);
     };

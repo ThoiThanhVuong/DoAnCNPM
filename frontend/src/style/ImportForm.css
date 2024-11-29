@@ -101,7 +101,7 @@
 }
 .listSP{
     width: 100% !important;
-    height: 300px;
+    height: 350px !important;
     overflow-y: auto !important;
     border-radius: 10px !important;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
@@ -257,7 +257,6 @@
 }
 .queue{
     width: 80%;
-    max-height: 250px;
     overflow-y: auto;
     border-radius: 10px !important;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -404,12 +403,12 @@
 }
 .custom-tb-evtb{
     display: flex;
-    max-height: 250px !important;
-    gap: 2%;
+    height: 275px !important;
+    gap: 1%;
 }
 .custom-tb-evtb .ev{
     height: 250px !important;
-    width: 18% !important;
+    width: 19% !important;
     display: flex;
     flex-direction: column;
     justify-content: flex-start !important;
@@ -423,6 +422,7 @@
     border-radius: 15px;
     display: flex;
     gap: 15px;
+    height: 48.2px !important;
     justify-content: center;
     align-items: center;
     border: black solid 2px;
@@ -474,6 +474,7 @@
 }
 
 .custom-tb-evtb .ev .evAll3{
+    height: 48.2px !important;
     background-color: white !important;
     box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
     border-radius: 15px;

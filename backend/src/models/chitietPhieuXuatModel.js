@@ -1,17 +1,15 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-// const PhieuXuatModel = require('../models/phieuXuatModel');
-// const SanPhamModel = require('./ProductModel');
-// const WareHouse = require('../models/WareHouseModel');
-
-const models = require('../models/Relationship')
+const PhieuXuatModel = require('../models/phieuXuatModel');
+const PhienBanSPModel = require('./PhienBanSPModel')
+//const models = require('../models/Relationship')
 
 const detailExport = sequelize.define('detailExport', {
     ma_px: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         references:{
-            model : models.PhieuXuat,
+            model : PhieuXuatModel,
             key: 'ma_px',
         }
     },
@@ -19,7 +17,7 @@ const detailExport = sequelize.define('detailExport', {
         type: DataTypes.INTEGER,
         primaryKey: true,
         references:{
-            model :models.PhienBanSPModel,
+            model :PhienBanSPModel,
             key: 'ma_phien_ban_sp',
         }
     },
