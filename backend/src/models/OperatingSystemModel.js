@@ -14,6 +14,9 @@ const OperatingSystem = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    trang_thai:{
+      type: DataTypes.INTEGER,
+    },
   },
   {
     tableName: "he_dieu_hanh",

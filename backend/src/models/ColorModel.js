@@ -14,6 +14,9 @@ const Color = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    trang_thai:{
+      type: DataTypes.INTEGER,
+    },
   },
   {
     tableName: "mau_sac",

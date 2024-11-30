@@ -55,7 +55,6 @@ const PhienBanSPModel =db.define(
         },
         trang_thai:{
             type:DataTypes.INTEGER,
-            allowNull: true
         }
 
     },{

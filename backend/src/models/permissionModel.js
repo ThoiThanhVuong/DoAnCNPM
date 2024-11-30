@@ -13,6 +13,9 @@ const Permission = db.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    trang_thai:{
+      type: DataTypes.INTEGER,
+    },
   },
   {
     tableName: "nhom_quyen",

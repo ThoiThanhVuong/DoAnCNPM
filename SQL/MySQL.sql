@@ -165,34 +165,36 @@ INSERT INTO `chi_tiet_quyen` (`ma_quyen`, `ma_chuc_nang`, `hanh_dong`) VALUES
 CREATE TABLE IF NOT EXISTS `chuc_nang` (
   `ma_chuc_nang` int(11) NOT NULL AUTO_INCREMENT,
   `ten_chuc_nang` varchar(255) DEFAULT NULL,
+  `trang_thai` int(11) DEFAULT 1,
   PRIMARY KEY (`ma_chuc_nang`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table quanlikhohang.chuc_nang: ~11 rows (approximately)
-INSERT INTO `chuc_nang` (`ma_chuc_nang`, `ten_chuc_nang`) VALUES
-	(1, 'Quản lý sản phẩm'),
-	(2, 'Quản lý khu vực kho'),
-	(3, 'Quản lý nhân viên'),
-	(4, 'Quản lý khách hàng'),
-	(5, 'Quản lý nhà cung cấp'),
-	(6, 'Quản lý tài khoản'),
-	(7, 'Quản lý nhóm quyền'),
-	(8, 'Quản lý thống kê'),
-	(9, 'Quản lý nhập hàng'),
-	(10, 'Quản lý xuất hàng'),
-	(11, 'Quản lý thuộc tính');
+INSERT INTO `chuc_nang` (`ma_chuc_nang`, `ten_chuc_nang`,`trang_thai`) VALUES
+	(1, 'Quản lý sản phẩm',1),
+	(2, 'Quản lý khu vực kho',1),
+	(3, 'Quản lý nhân viên',1),
+	(4, 'Quản lý khách hàng',1),
+	(5, 'Quản lý nhà cung cấp',1),
+	(6, 'Quản lý tài khoản',1),
+	(7, 'Quản lý nhóm quyền',1),
+	(8, 'Quản lý thống kê',1),
+	(9, 'Quản lý nhập hàng',1),
+	(10, 'Quản lý xuất hàng',1),
+	(11, 'Quản lý thuộc tính',1);
 
 -- Dumping structure for table quanlikhohang.he_dieu_hanh
 CREATE TABLE IF NOT EXISTS `he_dieu_hanh` (
   `ma_hdh` int(11) NOT NULL AUTO_INCREMENT,
   `ten_hdh` varchar(255) DEFAULT NULL,
+  `trang_thai` int(11) DEFAULT 1,
   PRIMARY KEY (`ma_hdh`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table quanlikhohang.he_dieu_hanh: ~2 rows (approximately)
-INSERT INTO `he_dieu_hanh` (`ma_hdh`, `ten_hdh`) VALUES
-	(1, 'Android'),
-	(2, 'iOS');
+INSERT INTO `he_dieu_hanh` (`ma_hdh`, `ten_hdh`,`trang_thai`) VALUES
+	(1, 'Android',1),
+	(2, 'iOS',1);
 
 -- Dumping structure for table quanlikhohang.khach_hang
 CREATE TABLE IF NOT EXISTS `khach_hang` (
@@ -241,14 +243,15 @@ INSERT INTO `khu_vuc_kho` (`ma_kho`, `ten_kho`, `chu_thich`, `trang_thai`) VALUE
 CREATE TABLE IF NOT EXISTS `mau_sac` (
   `ma_mau` int(11) NOT NULL AUTO_INCREMENT,
   `ten_mau` varchar(30) DEFAULT NULL,
+  `trang_thai` int(11) DEFAULT 1,
   PRIMARY KEY (`ma_mau`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table quanlikhohang.mau_sac: ~3 rows (approximately)
-INSERT INTO `mau_sac` (`ma_mau`, `ten_mau`) VALUES
-	(1, 'Đen'),
-	(2, 'Trắng'),
-	(3, 'Xanh dương');
+INSERT INTO `mau_sac` (`ma_mau`, `ten_mau`,`trang_thai`) VALUES
+	(1, 'Đen',1),
+	(2, 'Trắng',1),
+	(3, 'Xanh dương',1);
 
 -- Dumping structure for table quanlikhohang.nhan_vien
 CREATE TABLE IF NOT EXISTS `nhan_vien` (
@@ -302,15 +305,16 @@ INSERT INTO `nha_cung_cap` (`ma_ncc`, `ten_ncc`, `dia_chi`, `email_ncc`, `sdt_nc
 CREATE TABLE IF NOT EXISTS `nhom_quyen` (
   `ma_quyen` int(11) NOT NULL AUTO_INCREMENT,
   `ten_quyen` varchar(255) DEFAULT NULL,
+  `trang_thai` int(11) DEFAULT 1,
   PRIMARY KEY (`ma_quyen`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table quanlikhohang.nhom_quyen: ~4 rows (approximately)
-INSERT INTO `nhom_quyen` (`ma_quyen`, `ten_quyen`) VALUES
-	(1, 'Admin'),
-	(2, 'Quản lý'),
-	(3, 'Nhân viên kho'),
-	(4, 'Nhân viên kiểm toán');
+INSERT INTO `nhom_quyen` (`ma_quyen`, `ten_quyen`,`trang_thai`) VALUES
+	(1, 'Admin',1),
+	(2, 'Quản lý',1),
+	(3, 'Nhân viên kho',1),
+	(4, 'Nhân viên kiểm toán',1);
 
 -- Dumping structure for table quanlikhohang.phien_ban_san_pham
 CREATE TABLE IF NOT EXISTS `phien_ban_san_pham` (
@@ -322,6 +326,7 @@ CREATE TABLE IF NOT EXISTS `phien_ban_san_pham` (
   `gia_nhap` int(11) DEFAULT NULL,
   `gia_xuat` int(11) DEFAULT NULL,
   `ton_kho` int(11) DEFAULT 0,
+  `trang_thai` int(1) DEFAULT 1,
   PRIMARY KEY (`ma_phien_ban_sp`),
   KEY `ma_ram` (`ma_ram`),
   KEY `ma_rom` (`ma_rom`),
@@ -334,80 +339,80 @@ CREATE TABLE IF NOT EXISTS `phien_ban_san_pham` (
 ) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table quanlikhohang.phien_ban_san_pham: ~74 rows (approximately)
-INSERT INTO `phien_ban_san_pham` (`ma_phien_ban_sp`, `ma_sp`, `ma_ram`, `ma_rom`, `ma_mau`, `gia_nhap`, `gia_xuat`, `ton_kho`) VALUES
-	(1, 1, 2, 2, 1, 10000000, 11000000, 10),
-	(2, 1, 2, 2, 2, 10500000, 11500000, 10),
-	(3, 1, 3, 3, 1, 12000000, 13000000, 15),
-	(4, 1, 3, 3, 2, 12100000, 13100000, 10),
-	(5, 1, 3, 4, 1, 12500000, 13500000, 8),
-	(6, 1, 3, 4, 2, 12600000, 13700000, 12),
-	(7, 1, 3, 4, 3, 12600000, 13700000, 10),
-	(8, 2, 2, 2, 1, 11500000, 12000000, 15),
-	(9, 2, 2, 2, 3, 11600000, 12100000, 13),
-	(10, 2, 3, 2, 1, 12000000, 13000000, 20),
-	(11, 2, 3, 2, 3, 12000000, 13000000, 16),
-	(12, 2, 3, 3, 1, 12500000, 13000000, 15),
-	(13, 2, 3, 3, 3, 12500000, 13000000, 18),
-	(14, 2, 3, 4, 1, 13000000, 14000000, 7),
-	(15, 2, 3, 4, 3, 13000000, 14000000, 13),
-	(16, 3, 1, 2, 2, 6000000, 7000000, 30),
-	(17, 3, 1, 2, 3, 6200000, 7100000, 20),
-	(18, 3, 2, 3, 2, 6300000, 7300000, 12),
-	(19, 3, 2, 3, 3, 6300000, 7300000, 15),
-	(20, 4, 1, 2, 1, 4000000, 4500000, 21),
-	(21, 4, 1, 2, 3, 4100000, 4600000, 18),
-	(22, 4, 2, 3, 1, 4700000, 5200000, 11),
-	(23, 4, 2, 3, 3, 4700000, 5200000, 6),
-	(24, 5, 2, 2, 1, 6000000, 6500000, 14),
-	(25, 5, 2, 2, 3, 6000000, 6500000, 12),
-	(26, 5, 2, 3, 1, 6500000, 7000000, 18),
-	(27, 5, 2, 3, 3, 6500000, 7000000, 11),
-	(28, 6, 2, 2, 1, 13000000, 14000000, 11),
-	(29, 6, 2, 2, 2, 13200000, 14200000, 13),
-	(30, 6, 2, 2, 3, 13200000, 14200000, 13),
-	(31, 6, 3, 3, 1, 14000000, 15000000, 12),
-	(32, 6, 3, 3, 2, 14200000, 15200000, 16),
-	(33, 6, 3, 3, 3, 14200000, 15200000, 11),
-	(34, 6, 3, 4, 1, 15000000, 15000000, 9),
-	(35, 6, 3, 4, 2, 15100000, 16100000, 6),
-	(36, 6, 3, 4, 3, 15100000, 16100000, 8),
-	(37, 7, 2, 2, 2, 10000000, 11000000, 10),
-	(38, 7, 2, 3, 3, 10200000, 112000000, 7),
-	(39, 7, 3, 2, 2, 11000000, 120000000, 15),
-	(40, 7, 3, 3, 3, 11200000, 122000000, 11),
-	(41, 8, 2, 2, 1, 13000000, 14000000, 19),
-	(42, 8, 2, 3, 1, 14500000, 15000000, 9),
-	(43, 9, 3, 3, 1, 17000000, 18000000, 15),
-	(44, 9, 3, 4, 1, 17500000, 18500000, 5),
-	(45, 9, 2, 2, 1, 15000000, 16000000, 13),
-	(46, 10, 2, 2, 1, 6000000, 6500000, 10),
-	(47, 10, 2, 2, 2, 6100000, 6600000, 8),
-	(48, 10, 2, 2, 3, 6100000, 6600000, 11),
-	(49, 11, 2, 2, 1, 4000000, 4500000, 18),
-	(50, 11, 2, 2, 2, 4100000, 4600000, 16),
-	(51, 12, 2, 2, 1, 9000000, 10000000, 10),
-	(52, 12, 2, 2, 2, 9500000, 10500000, 10),
-	(53, 12, 3, 3, 1, 10000000, 11000000, 15),
-	(54, 12, 3, 3, 2, 10100000, 11100000, 10),
-	(55, 12, 3, 4, 1, 11500000, 12500000, 8),
-	(56, 12, 3, 4, 2, 11600000, 12600000, 12),
-	(57, 12, 3, 4, 3, 11600000, 12600000, 10),
-	(58, 13, 2, 2, 1, 20000000, 21000000, 12),
-	(59, 13, 2, 2, 2, 20100000, 21100000, 10),
-	(60, 13, 3, 2, 1, 21000000, 22000000, 20),
-	(61, 13, 3, 2, 2, 21100000, 22100000, 15),
-	(62, 13, 3, 3, 1, 21500000, 22500000, 8),
-	(63, 13, 3, 3, 2, 21600000, 22600000, 9),
-	(64, 13, 3, 4, 1, 22000000, 22700000, 34),
-	(65, 13, 3, 4, 2, 22100000, 22800000, 17),
-	(66, 14, 2, 2, 1, 7000000, 7500000, 17),
-	(67, 14, 2, 2, 3, 7100000, 7600000, 11),
-	(68, 14, 2, 3, 1, 7400000, 7900000, 20),
-	(69, 14, 2, 3, 3, 7500000, 8000000, 7),
-	(70, 15, 2, 2, 1, 5000000, 5500000, 30),
-	(71, 15, 2, 2, 3, 5100000, 5600000, 18),
-	(72, 15, 2, 3, 1, 5300000, 5700000, 22),
-	(73, 15, 2, 3, 3, 5400000, 5800000, 14);
+INSERT INTO `phien_ban_san_pham` (`ma_phien_ban_sp`, `ma_sp`, `ma_ram`, `ma_rom`, `ma_mau`, `gia_nhap`, `gia_xuat`, `ton_kho`,`trang_thai`) VALUES
+	(1, 1, 2, 2, 1, 10000000, 11000000, 10,1),
+	(2, 1, 2, 2, 2, 10500000, 11500000, 10,1),
+	(3, 1, 3, 3, 1, 12000000, 13000000, 15,1),
+	(4, 1, 3, 3, 2, 12100000, 13100000, 10,1),
+	(5, 1, 3, 4, 1, 12500000, 13500000, 8,1),
+	(6, 1, 3, 4, 2, 12600000, 13700000, 12,1),
+	(7, 1, 3, 4, 3, 12600000, 13700000, 10,1),
+	(8, 2, 2, 2, 1, 11500000, 12000000, 15,1),
+	(9, 2, 2, 2, 3, 11600000, 12100000, 13,1),
+	(10, 2, 3, 2, 1, 12000000, 13000000, 20,1),
+	(11, 2, 3, 2, 3, 12000000, 13000000, 16,1),
+	(12, 2, 3, 3, 1, 12500000, 13000000, 15,1),
+	(13, 2, 3, 3, 3, 12500000, 13000000, 18,1),
+	(14, 2, 3, 4, 1, 13000000, 14000000, 7,1),
+	(15, 2, 3, 4, 3, 13000000, 14000000, 13,1),
+	(16, 3, 1, 2, 2, 6000000, 7000000, 30,1),
+	(17, 3, 1, 2, 3, 6200000, 7100000, 20,1),
+	(18, 3, 2, 3, 2, 6300000, 7300000, 12,1),
+	(19, 3, 2, 3, 3, 6300000, 7300000, 15,1),
+	(20, 4, 1, 2, 1, 4000000, 4500000, 21,1),
+	(21, 4, 1, 2, 3, 4100000, 4600000, 18,1),
+	(22, 4, 2, 3, 1, 4700000, 5200000, 11,1),
+	(23, 4, 2, 3, 3, 4700000, 5200000, 6,1),
+	(24, 5, 2, 2, 1, 6000000, 6500000, 14,1),
+	(25, 5, 2, 2, 3, 6000000, 6500000, 12,1),
+	(26, 5, 2, 3, 1, 6500000, 7000000, 18,1),
+	(27, 5, 2, 3, 3, 6500000, 7000000, 11,1),
+	(28, 6, 2, 2, 1, 13000000, 14000000, 11,1),
+	(29, 6, 2, 2, 2, 13200000, 14200000, 13,1),
+	(30, 6, 2, 2, 3, 13200000, 14200000, 13,1),
+	(31, 6, 3, 3, 1, 14000000, 15000000, 12,1),
+	(32, 6, 3, 3, 2, 14200000, 15200000, 16,1),
+	(33, 6, 3, 3, 3, 14200000, 15200000, 11,1),
+	(34, 6, 3, 4, 1, 15000000, 15000000, 9,1),
+	(35, 6, 3, 4, 2, 15100000, 16100000, 6,1),
+	(36, 6, 3, 4, 3, 15100000, 16100000, 8,1),
+	(37, 7, 2, 2, 2, 10000000, 11000000, 10,1),
+	(38, 7, 2, 3, 3, 10200000, 112000000, 7,1),
+	(39, 7, 3, 2, 2, 11000000, 120000000, 15,1),
+	(40, 7, 3, 3, 3, 11200000, 122000000, 11,1),
+	(41, 8, 2, 2, 1, 13000000, 14000000, 19,1),
+	(42, 8, 2, 3, 1, 14500000, 15000000, 9,1),
+	(43, 9, 3, 3, 1, 17000000, 18000000, 15,1),
+	(44, 9, 3, 4, 1, 17500000, 18500000, 5,1),
+	(45, 9, 2, 2, 1, 15000000, 16000000, 13,1),
+	(46, 10, 2, 2, 1, 6000000, 6500000, 10,1),
+	(47, 10, 2, 2, 2, 6100000, 6600000, 8,1),
+	(48, 10, 2, 2, 3, 6100000, 6600000, 11,1),
+	(49, 11, 2, 2, 1, 4000000, 4500000, 18,1),
+	(50, 11, 2, 2, 2, 4100000, 4600000, 16,1),
+	(51, 12, 2, 2, 1, 9000000, 10000000, 10,1),
+	(52, 12, 2, 2, 2, 9500000, 10500000, 10,1),
+	(53, 12, 3, 3, 1, 10000000, 11000000, 15,1),
+	(54, 12, 3, 3, 2, 10100000, 11100000, 10,1),
+	(55, 12, 3, 4, 1, 11500000, 12500000, 8,1),
+	(56, 12, 3, 4, 2, 11600000, 12600000, 12,1),
+	(57, 12, 3, 4, 3, 11600000, 12600000, 10,1),
+	(58, 13, 2, 2, 1, 20000000, 21000000, 12,1),
+	(59, 13, 2, 2, 2, 20100000, 21100000, 10,1),
+	(60, 13, 3, 2, 1, 21000000, 22000000, 20,1),
+	(61, 13, 3, 2, 2, 21100000, 22100000, 15,1),
+	(62, 13, 3, 3, 1, 21500000, 22500000, 8,1),
+	(63, 13, 3, 3, 2, 21600000, 22600000, 9,1),
+	(64, 13, 3, 4, 1, 22000000, 22700000, 34,1),
+	(65, 13, 3, 4, 2, 22100000, 22800000, 17,1),
+	(66, 14, 2, 2, 1, 7000000, 7500000, 17,1),
+	(67, 14, 2, 2, 3, 7100000, 7600000, 11,1),
+	(68, 14, 2, 3, 1, 7400000, 7900000, 20,1),
+	(69, 14, 2, 3, 3, 7500000, 8000000, 7,1),
+	(70, 15, 2, 2, 1, 5000000, 5500000, 30,1),
+	(71, 15, 2, 2, 3, 5100000, 5600000, 18,1),
+	(72, 15, 2, 3, 1, 5300000, 5700000, 22,1),
+	(73, 15, 2, 3, 3, 5400000, 5800000, 14,1);
 
 -- Dumping structure for table quanlikhohang.phieu_nhap
 CREATE TABLE IF NOT EXISTS `phieu_nhap` (
@@ -475,28 +480,30 @@ INSERT INTO `phieu_xuat` (`ma_px`, `ma_nv`, `ma_kh`, `thoi_gian_xuat`, `tong_tie
 CREATE TABLE IF NOT EXISTS `ram` (
   `ma_ram` int(11) NOT NULL AUTO_INCREMENT,
   `kich_thuoc_ram` int(11) DEFAULT NULL,
+  `trang_thai` int(1) DEFAULT 1,
   PRIMARY KEY (`ma_ram`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table quanlikhohang.ram: ~3 rows (approximately)
-INSERT INTO `ram` (`ma_ram`, `kich_thuoc_ram`) VALUES
-	(1, 4),
-	(2, 8),
-	(3, 16);
+INSERT INTO `ram` (`ma_ram`, `kich_thuoc_ram`,`trang_thai`) VALUES
+	(1, 4,1),
+	(2, 8,1),
+	(3, 16,1);
 
 -- Dumping structure for table quanlikhohang.rom
 CREATE TABLE IF NOT EXISTS `rom` (
   `ma_rom` int(11) NOT NULL AUTO_INCREMENT,
   `kich_thuoc_rom` int(11) DEFAULT NULL,
+  `trang_thai` int(1) DEFAULT 1,
   PRIMARY KEY (`ma_rom`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table quanlikhohang.rom: ~4 rows (approximately)
-INSERT INTO `rom` (`ma_rom`, `kich_thuoc_rom`) VALUES
-	(1, 64),
-	(2, 128),
-	(3, 256),
-	(4, 512);
+INSERT INTO `rom` (`ma_rom`, `kich_thuoc_rom`,`trang_thai`) VALUES
+	(1, 64,1),
+	(2, 128,1),
+	(3, 256,1),
+	(4, 512,1);
 
 -- Dumping structure for table quanlikhohang.san_pham
 CREATE TABLE IF NOT EXISTS `san_pham` (
@@ -514,6 +521,7 @@ CREATE TABLE IF NOT EXISTS `san_pham` (
   `khu_vuc_kho` int(11) DEFAULT NULL,
   `so_luong_ton` int(11) DEFAULT NULL,
   `mo_ta_sp` varchar(255) DEFAULT NULL,
+  `trang_thai` int(1) DEFAULT 1,
   PRIMARY KEY (`ma_sp`),
   KEY `thuong_hieu` (`thuong_hieu`),
   KEY `xuat_xu` (`xuat_xu`),
@@ -526,57 +534,59 @@ CREATE TABLE IF NOT EXISTS `san_pham` (
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table quanlikhohang.san_pham: ~15 rows (approximately)
-INSERT INTO `san_pham` (`ma_sp`, `ten_sp`, `hinh_anh`, `chip_xu_ly`, `dung_luong_pin`, `kich_thuoc_man`, `camera_truoc`, `camera_sau`, `hdh`, `thuong_hieu`, `xuat_xu`, `khu_vuc_kho`, `so_luong_ton`, `mo_ta_sp`) VALUES
-	(1, 'iPhone 12', 'iphone12.jpg', 'A14 Bionic', 2815, 6.1, '12 MP', '12 MP + 12 MP', 1, 1, 3, 1, 75, 'Smartphone cao cấp từ Apple'),
-	(2, 'Samsung Galaxy S21', 's21.jpg', 'Exynos 2100', 4000, 6.2, '10 MP', '12 MP + 64 MP', 2, 2, 1, 2, 117, 'Smartphone cao cấp từ Samsung'),
-	(3, 'Oppo Find X3', 'findx3.jpg', 'Snapdragon 870', 4500, 6.7, '32 MP', '50 MP + 50 MP', 1, 3, 1, 3, 77, 'Smartphone của Oppo'),
-	(4, 'Xiaomi Mi 11', 'mi11.jpg', 'Snapdragon 888', 4600, 6.8, '20 MP', '108 MP + 13 MP', 1, 4, 2, 4, 56, 'Smartphone từ Xiaomi'),
-	(5, 'Vivo X60 Pro', 'x60pro.jpg', 'Exynos 1080', 4200, 6.6, '32 MP', '48 MP + 13 MP', 2, 3, 1, 3, 55, 'Smartphone của Vivo'),
-	(6, 'Sony Xperia 1 III', 'xperia1iii.jpg', 'Snapdragon 888', 4500, 6.5, '8 MP', '12 MP + 12 MP + 12 MP', 1, 5, 2, 5, 99, 'Smartphone của Sony'),
-	(7, 'Huawei P50 Pro', 'p50pro.jpg', 'Kirin 9000', 4360, 6.6, '13 MP', '50 MP + 40 MP', 2, 6, 2, 6, 43, 'Smartphone của Huawei'),
-	(8, 'Google Pixel 6', 'pixel6.jpg', 'Tensor', 4614, 6.4, '8 MP', '50 MP + 12 MP', 1, 7, 3, 7, 28, 'Smartphone của Google'),
-	(9, 'Asus ROG Phone 5', 'rog5.jpg', 'Snapdragon 888', 6000, 6.78, '24 MP', '64 MP + 13 MP', 1, 8, 4, 8, 33, 'Smartphone chơi game của Asus'),
-	(10, 'Nokia X20', 'nokix20.jpg', 'Snapdragon 480', 4470, 6.67, '32 MP', '48 MP + 5 MP', 1, 9, 1, 9, 29, 'Smartphone của Nokia'),
-	(11, 'Realme GT', 'gt.jpg', 'Snapdragon 888', 4500, 6.43, '16 MP', '64 MP + 8 MP', 2, 10, 2, 10, 34, 'Smartphone của Realme'),
-	(12, ' iPhone 13', 'iphone13.jpg', 'A15 Bionic', 3095, 6.1, '12 MP', '12 MP + 12 MP', 1, 1, 3, 1, 75, 'Smartphone cao cấp mới của Apple'),
-	(13, 'Samsung Galaxy Z Fold 3', 'zfold3.jpg', 'Snapdragon 888', 4400, 7.6, '10 MP', '12 MP + 12 MP', 1, 2, 1, 3, 125, 'Điện thoại gập từ Samsung'),
-	(14, 'Poco F3', 'pocof3.jpg', 'Snapdragon 870', 4520, 6.67, '20 MP', '48 MP + 8 MP', 2, 11, 2, 11, 55, 'Smartphone giá rẻ từ Poco'),
-	(15, 'Redmi Note 10 Pro', 'note10pro.jpg', 'Snapdragon 732G', 5020, 6.67, '16 MP', '108 MP + 8 MP', 1, 4, 2, 4, 84, 'Smartphone tầm trung của Xiaomi');
+INSERT INTO `san_pham` (`ma_sp`, `ten_sp`, `hinh_anh`, `chip_xu_ly`, `dung_luong_pin`, `kich_thuoc_man`, `camera_truoc`, `camera_sau`, `hdh`, `thuong_hieu`, `xuat_xu`, `khu_vuc_kho`, `so_luong_ton`, `mo_ta_sp`,`trang_thai`) VALUES
+	(1, 'iPhone 12', 'iphone12.jpg', 'A14 Bionic', 2815, 6.1, '12 MP', '12 MP + 12 MP', 1, 1, 3, 1, 75, 'Smartphone cao cấp từ Apple',1),
+	(2, 'Samsung Galaxy S21', 's21.jpg', 'Exynos 2100', 4000, 6.2, '10 MP', '12 MP + 64 MP', 2, 2, 1, 2, 117, 'Smartphone cao cấp từ Samsung',1),
+	(3, 'Oppo Find X3', 'findx3.jpg', 'Snapdragon 870', 4500, 6.7, '32 MP', '50 MP + 50 MP', 1, 3, 1, 3, 77, 'Smartphone của Oppo',1),
+	(4, 'Xiaomi Mi 11', 'mi11.jpg', 'Snapdragon 888', 4600, 6.8, '20 MP', '108 MP + 13 MP', 1, 4, 2, 4, 56, 'Smartphone từ Xiaomi',1),
+	(5, 'Vivo X60 Pro', 'x60pro.jpg', 'Exynos 1080', 4200, 6.6, '32 MP', '48 MP + 13 MP', 2, 3, 1, 3, 55, 'Smartphone của Vivo',1),
+	(6, 'Sony Xperia 1 III', 'xperia1iii.jpg', 'Snapdragon 888', 4500, 6.5, '8 MP', '12 MP + 12 MP + 12 MP', 1, 5, 2, 5, 99, 'Smartphone của Sony',1),
+	(7, 'Huawei P50 Pro', 'p50pro.jpg', 'Kirin 9000', 4360, 6.6, '13 MP', '50 MP + 40 MP', 2, 6, 2, 6, 43, 'Smartphone của Huawei',1),
+	(8, 'Google Pixel 6', 'pixel6.jpg', 'Tensor', 4614, 6.4, '8 MP', '50 MP + 12 MP', 1, 7, 3, 7, 28, 'Smartphone của Google',1),
+	(9, 'Asus ROG Phone 5', 'rog5.jpg', 'Snapdragon 888', 6000, 6.78, '24 MP', '64 MP + 13 MP', 1, 8, 4, 8, 33, 'Smartphone chơi game của Asus',1),
+	(10, 'Nokia X20', 'nokix20.jpg', 'Snapdragon 480', 4470, 6.67, '32 MP', '48 MP + 5 MP', 1, 9, 1, 9, 29, 'Smartphone của Nokia',1),
+	(11, 'Realme GT', 'gt.jpg', 'Snapdragon 888', 4500, 6.43, '16 MP', '64 MP + 8 MP', 2, 10, 2, 10, 34, 'Smartphone của Realme',1),
+	(12, ' iPhone 13', 'iphone13.jpg', 'A15 Bionic', 3095, 6.1, '12 MP', '12 MP + 12 MP', 1, 1, 3, 1, 75, 'Smartphone cao cấp mới của Apple',1),
+	(13, 'Samsung Galaxy Z Fold 3', 'zfold3.jpg', 'Snapdragon 888', 4400, 7.6, '10 MP', '12 MP + 12 MP', 1, 2, 1, 3, 125, 'Điện thoại gập từ Samsung',1),
+	(14, 'Poco F3', 'pocof3.jpg', 'Snapdragon 870', 4520, 6.67, '20 MP', '48 MP + 8 MP', 2, 11, 2, 11, 55, 'Smartphone giá rẻ từ Poco',1),
+	(15, 'Redmi Note 10 Pro', 'note10pro.jpg', 'Snapdragon 732G', 5020, 6.67, '16 MP', '108 MP + 8 MP', 1, 4, 2, 4, 84, 'Smartphone tầm trung của Xiaomi',1);
 
 -- Dumping structure for table quanlikhohang.thuong_hieu
 CREATE TABLE IF NOT EXISTS `thuong_hieu` (
   `ma_thuong_hieu` int(11) NOT NULL AUTO_INCREMENT,
   `ten_thuong_hieu` varchar(255) DEFAULT NULL,
+  `trang_thai` int(1) DEFAULT 1,
   PRIMARY KEY (`ma_thuong_hieu`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table quanlikhohang.thuong_hieu: ~11 rows (approximately)
-INSERT INTO `thuong_hieu` (`ma_thuong_hieu`, `ten_thuong_hieu`) VALUES
-	(1, 'Apple'),
-	(2, 'Samsung'),
-	(3, 'Oppo'),
-	(4, 'Xiaomi'),
-	(5, 'Sony'),
-	(6, 'Huawei'),
-	(7, 'Google'),
-	(8, 'Asus'),
-	(9, 'Nokia'),
-	(10, 'Realme'),
-	(11, 'Poco');
+INSERT INTO `thuong_hieu` (`ma_thuong_hieu`, `ten_thuong_hieu`,`trang_thai`) VALUES
+	(1, 'Apple',1),
+	(2, 'Samsung',1),
+	(3, 'Oppo',1),
+	(4, 'Xiaomi',1),
+	(5, 'Sony',1),
+	(6, 'Huawei',1),
+	(7, 'Google',1),
+	(8, 'Asus',1),
+	(9, 'Nokia',1),
+	(10, 'Realme',1),
+	(11, 'Poco',1);
 
 -- Dumping structure for table quanlikhohang.xuat_xu
 CREATE TABLE IF NOT EXISTS `xuat_xu` (
   `ma_xuat_xu` int(11) NOT NULL AUTO_INCREMENT,
   `ten_xuat_xu` varchar(255) DEFAULT NULL,
+  `trang_thai` int(1) DEFAULT 1,
   PRIMARY KEY (`ma_xuat_xu`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table quanlikhohang.xuat_xu: ~4 rows (approximately)
-INSERT INTO `xuat_xu` (`ma_xuat_xu`, `ten_xuat_xu`) VALUES
-	(1, 'Việt Nam'),
-	(2, 'Trung Quốc'),
-	(3, 'Mỹ'),
-	(4, 'Đài Loan');
+INSERT INTO `xuat_xu` (`ma_xuat_xu`, `ten_xuat_xu`,`trang_thai`) VALUES
+	(1, 'Việt Nam',1),
+	(2, 'Trung Quốc',1),
+	(3, 'Mỹ',1),
+	(4, 'Đài Loan',1);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

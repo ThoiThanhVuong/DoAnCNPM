@@ -86,12 +86,18 @@ const AddProductModal = ({ show, onClose }) => {
 
   const validateProductForm = () => {
     const newErrors = {};
+
     Object.keys(formData).forEach((key) => {
       if (!formData[key]) {
         newErrors[key] = "Không được để trống";
       }
     });
     setErrors(newErrors);
+    // Tìm tất cả các ô còn lỗi và focus vào chúng
+    Object.keys(newErrors).forEach((key) => {
+      const errorField = document.getElementById(key);
+      if (errorField) errorField.focus();
+    });
     return Object.keys(newErrors).length === 0;
   };
   const validateConfigForm = () => {
@@ -109,7 +115,7 @@ const AddProductModal = ({ show, onClose }) => {
       alert("Giá xuất phải lớn hơn hoặc bằng Giá Nhập!");
       return false;
     }
-    if (newConfig.priceImport > 0 && newConfig.priceSell > 0) {
+    if (newConfig.priceImport < 0 && newConfig.priceSell < 0) {
       alert("Giá xuất , Giá Nhập lớn hơn 0!");
       return false;
     }
@@ -120,6 +126,7 @@ const AddProductModal = ({ show, onClose }) => {
     if (!validateConfigForm()) {
       return;
     }
+    console.log("Cấu hình mới:", newConfig);
     const romName =
       rom.find((option) => option.ma_rom === Number(newConfig.rom))
         ?.kich_thuoc_rom || "N/A";
@@ -233,18 +240,29 @@ const AddProductModal = ({ show, onClose }) => {
       origin: "",
       region: "",
     });
+    setNewConfig({
+      rom: "",
+      ram: "",
+      color: "",
+      priceImport: "",
+      priceSell: "",
+    });
+    setConfigurations([]);
     setErrors({});
     setSelectedImage(null);
     setIsNextTabVisible(false); // Reset về tab đầu tiên
+    setEditIndex(null);
   };
 
   const handleSubmitProduct = async () => {
     // Kiểm tra nếu form sản phẩm hợp lệ
 
     try {
-      // 1. Thêm sản phẩm vào bảng san_pham
-      const productData = {
+      const payLoad ={
+        // 1. Thêm sản phẩm vào bảng san_pham
+       productData : {
         ten_sp: formData.productName,
+        hinh_anh: selectedImage ? selectedImage : "default.jpg", // Giả sử bạn có ảnh mặc định
         chip_xu_ly: formData.chip,
         dung_luong_pin: formData.battery,
         kich_thuoc_man: formData.screenSize,
@@ -256,34 +274,21 @@ const AddProductModal = ({ show, onClose }) => {
         khu_vuc_kho: formData.region,
         so_luong_ton: 0,
         trang_thai: 1,
-        hinh_anh: selectedImage ? selectedImage : "default.jpg", // Giả sử bạn có ảnh mặc định
-      };
-
-      const productResponse = await axios.post(
-        "http://localhost:5000/api/products", // Địa chỉ API để thêm sản phẩm
-        productData
-      );
-
-      const productId = productResponse.data.ma_sp; // Lấy ID sản phẩm vừa thêm
-
+      },
+     
       // 2. Thêm cấu hình sản phẩm vào bảng phien_ban_san_pham
-      const configurationsData = configurations.map((config) => ({
-        ma_sp: productId,
+      configurationsData : configurations.map((config) => ({
         ma_ram: ram.find((r) => r.kich_thuoc_ram === config.ram)?.ma_ram,
         ma_rom: rom.find((r) => r.kich_thuoc_rom === config.rom)?.ma_rom,
         ma_mau: colors.find((c) => c.ten_mau === config.color)?.ma_mau,
         gia_nhap: config.priceImport,
         gia_xuat: config.priceSell,
         ton_kho: 0, // Bạn có thể thay giá trị tồn kho tùy theo logic của mình
-      }));
-
-      const configResponse = await axios.post(
-        "http://localhost:5000/api/api/pbsp", // Địa chỉ API để thêm cấu hình sản phẩm
-        configurationsData
-      );
-
-      console.log("Sản phẩm và cấu hình đã được thêm thành công!");
-
+      })),
+      };
+      await axios.post("http://localhost:5000/api/products", payLoad);
+    
+      alert("Thêm sản phẩm thành công!");
       // Reset lại form và các trạng thái sau khi thêm
       resetForm();
       resetForm_nextTab();
@@ -350,7 +355,9 @@ const AddProductModal = ({ show, onClose }) => {
                   placeholder={field.label}
                 />
                 {errors[field.id] && (
-                  <span className="error-message">{errors[field.id]}</span>
+                  <span className="error-message-product">
+                    {errors[field.id]}
+                  </span>
                 )}
               </div>
             ))}
@@ -395,7 +402,9 @@ const AddProductModal = ({ show, onClose }) => {
                   ))}
                 </select>
                 {errors[select.id] && (
-                  <span className="error-message">{errors[select.id]}</span>
+                  <span className="error-message-product">
+                    {errors[select.id]}
+                  </span>
                 )}
               </div>
             ))}
@@ -529,7 +538,7 @@ const AddProductModal = ({ show, onClose }) => {
             </div>
 
             <div className="aciton-add-products">
-              <button className="add-prodduct"> Thêm sản phẩm</button>
+              <button className="add-prodduct" onClick={handleSubmitProduct}> Thêm sản phẩm</button>
               <button className="comback" onClick={closeNextTab}>
                 Quay lại trang
               </button>

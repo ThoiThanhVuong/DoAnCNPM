@@ -9,7 +9,7 @@
   z-index: 999; /* Nằm dưới modal */
   display: none; /* Ẩn mặc định */
 }
-.error-message {
+.error-message-product {
   color: red;
 }
 

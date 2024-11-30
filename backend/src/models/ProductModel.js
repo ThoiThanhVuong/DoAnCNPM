@@ -84,6 +84,9 @@ const ProductModel = db.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    trang_thai:{
+      type: DataTypes.INTEGER,
+    },
   },
   {
     tableName: "san_pham",

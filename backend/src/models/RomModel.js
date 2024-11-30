@@ -14,6 +14,9 @@ const Rom = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    trang_thai:{
+      type: DataTypes.INTEGER,
+    },
   },
   {
     tableName: "rom",

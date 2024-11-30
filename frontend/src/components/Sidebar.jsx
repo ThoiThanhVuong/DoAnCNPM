@@ -101,7 +101,6 @@ const Sidebar = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await loginService.getFeatureFromToken();
-      console.log(response);
       setDataMenu(response);
     };
     fetchData();
