@@ -95,7 +95,8 @@ const Account = () => {
       !newAccountData.email ||
       !newAccountData.mat_khau ||
       !newAccountData.sdt ||
-      !newAccountData.gioi_tinh
+      !newAccountData.gioi_tinh ||
+      !newAccountData.ma_quyen
     ) {
       alert("Vui lòng điền đầy đủ thông tin.");
       return;
@@ -145,7 +146,7 @@ const Account = () => {
   };
 
   const handleEditAccount = async () => {
-    const validationError = validateAccountData(newAccountData);
+    const validationError = validateAccountData(editAccountData);
     if (validationError) {
       alert(validationError);
       return;
@@ -198,27 +199,35 @@ const Account = () => {
   };
 
   const handleShowEditAccount = (account) => {
+    if (!account) {
+      console.error("No account provided to edit");
+      return;
+    }
     setCurrentAccount(account);
     setEditAccountData({
-      ten_nv: account.ten_nv,
-      gioi_tinh: account.gioi_tinh,
-      sdt: account.sdt,
-      email: account.email,
-      mat_khau: account.mat_khau,
-      ma_quyen: account.ma_quyen,
-      trang_thai: account.trang_thai,
+      ten_nv: account.ten_nv || "",
+      gioi_tinh: account.gioi_tinh || "",
+      sdt: account.sdt || "",
+      email: account.email || "",
+      mat_khau: account.mat_khau || "",
+      ma_quyen: account.ma_quyen || "",
+      trang_thai: account.trang_thai || "",
     });
     setShowEditAccount(true);
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+  
     if (showAddAccount) {
       setNewAccountData((prevData) => ({
         ...prevData,
         [name]: value,
       }));
-    } else if (showEditAccount && currentAccount) {
+      return;
+    }
+  
+    if (showEditAccount && currentAccount) {
       setEditAccountData((prevData) => ({
         ...prevData,
         [name]: value,
@@ -230,15 +239,17 @@ const Account = () => {
     const { ten_nv, email, mat_khau, sdt, gioi_tinh, ma_quyen } = data;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9]{10}$/;
-  
-    if (!ten_nv || !ten_nv.trim()) return "Tên nhân viên không được để trống.";
+    const validGenders = ["Nam", "Nữ"]; // Giới tính hợp lệ
+
+    if (!ten_nv?.trim()) return "Tên nhân viên không được để trống.";
     if (!email || !emailRegex.test(email)) return "Email không hợp lệ.";
-    if (!mat_khau || !mat_khau.trim()) return "Mật khẩu không được để trống.";
+    if (!mat_khau?.trim()) return "Mật khẩu không được để trống.";
     if (mat_khau.length < 6) return "Mật khẩu phải có ít nhất 6 ký tự.";
     if (!sdt || !phoneRegex.test(sdt)) return "Số điện thoại không hợp lệ.";
-    if (!gioi_tinh || !gioi_tinh.trim()) return "Giới tính không được để trống.";
-    if (!ma_quyen || !ma_quyen.trim()) return "Mã quyền không được để trống.";
-    
+    if (!gioi_tinh?.trim() || !validGenders.includes(gioi_tinh))
+      return "Giới tính không hợp lệ. Chỉ chấp nhận 'Nam' hoặc 'Nữ'.";
+    if (!ma_quyen || isNaN(ma_quyen)) return "Mã quyền phải là số hợp lệ.";
+
     return null;
   };
   
