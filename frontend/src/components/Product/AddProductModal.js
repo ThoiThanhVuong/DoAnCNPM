@@ -86,12 +86,18 @@ const AddProductModal = ({ show, onClose }) => {
 
   const validateProductForm = () => {
     const newErrors = {};
+
     Object.keys(formData).forEach((key) => {
       if (!formData[key]) {
         newErrors[key] = "Không được để trống";
       }
     });
     setErrors(newErrors);
+    // Tìm tất cả các ô còn lỗi và focus vào chúng
+    Object.keys(newErrors).forEach((key) => {
+      const errorField = document.getElementById(key);
+      if (errorField) errorField.focus();
+    });
     return Object.keys(newErrors).length === 0;
   };
   const validateConfigForm = () => {
@@ -350,7 +356,9 @@ const AddProductModal = ({ show, onClose }) => {
                   placeholder={field.label}
                 />
                 {errors[field.id] && (
-                  <span className="error-message">{errors[field.id]}</span>
+                  <span className="error-message-product">
+                    {errors[field.id]}
+                  </span>
                 )}
               </div>
             ))}
@@ -395,7 +403,9 @@ const AddProductModal = ({ show, onClose }) => {
                   ))}
                 </select>
                 {errors[select.id] && (
-                  <span className="error-message">{errors[select.id]}</span>
+                  <span className="error-message-product">
+                    {errors[select.id]}
+                  </span>
                 )}
               </div>
             ))}
