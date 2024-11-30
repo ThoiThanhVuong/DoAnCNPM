@@ -88,14 +88,14 @@ const NhapHang = () => {
     };
     fetchProducts();
   }, []);
-  useEffect(() => {
-    if(queueData?.[0]){
-      localStorage.setItem("queueDataN", JSON.stringify(queueData));
-    }
-    else{
-      localStorage.setItem("queueDataN", JSON.stringify([]));
-    }
-  }, [queueData]);
+  // useEffect(() => {
+  //   if(queueData?.[0]){
+  //     localStorage.setItem("queueDataN", JSON.stringify(queueData));
+  //   }
+  //   else{
+  //     localStorage.setItem("queueDataN", JSON.stringify([]));
+  //   }
+  // }, [queueData]);
   useEffect(()=>{
     if(!(queueData?.[0])){
       setQueuedata(JSON.parse(localStorage.getItem("queueDataN")))
@@ -134,28 +134,29 @@ const NhapHang = () => {
 
   const handleOK = (showNotification) => {
     const checkNguyenDuong = () => {
+      let queueTemp = queueData || [];
       if (!soLuong || !soLuong.match(/^(?!0)\d+$/)) {
         setError("Số lượng phải là số nguyên dương và lớn hơn 0");
         return;
       } else {
         setError("");
-        const data = dataPBSanPham.find(
+        const data = dataPBSanPham?.find(
           (item) => item.ma_phien_ban_sp === showNotification
         );
         const newData = {
           ma_sp: data.ma_sp,
           ma_phien_ban_sp: data.ma_phien_ban_sp,
-          ten_sp: dataProduct.find((item) => item.ma_sp === data.ma_sp)?.ten_sp,
+          ten_sp: dataProduct?.find((item) => item.ma_sp === data.ma_sp)?.ten_sp,
           so_luong: parseInt(soLuong),
           gia_nhap: data.gia_nhap,
           tong_tien: parseInt(soLuong) * parseInt(data.gia_nhap),
         };
         if (
-          queueData.find(
+          queueTemp?.find(
             (item) => item.ma_phien_ban_sp === newData.ma_phien_ban_sp
           )
         ) {
-          const updatedQueue = queueData.map((item) =>
+          const updatedQueue = queueTemp?.map((item) =>
             item.ma_phien_ban_sp === data.ma_phien_ban_sp
               ? {
                   ...item,
@@ -166,12 +167,14 @@ const NhapHang = () => {
                 }
               : item
           );
-          setQueuedata(updatedQueue);
+          queueTemp = updatedQueue;
         } else {
-          setQueuedata([...queueData, newData]);
+          queueTemp.push(newData);
         }
         handleCancel();
       }
+      setQueuedata(queueTemp)
+      localStorage.setItem("queueDataN", JSON.stringify(queueTemp));
     };
     checkNguyenDuong();
   };
@@ -181,6 +184,8 @@ const NhapHang = () => {
       (item) => item.ma_phien_ban_sp !== ma_phien_ban_sp
     );
     setQueuedata(updatedData);
+    localStorage.setItem("queueDataN", JSON.stringify(updatedData));
+
   };
   if (!dataPBSanPham || dataPBSanPham.length === 0) {
     return null;
@@ -191,6 +196,7 @@ const NhapHang = () => {
   }
   const deleteAll = () => {
     setQueuedata([]);
+    localStorage.setItem("queueDataN", JSON.stringify([]));
   };
 
   const DuyetPN = () => {
@@ -308,7 +314,7 @@ const NhapHang = () => {
                 </tr>
               </thead>
               <tbody>
-                {queueData.map((dataQueue) => (
+                {queueData?.map((dataQueue) => (
                   <tr key={dataQueue.masp}>
                     <td style={{ width: "10%" }}>{dataQueue.ma_sp}</td>
                     <td style={{ width: "10%" }}>

@@ -260,19 +260,11 @@ const XuatHang = () => {
     }; 
     fetchProducts();
   },[])
-  useEffect(() => {
-    if(queueData?.[0]){
-      localStorage.setItem("queueDataX", JSON.stringify(queueData));
-    }
-    else{
-      localStorage.setItem("queueDataX", JSON.stringify([]));
-    }
-  }, [queueData]);
-  useEffect(()=>{
-    if(!(queueData?.[0])){
-      setQueuedata(JSON.parse(localStorage.getItem("queueDataX")))
-    }
-  },[])
+   useEffect(()=>{
+     if(!(queueData?.[0])){
+       setQueuedata(JSON.parse(localStorage.getItem("queueDataX")))
+     }
+   },[])
 
   const findNameProd = (ma_sp) => {
     const product = dataProduct.find((item) => item.ma_sp === ma_sp);
@@ -304,6 +296,7 @@ const XuatHang = () => {
 
   const handleOK = (showNotification) => {
      const checkNguyenDuong = () => {
+        let queueTemp = queueData || [];
        if( !soLuong || !soLuong.match(/^(?!0)\d+$/))
        {
          setError("Số lượng phải là số nguyên dương và lớn hơn 0")
@@ -311,7 +304,7 @@ const XuatHang = () => {
        }
        else{
          setError("")
-         const data = dataPBSanPham.find((item)=>item.ma_phien_ban_sp === showNotification)
+         const data = dataPBSanPham?.find((item)=>item.ma_phien_ban_sp === showNotification)
          const newData ={
            ma_sp : data.ma_sp,
            ma_phien_ban_sp: data.ma_phien_ban_sp,
@@ -320,7 +313,7 @@ const XuatHang = () => {
            gia_xuat: data.gia_xuat,
            tong_tien: parseInt(soLuong) * parseInt(data.gia_xuat)
          };
-          const dataSL = queueData.find((item)=>item.ma_phien_ban_sp === newData.ma_phien_ban_sp)
+          const dataSL = queueTemp?.find((item)=>item.ma_phien_ban_sp === newData.ma_phien_ban_sp)
           if(parseInt(soLuong) > data.ton_kho){
             setError("Không đủ số lượng")
             return;
@@ -332,7 +325,7 @@ const XuatHang = () => {
               return;
             }
             else{
-              const updatedQueue = queueData.map((item) =>
+              const updatedQueue = queueTemp.map((item) =>
                 item.ma_phien_ban_sp === data.ma_phien_ban_sp ?
                 {
                   ...item,
@@ -340,16 +333,18 @@ const XuatHang = () => {
                   tong_tien: (parseInt(item.so_luong) + parseInt(soLuong)) * parseInt(item.gia_xuat),
                 } : item
               )
-              setQueuedata(updatedQueue);
+              queueTemp =updatedQueue;
               handleCancel();
             }
            }
           else
            {
-            setQueuedata([...queueData, newData]);
+            queueTemp.push(newData)
             handleCancel();
            }
          }
+         setQueuedata(queueTemp)
+      localStorage.setItem("queueDataX", JSON.stringify(queueTemp));
        }
      checkNguyenDuong()
    }
@@ -358,6 +353,7 @@ const XuatHang = () => {
   const deleteIQueue = (ma_phien_ban_sp) => {
     const updatedData = queueData.filter((item) => item.ma_phien_ban_sp !== ma_phien_ban_sp);
     setQueuedata(updatedData);
+    localStorage.setItem("queueDataX", JSON.stringify(updatedData));
   };
 
   if(!dataPBSanPham || dataPBSanPham.length === 0)
@@ -473,7 +469,7 @@ const XuatHang = () => {
               </thead>
               <tbody>
                 {
-                  queueData.map((dataQueue)=>
+                  queueData?.map((dataQueue)=>
                   (
                     <tr key={dataQueue.masp}>
                       <td style={{width: "10%"}}>{dataQueue.ma_sp}</td>
