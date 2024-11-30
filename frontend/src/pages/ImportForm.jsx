@@ -1,15 +1,13 @@
 import React, { useEffect } from "react";
-import NewReleasesIcon from "@mui/icons-material/NewReleases";
 import "../style/ImportForm.css";
 import "../style/ExportForm.css";
 import Textfield from "@atlaskit/textfield";
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
-import { FaEdit } from "react-icons/fa";
 import { useState } from "react";
-import { FaTrash, FaCheck, FaStore } from "react-icons/fa";
+import { FaTrash, FaCheck} from "react-icons/fa";
 import productService from "../services/productService";
-import { getpbSP, updatedTonKho } from "../services/phienbanSanPhamService";
+import { getpbSP} from "../services/phienbanSanPhamService";
 import { getAllprovider } from "../services/providerService";
 import { getImports, addImport } from "../services/importService";
 import { getDetailPN } from "../services/detailImportService";
@@ -69,9 +67,18 @@ const NhapHang = () => {
   const [error, setError] = useState("");
   const [selectedSupplier, setSelectedSupplier] = useState(1);
   const [dataProvider, setdataProvider] = useState([]);
+  const [Rom, setRom] = useState([])
+  const [Ram, setRam] = useState([])
+  const [Color, setColor] = useState([])
 
   useEffect(() => {
     const fetchProducts = async () => {
+      const ram = await axios.get("http://localhost:5000/api/ram");
+      setRam(ram.data)
+      const color = await axios.get("http://localhost:5000/api/color");
+      setColor(color.data);
+      const rom = await axios.get("http://localhost:5000/api/rom");
+      setRom(rom.data);
       const dataProd = await productService.getAllProducts(); // sản phẩm
       setDataProduct(dataProd.data);
       const dataPB = await getpbSP(); // phiên bản sp
@@ -81,10 +88,35 @@ const NhapHang = () => {
     };
     fetchProducts();
   }, []);
+  useEffect(() => {
+    if(queueData?.[0]){
+      localStorage.setItem("queueDataN", JSON.stringify(queueData));
+    }
+    else{
+      localStorage.setItem("queueDataN", JSON.stringify([]));
+    }
+  }, [queueData]);
+  useEffect(()=>{
+    if(!(queueData?.[0])){
+      setQueuedata(JSON.parse(localStorage.getItem("queueDataN")))
+    }
+  },[])
 
   const findNameProd = (ma_sp) => {
     const product = dataProduct.find((item) => item.ma_sp === ma_sp);
     return product ? product.ten_sp : "";
+  };
+  const findNameRam = (ma_ram) => {
+    const ram = Ram.find((item) => item.ma_ram === ma_ram);
+    return ram ? ram.kich_thuoc_ram : "";
+  };
+  const findNameRom = (ma_rom) => {
+    const rom = Rom.find((item) => item.ma_rom === ma_rom);
+    return rom ? rom.kich_thuoc_rom : "";
+  };
+  const findNameColor = (ma_mau) => {
+    const color = Color.find((item) => item.ma_mau === ma_mau);
+    return color ? color.ten_mau : "";
   };
 
   const handleToggleNotification = (ma_phien_ban_sp) => {
@@ -195,6 +227,9 @@ const NhapHang = () => {
                 <th>Mã sản phẩm</th>
                 <th>Mã phiên bản</th>
                 <th>Tên sản phẩm</th>
+                <th>Ram</th>
+                <th>Rom</th>
+                <th>Màu sắc</th>
                 <th>Giá nhập</th>
                 <th>Giá xuất</th>
                 <th>tồn kho</th>
@@ -204,10 +239,19 @@ const NhapHang = () => {
             <tbody>
               {dataPBSanPham.map((datatable) => (
                 <tr key={datatable.ma_phien_ban_sp}>
-                  <td style={{ width: "10%" }}>{datatable.ma_sp}</td>
-                  <td style={{ width: "10%" }}>{datatable.ma_phien_ban_sp}</td>
-                  <td style={{ width: "25%" }}>
+                  <td style={{ width: "5%" }}>{datatable.ma_sp}</td>
+                  <td style={{ width: "5%" }}>{datatable.ma_phien_ban_sp}</td>
+                  <td style={{ width: "18%" }}>
                     {findNameProd(datatable.ma_sp)}
+                  </td>
+                  <td style={{ width: "5%" }}>
+                  {findNameRam(datatable.ma_ram)}
+                  </td>
+                  <td style={{ width: "5%" }}>
+                  {findNameRom(datatable.ma_rom)}
+                  </td>
+                  <td style={{ width: "7%" }}>
+                  {findNameColor(datatable.ma_mau)}
                   </td>
                   <td style={{ width: "15%" }}>
                     {datatable.gia_nhap.toLocaleString("vi-VN")} VNĐ

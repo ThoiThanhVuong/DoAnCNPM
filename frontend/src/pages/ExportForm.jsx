@@ -8,10 +8,11 @@ import { useState } from "react";
 import { getExports, addExport } from "../services/phieuxuatService";
 import { getDetailPX} from "../services/chitietPhieuXuatService";
 import productService from '../services/productService';
-import {getpbSP, updatedTonKho}  from "../services/phienbanSanPhamService";
+import {getpbSP}  from "../services/phienbanSanPhamService";
 import CustomerService from "../services/customerService";
-import { FaTrash, FaCheck, FaStore } from 'react-icons/fa';
+import { FaTrash, FaCheck} from 'react-icons/fa';
 import { FaPlus } from "react-icons/fa";
+import axios from "axios";
 
 const PhieuXuat = () => {
   const [dataExport, setDataExport] = useState([]);
@@ -57,6 +58,7 @@ const PhieuXuat = () => {
       setFilteredDataPX(formattedData);
     };
     fectchExport();
+    
   }, []);
   const SearchPX = () => {
     const resultsPX = dataExport.filter((item) => {
@@ -237,9 +239,18 @@ const XuatHang = () => {
   const [selectedKH, setSelectedKH] = useState(1);
   const [dataKH, setdataKH] = useState([])
   const [showNotification, setShowNotification] = useState();
+  const [Rom, setRom] = useState([])
+  const [Ram, setRam] = useState([])
+  const [Color, setColor] = useState([])
 
   useEffect (() => {
     const fetchProducts = async () => {
+      const ram = await axios.get("http://localhost:5000/api/ram");
+      setRam(ram.data)
+      const color = await axios.get("http://localhost:5000/api/color");
+      setColor(color.data);
+      const rom = await axios.get("http://localhost:5000/api/rom");
+      setRom(rom.data);
       const dataProd = await productService.getAllProducts(); // sản phẩm
       setDataProduct(dataProd.data);
       const dataPB = await getpbSP();// phiên bản sp
@@ -248,12 +259,36 @@ const XuatHang = () => {
       setdataKH(dataCustom)
     }; 
     fetchProducts();
-  }, [])
-
+  },[])
+  useEffect(() => {
+    if(queueData?.[0]){
+      localStorage.setItem("queueDataX", JSON.stringify(queueData));
+    }
+    else{
+      localStorage.setItem("queueDataX", JSON.stringify([]));
+    }
+  }, [queueData]);
+  useEffect(()=>{
+    if(!(queueData?.[0])){
+      setQueuedata(JSON.parse(localStorage.getItem("queueDataX")))
+    }
+  },[])
 
   const findNameProd = (ma_sp) => {
     const product = dataProduct.find((item) => item.ma_sp === ma_sp);
     return product ? product.ten_sp : "";
+  };
+  const findNameRam = (ma_ram) => {
+    const ram = Ram.find((item) => item.ma_ram === ma_ram);
+    return ram ? ram.kich_thuoc_ram : "";
+  };
+  const findNameRom = (ma_rom) => {
+    const rom = Rom.find((item) => item.ma_rom === ma_rom);
+    return rom ? rom.kich_thuoc_rom : "";
+  };
+  const findNameColor = (ma_mau) => {
+    const color = Color.find((item) => item.ma_mau === ma_mau);
+    return color ? color.ten_mau : "";
   };
 
   const handleToggleNotification = (ma_phien_ban_sp) => {
@@ -288,8 +323,12 @@ const XuatHang = () => {
            gia_xuat: data.gia_xuat,
            tong_tien: parseInt(soLuong) * parseInt(data.gia_xuat)
          };
-         const dataSL = queueData.find((item)=>item.ma_phien_ban_sp === newData.ma_phien_ban_sp)
-         if(dataSL)
+          const dataSL = queueData.find((item)=>item.ma_phien_ban_sp === newData.ma_phien_ban_sp)
+          if(parseInt(soLuong) > data.ton_kho){
+            setError("Không đủ số lượng")
+            return;
+          }
+          else if(dataSL)
            {
             if(parseInt(dataSL.so_luong) + parseInt(soLuong) > data.ton_kho){
               setError("Tổng số lượng xuất phải bé hơn số lượng tồn kho")
@@ -308,7 +347,7 @@ const XuatHang = () => {
               handleCancel();
             }
            }
-           else
+          else
            {
             setQueuedata([...queueData, newData]);
             handleCancel();
@@ -334,6 +373,7 @@ const XuatHang = () => {
         return null;
     }
     const deleteAll = () =>{
+      localStorage.setItem("queueDataX", JSON.stringify([]));
       setQueuedata([])
     }
     const DuyetPN = () => {
@@ -369,6 +409,9 @@ const XuatHang = () => {
                   <th>Mã sản phẩm</th>
                   <th>Mã phiên bản</th>
                   <th>Tên sản phẩm</th>
+                  <th>Ram</th>
+                  <th>Rom</th>
+                  <th>Màu sắc</th>
                   <th>Giá nhập</th>
                   <th>Giá xuất</th>
                   <th>tồn kho</th>
@@ -378,9 +421,18 @@ const XuatHang = () => {
                 <tbody>
                 {dataPBSanPham.map((datatable) => (
                   <tr key={datatable.ma_phien_ban_sp}>
-                    <td style={{ width: "10%" }}>{datatable.ma_sp}</td>
-                    <td style={{ width: "10%" }}>{datatable.ma_phien_ban_sp}</td>
-                    <td style={{ width: "25%" }}>{findNameProd(datatable.ma_sp)}</td>
+                    <td style={{ width: "5%" }}>{datatable.ma_sp}</td>
+                    <td style={{ width: "5%" }}>{datatable.ma_phien_ban_sp}</td>
+                    <td style={{ width: "18%" }}>{findNameProd(datatable.ma_sp)}</td>
+                    <td style={{ width: "5%" }}>
+                    {findNameRam(datatable.ma_ram)}
+                    </td>
+                    <td style={{ width: "5%" }}>
+                    {findNameRom(datatable.ma_rom)}
+                    </td>
+                    <td style={{ width: "7%" }}>
+                   {findNameColor(datatable.ma_mau)}
+                    </td>
                     <td style={{ width: "15%" }}>{datatable.gia_nhap.toLocaleString("vi-VN")} VNĐ</td>
                     <td style={{ width: "15%" }}>{datatable.gia_xuat.toLocaleString("vi-VN")} VNĐ</td>
                     <td style={{ width: "15%" }}>{datatable.ton_kho}</td>
@@ -405,9 +457,9 @@ const XuatHang = () => {
             }
           </div>
         </div>
-  
+            
         <div className="custom-queue">
-          <p>Hàng chờ nhập</p>
+          <p>Hàng chờ xuất</p>
           <div className="custom-tb-evtb">
           <div className="queue">
             <table style={{ width: "100%"}}>
