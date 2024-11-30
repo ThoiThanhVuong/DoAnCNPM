@@ -3,35 +3,47 @@ import '../style/WareHouseArea.css';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { BiSolidDetail } from "react-icons/bi";
 import WarehouseService from '../services/WarehouseService';
+import productService from '../services/productService';
 
 const WarehouseArea = () => {
-    const [active, setActive] = useState('showWarehouse');
     const [warehouses, setWarehouses] = useState([]);
+    // lưu giá trị hiện tại của row
     const [currentWarehouse, setCurrentWarehouse] = useState({ id: null, name: '', note: '' });
     const [showAddForm, setShowAddForm] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false);
+    const [showDetailWarehouse, setShowDetailWarehouse] = useState(false);
+    const [dataDetailWarehouse, setDataDetailWarehouse] = useState([]);
+    const [filterDataDetailWarehouse, setFilterDataDetailWarehouse] = useState([]);
     const [filterWarehouses, setFilterWarehouses] = useState([])
-    const [searchTerm, setSearchTerm] = useState('')
-    const [errors, setErrors] = useState({
-        nameError: '',
-        noteError: ''
-      });
-
+    // cảnh báo nhập 
+    const [errorsName, setErrorsName] = useState('');
+    const [errorsNote, setErrorsNote] = useState('');
     useEffect(() => {
         fetchWarehouses();
+        fetchProducts();
     }, []);
 
     const fetchWarehouses = async () => {
         try {
             const data = await WarehouseService.getAllItems();
-            console.log(data);
+            console.log("data kho:"+data)
+            console.log("ten kho dau tien:"+data.ten_kho)
             setWarehouses(data);
-            setFilterWarehouses(data); // filter data
+            setFilterWarehouses(data); 
         } catch (error) {
             console.error('Error fetching warehouses:', error);
         }
     };
-
+    const fetchProducts = async () => {
+        try {
+            const data = await productService.getAllProducts();
+            // console.log(data.data);
+            setDataDetailWarehouse(data.data);
+        } catch (error) {
+            console.error('error fetching products:', error);
+        }
+    }
+    // nút them
     const handleAddWarehouse = async (e) => {
         e.preventDefault();
         if(validate()){
@@ -42,7 +54,6 @@ const WarehouseArea = () => {
                     trang_thai: 1
                 });
                 fetchWarehouses();
-                // setActive('showWarehouse');
                 setShowAddForm(false); //
                 alert('Thêm kho mới thành công')
             } catch (error) {
@@ -51,7 +62,7 @@ const WarehouseArea = () => {
             }
         }
     };
-
+    // nút sửa
     const handleEditWarehouse = async () => {
         if(validate()){
             try {
@@ -62,7 +73,6 @@ const WarehouseArea = () => {
             });
             alert('Sửa thành công')
             fetchWarehouses();
-            // setActive('showWarehouse');
             setShowEditForm(false); 
         } catch (error) {
             console.error('Error updating warehouse:', error);
@@ -70,7 +80,7 @@ const WarehouseArea = () => {
         }
         }
     };
-
+    //nút xóa
     const handleDeleteWarehouse = async (id) => {
         if (window.confirm("Bạn có chắc chắn muốn xóa kho này không?")) {
             try {
@@ -84,7 +94,7 @@ const WarehouseArea = () => {
             }
         }
     };
-
+    //thanh tìm kiếm
     const handleSearchWarehouse = (e) => {
         const value = e.target.value;
     
@@ -93,16 +103,14 @@ const WarehouseArea = () => {
             warehouse.chu_thich.toLowerCase().includes(value.toLowerCase())
         );
         setFilterWarehouses(result);
-        setSearchTerm(value);
     };
+    //hiển thị giao diện thêm kho
     const showAddArea = () => {
-        // setActive('showAddArea');
         setShowAddForm(true); //
         setCurrentWarehouse({ id: null, name: '', note: '' });
     };
 
     const showEditArea = (warehouse) => {
-        // setActive('showEditArea');
         setShowEditForm(true); 
         setCurrentWarehouse({
             id: warehouse.ma_kho,
@@ -110,33 +118,38 @@ const WarehouseArea = () => {
             note: warehouse.chu_thich
         });
     };
+    const showDetailArea = (warehouse) => {
+        setShowDetailWarehouse(true);
+        console.log(warehouse);
+        console.log("detail warehouse: " + dataDetailWarehouse)
+        console.log("thong tin kho cua du lieu dau tien :"+dataDetailWarehouse[0].khu_vuc_kho)
+        const data = dataDetailWarehouse.filter((product)=>{
+            return (product.storageArea?.ten_kho ?? '') === (warehouse.ten_kho ?? '');
+        })
+        console.log("danh sach tim dc gom:"+data)
+        setFilterDataDetailWarehouse(data)
+    }
+    //check đầu vào
     const validate = () => {
         let isValid = true;
-        let nameError = '';
-        let noteError = '';
+        setErrorsName('')
+        setErrorsNote('')
     
         if (!currentWarehouse.name.trim()) {
-          nameError = 'Tên khu vực kho không được bỏ trống';
+          setErrorsName('Tên khu vực kho không được bỏ trống')
           isValid = false;
         }
     
         if (!currentWarehouse.note.trim()) {
-          noteError = 'Ghi chú không được bỏ trống';
+          setErrorsNote('Ghi chú không được bỏ trống')
           isValid = false;
         }
-    
-        setErrors({
-          nameError,
-          noteError
-        })
         return isValid;
     };
 
-
     return (
         <div className="warehouse-area">
-            {active === 'showWarehouse' && (
-                <div className="warehouse-area__container">
+            <div className="warehouse-area__container">
                     <div className='warehouse-area_search-and-add'>
                         <input type="text" placeholder='search...' className='warehouse-search' onChange={handleSearchWarehouse}/>
                         <button onClick={showAddArea} className="warehouse-button add">Thêm</button>
@@ -149,7 +162,7 @@ const WarehouseArea = () => {
                                     <th className='warehouse-area__header-cell'>Mã kho</th>
                                     <th className='warehouse-area__header-cell'>Khu vực kho</th>
                                     <th className='warehouse-area__header-cell'>Ghi chú</th>
-                                    {/* <th className='warehouse-area__header-cell'>Chi tiết</th> */}
+                                    <th className='warehouse-area__header-cell'>Chi tiết</th>
                                     <th className='warehouse-area__header-cell'>Thao tác</th>
                                 </tr>
                             </thead>
@@ -159,7 +172,7 @@ const WarehouseArea = () => {
                                         <td className='warehouse-area__data-cell'>{warehouse.ma_kho}</td>
                                         <td className='warehouse-area__data-cell'>{warehouse.ten_kho}</td>
                                         <td className='warehouse-area__data-cell'>{warehouse.chu_thich}</td>
-                                        {/* <td className='warehouse-area__data-cell'><BiSolidDetail className='warehouse-area__detail-icon' /></td> */}
+                                        <td className='warehouse-area__data-cell'><BiSolidDetail className='warehouse-area__detail-icon' onClick={() => showDetailArea(warehouse)}/></td>
                                         <td className='warehouse-area__data-cell'>
                                             <FaEdit className='warehouse-area__edit-icon' onClick={() => showEditArea(warehouse)} />
                                             <FaTrash className='warehouse-area__delete-icon' onClick={() => handleDeleteWarehouse(warehouse.ma_kho)} />
@@ -170,7 +183,6 @@ const WarehouseArea = () => {
                         </table>
                     </div>
                 </div>
-            )}
             {showAddForm && (
                 <div className='overlay'>
                     <div className='warehouse-area__add-form'>
@@ -186,7 +198,7 @@ const WarehouseArea = () => {
                                     value={currentWarehouse.name}
                                     onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, name: e.target.value })}
                                 />
-                                {errors.nameError && <p style={{ color: 'red' }}>{errors.nameError}</p>}
+                                {errorsName && <p className='warehouse-form__alert-errors'>{errorsName}</p>}
                             </div>
                             <div className='warehouse-area__form-item'>
                                 <label className='warehouse-area__form-item-label' htmlFor="warehouse-note">Ghi chú</label>
@@ -198,11 +210,11 @@ const WarehouseArea = () => {
                                     value={currentWarehouse.note}
                                     onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, note: e.target.value })}
                                 />
-                                {errors.nameError && <p style={{ color: 'red' }}>{errors.nameError}</p>}
+                                {errorsNote && <p className='warehouse-form__alert-errors'>{errorsNote}</p>}
                             </div>
                             <div className='warehouse-area__form-buttons'>
                                 <button className='warehouse-button confirm' onClick={handleAddWarehouse}>Lưu</button>
-                                <button className='warehouse-button exit' onClick={() => {setShowAddForm(false); setErrors({ nameError: '', noteError: '' });}}>Thoát</button>
+                                <button className='warehouse-button exit' onClick={() => {setShowAddForm(false); setErrorsName(''); setErrorsNote('')}}>Thoát</button>
                             </div>
                         </div>
                     </div>
@@ -223,7 +235,7 @@ const WarehouseArea = () => {
                                     value={currentWarehouse.name}
                                     onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, name: e.target.value })}
                                 />
-                                    {errors.nameError && <p style={{ color: 'red' }}>{errors.nameError}</p>}
+                                {errorsName && <p className='warehouse-form__alert-errors'>{errorsName}</p>}
                             </div>
                             <div className='warehouse-area__form-item'>
                                 <label className='warehouse-area__form-item-label' htmlFor="warehouse-note_edit">Ghi chú</label>
@@ -235,11 +247,41 @@ const WarehouseArea = () => {
                                     value={currentWarehouse.note}
                                     onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, note: e.target.value })}
                                 />
+                                {errorsNote && <p className='warehouse-form__alert-errors'>{errorsNote}</p>}
                             </div>
                             <div className='warehouse-area__form-buttons'>
                                 <button className='warehouse-button confirm' onClick={handleEditWarehouse}>Lưu</button>
-                                <button className='warehouse-button exit' onClick={() => {setShowEditForm(false); setErrors({ nameError: '', noteError: '' });}}>Thoát</button>
+                                <button className='warehouse-button exit' onClick={() => {setShowEditForm(false);setErrorsName(''); setErrorsNote('')}}>Thoát</button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {showDetailWarehouse && (
+                <div className='overlay'>
+                    <div className='warehouse-area__detail'>
+                        <div className='warehouse-area__detail-content'>
+                        <table className='warehouse-area__container__table'>
+                            <thead>
+                                <tr>
+                                    <th className='warehouse-area__header-cell'>Tên sản phẩm</th>
+                                    <th className='warehouse-area__header-cell'>Số lượng tồn</th>
+                                    {/* <th className='warehouse-area__header-cell'>Chuyển kho</th> */}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filterDataDetailWarehouse.map(product=>(
+                                    <tr key={product.ma_sp}>
+                                        <td className='warehouse-area__data-cell'>{product.ten_sp}</td>
+                                        <td className='warehouse-area__data-cell'>{product.so_luong_ton}</td>
+                                        {/* <td className='warehouse-area__data-cell'><button className=''>Chuyển kho</button></td> */}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        </div>
+                        <div className='warehouse-area__form-buttons'>
+                        <button className='warehouse-button exit' onClick={()=>{setShowDetailWarehouse(false)}}>Thoát</button>
                         </div>
                     </div>
                 </div>
