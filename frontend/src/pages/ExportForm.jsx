@@ -267,9 +267,6 @@ const XuatHang = () => {
     setSoluong("")
   };
 
-
-
-
   const handleOK = (showNotification) => {
      const checkNguyenDuong = () => {
        if( !soLuong || !soLuong.match(/^(?!0)\d+$/))

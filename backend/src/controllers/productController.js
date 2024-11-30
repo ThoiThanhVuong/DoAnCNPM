@@ -4,7 +4,7 @@ const Brand = require("../models/BrandModel");
 const Origin = require("../models/OriginModel");
 const WareHouse = require("../models/WareHouseModel");
 const PhienBansp = require("../models/PhienBanSPModel");
-
+const { sequelize} = require('../models/Relationship');
 // Lấy danh sách tất cả sản phẩm
 exports.getAllProducts = async (req, res) => {
   try {
@@ -64,59 +64,30 @@ exports.getAllProducts = async (req, res) => {
 
 // Hàm thêm sản phẩm mới
 exports.addProduct = async (req, res) => {
+  const t = await sequelize.transaction();
   try {
     // Lấy dữ liệu từ body request
-    const {
-      ten_sp,
-      hinh_anh,
-      chip_xu_ly,
-      dung_luong_pin,
-      kich_thuoc_man,
-      camera_truoc,
-      camera_sau,
-      hdh,
-      thuong_hieu,
-      xuat_xu,
-      khu_vuc_kho,
-      phien_ban_san_pham, // Mảng chứa thông tin các phiên bản sản phẩm
-    } = req.body;
+    const { productData, configurationsData } = req.body;
+    //  Thêm sản phẩm
+   
+    const newProduct = await Product.create(productData,{ transaction: t });
 
-    // Bắt đầu giao dịch (nếu cần đảm bảo tính toàn vẹn dữ liệu)
-    const newProduct = await Product.create({
-      ten_sp,
-      hinh_anh,
-      chip_xu_ly,
-      dung_luong_pin,
-      kich_thuoc_man,
-      camera_truoc,
-      camera_sau,
-      hdh,
-      thuong_hieu,
-      xuat_xu,
-      khu_vuc_kho,
-      so_luong_ton: 0,
-      trang_thai: 1,
-    });
-
-    // Nếu có thông tin các phiên bản sản phẩm, thêm vào bảng phien_ban_san_pham
-    if (phien_ban_san_pham && phien_ban_san_pham.length > 0) {
-      const productId = newProduct.ma_sp; // Mã sản phẩm vừa tạo
-
+      console.log(productId);
       // Tạo các phiên bản sản phẩm
-      const versions = phien_ban_san_pham.map((version) => ({
+      const versions = configurationsData.map((version) => ({
         ma_sp: productId,
-        ma_ram: version.ma_ram,
-        ma_rom: version.ma_rom,
-        ma_mau: version.ma_mau,
-        gia_nhap: version.gia_nhap,
-        gia_xuat: version.gia_xuat,
+        ma_ram: parseInt(version.ma_ram,10),
+        ma_rom: parseInt(version.ma_rom,10),
+        ma_mau: parseInt(version.ma_mau,10) ,
+        gia_nhap: parseInt(version.gia_nhap),
+        gia_xuat: parseInt(version.gia_xuat),
         ton_kho: 0,
+        trang_thai:1,
       }));
 
       // Bulk insert vào bảng phien_ban_san_pham
-      await PhienBansp.bulkCreate(versions);
-    }
-
+      await PhienBansp.bulkCreate(versions,{ transaction: t });
+      await t.commit();
     // Trả về phản hồi thành công
     res.status(201).json({
       success: true,
@@ -124,6 +95,7 @@ exports.addProduct = async (req, res) => {
       data: newProduct,
     });
   } catch (err) {
+    await t.rollback();
     console.error(err);
 
     // Trả về lỗi
