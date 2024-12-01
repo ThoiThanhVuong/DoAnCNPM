@@ -41,7 +41,7 @@ const permissionService = {
       );
       return response.data;
     } catch (error) {
-      console.log("Loi khi xoa nhan vien:", error);
+      console.log("Lỗi khi xóa nhân viên:", error);
       throw error;
     }
   },
@@ -53,7 +53,7 @@ const permissionService = {
       );
       return response.data;
     } catch (error) {
-      console.log("Loi khi thay doi chuc nang;", error);
+      console.log("Lỗi khi thay đổi chức năng:", error);
       throw error;
     }
   },

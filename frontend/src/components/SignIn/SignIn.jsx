@@ -204,6 +204,30 @@ const SignIn = () => {
     }
   };
 
+  const handleGetPassword = async () => {
+    try {
+      const emailInput = window.prompt(
+        "Nhập email của bạn để lấy lại mật khẩu"
+      );
+      if (!emailInput) {
+        return;
+      }
+      const getUserEmail = await loginService.checkEmailToRecoveryPassword({
+        email: emailInput.trim(),
+      });
+      console.log(getUserEmail);
+      if (!getUserEmail) {
+        alert("Email của bạn không chính xác");
+        handleGetPassword();
+      }
+      if (getUserEmail) {
+        alert("Thành công! Hãy mở Gmail của bạn để lấy mật khẩu.");
+      }
+    } catch (error) {
+      console.log("lỗi: ", error);
+    }
+  };
+
   return (
     <div className="signin-page">
       <div className="container-signin">
@@ -241,6 +265,9 @@ const SignIn = () => {
         <button className="btn-submit" onClick={handleShow}>
           Đăng Nhập
         </button>
+        <div className="recovery-password">
+          Quên mật khẩu? <span onClick={handleGetPassword}>Click</span>
+        </div>
       </div>
     </div>
   );

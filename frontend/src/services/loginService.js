@@ -26,6 +26,18 @@ const loginService = {
       throw error;
     }
   },
+  checkEmailToRecoveryPassword: async (email) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/api/login/checkEmailToRecoveryPassword`,
+        email
+      );
+      return response.data;
+    } catch (error) {
+      console.log("error", error);
+      throw error;
+    }
+  },
   getFeatureFromToken: async () => {
     try {
       const response = await axios.get(
