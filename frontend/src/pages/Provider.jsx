@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../style/Customer.css";
 import "../style/Provider.css";
-import { FaEdit, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios";
 import AddProviderModal from "../components/Provider/AddProviderModal";
 import UpdateProviderModal from "../components/Provider/UpdateProviderModal";
@@ -10,13 +10,11 @@ import AYSProviderModal from "../components/Provider/AYSProviderModal";
 
 const Provider = () => {
   const [Data, setData] = useState([]);
-  const [providerHidden, setProviderHidden] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [showAdd, setShow] = useState(false);
   const [showAYS, setAYS] = useState(false);
   const [search, setSearch] = useState({ MNCC: "" });
   const [providerIds, setProviderIds] = useState([]);
-  const [isActive, setIsActive] = useState(true);
   const [formData, setform] = useState({
     MNCC: " ",
     TNCC: "",
@@ -31,7 +29,6 @@ const Provider = () => {
     try {
       const response = await axios.get("http://localhost:5000/api/providers");
       setData(response.data.filter((item) => item.trang_thai == 1));
-      setProviderHidden(response.data.filter((item) => item.trang_thai === 0));
       // Cập nhật state customerIDs với dữ liệu trả về
       setProviderIds(response.data.map((item) => item.ma_ncc));
     } catch (error) {
@@ -89,11 +86,6 @@ const Provider = () => {
     });
   };
 
-  const handleIsActive = (e) => {
-    setIsActive(!isActive);
-    setSearch({ MNCC: "" });
-    fetchProviders();
-  };
   return (
     <div class="page_customer">
       <div>
@@ -107,36 +99,20 @@ const Provider = () => {
         <h1>Quản Lý Nhà Cung Cấp</h1>
       </div>
       <div class="operation">
+      {/* form search */}
         <SearchProviderModal
           setSearch={setSearch}
           search={search}
           setData={setData}
-          isActive={isActive}
-          setProviderHidden={setProviderHidden}
         />
 
         <div
-          style={{ display: isActive ? "block" : "none" }}
           class="button-addCustomer"
         >
           <button onClick={hiddenAdd}>Thêm</button>
         </div>
       </div>
 
-      <div class="operation_KH">
-        <button
-          className={`button_KH ${isActive ? "active" : ""}`}
-          onClick={handleIsActive}
-        >
-          Danh sách Nhà Cung Cấp
-        </button>
-        <button
-          className={`button_KH ${!isActive ? "active" : ""}`}
-          onClick={handleIsActive}
-        >
-          Danh sách Nhà Cung Cấp ẩn
-        </button>
-      </div>
 
       <AddProviderModal
         setData={setData}
@@ -165,12 +141,10 @@ const Provider = () => {
         setform={setform}
         setSuccessMessage={setSuccessMessage}
         fetchProviders={fetchProviders}
-        isActive={isActive}
       />
 
       <div class="content_provider">
         {/* Danh sách NCC  */}
-        <div style={{ display: isActive ? "block" : "none" }}>
           <table>
             <thead>
               <tr className="rows_QH">
@@ -191,46 +165,13 @@ const Provider = () => {
                 <td>{item.sdt_ncc}</td>
                 <td>
                   <FaEdit onClick={() => hiddenEdit(item)}></FaEdit>{" "}
-                  <FaEye onClick={() => handleAYS(item.ma_ncc)}></FaEye>
-                </td>
-              </tr>
-            ))}
-          </table>
-        </div>
-      
-
-      {/* Danh sách NCC ẩn */}
-      
-        <div style={{ display: !isActive ? "block" : "none" }}>
-          <table>
-            <thead>
-              <tr className="QH_rows">
-                <td>Mã Nhà Cung Cấp</td>
-                <td>Tên Nhà Cung Cấp</td>
-                <td>Địa chỉ</td>
-                <td>Email</td>
-                <td>Số điện thoại</td>
-                <td>Thao Tác</td>
-              </tr>
-            </thead>
-            {providerHidden.map((item, index) => (
-              <tr className="contend_row_provider" key={index}>
-                <td>{item.ma_ncc}</td>
-                <td>{item.ten_ncc}</td>
-                <td>{item.dia_chi}</td>
-                <td>{item.email_ncc}</td>
-                <td>{item.sdt_ncc}</td>
-                <td>
-                  <FaEyeSlash
-                    onClick={() => handleAYS(item.ma_ncc)}
-                  ></FaEyeSlash>
+                  <FaTrash onClick={() => handleAYS(item.ma_ncc)}></FaTrash>
                 </td>
               </tr>
             ))}
           </table>
         </div>
       </div>
-    </div>
   );
 };
 export default Provider;

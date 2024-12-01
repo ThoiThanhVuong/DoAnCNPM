@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../style/Customer.css";
-import { FaEdit, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios";
 import AddCustomerModal from "../components/Customer/AddCustomerModal";
 import UpdateCustomerModal from "../components/Customer/UpdateCustomerModal";
@@ -8,13 +8,11 @@ import AYSCustomerModal from "../components/Customer/AYSCustomerModal";
 import SearchCustomerModal from "../components/Customer/SearchCustomerModal";
 const Customer = () => {
   const [Data, setData] = useState([]);
-  const [customerHidden, setCustomerHidden] = useState([]);
   const [showAddCustomer, setShow] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [showEditCustomer, setShow1] = useState(false);
   const [showAYS, setAYS] = useState(false);
   const [customerIds, setCustomerIds] = useState([]);
-  const [isActive, setIsActive] = useState(true);
   const [formData, setform] = useState({
     MKH: "",
     TKH: "",
@@ -32,7 +30,6 @@ const Customer = () => {
       console.log(response)
       // Cập nhật state customers với dữ liệu trả về
       setData(response.data.filter((item) => item.trang_thai == 1));
-      setCustomerHidden(response.data.filter((item) => item.trang_thai == 0));
       // Cập nhật state customerIDs với dữ liệu trả về
       setCustomerIds(response.data.map((item) => item.ma_kh));
     } catch (err) {
@@ -92,10 +89,8 @@ const Customer = () => {
   };
 
   const deleteData = async (MKH) => {
-    console.log(Data, MKH);
-    if (Data.some((item) => item.ma_kh === MKH))
-      setSuccessMessage(" Ẩn thành công!");
-    else setSuccessMessage("Hủy Ẩn thành công!");
+
+    setSuccessMessage(" Xóa thành công!");
     await axios.delete(`http://localhost:5000/api/customers/${MKH}`);
     fetchCustomers();
     setform({
@@ -121,11 +116,7 @@ const Customer = () => {
     });
   };
 
-  const handleIsActive=(e)=>{
-    setIsActive(!isActive)
-    setSearch({MKH:"",})
-    fetchCustomers();
-  }
+
 
   return (
     <div class="page_customer">
@@ -144,28 +135,11 @@ const Customer = () => {
           setSearch={setSearch}
           setData={setData}
           search={search}
-          isActive={isActive}
-          setCustomerHidden={setCustomerHidden}
         />
         
-        <div style={{ display: isActive ? "block" : "none" }} class="button-addCustomer" >
+        <div class="button-addCustomer" >
           <button onClick={hiddenAdd}>Thêm</button>
         </div>
-      </div>
-
-      <div class="operation_KH">
-        <button
-          className={`button_KH ${isActive ? "active" : ""}`}
-          onClick={handleIsActive}
-        >
-          Danh sách khách hàng
-        </button>
-        <button
-          className={`button_KH ${!isActive ? "active" : ""}`}
-          onClick={handleIsActive}
-        >
-          Danh sách khách hàng ẩn
-        </button>
       </div>
 
       {/* form Thêm */}
@@ -201,8 +175,6 @@ const Customer = () => {
 
       {/* form contend */}
       <div class="content_customer">
-        {/* form Khách hàng */}
-        <div style={{ display: isActive ? "block" : "none" }}>
           <table>
             <thead>
               <tr class="QH">
@@ -220,35 +192,7 @@ const Customer = () => {
                   <td>{item.sdt_kh}</td>
                   <td>
                     <FaEdit onClick={() => handleEdit(item)}></FaEdit>
-                    <FaEye onClick={() => handleAYS(item.ma_kh)}></FaEye>
-                  </td>
-                </tr>
-              ))}
-            </thead>
-          </table>
-        </div>
-              
-        {/* form Khách hàng ẩn */}
-        <div style={{ display: !isActive ? "block" : "none" }}>
-          <table>
-            <thead>
-              <tr class="row_QH">
-                <td>Mã khách hàng</td>
-                <td>Tên khách hàng</td>
-                <td>Địa chỉ</td>
-                <td>Số điện thoại</td>
-                <td>Thao Tác</td>
-              </tr>
-              {customerHidden.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.ma_kh}</td>
-                  <td>{item.ten_kh}</td>
-                  <td>{item.dia_chi_kh}</td>
-                  <td>{item.sdt_kh}</td>
-                  <td>
-                    <FaEyeSlash
-                      onClick={() => handleAYS(item.ma_kh)}
-                    ></FaEyeSlash>
+                    <FaTrash onClick={() => handleAYS(item.ma_kh)}></FaTrash>
                   </td>
                 </tr>
               ))}
@@ -256,7 +200,6 @@ const Customer = () => {
           </table>
         </div>
       </div>
-    </div>
   );
 };
 export default Customer;

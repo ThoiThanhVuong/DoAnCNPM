@@ -8,12 +8,11 @@ const AYSProviderModal = ({
   formData,
   setform,
   setSuccessMessage,
-  fetchProviders,
-  isActive,
+  fetchProviders
 }) => {
   const deleteProvider = async (MNCC) => {
     
-    (isActive ? setSuccessMessage("Ẩn thành công") : setSuccessMessage("Hủy Ẩn thành công"))
+    setSuccessMessage("Xóa thành công");
     await axios.delete(`http://localhost:5000/api/providers/${MNCC}`);
     setform({
       MNCC: " ",
