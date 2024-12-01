@@ -22,6 +22,7 @@ const Customer = () => {
   const [search, setSearch] = useState({
     MKH: "",
   });
+  const [errorInput,setErrorInput] = useState([false],[false],[false])
   const fetchCustomers = async () => {
     try {
       // Gửi yêu cầu GET đến API để lấy danh sách khách hàng
@@ -51,7 +52,10 @@ const Customer = () => {
       DC: "",
       SDT: "",
     });
-    console.log(generateNewCustomerId());
+    setErrorInput((prevErrors) => {
+      const newErrors = prevErrors.map(() => false);
+      return newErrors;
+    });
   };
 
   const generateNewCustomerId = () => {
@@ -77,6 +81,10 @@ const Customer = () => {
       TKH: "",
       DC: "",
       SDT: "",
+    });
+    setErrorInput((prevErrors) => {
+      const newErrors = prevErrors.map(() => false);
+      return newErrors;
     });
   };
 
@@ -151,6 +159,8 @@ const Customer = () => {
         setSuccessMessage={setSuccessMessage}
         setData={setData}
         setCustomerIds={setCustomerIds}
+        errorInput={errorInput}
+        setErrorInput={setErrorInput}
       />
 
       {/* form Sửa */}
@@ -163,6 +173,8 @@ const Customer = () => {
         setSuccessMessage={setSuccessMessage}
         setData={setData}
         setCustomerIds={setCustomerIds}
+        errorInput={errorInput}
+        setErrorInput={setErrorInput}
       />
 
       {/* form are you sure */}

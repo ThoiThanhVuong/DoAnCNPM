@@ -1,10 +1,19 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 
 import axios from "axios";
 
-const AddCustomerModal = ({hiddenAdd, showAddCustomer,formData,handleInputChange,setSuccessMessage,setData,setCustomerIds}) => {
+const AddCustomerModal = ({
+  hiddenAdd,
+  showAddCustomer,
+  formData,
+  handleInputChange,
+  setSuccessMessage,
+  setData,
+  setCustomerIds,
+  errorInput,
+  setErrorInput
+}) => {
   const [showError, setError] = useState("");
-
 
   const fetchCustomers = async () => {
     try {
@@ -23,7 +32,6 @@ const AddCustomerModal = ({hiddenAdd, showAddCustomer,formData,handleInputChange
     // Sau khi lấy xong dữ liệu, cập nhật trạng thái loading
   };
 
-
   const addData = async () => {
     const payload = {
       ma_kh: formData.MKH,
@@ -31,14 +39,39 @@ const AddCustomerModal = ({hiddenAdd, showAddCustomer,formData,handleInputChange
       dia_chi_kh: formData.DC,
       sdt_kh: formData.SDT,
     };
-    console.log(validatePhoneNumber(formData.SDT));
-    if (!formData.TKH || !formData.TKH || !formData.DC || !formData.SDT) {
+    if (!formData.TKH || !formData.DC || !formData.SDT) {
       setError("vui long nhap thong tin!");
       setTimeout(() => {
         setError("");
       }, 2000);
+      if (!formData.TKH) {
+        setErrorInput((prevErrors) => {
+          const newErrors = [...prevErrors];
+          newErrors[0] = true;
+          return newErrors;
+        });
+      }
+      if (!formData.DC) {
+        setErrorInput((prevErrors) => {
+          const newErrors = [...prevErrors];
+          newErrors[1] = true;
+          return newErrors;
+        });
+      }
+      if (!formData.SDT) {
+        setErrorInput((prevErrors) => {
+          const newErrors = [...prevErrors];
+          newErrors[2] = true;
+          return newErrors;
+        });
+      }
     } else {
       if (!validatePhoneNumber(formData.SDT)) {
+        setErrorInput((prevErrors) => {
+          const newErrors = [...prevErrors];
+          newErrors[2] = true;
+          return newErrors;
+        });
         setError("vui long nhap dung SDT");
         setTimeout(() => {
           setError("");
@@ -54,6 +87,10 @@ const AddCustomerModal = ({hiddenAdd, showAddCustomer,formData,handleInputChange
           // Cập nhật lại danh sách khách hàng
           fetchCustomers();
           hiddenAdd();
+          setErrorInput((prevErrors) => {
+            const newErrors = prevErrors.map(() => false);
+            return newErrors;
+          });
         } catch (error) {
           setError("Loi trung ma khach hang");
           setTimeout(() => {
@@ -69,6 +106,14 @@ const AddCustomerModal = ({hiddenAdd, showAddCustomer,formData,handleInputChange
     const regex = /^(\+84|84|0)(3|5|7|8|9)[0-9]{8}$/; // Định dạng hợp lệ hơn
     // Định dạng cho số điện thoại Việt Nam
     return regex.test(phone);
+  };
+
+  const handleInputClick = (index) => {
+    setErrorInput((prevErrors) => {
+      const newErrors = [...prevErrors];
+      newErrors[index] = false; // Đặt lại lỗi cho input tại index
+      return newErrors;
+    });
   };
 
   return (
@@ -101,6 +146,8 @@ const AddCustomerModal = ({hiddenAdd, showAddCustomer,formData,handleInputChange
                 type="text"
                 value={formData.TKH}
                 onChange={handleInputChange}
+                className={errorInput[0] ? "error-input" : ""}
+                onClick={() => handleInputClick(0)}
               ></input>
               <input
                 placeholder="nhập Địa chỉ"
@@ -108,6 +155,8 @@ const AddCustomerModal = ({hiddenAdd, showAddCustomer,formData,handleInputChange
                 type="text"
                 value={formData.DC}
                 onChange={handleInputChange}
+                className={errorInput[1] ? "error-input" : ""}
+                onClick={() => handleInputClick(1)}
               ></input>
               <input
                 placeholder="Nhập Số điện thoại"
@@ -115,6 +164,8 @@ const AddCustomerModal = ({hiddenAdd, showAddCustomer,formData,handleInputChange
                 type="text"
                 value={formData.SDT}
                 onChange={handleInputChange}
+                className={errorInput[2] ? "error-input" : ""}
+                onClick={() => handleInputClick(2)}
               ></input>
             </div>
             <div class="button-addCustomer-interface">

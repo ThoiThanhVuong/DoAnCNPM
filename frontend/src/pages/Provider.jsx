@@ -23,7 +23,7 @@ const Provider = () => {
     SDT: " ",
   });
   const [showEditCustomer, setShow1] = useState(false);
-
+  const [errorInput,setErrorInput] = useState([false],[false],[false],[false])
   //Lấy dữ liệu từ sever
   const fetchProviders = async () => {
     try {
@@ -68,6 +68,10 @@ const Provider = () => {
       Email: "",
       SDT: "",
     });
+    setErrorInput((prevErrors) => {
+      const newErrors = prevErrors.map(() => false);
+      return newErrors;
+    });
   };
 
   const handleInputChange = (e) => {
@@ -83,6 +87,10 @@ const Provider = () => {
       DC: item.dia_chi,
       Email: item.email_ncc,
       SDT: item.sdt_ncc,
+    });
+    setErrorInput((prevErrors) => {
+      const newErrors = prevErrors.map(() => false);
+      return newErrors;
     });
   };
 
@@ -123,6 +131,8 @@ const Provider = () => {
         showAdd={showAdd}
         handleInputChange={handleInputChange}
         fetchProviders={fetchProviders}
+        errorInput={errorInput}
+        setErrorInput={setErrorInput}
       />
 
       <UpdateProviderModal
@@ -132,6 +142,8 @@ const Provider = () => {
         fetchProviders={fetchProviders}
         showEditCustomer={showEditCustomer}
         handleInputChange={handleInputChange}
+        errorInput={errorInput}
+        setErrorInput={setErrorInput}
       />
 
       <AYSProviderModal

@@ -183,6 +183,22 @@ interface ADD */
   outline: none;
 }
 
+.error-input {
+  border: 2px solid red;
+  border-radius: 4px;
+  background-color: #ffe6e6;
+  color: #a94442;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+/* Khi input bị lỗi và được focus */
+.error-input:focus {
+  border-color: #d9534f;
+  box-shadow: 0 0 5px rgba(217, 83, 79, 0.8);
+  background-color: #fff5f5;
+}
+
 .interface_add-content{
   display: flex;
   flex-direction: column;
