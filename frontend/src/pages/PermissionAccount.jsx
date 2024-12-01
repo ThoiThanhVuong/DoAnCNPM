@@ -43,7 +43,7 @@ const PermissionAccount = () => {
 
   const handleChangeRole = async (maNvID, roleID) => {
     if (roleID.ma_quyen === null || !roleID.ma_quyen) {
-      alert("chon vai tro khong duoc de trong");
+      alert("Chọn vai trò không được để trống");
       return;
     }
     try {
@@ -63,7 +63,7 @@ const PermissionAccount = () => {
       return;
     }
     const confirmDelete = window.confirm(
-      "ban co chac chan xoa vai tro cua nguoi dung nay khong?"
+      "Bạn có chắc chắn xóa vai trò của người dùng này không?"
     );
     if (!confirmDelete) return;
     try {
@@ -202,7 +202,7 @@ const PermissionAccount = () => {
         optionRoleID,
         seletedFeature
       );
-      alert("Thay doi thanh cong");
+      alert("Thay đổi thành công.");
       window.location.reload();
       console.log("Change feature successfull", response);
     } catch (error) {

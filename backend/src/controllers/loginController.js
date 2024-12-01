@@ -3,6 +3,7 @@ const Permission = require("../models/permissionModel");
 const FeaturePermission = require("../models/FeaturePermissionModel");
 const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
+const nodemailer = require("nodemailer");
 
 exports.compareAccount = async (req, res) => {
   const { username, password } = req.body;
@@ -46,6 +47,49 @@ exports.checkUsername = async (req, res) => {
     res.json(employeeID);
   } catch (error) {
     res.status(500).json({ error: "ten tai khoan khong hop le", error });
+  }
+};
+
+exports.checkEmailToRecoveryPassword = async (req, res) => {
+  const { email } = req.body;
+  console.log("email", email);
+  try {
+    const employeeID = await Employee.findOne({
+      where: {
+        email: email,
+      },
+    });
+    if (!employeeID) {
+      console.log("email khong ton tai");
+      res.json(employeeID);
+    }
+    if (employeeID) {
+      let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "doancnpmnhom2@gmail.com",
+          pass: "epan zdll ctnb wcul",
+        },
+      });
+
+      transporter.sendMail(
+        {
+          from: '"TEAM 2" <doancnpmnhom2@gmail.com>',
+          to: email,
+          subject: "Lấy lại mật khẩu",
+          html: `<b>Mật khẩu đăng nhập của bạn là: ${employeeID.mat_khau}</b>`,
+        },
+        (err) => {
+          if (err) {
+            return console.log("Lỗi khi gửi email:", err);
+          }
+          console.log("Gửi email thành công");
+        }
+      );
+      res.json(employeeID);
+    }
+  } catch (error) {
+    res.status(500).json({ error: "email khong hop le", error });
   }
 };
 
