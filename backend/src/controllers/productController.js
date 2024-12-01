@@ -43,7 +43,7 @@ exports.getAllProducts = async (req, res) => {
         {
           model: WareHouse, // Thêm mô hình khu vực kho
           as: "storageArea", // Alias cho khu vực kho
-          attributes: ["ten_kho"], // Chỉ lấy tên khu vực kho
+          attributes: ["ma_kho","ten_kho"], // Chỉ lấy tên khu vực kho
         },
       ],
     });

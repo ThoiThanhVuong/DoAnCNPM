@@ -4,6 +4,9 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import { BiSolidDetail } from "react-icons/bi";
 import WarehouseService from '../services/WarehouseService';
 import productService from '../services/productService';
+import AddWarehouseModal from '../components/Warehouse/AddWarehouseModal';
+import EditWarehouseModal from '../components/Warehouse/EditWarehouseModal';
+import DetailWarehouseModal from '../components/Warehouse/DetailWarehouseModal';
 
 const WarehouseArea = () => {
     const [warehouses, setWarehouses] = useState([]);
@@ -26,8 +29,6 @@ const WarehouseArea = () => {
     const fetchWarehouses = async () => {
         try {
             const data = await WarehouseService.getAllItems();
-            console.log("data kho:"+data)
-            console.log("ten kho dau tien:"+data.ten_kho)
             setWarehouses(data);
             setFilterWarehouses(data); 
         } catch (error) {
@@ -37,7 +38,6 @@ const WarehouseArea = () => {
     const fetchProducts = async () => {
         try {
             const data = await productService.getAllProducts();
-            // console.log(data.data);
             setDataDetailWarehouse(data.data);
         } catch (error) {
             console.error('error fetching products:', error);
@@ -120,13 +120,9 @@ const WarehouseArea = () => {
     };
     const showDetailArea = (warehouse) => {
         setShowDetailWarehouse(true);
-        console.log(warehouse);
-        console.log("detail warehouse: " + dataDetailWarehouse)
-        console.log("thong tin kho cua du lieu dau tien :"+dataDetailWarehouse[0].khu_vuc_kho)
         const data = dataDetailWarehouse.filter((product)=>{
-            return (product.storageArea?.ten_kho ?? '') === (warehouse.ten_kho ?? '');
+            return product.storageArea.ma_kho === warehouse.ma_kho
         })
-        console.log("danh sach tim dc gom:"+data)
         setFilterDataDetailWarehouse(data)
     }
     //check đầu vào
@@ -146,6 +142,7 @@ const WarehouseArea = () => {
         }
         return isValid;
     };
+    
 
     return (
         <div className="warehouse-area">
@@ -183,109 +180,30 @@ const WarehouseArea = () => {
                         </table>
                     </div>
                 </div>
-            {showAddForm && (
-                <div className='overlay'>
-                    <div className='warehouse-area__add-form'>
-                        <h1 className='warehouse-area__add-form-banner'>Thêm khu vực kho</h1>
-                        <div className='warehouse-area__add-form-content'>
-                            <div className='warehouse-area__form-item'>
-                                <label className='warehouse-area__form-item-label' htmlFor="warehouse-name">Tên khu vực kho</label>
-                                <input
-                                    className='warehouse-area__form-item-input'
-                                    type="text"
-                                    id='warehouse-name'
-                                    placeholder='Nhập tên khu vực kho'
-                                    value={currentWarehouse.name}
-                                    onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, name: e.target.value })}
-                                />
-                                {errorsName && <p className='warehouse-form__alert-errors'>{errorsName}</p>}
-                            </div>
-                            <div className='warehouse-area__form-item'>
-                                <label className='warehouse-area__form-item-label' htmlFor="warehouse-note">Ghi chú</label>
-                                <input
-                                    className='warehouse-area__form-item-input'
-                                    type="text"
-                                    id='warehouse-note'
-                                    placeholder='Nhập ghi chú'
-                                    value={currentWarehouse.note}
-                                    onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, note: e.target.value })}
-                                />
-                                {errorsNote && <p className='warehouse-form__alert-errors'>{errorsNote}</p>}
-                            </div>
-                            <div className='warehouse-area__form-buttons'>
-                                <button className='warehouse-button confirm' onClick={handleAddWarehouse}>Lưu</button>
-                                <button className='warehouse-button exit' onClick={() => {setShowAddForm(false); setErrorsName(''); setErrorsNote('')}}>Thoát</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-            {showEditForm && (
-                <div className='overlay'>
-                    <div className='warehouse-area__edit-form'>
-                        <h1 className='warehouse-area__edit-form-banner'>Thông tin khu vực kho</h1>
-                        <div className='warehouse-area__edit-form-content'>
-                            <div className='warehouse-area__form-item'>
-                                <label className='warehouse-area__form-item-label' htmlFor="warehouse-name_edit">Tên khu vực kho</label>
-                                <input
-                                    className='warehouse-area__form-item-input'
-                                    type="text"
-                                    id='warehouse-name_edit'
-                                    placeholder='Nhập tên khu vực kho'
-                                    value={currentWarehouse.name}
-                                    onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, name: e.target.value })}
-                                />
-                                {errorsName && <p className='warehouse-form__alert-errors'>{errorsName}</p>}
-                            </div>
-                            <div className='warehouse-area__form-item'>
-                                <label className='warehouse-area__form-item-label' htmlFor="warehouse-note_edit">Ghi chú</label>
-                                <input
-                                    className='warehouse-area__form-item-input'
-                                    type="text"
-                                    id='warehouse-note_edit'
-                                    placeholder='Nhập ghi chú'
-                                    value={currentWarehouse.note}
-                                    onChange={(e) => setCurrentWarehouse({ ...currentWarehouse, note: e.target.value })}
-                                />
-                                {errorsNote && <p className='warehouse-form__alert-errors'>{errorsNote}</p>}
-                            </div>
-                            <div className='warehouse-area__form-buttons'>
-                                <button className='warehouse-button confirm' onClick={handleEditWarehouse}>Lưu</button>
-                                <button className='warehouse-button exit' onClick={() => {setShowEditForm(false);setErrorsName(''); setErrorsNote('')}}>Thoát</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-            {showDetailWarehouse && (
-                <div className='overlay'>
-                    <div className='warehouse-area__detail'>
-                        <div className='warehouse-area__detail-content'>
-                        <table className='warehouse-area__container__table'>
-                            <thead>
-                                <tr>
-                                    <th className='warehouse-area__header-cell'>Tên sản phẩm</th>
-                                    <th className='warehouse-area__header-cell'>Số lượng tồn</th>
-                                    {/* <th className='warehouse-area__header-cell'>Chuyển kho</th> */}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filterDataDetailWarehouse.map(product=>(
-                                    <tr key={product.ma_sp}>
-                                        <td className='warehouse-area__data-cell'>{product.ten_sp}</td>
-                                        <td className='warehouse-area__data-cell'>{product.so_luong_ton}</td>
-                                        {/* <td className='warehouse-area__data-cell'><button className=''>Chuyển kho</button></td> */}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        </div>
-                        <div className='warehouse-area__form-buttons'>
-                        <button className='warehouse-button exit' onClick={()=>{setShowDetailWarehouse(false)}}>Thoát</button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {showAddForm && <AddWarehouseModal 
+                currentWarehouse = {currentWarehouse}
+                setCurrentWarehouse = {setCurrentWarehouse}
+                setShowAddForm = {setShowAddForm}
+                handleAddWarehouse = {handleAddWarehouse}
+                errorsName = {errorsName}
+                errorsNote = {errorsNote}
+                setErrorsName = {setErrorsName}
+                setErrorsNote = {setErrorsNote}
+            />}
+            {showEditForm && <EditWarehouseModal 
+                currentWarehouse = {currentWarehouse}
+                setCurrentWarehouse = {setCurrentWarehouse}
+                setShowEditForm = {setShowEditForm}
+                handleEditWarehouse = {handleEditWarehouse}
+                errorsName = {errorsName}
+                errorsNote = {errorsNote}
+                setErrorsName = {setErrorsName}
+                setErrorsNote = {setErrorsNote}
+            />}
+            {showDetailWarehouse && <DetailWarehouseModal 
+                filterDataDetailWarehouse={filterDataDetailWarehouse}
+                setShowDetailWarehouse={setShowDetailWarehouse}
+            />}
         </div>
     );
 };
