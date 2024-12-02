@@ -140,6 +140,7 @@ const Account = () => {
       });
   
       alert("Tạo tài khoản thành công!");
+      fetchAccounts();
     } catch (error) {
       console.error("Error adding account:", error);
       alert("Đã có lỗi xảy ra. Vui lòng thử lại.");
@@ -175,6 +176,7 @@ const Account = () => {
         }
       );
       alert("Đuổi việc thành công!");
+      fetchAccounts();
     } catch (error) {
       console.error("Error deleting account:", error);
     }

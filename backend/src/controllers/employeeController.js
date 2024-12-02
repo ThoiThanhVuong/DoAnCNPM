@@ -3,7 +3,9 @@ const Employee = require('../models/EmployeeModel'); // MySQL model
 // Fetch all employees
 const getEmployees = async (req, res) => {
   try {
-    const employees = await Employee.findAll();
+    const employees = await Employee.findAll({
+      where: { trang_thai: 1 }, // Chỉ lấy những nhân viên có trang_thai là 1
+    });
     res.status(200).json(employees);
   } catch (error) {
     res.status(500).json({ message: 'Lỗi khi tải danh sách', error: error.message });
@@ -88,11 +90,14 @@ const deleteEmployee = async (req, res) => {
   try {
     const employee = await Employee.findByPk(ma_nv);
     if (!employee) return res.status(404).json({ error: 'Không tìm thấy nhân viên' });
-    
-    await employee.destroy();
-    res.json({ message: 'Nhân viên đã được xóa' });
+
+    // Cập nhật trang_thai thành 0
+    employee.trang_thai = 0;
+    await employee.save();
+
+    res.json({ message: 'Trạng thái nhân viên đã được cập nhật thành 0' });
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi khi xóa nhân viên', details: error.message });
+    res.status(500).json({ error: 'Lỗi khi cập nhật trạng thái nhân viên', details: error.message });
   }
 };
 
