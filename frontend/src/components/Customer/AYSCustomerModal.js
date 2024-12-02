@@ -1,7 +1,24 @@
 import React, { useState} from "react";
+import axios from "axios";
+const AYSCustomerModal = ({showAYS,handleAYS,formData,setSuccessMessage,fetchCustomers,setAYS,setSearch,setform,active}) =>{
+  const deleteData = async (MKH) => {
 
-const AYSCustomerModal = ({showAYS,handleAYS,deleteData,formData}) =>{
 
+    (active ? setSuccessMessage(" Ẩn thành công!") : setSuccessMessage(" Hiện thành công!"));
+    await axios.delete(`http://localhost:5000/api/customers/${MKH}`);
+    fetchCustomers();
+    setform({
+      MKH: "",
+      TKH: "",
+      DC: "",
+      SDT: "",
+    });
+    setAYS(!showAYS);
+    setSearch({ MKH: "" });
+    setTimeout(() => {
+      setSuccessMessage(""); // Ẩn thông báo
+    }, 2000);
+  };
     return(
         <div
         class="interface_ays"

@@ -3,11 +3,7 @@ const Customer = require('../models/CustomerModel'); // MySQL model
 // Fetch all Customer
 const getCustomer = async (req, res) => {
   try {
-    const customer = await Customer.findAll({
-      where: {
-        trang_thai: 1,
-      },
-    });
+    const customer = await Customer.findAll();
     res.status(200).json(customer);
   } catch (error) {
     res.status(500).json({ message: 'Lỗi khi tải danh sách', error: error.message });

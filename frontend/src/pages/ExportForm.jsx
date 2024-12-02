@@ -256,7 +256,7 @@ const XuatHang = () => {
       const dataPB = await getpbSP();// phiên bản sp
       setdataPBSanPham(dataPB)
       const dataCustom = await CustomerService.getAllCustom();
-      setdataKH(dataCustom)
+      setdataKH(dataCustom.filter((item) => item.trang_thai === 1))
     }; 
     fetchProducts();
   },[])

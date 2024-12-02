@@ -1,7 +1,7 @@
 import React from "react";
 
 import axios from "axios";
-const SearchCustomerModal = ({setSearch,setData,search}) =>{
+const SearchCustomerModal = ({setSearch,setData,search,active,setCustomerHidden}) =>{
 
 
     const searchData = async (e) => {
@@ -11,7 +11,7 @@ const SearchCustomerModal = ({setSearch,setData,search}) =>{
           [name]: value,
         });
       
-        const response = (await axios.get(`http://localhost:5000/api/customers`)).data.filter((item)=> item.trang_thai === 1);
+        const response = (active ? (await axios.get(`http://localhost:5000/api/customers`)).data.filter((item)=> item.trang_thai === 1) :(await axios.get(`http://localhost:5000/api/customers`)).data.filter((item)=> item.trang_thai === 0));
 
 
         if (value) {
@@ -19,16 +19,16 @@ const SearchCustomerModal = ({setSearch,setData,search}) =>{
             const KH_search = response.filter((response) =>
               response.ten_kh.toLowerCase().includes(value.toLowerCase())
             );
-            setData(KH_search);
+            (active ? setData(KH_search): setCustomerHidden(KH_search));
           } else {
             const KH_search = response.filter((response) =>
               response.ma_kh.toString().includes(value.toString())
             );
-            setData(KH_search);
+            (active ? setData(KH_search): setCustomerHidden(KH_search));
           }
         } else {
           const response = await axios.get(`http://localhost:5000/api/customers`);
-          setData(response.data.filter((item)=> item.trang_thai==1));
+          (active ? setData(response.data.filter((item)=> item.trang_thai===1)) : setCustomerHidden(response.data.filter((item)=> item.trang_thai===0)));
         }
       };
 

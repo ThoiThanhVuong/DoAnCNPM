@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../style/Customer.css";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye ,FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import AddCustomerModal from "../components/Customer/AddCustomerModal";
 import UpdateCustomerModal from "../components/Customer/UpdateCustomerModal";
@@ -19,21 +19,24 @@ const Customer = () => {
     DC: "",
     SDT: "",
   });
+  const [customerHidden, setCustomerHidden] = useState([]);
   const [search, setSearch] = useState({
     MKH: "",
   });
-  const [errorInput,setErrorInput] = useState([false],[false],[false])
+  const [errorInput, setErrorInput] = useState([false], [false], [false]);
+  const [active, setActive] = useState(true);
   const fetchCustomers = async () => {
     try {
       // Gửi yêu cầu GET đến API để lấy danh sách khách hàng
       const response = await axios.get("http://localhost:5000/api/customers");
 
-      console.log(response)
       // Cập nhật state customers với dữ liệu trả về
-      setData(response.data.filter((item) => item.trang_thai == 1));
+      setData(response.data.filter((item) => item.trang_thai === 1));
       // Cập nhật state customerIDs với dữ liệu trả về
       setCustomerIds(response.data.map((item) => item.ma_kh));
-    } catch (err) {
+      // Cập nhật state customers bị ẩn
+      setCustomerHidden(response.data.filter((item) => item.trang_thai === 0));
+    } catch  {
       // Nếu có lỗi, set error
       console.error("Lỗi khi lấy dữ liệu");
       setData();
@@ -96,24 +99,6 @@ const Customer = () => {
     });
   };
 
-  const deleteData = async (MKH) => {
-
-    setSuccessMessage(" Xóa thành công!");
-    await axios.delete(`http://localhost:5000/api/customers/${MKH}`);
-    fetchCustomers();
-    setform({
-      MKH: "",
-      TKH: "",
-      DC: "",
-      SDT: "",
-    });
-    setAYS(!showAYS);
-    setSearch({ MKH: "" });
-    setTimeout(() => {
-      setSuccessMessage(""); // Ẩn thông báo
-    }, 2000);
-  };
-
   const handleAYS = (MKH) => {
     setAYS(!showAYS);
     setform({
@@ -124,7 +109,11 @@ const Customer = () => {
     });
   };
 
-
+  const handleActive = () => {
+    setActive(!active);
+    setSearch({MKH : ""})
+    fetchCustomers()
+  };
 
   return (
     <div class="page_customer">
@@ -143,11 +132,29 @@ const Customer = () => {
           setSearch={setSearch}
           setData={setData}
           search={search}
+          active={active}
+          setCustomerHidden={setCustomerHidden}
         />
-        
-        <div class="button-addCustomer" >
+        <div style={{ display: active ? "block" : "none" }}>
+        <div class="button-addCustomer">
           <button onClick={hiddenAdd}>Thêm</button>
         </div>
+        </div>
+      </div>
+
+      <div class="operation_KH">
+        <button
+          className={`button_KH ${active ? "active" : ""}`}
+          onClick={handleActive}
+        >
+          Danh sách Khách hàng
+        </button>
+        <button
+          className={`button_KH ${!active ? "active" : ""}`}
+          onClick={handleActive}
+        >
+          Danh sách Khách hàng bị ẩn
+        </button>
       </div>
 
       {/* form Thêm */}
@@ -181,12 +188,18 @@ const Customer = () => {
       <AYSCustomerModal
         showAYS={showAYS}
         handleAYS={handleAYS}
-        deleteData={deleteData}
         formData={formData}
+        setSuccessMessage={setSuccessMessage}
+        fetchCustomers={fetchCustomers}
+        setAYS={setAYS}
+        setSearch={setSearch}
+        setform={setform}
+        active={active}
       />
 
       {/* form contend */}
       <div class="content_customer">
+        <div style={{ display: active ? "block" : "none" }}>
           <table>
             <thead>
               <tr class="QH">
@@ -204,7 +217,32 @@ const Customer = () => {
                   <td>{item.sdt_kh}</td>
                   <td>
                     <FaEdit onClick={() => handleEdit(item)}></FaEdit>
-                    <FaTrash onClick={() => handleAYS(item.ma_kh)}></FaTrash>
+                    <FaEye onClick={() => handleAYS(item.ma_kh)}></FaEye>
+                  </td>
+                </tr>
+              ))}
+            </thead>
+          </table>
+        </div>
+
+        <div style={{ display: !active ? "block" : "none" }}>
+          <table>
+            <thead>
+              <tr class="QH">
+                <td>Mã khách hàng</td>
+                <td>Tên khách hàng</td>
+                <td>Địa chỉ</td>
+                <td>Số điện thoại</td>
+                <td>Thao Tác</td>
+              </tr>
+              {customerHidden.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.ma_kh}</td>
+                  <td>{item.ten_kh}</td>
+                  <td>{item.dia_chi_kh}</td>
+                  <td>{item.sdt_kh}</td>
+                  <td>
+                    <FaEyeSlash onClick={() => handleAYS(item.ma_kh)}></FaEyeSlash>
                   </td>
                 </tr>
               ))}
@@ -212,6 +250,7 @@ const Customer = () => {
           </table>
         </div>
       </div>
+    </div>
   );
 };
 export default Customer;
