@@ -19,7 +19,10 @@ const Employee = () => {
     const confirmLogout = window.confirm("Xac nhan dang xuat?");
     if (!confirmLogout) return;
     Cookies.remove("token");
+    localStorage.removeItem('queueDataN')
+    localStorage.removeItem('queueDataX')
     window.location.reload();
+
   };
 
   useEffect(() => {
