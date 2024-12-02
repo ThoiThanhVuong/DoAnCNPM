@@ -119,6 +119,8 @@ const WarehouseArea = () => {
         });
     };
     const showDetailArea = (warehouse) => {
+        console.log("danh sach kho bien warehouses",warehouses)
+        console.log("danh sach kho filter",filterWarehouses)
         setShowDetailWarehouse(true);
         const data = dataDetailWarehouse.filter((product)=>{
             return product.storageArea.ma_kho === warehouse.ma_kho
@@ -203,6 +205,8 @@ const WarehouseArea = () => {
             {showDetailWarehouse && <DetailWarehouseModal 
                 filterDataDetailWarehouse={filterDataDetailWarehouse}
                 setShowDetailWarehouse={setShowDetailWarehouse}
+                warehouses={warehouses}
+                fetchProducts={fetchProducts}
             />}
         </div>
     );
