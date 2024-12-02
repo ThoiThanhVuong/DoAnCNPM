@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import "../style/Account.css";
+import axios from "axios";
 
 const Account = () => {
   const [showAddAccount, setShowAddAccount] = useState(false);
@@ -145,36 +146,32 @@ const Account = () => {
     }
   };
 
-  const handleEditAccount = async () => {
-    const validationError = validateAccountData(editAccountData);
-    if (validationError) {
-      alert(validationError);
-      return;
-    }
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/employee/${currentAccount.ma_nv}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(editAccountData),
-        }
-      );
-      if (!response.ok) throw new Error("Failed to update account");
-      setData((prevData) =>
-        prevData.map((account) =>
-          account.ma_nv === currentAccount.ma_nv
-            ? { ...account, ...editAccountData }
-            : account
-        )
-      );
-      setShowEditAccount(false);
-      setCurrentAccount(null);
-      alert("Thay đổi thành công!");
-    } catch (error) {
-      console.error("Error updating account:", error);
-    }
-  };
+    const handleEditAccount = async () => {
+      const validationError = validateAccountData(editAccountData);
+      if (validationError) {
+        alert(validationError);
+        return;
+      }
+      try {
+        const response = await axios.put(
+          `http://localhost:5000/api/employee/${currentAccount.ma_nv}`,
+          editAccountData
+        );
+        if (!response.ok) throw new Error("Failed to update account");
+        setData((prevData) =>
+          prevData.map((account) =>
+            account.ma_nv === currentAccount.ma_nv
+              ? { ...account, ...editAccountData }
+              : account
+          )
+        );
+        setShowEditAccount(false);
+        setCurrentAccount(null);
+        alert("Thay đổi thành công!");
+      } catch (error) {
+        console.error("Error updating account:", error);
+      }
+    };
 
   const handleDeleteAccount = async (ma_nv) => {
     try {
