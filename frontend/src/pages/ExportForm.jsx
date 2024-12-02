@@ -384,6 +384,7 @@ const XuatHang = () => {
         console.log(newPX)
         addExport(newPX)
         setQueuedata([])
+        localStorage.setItem("queueDataX", JSON.stringify([]));
         alert("Duyệt đơn xuất thành công")
       }
       else{
