@@ -137,6 +137,8 @@ const SignIn = () => {
       if (response) {
         console.log(Cookies.get("token"));
         localStorage.setItem("ma_nv", response.ma_nv);
+        localStorage.setItem("ten_quyen", response.ma_quyen);
+        // console.log(typeof localStorage.getItem("ten_quyen"))
         alert(`CHÀO MỪNG "${response.ten_nv}" ĐÃ ĐĂNG NHẬP THÀNH CÔNG`);
         window.location.href = "/";
         console.log("thành công", response);
