@@ -172,7 +172,8 @@
 
 .warehouse-area__add-form,
 .warehouse-area__edit-form,
-.warehouse-area__detail {
+.warehouse-area__detail,
+.warehouse-area__change-warehouse--form {
   background-color: #fff;
   border-radius: 8px;
   padding: 20px;

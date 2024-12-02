@@ -137,3 +137,18 @@ exports.updatedCountProduct = async (req, res) => {
       .json({ message: "Đã xảy ra lỗi khi cập nhật số lượng tồn kho!" });
   }
 };
+
+exports.updateWarehouseProduct = async (req, res) => {
+  const { ma_sp} = req.params;
+  const { ma_kho }= req.body;
+  try {
+    const product = await Product.findByPk(ma_sp);
+    if (!product) return res.status(404).json({ message: "Sản phẩm không tồn tại!" });
+    product.khu_vuc_kho = ma_kho;
+    await product.save();
+    res.status(200).json({ message: "Cập nhật khu vực kho thành công" });
+  } catch (error) {
+    res.status(500).json({error : "Lỗi cập nhật khu vực kho"})
+  }
+}
+

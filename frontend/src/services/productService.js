@@ -36,6 +36,17 @@ const productService = {
             console.error(error);
           }
     
+    },
+    updateWarehouse : async (ma_sp, ma_kho_moi) =>{
+        try {
+            const response = await axios.patch(`${API_URL}/${ma_sp}/ma_kho`, {
+                ma_kho:ma_kho_moi
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Lỗi api cập nhật",error);
+            throw error;
+        }
     }
     
 };

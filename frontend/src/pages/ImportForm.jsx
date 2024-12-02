@@ -251,10 +251,10 @@ const NhapHang = () => {
                     {findNameProd(datatable.ma_sp)}
                   </td>
                   <td style={{ width: "5%" }}>
-                  {findNameRam(datatable.ma_ram)}
+                  {findNameRam(datatable.ma_ram)}GB
                   </td>
                   <td style={{ width: "5%" }}>
-                  {findNameRom(datatable.ma_rom)}
+                  {findNameRom(datatable.ma_rom)}GB
                   </td>
                   <td style={{ width: "7%" }}>
                   {findNameColor(datatable.ma_mau)}
