@@ -157,17 +157,10 @@ const Account = () => {
           `http://localhost:5000/api/employee/${currentAccount.ma_nv}`,
           editAccountData
         );
-        if (!response.ok) throw new Error("Failed to update account");
-        setData((prevData) =>
-          prevData.map((account) =>
-            account.ma_nv === currentAccount.ma_nv
-              ? { ...account, ...editAccountData }
-              : account
-          )
-        );
         setShowEditAccount(false);
         setCurrentAccount(null);
         alert("Thay đổi thành công!");
+        fetchAccounts();
       } catch (error) {
         console.error("Error updating account:", error);
       }
@@ -180,10 +173,6 @@ const Account = () => {
         {
           method: "DELETE",
         }
-      );
-      if (!response.ok) throw new Error("Failed to delete account");
-      setData((prevData) =>
-        prevData.filter((account) => account.ma_nv !== ma_nv)
       );
       alert("Đuổi việc thành công!");
     } catch (error) {
@@ -277,7 +266,7 @@ const Account = () => {
           <input
             type="text"
             placeholder="Tìm kiếm tài khoản..."
-            className="search-input"
+            className="search-acc-input"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)} // Cập nhật giá trị nhập
           />
@@ -510,7 +499,6 @@ const Account = () => {
 
       {showEditAccount && currentAccount && (
         <div className="edit-account">
-          <h2>Sửa Tài Khoản</h2>
           <div className="edit-account_content">
             <div className="edit-account_content__column">
               <div className="edit-account_content__content-items">
