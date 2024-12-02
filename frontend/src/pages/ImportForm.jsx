@@ -216,10 +216,13 @@ const NhapHang = () => {
       };
       addImport(newPN);
       setQueuedata([]);
+      localStorage.setItem("queueDataN", JSON.stringify([]));
       alert("Duyệt đơn nhập thành công");
     } else {
       alert("Vui lòng thêm sản phẩm vào hàng chờ");
     }
+    
+
   };
 
   return (
