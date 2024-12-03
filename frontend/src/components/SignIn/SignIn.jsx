@@ -267,8 +267,8 @@ const SignIn = () => {
         <button className="btn-submit" onClick={handleShow}>
           Đăng Nhập
         </button>
-        <div className="recovery-password">
-          Quên mật khẩu? <span onClick={handleGetPassword}>Click</span>
+        <div className="recovery-password" onClick={handleGetPassword}>
+          Quên mật khẩu?
         </div>
       </div>
     </div>
