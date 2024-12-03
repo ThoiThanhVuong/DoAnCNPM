@@ -222,7 +222,6 @@ const NhapHang = () => {
       alert("Vui lòng thêm sản phẩm vào hàng chờ");
     }
     
-
   };
 
   return (

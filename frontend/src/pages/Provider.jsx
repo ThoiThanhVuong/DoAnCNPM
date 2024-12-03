@@ -35,7 +35,7 @@ const Provider = () => {
   const fetchProviders = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/providers");
-      setData(response.data.filter((item) => item.trang_thai == 1));
+      setData(response.data.filter((item) => item.trang_thai === 1));
       // Cập nhật state customerIDs với dữ liệu trả về
       setProviderHidden(response.data.filter((item) => item.trang_thai === 0))
       setProviderIds(response.data.map((item) => item.ma_ncc));

@@ -116,7 +116,7 @@ const options = {
         },
         title: {
           display: true,
-          text: `Thống kê doanh thu 8 ngày gần nhất`,
+          text: `Thống kê doanh thu từ ${fromDate} đến ${toDate}`,
         }
       }
 };
