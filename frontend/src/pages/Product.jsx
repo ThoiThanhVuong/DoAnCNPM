@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import "../style/product.css";
 import { FaPlus, FaEdit, FaTrash, FaInfoCircle } from "react-icons/fa";
 import AddProductModal from "../components/Product/AddProductModal";
-import axios from "axios";
+import DetailProductModal from "../components/Product/DetailProductModal";
+import productService from "../services/productService";
 
 const Product = () => {
   const [products, setProducts] = useState([]); // Dữ liệu sản phẩm
@@ -10,6 +11,9 @@ const Product = () => {
   const [searchQuery, setSearchQuery] = useState(""); // Từ khóa tìm kiếm
   const [searchBy, setSearchBy] = useState("name"); // Tiêu chí tìm kiếm (tên sản phẩm, thương hiệu, xuất xứ)
   const [showModal, setShowModal] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
   const handleAddProduct = () => {
     setShowModal(true);
   };
@@ -17,14 +21,20 @@ const Product = () => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
-
+  const handleViewDetail = (product) => {
+    setSelectedProduct(product);
+    setShowDetailModal(true);
+  };
+  const handleCloseDetailModal = () => {
+    setShowDetailModal(false);
+  };
   useEffect(() => {
     // Lấy dữ liệu từ backend
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/products"); // Cập nhật URL API của bạn
-        setProducts(response.data.data); // Giả sử dữ liệu trả về có dạng { data: [...] }
-        setFilteredProducts(response.data.data); // Mặc định là hiển thị tất cả sản phẩm
+       const data = await productService.getAllProducts();
+        setProducts(data.data); // Giả sử dữ liệu trả về có dạng { data: [...] }
+        setFilteredProducts(data.data); // Mặc định là hiển thị tất cả sản phẩm
       } catch (err) {
         console.error("Lỗi khi lấy dữ liệu sản phẩm:", err);
       }
@@ -32,7 +42,6 @@ const Product = () => {
 
     fetchProducts();
   }, []);
-
   // Hàm xử lý tìm kiếm
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
@@ -65,15 +74,6 @@ const Product = () => {
         <div className="product-actions">
           <button onClick={handleAddProduct} className="btn-add-product">
             <FaPlus /> Thêm
-          </button>
-          <button className="btn-edit-product">
-            <FaEdit /> Sửa
-          </button>
-          <button className="btn-delete-product">
-            <FaTrash /> Xóa
-          </button>
-          <button className="btn-detail-product">
-            <FaInfoCircle /> Chi tiết
           </button>
         </div>
         <div className="search-filter">
@@ -108,6 +108,7 @@ const Product = () => {
               <th>Dung lượng pin</th>
               <th>Xuất xứ</th>
               <th>Khu vực kho</th>
+              <th>Hành động</th>
             </tr>
           </thead>
           <tbody>
@@ -135,12 +136,31 @@ const Product = () => {
                 </td>
                 <td>{product.origin?.ten_xuat_xu || "Không có thông tin"}</td>
                 <td>{product.storageArea?.ten_kho || "Không có thông tin"}</td>
+                <td>
+                <button
+                    className="btn-view-detail"
+                    onClick={() => handleViewDetail(product)}
+                  >
+                    <FaInfoCircle />
+                  </button>
+                  <button className="btn-edit-product">
+                    <FaEdit />
+                  </button>
+                  <button className="btn-delete-product">
+                    <FaTrash />
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
       <AddProductModal show={showModal} onClose={handleCloseModal} />
+      <DetailProductModal
+        show={showDetailModal}
+        onClose={handleCloseDetailModal}
+        product={selectedProduct}
+      />
     </div>
   );
 };
