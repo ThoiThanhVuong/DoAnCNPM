@@ -213,3 +213,22 @@ button:last-child:hover {
   background-color: #0056b3; /* Đậm hơn khi hover */
 }
 
+.status-filter {
+  margin-left: 10px;
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.reactivate-acc {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.reactivate-acc:hover {
+  background-color: #45a049;
+}

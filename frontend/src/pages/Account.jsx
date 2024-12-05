@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash, FaRedo } from "react-icons/fa";
 import "../style/Account.css";
 import axios from "axios";
 
@@ -11,6 +11,7 @@ const Account = () => {
   const [searchedAccount, setSearchedAccount] = useState(null);
   const [searchInput, setSearchInput] = useState(""); // Lưu giá trị từ input
   const [currentAccount, setCurrentAccount] = useState(null); 
+  const [statusFilter, setStatusFilter] = useState('1');
   const [newAccountData, setNewAccountData] = useState({
     ma_nv: "",
     ten_nv: "",
@@ -242,19 +243,50 @@ const Account = () => {
   };
   
   const handleSearchAccount = async (ma_nv) => {
+    // Kiểm tra nếu ma_nv rỗng
+    if (!ma_nv.trim()) {
+      alert("Vui lòng nhập mã nhân viên.");
+      return; // Dừng hàm nếu mã nhân viên rỗng
+    }
+  
     try {
       const response = await fetch(`http://localhost:5000/api/employee/${ma_nv}`);
       if (!response.ok) throw new Error("Không tìm thấy tài khoản");
   
       const result = await response.json();
   
+      // Kiểm tra nếu kết quả tìm kiếm rỗng
+      if (!result || Object.keys(result).length === 0) {
+        throw new Error("Không tìm thấy tài khoản với mã nhân viên này.");
+      }
+  
       setSearchedAccount(result); // Gán kết quả tìm kiếm
       setShowSearchResult(true); // Hiển thị khung thông tin
     } catch (error) {
       console.error("Error fetching account:", error);
-      alert("Không tìm thấy tài khoản với mã nhân viên này.");
+      alert(error.message); // Hiển thị thông báo lỗi từ error
       setShowSearchResult(false);
       setSearchedAccount(null);
+    }
+  };
+  
+  
+  
+  const handleStatusFilterChange = (e) => {
+    setStatusFilter(e.target.value);
+  };
+
+  const handleReactivateAccount = async () => {
+    try {
+      
+      const response = await axios.put(
+        `http://localhost:5000/api/employee/${currentAccount.ma_nv}`,
+        { trang_thai: 1 } // Chỉ cập nhật thuộc tính trang_thai thành 1
+      );
+      alert("Kích hoạt tài khoản thành công!");
+      fetchAccounts(); // Làm mới danh sách tài khoản
+    } catch (error) {
+      console.error("Lỗi khi kích hoạt tài khoản:", error);
     }
   };
   
@@ -278,6 +310,14 @@ const Account = () => {
           >
             Tìm kiếm
           </button>
+          <select 
+            value={statusFilter} 
+            onChange={handleStatusFilterChange}
+            className="status-filter"
+          >
+            <option value="1">Hoạt động</option>
+            <option value="0">Ngừng hoạt động</option>
+          </select>
         </div>
           <table>
             <thead>
@@ -295,7 +335,9 @@ const Account = () => {
             </thead>
             <tbody>
               {data.length > 0 ? (
-                data.map((account) => (
+                data
+                  .filter(account => account.trang_thai.toString() === statusFilter)
+                  .map((account) => (
                   <tr key={account.ma_nv}>
                     <td>{account.ma_nv}</td>
                     <td>{account.ten_nv}</td>
@@ -308,15 +350,26 @@ const Account = () => {
                       {account.trang_thai ? "Hoạt động" : "Ngừng hoạt động"}
                     </td>
                     <td>
-                      <FaEdit
-                        className="edit-acc"
-                        onClick={() => handleShowEditAccount(account)}
-                      />
-                      <FaTrash
-                        className="delete-acc"
-                        onClick={() => handleDeleteAccount(account.ma_nv)}
-                      />
-                    </td>
+                    {account.trang_thai === 1 ? (
+                      <>
+                        <FaEdit
+                          className="edit-acc"
+                          onClick={() => handleShowEditAccount(account)}
+                        />
+                        <FaTrash
+                          className="delete-acc"
+                          onClick={() => handleDeleteAccount(account.ma_nv)}
+                        />
+                      </>
+                    ) : (
+                      <button
+                        className="reactivate-acc"
+                        onClick={() => handleReactivateAccount(account.ma_nv)}
+                      >
+                        Kích hoạt lại
+                      </button>
+                    )}
+                  </td>
                   </tr>
                 ))
               ) : (
@@ -558,32 +611,6 @@ const Account = () => {
                   value={editAccountData.mat_khau}
                   onChange={handleInputChange}
                 />
-              </div>
-            </div>
-
-            <div className="edit-account_content__column">
-              <div className="edit-account_content__content-items">
-                <label htmlFor="ma_quyen">Mã Quyền</label>
-                <input
-                  type="number"
-                  id="ma_quyen"
-                  name="ma_quyen"
-                  value={editAccountData.ma_quyen}
-                  onChange={handleInputChange}
-                />
-              </div>
-
-              <div className="edit-account_content__content-items">
-                <label htmlFor="trang_thai">Trạng Thái</label>
-                <select
-                  id="trang_thai"
-                  name="trang_thai"
-                  value={editAccountData.trang_thai}
-                  onChange={handleInputChange}
-                >
-                  <option value="1">Hoạt động</option>
-                  <option value="0">Ngừng hoạt động</option>
-                </select>
               </div>
             </div>
 
