@@ -3,8 +3,14 @@ const OperatingSystem = require("../models/OperatingSystemModel");
 const Brand = require("../models/BrandModel");
 const Origin = require("../models/OriginModel");
 const WareHouse = require("../models/WareHouseModel");
-const PhienBansp = require("../models/PhienBanSPModel");
-const { sequelize} = require('../models/Relationship');
+//const PhienBansp = require("../models/PhienBanSPModel");
+const {
+  sequelize,
+  PhienBanSPModel,
+  Ram,
+  Rom,
+  Color,
+} = require("../models/Relationship");
 // Lấy danh sách tất cả sản phẩm
 exports.getAllProducts = async (req, res) => {
   try {
@@ -43,7 +49,38 @@ exports.getAllProducts = async (req, res) => {
         {
           model: WareHouse, // Thêm mô hình khu vực kho
           as: "storageArea", // Alias cho khu vực kho
-          attributes: ["ma_kho","ten_kho"], // Chỉ lấy tên khu vực kho
+          attributes: ["ma_kho", "ten_kho"], // Chỉ lấy tên khu vực kho
+        },
+        {
+          model: PhienBanSPModel,
+          as: "phienBanSanPhams",
+          attributes: [
+            "ma_phien_ban_sp",
+            "gia_nhap",
+            "gia_xuat",
+            "ton_kho",
+            "trang_thai",
+          ],
+          include: [
+            {
+              model: Ram,
+              as: "ram",
+              attributes: ["kich_thuoc_ram"],
+            },
+            {
+              model: Rom,
+              as: "rom",
+              attributes: ["kich_thuoc_rom"],
+            },
+            {
+              model: Color,
+              as: "mauSac",
+              attributes: ["ten_mau"],
+            },
+          ],
+          where: {
+            trang_thai: 1,
+          },
         },
       ],
     });
@@ -69,25 +106,25 @@ exports.addProduct = async (req, res) => {
     // Lấy dữ liệu từ body request
     const { productData, configurationsData } = req.body;
     //  Thêm sản phẩm
-   
-    const newProduct = await Product.create(productData,{ transaction: t });
 
-      console.log(productId);
-      // Tạo các phiên bản sản phẩm
-      const versions = configurationsData.map((version) => ({
-        ma_sp: productId,
-        ma_ram: parseInt(version.ma_ram,10),
-        ma_rom: parseInt(version.ma_rom,10),
-        ma_mau: parseInt(version.ma_mau,10) ,
-        gia_nhap: parseInt(version.gia_nhap),
-        gia_xuat: parseInt(version.gia_xuat),
-        ton_kho: 0,
-        trang_thai:1,
-      }));
+    const newProduct = await Product.create(productData, { transaction: t });
 
-      // Bulk insert vào bảng phien_ban_san_pham
-      await PhienBansp.bulkCreate(versions,{ transaction: t });
-      await t.commit();
+    console.log(productId);
+    // Tạo các phiên bản sản phẩm
+    const versions = configurationsData.map((version) => ({
+      ma_sp: productId,
+      ma_ram: parseInt(version.ma_ram, 10),
+      ma_rom: parseInt(version.ma_rom, 10),
+      ma_mau: parseInt(version.ma_mau, 10),
+      gia_nhap: parseInt(version.gia_nhap),
+      gia_xuat: parseInt(version.gia_xuat),
+      ton_kho: 0,
+      trang_thai: 1,
+    }));
+
+    // Bulk insert vào bảng phien_ban_san_pham
+    await PhienBanSPModel.bulkCreate(versions, { transaction: t });
+    await t.commit();
     // Trả về phản hồi thành công
     res.status(201).json({
       success: true,
@@ -139,16 +176,16 @@ exports.updatedCountProduct = async (req, res) => {
 };
 
 exports.updateWarehouseProduct = async (req, res) => {
-  const { ma_sp} = req.params;
-  const { ma_kho }= req.body;
+  const { ma_sp } = req.params;
+  const { ma_kho } = req.body;
   try {
     const product = await Product.findByPk(ma_sp);
-    if (!product) return res.status(404).json({ message: "Sản phẩm không tồn tại!" });
+    if (!product)
+      return res.status(404).json({ message: "Sản phẩm không tồn tại!" });
     product.khu_vuc_kho = ma_kho;
     await product.save();
     res.status(200).json({ message: "Cập nhật khu vực kho thành công" });
   } catch (error) {
-    res.status(500).json({error : "Lỗi cập nhật khu vực kho"})
+    res.status(500).json({ error: "Lỗi cập nhật khu vực kho" });
   }
-}
-
+};
