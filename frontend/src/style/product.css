@@ -92,12 +92,15 @@
 }
 
 .btn-delete-product {
-  background-color: #e74c3c;
+  background-color: red;
 }
-.btn-detail-product{
-  background-color: #333;
+.btn-detail-product {
+  background-color: rgb(180, 160, 160);
 }
-
+.btn-detail-product:hover {
+  background-color: #ddd;
+  transform: translateY(-3px);
+}
 .btn-add-product:hover {
   background-color: #2d6639; /* Tối hơn khi hover */
   transform: translateY(-3px); /* Tăng hiệu ứng nâng khi hover */
@@ -112,12 +115,10 @@
   background-color: #9a2c1f; /* Tối hơn khi hover */
   transform: translateY(-3px); /* Tăng hiệu ứng nâng khi hover */
 }
-.btn-detail-product {
-  background-color: #007bff;
-}
-.btn-detail-product:hover {
-  background-color: #0056b3;
-  transform: translateY(-3px);
+
+.list-button {
+  gap: 5px;
+  display: flex;
 }
 
 .search-filter {

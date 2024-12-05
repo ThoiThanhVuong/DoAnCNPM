@@ -33,18 +33,16 @@ const sumDataInGroups = (data) => {
   return result;
 };
 const DateOfMonth = () =>{
-    const [selectedMonth, setSelectedMonth] = useState("11");
+    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth()+1);
     const [selectedYear, setSelectedYear] = useState(2024);
     const [data,setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-
      // Hàm format giá tiền
      const formatCurrency = (value) => {
       return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
     };
 
     const fetchDataDataOfMonth = async (params={}) =>{
-      setLoading(true);
+      
       const data = await thongkeService.getThongKeTheoNgay({year:selectedYear, month:selectedMonth});
       setData(data);
     }

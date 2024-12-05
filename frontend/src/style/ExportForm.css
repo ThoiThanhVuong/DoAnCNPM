@@ -119,6 +119,7 @@
   background-color: rgb(194, 194, 194);
   border-radius: 10px;
   border: none;
+  cursor: pointer;
 }
 .boxFind .custom-icSearch .icSearch:hover {
   background-color: rgb(146, 146, 146);

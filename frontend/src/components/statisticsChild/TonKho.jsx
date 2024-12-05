@@ -7,15 +7,55 @@ const TonKho = ()=> {
     const [timeStart, setTimeStart] = useState('');
     const [timeEnd, setTimeEnd] = useState('');
     const [data, setData] = useState([]);
+    const [groupedData, setGroupedData] = useState([]);
+    const [expandedRows, setExpandedRows] = useState([]);
 
     const fetchTonKho = async (params={}) =>{
         const data = await thongkeService.getThongKeTonKho(params);
         setData(data);
         
     }
+   // Gộp dữ liệu theo `ma_sp`
+   const groupByMaSp = (data) => {
+    const grouped = data.reduce((acc, item) => {
+        const { ma_sp, ten_sp, so_luong_dau_ky, so_luong_nhap, so_luong_xuat, so_luong_cuoi_ky } = item;
+
+        if (!acc[ma_sp]) {
+            acc[ma_sp] = {
+                ma_sp,
+                ten_sp,
+                so_luong_dau_ky: 0,
+                so_luong_nhap: 0,
+                so_luong_xuat: 0,
+                so_luong_cuoi_ky: 0
+            };
+        }
+
+        acc[ma_sp].so_luong_dau_ky += parseInt(so_luong_dau_ky, 10);
+        acc[ma_sp].so_luong_nhap += parseInt(so_luong_nhap, 10);
+        acc[ma_sp].so_luong_xuat += parseInt(so_luong_xuat, 10);
+        acc[ma_sp].so_luong_cuoi_ky += parseInt(so_luong_cuoi_ky, 10);
+
+        return acc;
+    }, {});
+
+    return Object.values(grouped);
+    };
     useEffect(()=>{
         fetchTonKho();
     },[]);
+    useEffect(() => {
+        if (data.length > 0) {
+            const grouped = groupByMaSp(data);
+            setGroupedData(grouped);
+        }
+    }, [data]);
+    const toggleRow = (ma_sp) => {
+        setExpandedRows((prev) =>
+            prev.includes(ma_sp) ? prev.filter((id) => id !== ma_sp) : [...prev, ma_sp]
+        );
+    };
+    
     const handleExportExcel = () =>{
         const worksheet = XLSX.utils.json_to_sheet(data);
         const workbook = XLSX.utils.book_new();
@@ -76,9 +116,10 @@ const TonKho = ()=> {
                     </thead>
                     <tbody>
                         {
-                            data.length > 0 ? (
-                                data.map((item,index)=>(
-                                    <tr key={`${item.ma_sp}`}>
+                            groupedData.length > 0 ? (
+                                groupedData.map((item,index)=>(
+                                    <React.Fragment key={item.ma_sp}>
+                                        <tr onClick={()=> toggleRow(item.ma_sp)}>
                                         <td>{index+1}</td>
                                         <td>{item.ma_sp}</td>
                                         <td>{item.ten_sp}</td>
@@ -87,6 +128,20 @@ const TonKho = ()=> {
                                         <td>{item.so_luong_xuat}</td>
                                         <td>{item.so_luong_cuoi_ky}</td>
                                     </tr>
+                                   
+                                   {expandedRows.includes(item.ma_sp) && 
+                                        data.filter((detail) => detail.ma_sp === item.ma_sp).map((detail,subIndex)=>(
+                                            <tr key={`${item.ma_sp}-${subIndex}`} className="detail-row">
+                                                <td></td>
+                                                <td>{detail.ma_phien_ban_sp}</td>
+                                                <td>{detail.ten_sp} ({detail.mauSac.ten_mau}, {detail.ram.kich_thuoc_ram}GB RAM, {detail.rom.kich_thuoc_rom}GB ROM)</td>
+                                                <td>{detail.so_luong_dau_ky}</td>
+                                                <td>{detail.so_luong_nhap}</td>
+                                                <td>{detail.so_luong_xuat}</td>
+                                                <td>{detail.so_luong_cuoi_ky}</td>
+                                        </tr>
+                                        ))}
+                                    </React.Fragment>  
                                 ))
                             ):(
                                 <tr>

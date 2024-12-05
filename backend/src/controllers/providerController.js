@@ -2,11 +2,7 @@ const {Provider,sequelize} = require('../models/Relationship'); // MySQL model
 
 const getProvider = async (req, res) => {
   try { 
-    const provider = await Provider.findAll({
-      where: {
-        trang_thai: 1
-      }
-    });
+    const provider = await Provider.findAll();
     res.status(200).json(provider);
   } catch (error) {
     res.status(500).json({ message: 'Lỗi khi tải danh sách', error: error.message });

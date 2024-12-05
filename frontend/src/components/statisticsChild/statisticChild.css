@@ -94,4 +94,11 @@
   .table-container tbody tr:nth-child(even) {
     background-color: #f9f9f9;
   }
+.detail-row {
+    background-color: #f9f9f9;
+    font-size: 0.9em;
+}
+.detail-row td {
+    padding-left: 20px;
+}
 

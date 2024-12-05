@@ -7,5 +7,5 @@ router.get("/", productController.getAllProducts);
 router.post("/", productController.addProduct);
 router.get("/countProduct", productController.getCountProduct);
 router.patch("/:ma_sp", productController.updatedCountProduct);
-router.patch("/:ma_sp/ma_kho",productController.updateWarehouseProduct);
+router.patch("/:ma_sp/ma_kho", productController.updateWarehouseProduct);
 module.exports = router;
