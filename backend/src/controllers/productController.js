@@ -134,10 +134,22 @@ exports.addProduct = async (req, res) => {
   try {
     // Lấy dữ liệu từ body request
     const { productData, configurationsData } = req.body;
+    // Kiểm tra xem sản phẩm đã tồn tại chưa
+    const existingProduct = await Product.findOne({
+      where: {
+        ten_sp: productData.ten_sp,
+        trang_thai: 1, // Kiểm tra trạng thái sản phẩm
+      },
+    });
+    if (existingProduct) {
+      return res.status(400).json({
+        success: false,
+        message: "Sản phẩm đã tồn tại!",
+      });
+    }
     //  Thêm sản phẩm
-
     const newProduct = await Product.create(productData, { transaction: t });
-
+    const productId = newProduct.ma_sp;
     console.log(productId);
     // Tạo các phiên bản sản phẩm
     const versions = configurationsData.map((version) => ({

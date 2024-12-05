@@ -53,8 +53,7 @@ const DetailProductModal = ({ show, onClose, product }) => {
             </div>
             <div className="detail-right">
               <p>
-                <strong>Chip xử lý:</strong>{" "}
-                {product.chip_xu_ly || "Chưa cập nhật"}
+                <strong>Chip xử lý:</strong> {product.chip_xu_ly}
               </p>
               <p>
                 <strong>Dung lượng pin:</strong>{" "}
@@ -69,32 +68,26 @@ const DetailProductModal = ({ show, onClose, product }) => {
                   : "Không có thông tin"}
               </p>
               <p>
-                <strong>Camera trước:</strong>{" "}
-                {product.camera_truoc || "Chưa cập nhật"}
+                <strong>Camera trước:</strong> {product.camera_truoc}
               </p>
               <p>
-                <strong>Camera sau:</strong>{" "}
-                {product.camera_sau || "Chưa cập nhật"}
+                <strong>Camera sau:</strong> {product.camera_sau}
               </p>
               <p>
                 <strong>Hệ điều hành:</strong>{" "}
-                {product.operatingSystem?.ten_hdh || "Không có thông tin"}
+                {product.operatingSystem?.ten_hdh}
               </p>
               <p>
-                <strong>Thương hiệu:</strong>{" "}
-                {product.brand?.ten_thuong_hieu || "Không có thông tin"}
+                <strong>Thương hiệu:</strong> {product.brand?.ten_thuong_hieu}
               </p>
               <p>
-                <strong>Xuất xứ:</strong>{" "}
-                {product.origin?.ten_xuat_xu || "Không có thông tin"}
+                <strong>Xuất xứ:</strong> {product.origin?.ten_xuat_xu}
               </p>
               <p>
-                <strong>Khu vực:</strong>{" "}
-                {product.storageArea?.ten_kho || "Không có thông tin"}
+                <strong>Khu vực:</strong> {product.storageArea?.ten_kho}
               </p>
               <p>
-                <strong>Số lượng tồn:</strong>{" "}
-                {product.so_luong_ton || "Không có thông tin"}
+                <strong>Số lượng tồn:</strong> {product.so_luong_ton}
               </p>
               <button className="next-tab" onClick={handleContinue}>
                 Tiếp Tục

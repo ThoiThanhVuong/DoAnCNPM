@@ -154,29 +154,23 @@ const Product = () => {
               .map((product) => (
                 <tr key={product.ma_sp}>
                   <td>{product.ma_sp}</td>
-                  <td>{product.ten_sp || "Không có thông tin"}</td>
-                  <td>{product.so_luong_ton || "Không có thông tin"}</td>
-                  <td>
-                    {product.brand?.ten_thuong_hieu || "Không có thông tin"}
-                  </td>
-                  <td>
-                    {product.operatingSystem?.ten_hdh || "Không có thông tin"}
-                  </td>
+                  <td>{product.ten_sp}</td>
+                  <td>{product.so_luong_ton}</td>
+                  <td>{product.brand?.ten_thuong_hieu}</td>
+                  <td>{product.operatingSystem?.ten_hdh}</td>
                   <td>
                     {product.kich_thuoc_man
                       ? `${product.kich_thuoc_man} inch`
                       : "Không có thông tin"}
                   </td>
-                  <td>{product.chip_xu_ly || "Không có thông tin"}</td>
+                  <td>{product.chip_xu_ly}</td>
                   <td>
                     {product.dung_luong_pin
                       ? `${product.dung_luong_pin} mAh`
                       : "Không có thông tin"}
                   </td>
-                  <td>{product.origin?.ten_xuat_xu || "Không có thông tin"}</td>
-                  <td>
-                    {product.storageArea?.ten_kho || "Không có thông tin"}
-                  </td>
+                  <td>{product.origin?.ten_xuat_xu}</td>
+                  <td>{product.storageArea?.ten_kho}</td>
                   <td>
                     <div className="action-button">
                       <button

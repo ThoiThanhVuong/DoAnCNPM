@@ -132,19 +132,36 @@
   justify-content: center;
   gap: 15px;
 }
-.aciton-add-products .add-prodduct {
-  padding: 10px 10px;
-  font-size: 14px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+
+.add-prodduct-sp {
   background-color: #28a745;
-}
-.aciton-add-products .comback {
-  padding: 10px 10px;
-  font-size: 14px;
+  color: white;
   border: none;
-  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
   cursor: pointer;
-  background-color:#ffc107;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.add-prodduct-sp:hover {
+  background-color: #1e7d34;
+  transform: translateY(-3px);
+}
+.comback-sp {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.comback-sp:hover {
+  background-color: #ab2633;
+  transform: translateY(-3px);
 }

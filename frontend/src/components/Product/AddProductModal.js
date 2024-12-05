@@ -255,47 +255,67 @@ const AddProductModal = ({ show, onClose }) => {
   };
 
   const handleSubmitProduct = async () => {
-    // Kiểm tra nếu form sản phẩm hợp lệ
-
+    if (configurations.length === 0) {
+      alert("Không để cấu hình rỗng");
+      return;
+    }
     try {
-      const payLoad ={
+      const payLoad = {
         // 1. Thêm sản phẩm vào bảng san_pham
-       productData : {
-        ten_sp: formData.productName,
-        hinh_anh: selectedImage ? selectedImage : "default.jpg", // Giả sử bạn có ảnh mặc định
-        chip_xu_ly: formData.chip,
-        dung_luong_pin: formData.battery,
-        kich_thuoc_man: formData.screenSize,
-        camera_truoc: formData.frontCamera,
-        camera_sau: formData.rearCamera,
-        hdh: formData.os,
-        thuong_hieu: formData.brand,
-        xuat_xu: formData.origin,
-        khu_vuc_kho: formData.region,
-        so_luong_ton: 0,
-        trang_thai: 1,
-      },
-     
-      // 2. Thêm cấu hình sản phẩm vào bảng phien_ban_san_pham
-      configurationsData : configurations.map((config) => ({
-        ma_ram: ram.find((r) => r.kich_thuoc_ram === config.ram)?.ma_ram,
-        ma_rom: rom.find((r) => r.kich_thuoc_rom === config.rom)?.ma_rom,
-        ma_mau: colors.find((c) => c.ten_mau === config.color)?.ma_mau,
-        gia_nhap: config.priceImport,
-        gia_xuat: config.priceSell,
-        ton_kho: 0, // Bạn có thể thay giá trị tồn kho tùy theo logic của mình
-      })),
+        productData: {
+          ten_sp: formData.productName,
+          hinh_anh: selectedImage ? selectedImage : "default.jpg", // Giả sử bạn có ảnh mặc định
+          chip_xu_ly: formData.chip,
+          dung_luong_pin: formData.battery,
+          kich_thuoc_man: formData.screenSize,
+          camera_truoc: formData.frontCamera,
+          camera_sau: formData.rearCamera,
+          hdh: formData.os,
+          thuong_hieu: formData.brand,
+          xuat_xu: formData.origin,
+          khu_vuc_kho: formData.region,
+          so_luong_ton: 0,
+          trang_thai: 1,
+        },
+
+        // 2. Thêm cấu hình sản phẩm vào bảng phien_ban_san_pham
+        configurationsData: configurations.map((config) => ({
+          ma_ram: ram.find((r) => r.kich_thuoc_ram === config.ram)?.ma_ram,
+          ma_rom: rom.find((r) => r.kich_thuoc_rom === config.rom)?.ma_rom,
+          ma_mau: colors.find((c) => c.ten_mau === config.color)?.ma_mau,
+          gia_nhap: config.priceImport,
+          gia_xuat: config.priceSell,
+          ton_kho: 0, // Bạn có thể thay giá trị tồn kho tùy theo logic của mình
+        })),
       };
-      await axios.post("http://localhost:5000/api/products", payLoad);
-    
-      alert("Thêm sản phẩm thành công!");
-      // Reset lại form và các trạng thái sau khi thêm
-      resetForm();
-      resetForm_nextTab();
-      setConfigurations([]);
-      onClose();
+      const response = await axios.post(
+        "http://localhost:5000/api/products",
+        payLoad
+      );
+      if (response.data.success) {
+        alert("Thêm sản phẩm thành công!");
+        // Reset lại form và các trạng thái sau khi thêm
+        resetForm();
+        resetForm_nextTab();
+        setConfigurations([]);
+        onClose();
+      } else {
+        // Xử lý khi có lỗi từ backend
+        alert("Có lỗi xảy ra, vui lòng thử lại!");
+      }
     } catch (error) {
       console.error("Lỗi khi thêm sản phẩm và cấu hình:", error);
+
+      // Xử lý lỗi tùy thuộc vào loại lỗi
+      if (error.response) {
+        if (error.response.status === 400) {
+          alert("Sản phẩm đã tồn tại!");
+        } else if (error.response.status === 500) {
+          alert("Lỗi từ server. Vui lòng thử lại sau.");
+        }
+      } else {
+        alert("Không thể kết nối tới máy chủ. Kiểm tra kết nối mạng.");
+      }
     }
   };
 
@@ -516,6 +536,7 @@ const AddProductModal = ({ show, onClose }) => {
               <table className="table">
                 <thead>
                   <tr>
+                    <th>STT</th>
                     <th>ROM</th>
                     <th>RAM</th>
                     <th>Màu sắc</th>
@@ -526,6 +547,7 @@ const AddProductModal = ({ show, onClose }) => {
                 <tbody>
                   {configurations.map((config, index) => (
                     <tr key={index} onClick={() => handleRowClick(index)}>
+                      <td>{index + 1}</td>
                       <td>{config.rom}</td>
                       <td>{config.ram}</td>
                       <td>{config.color}</td>
@@ -538,8 +560,10 @@ const AddProductModal = ({ show, onClose }) => {
             </div>
 
             <div className="aciton-add-products">
-              <button className="add-prodduct" onClick={handleSubmitProduct}> Thêm sản phẩm</button>
-              <button className="comback" onClick={closeNextTab}>
+              <button className="add-prodduct-sp" onClick={handleSubmitProduct}>
+                Thêm sản phẩm
+              </button>
+              <button className="comback-sp" onClick={closeNextTab}>
                 Quay lại trang
               </button>
             </div>
