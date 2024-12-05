@@ -176,7 +176,7 @@ const Account = () => {
           method: "DELETE",
         }
       );
-      alert("Đuổi việc thành công!");
+      alert("Thay đổi thành công thành công!");
       fetchAccounts();
     } catch (error) {
       console.error("Error deleting account:", error);
@@ -271,23 +271,8 @@ const Account = () => {
   };
   
   
-  
   const handleStatusFilterChange = (e) => {
     setStatusFilter(e.target.value);
-  };
-
-  const handleReactivateAccount = async () => {
-    try {
-      
-      const response = await axios.put(
-        `http://localhost:5000/api/employee/${currentAccount.ma_nv}`,
-        { trang_thai: 1 } // Chỉ cập nhật thuộc tính trang_thai thành 1
-      );
-      alert("Kích hoạt tài khoản thành công!");
-      fetchAccounts(); // Làm mới danh sách tài khoản
-    } catch (error) {
-      console.error("Lỗi khi kích hoạt tài khoản:", error);
-    }
   };
   
 
@@ -362,12 +347,12 @@ const Account = () => {
                         />
                       </>
                     ) : (
-                      <button
-                        className="reactivate-acc"
-                        onClick={() => handleReactivateAccount(account.ma_nv)}
-                      >
-                        Kích hoạt lại
-                      </button>
+                      <>
+                        <FaRedo
+                          className="delete-acc"
+                          onClick={() => handleDeleteAccount(account.ma_nv)}
+                        />
+                      </>
                     )}
                   </td>
                   </tr>

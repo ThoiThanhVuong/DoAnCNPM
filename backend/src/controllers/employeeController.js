@@ -73,6 +73,7 @@ const updateEmployee = async (req, res) => {
     employee.email = email;
     employee.mat_khau = mat_khau;
     employee.ma_quyen = ma_quyen;
+    employee.trang_thai = trang_thai;
     await employee.save();
 
     res.json(employee);
@@ -89,11 +90,13 @@ const deleteEmployee = async (req, res) => {
     const employee = await Employee.findByPk(ma_nv);
     if (!employee) return res.status(404).json({ error: 'Không tìm thấy nhân viên' });
 
-    // Cập nhật trang_thai thành 0
-    employee.trang_thai = 0;
+    if(employee.trang_thai==1)
+      employee.trang_thai=0;
+    else
+      employee.trang_thai=1;
     await employee.save();
 
-    res.json({ message: 'Trạng thái nhân viên đã được cập nhật thành 0' });
+    res.json({ message: 'Trạng thái nhân viên đã được cập nhật thành công' });
   } catch (error) {
     res.status(500).json({ error: 'Lỗi khi cập nhật trạng thái nhân viên', details: error.message });
   }
