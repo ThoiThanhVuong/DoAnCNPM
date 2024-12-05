@@ -135,5 +135,4 @@ const DetailProductModal = ({ show, onClose, product }) => {
     </div>
   );
 };
-
 export default DetailProductModal;

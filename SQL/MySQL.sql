@@ -251,7 +251,7 @@ CREATE TABLE IF NOT EXISTS `mau_sac` (
 INSERT INTO `mau_sac` (`ma_mau`, `ten_mau`,`trang_thai`) VALUES
 	(1, 'Đen',1),
 	(2, 'Trắng',1),
-	(3, 'Xanh dương',1);
+	(3, 'Xanh Dương',1);
 
 -- Dumping structure for table quanlikhohang.nhan_vien
 CREATE TABLE IF NOT EXISTS `nhan_vien` (
@@ -535,21 +535,21 @@ CREATE TABLE IF NOT EXISTS `san_pham` (
 
 -- Dumping data for table quanlikhohang.san_pham: ~15 rows (approximately)
 INSERT INTO `san_pham` (`ma_sp`, `ten_sp`, `hinh_anh`, `chip_xu_ly`, `dung_luong_pin`, `kich_thuoc_man`, `camera_truoc`, `camera_sau`, `hdh`, `thuong_hieu`, `xuat_xu`, `khu_vuc_kho`, `so_luong_ton`, `mo_ta_sp`,`trang_thai`) VALUES
-	(1, 'iPhone 12', 'iphone12.jpg', 'A14 Bionic', 2815, 6.1, '12 MP', '12 MP + 12 MP', 1, 1, 3, 1, 75, 'Smartphone cao cấp từ Apple',1),
-	(2, 'Samsung Galaxy S21', 's21.jpg', 'Exynos 2100', 4000, 6.2, '10 MP', '12 MP + 64 MP', 2, 2, 1, 2, 117, 'Smartphone cao cấp từ Samsung',1),
-	(3, 'Oppo Find X3', 'findx3.jpg', 'Snapdragon 870', 4500, 6.7, '32 MP', '50 MP + 50 MP', 1, 3, 1, 3, 77, 'Smartphone của Oppo',1),
-	(4, 'Xiaomi Mi 11', 'mi11.jpg', 'Snapdragon 888', 4600, 6.8, '20 MP', '108 MP + 13 MP', 1, 4, 2, 4, 56, 'Smartphone từ Xiaomi',1),
-	(5, 'Vivo X60 Pro', 'x60pro.jpg', 'Exynos 1080', 4200, 6.6, '32 MP', '48 MP + 13 MP', 2, 3, 1, 3, 55, 'Smartphone của Vivo',1),
-	(6, 'Sony Xperia 1 III', 'xperia1iii.jpg', 'Snapdragon 888', 4500, 6.5, '8 MP', '12 MP + 12 MP + 12 MP', 1, 5, 2, 5, 99, 'Smartphone của Sony',1),
-	(7, 'Huawei P50 Pro', 'p50pro.jpg', 'Kirin 9000', 4360, 6.6, '13 MP', '50 MP + 40 MP', 2, 6, 2, 6, 43, 'Smartphone của Huawei',1),
-	(8, 'Google Pixel 6', 'pixel6.jpg', 'Tensor', 4614, 6.4, '8 MP', '50 MP + 12 MP', 1, 7, 3, 7, 28, 'Smartphone của Google',1),
-	(9, 'Asus ROG Phone 5', 'rog5.jpg', 'Snapdragon 888', 6000, 6.78, '24 MP', '64 MP + 13 MP', 1, 8, 4, 8, 33, 'Smartphone chơi game của Asus',1),
-	(10, 'Nokia X20', 'nokix20.jpg', 'Snapdragon 480', 4470, 6.67, '32 MP', '48 MP + 5 MP', 1, 9, 1, 9, 29, 'Smartphone của Nokia',1),
-	(11, 'Realme GT', 'gt.jpg', 'Snapdragon 888', 4500, 6.43, '16 MP', '64 MP + 8 MP', 2, 10, 2, 10, 34, 'Smartphone của Realme',1),
-	(12, ' iPhone 13', 'iphone13.jpg', 'A15 Bionic', 3095, 6.1, '12 MP', '12 MP + 12 MP', 1, 1, 3, 1, 75, 'Smartphone cao cấp mới của Apple',1),
-	(13, 'Samsung Galaxy Z Fold 3', 'zfold3.jpg', 'Snapdragon 888', 4400, 7.6, '10 MP', '12 MP + 12 MP', 1, 2, 1, 3, 125, 'Điện thoại gập từ Samsung',1),
-	(14, 'Poco F3', 'pocof3.jpg', 'Snapdragon 870', 4520, 6.67, '20 MP', '48 MP + 8 MP', 2, 11, 2, 11, 55, 'Smartphone giá rẻ từ Poco',1),
-	(15, 'Redmi Note 10 Pro', 'note10pro.jpg', 'Snapdragon 732G', 5020, 6.67, '16 MP', '108 MP + 8 MP', 1, 4, 2, 4, 84, 'Smartphone tầm trung của Xiaomi',1);
+	(1, 'iPhone 12', 'Iphone12', 'A14 Bionic', 2815, 6.1, '12 MP', '12 MP + 12 MP', 1, 1, 3, 1, 75, 'Smartphone cao cấp từ Apple',1),
+	(2, 'Samsung Galaxy S21', 'SamSungGalaxyS21', 'Exynos 2100', 4000, 6.2, '10 MP', '12 MP + 64 MP', 2, 2, 1, 2, 117, 'Smartphone cao cấp từ Samsung',1),
+	(3, 'Oppo Find X3', 'OppoFindX3', 'Snapdragon 870', 4500, 6.7, '32 MP', '50 MP + 50 MP', 1, 3, 1, 3, 77, 'Smartphone của Oppo',1),
+	(4, 'Xiaomi Mi 11', 'XiaomiMi11', 'Snapdragon 888', 4600, 6.8, '20 MP', '108 MP + 13 MP', 1, 4, 2, 4, 56, 'Smartphone từ Xiaomi',1),
+	(5, 'Vivo X60 Pro', 'VivoX60Pro', 'Exynos 1080', 4200, 6.6, '32 MP', '48 MP + 13 MP', 2, 3, 1, 3, 55, 'Smartphone của Vivo',1),
+	(6, 'Sony Xperia 1 III', 'SonyXperia1III', 'Snapdragon 888', 4500, 6.5, '8 MP', '12 MP + 12 MP + 12 MP', 1, 5, 2, 5, 99, 'Smartphone của Sony',1),
+	(7, 'Huawei P50 Pro', 'HuaweiP50Pro', 'Kirin 9000', 4360, 6.6, '13 MP', '50 MP + 40 MP', 2, 6, 2, 6, 43, 'Smartphone của Huawei',1),
+	(8, 'Google Pixel 6', 'GooglePixel6', 'Tensor', 4614, 6.4, '8 MP', '50 MP + 12 MP', 1, 7, 3, 7, 28, 'Smartphone của Google',1),
+	(9, 'Asus ROG Phone 5', 'AsusROGPhone5', 'Snapdragon 888', 6000, 6.78, '24 MP', '64 MP + 13 MP', 1, 8, 4, 8, 33, 'Smartphone chơi game của Asus',1),
+	(10, 'Nokia X20', 'NokiaX20', 'Snapdragon 480', 4470, 6.67, '32 MP', '48 MP + 5 MP', 1, 9, 1, 9, 29, 'Smartphone của Nokia',1),
+	(11, 'Realme GT', 'RealmeGT', 'Snapdragon 888', 4500, 6.43, '16 MP', '64 MP + 8 MP', 2, 10, 2, 10, 34, 'Smartphone của Realme',1),
+	(12, ' iPhone 13', 'iPhone13', 'A15 Bionic', 3095, 6.1, '12 MP', '12 MP + 12 MP', 1, 1, 3, 1, 75, 'Smartphone cao cấp mới của Apple',1),
+	(13, 'Samsung Galaxy Z Fold 3', 'SamsungGalaxyZFold3', 'Snapdragon 888', 4400, 7.6, '10 MP', '12 MP + 12 MP', 1, 2, 1, 3, 125, 'Điện thoại gập từ Samsung',1),
+	(14, 'Poco F3', 'PocoF3', 'Snapdragon 870', 4520, 6.67, '20 MP', '48 MP + 8 MP', 2, 11, 2, 11, 55, 'Smartphone giá rẻ từ Poco',1),
+	(15, 'Redmi Note 10 Pro', 'RedmiNote10Pro', 'Snapdragon 732G', 5020, 6.67, '16 MP', '108 MP + 8 MP', 1, 4, 2, 4, 84, 'Smartphone tầm trung của Xiaomi',1);
 
 -- Dumping structure for table quanlikhohang.thuong_hieu
 CREATE TABLE IF NOT EXISTS `thuong_hieu` (
