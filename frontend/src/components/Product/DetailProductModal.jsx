@@ -10,7 +10,6 @@ const DetailProductModal = ({ show, onClose, product }) => {
     );
 
   }
-
     return (
         
       <div className="modal-overlay">
