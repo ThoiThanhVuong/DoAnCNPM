@@ -33,8 +33,8 @@ const Product = () => {
     const fetchProducts = async () => {
       try {
         const data = await productService.getAllProducts();
-        setProducts(data.data); // Giả sử dữ liệu trả về có dạng { data: [...] }
-        setFilteredProducts(data.data); // Mặc định là hiển thị tất cả sản phẩm
+        setProducts(data.data);
+        setFilteredProducts(data.data);
       } catch (err) {
         console.error("Lỗi khi lấy dữ liệu sản phẩm:", err);
       }
@@ -65,6 +65,43 @@ const Product = () => {
   // Hàm thay đổi tiêu chí tìm kiếm
   const handleSearchByChange = (e) => {
     setSearchBy(e.target.value);
+  };
+  const handleDeleteProduct = async (productId) => {
+    // Hiển thị thông báo xác nhận trước khi xóa sản phẩm
+    const isConfirmed = window.confirm(
+      "Bạn có chắc chắn muốn xóa sản phẩm này không?"
+    );
+
+    if (!isConfirmed) {
+      return;
+    }
+
+    try {
+      // Gọi API để cập nhật trạng thái của sản phẩm thành 0 (ẩn sản phẩm)
+      const response = await productService.deleteProduct(productId);
+      if (response.status === 200) {
+        // Cập nhật lại trạng thái của sản phẩm trong danh sách mà không cần reload
+        setProducts((prevProducts) =>
+          prevProducts.map((product) =>
+            product.ma_sp === productId
+              ? { ...product, trang_thai: 0 } // Ẩn sản phẩm bằng cách cập nhật trang_thai
+              : product
+          )
+        );
+
+        // Cập nhật lại filteredProducts, chỉ hiển thị những sản phẩm có trạng thái khác 0
+        setFilteredProducts((prevFiltered) =>
+          prevFiltered.filter(
+            (product) => product.ma_sp !== productId || product.trang_thai !== 0
+          )
+        );
+
+        alert("Sản phẩm đã được xóa .");
+      }
+    } catch (err) {
+      console.error("Lỗi khi ẩn sản phẩm:", err);
+      alert("Có lỗi xảy ra khi ẩn sản phẩm.");
+    }
   };
 
   return (
@@ -112,51 +149,58 @@ const Product = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map((product) => (
-              <tr key={product.ma_sp}>
-                <td>{product.ma_sp}</td>
-                <td>{product.ten_sp || "Không có thông tin"}</td>
-                <td>{product.so_luong_ton || "Không có thông tin"}</td>
-                <td>
-                  {product.brand?.ten_thuong_hieu || "Không có thông tin"}
-                </td>
-                <td>
-                  {product.operatingSystem?.ten_hdh || "Không có thông tin"}
-                </td>
-                <td>
-                  {product.kich_thuoc_man
-                    ? `${product.kich_thuoc_man} inch`
-                    : "Không có thông tin"}
-                </td>
-                <td>{product.chip_xu_ly || "Không có thông tin"}</td>
-                <td>
-                  {product.dung_luong_pin
-                    ? `${product.dung_luong_pin} mAh`
-                    : "Không có thông tin"}
-                </td>
-                <td>{product.origin?.ten_xuat_xu || "Không có thông tin"}</td>
-                <td>{product.storageArea?.ten_kho || "Không có thông tin"}</td>
-                <td>
-                  <div className="action-button">
-                    <button
-                      className="btn-view-detail"
-                      onClick={() => handleViewDetail(product)}
-                    >
-                      Chi Tiết
-                      <FaInfoCircle />
-                    </button>
-                    <button className="btn-edit-product">
-                      Sửa
-                      <FaEdit />
-                    </button>
-                    <button className="btn-delete-product">
-                      Xóa
-                      <FaTrash />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+            {filteredProducts
+              .filter((product) => product.trang_thai !== 0)
+              .map((product) => (
+                <tr key={product.ma_sp}>
+                  <td>{product.ma_sp}</td>
+                  <td>{product.ten_sp || "Không có thông tin"}</td>
+                  <td>{product.so_luong_ton || "Không có thông tin"}</td>
+                  <td>
+                    {product.brand?.ten_thuong_hieu || "Không có thông tin"}
+                  </td>
+                  <td>
+                    {product.operatingSystem?.ten_hdh || "Không có thông tin"}
+                  </td>
+                  <td>
+                    {product.kich_thuoc_man
+                      ? `${product.kich_thuoc_man} inch`
+                      : "Không có thông tin"}
+                  </td>
+                  <td>{product.chip_xu_ly || "Không có thông tin"}</td>
+                  <td>
+                    {product.dung_luong_pin
+                      ? `${product.dung_luong_pin} mAh`
+                      : "Không có thông tin"}
+                  </td>
+                  <td>{product.origin?.ten_xuat_xu || "Không có thông tin"}</td>
+                  <td>
+                    {product.storageArea?.ten_kho || "Không có thông tin"}
+                  </td>
+                  <td>
+                    <div className="action-button">
+                      <button
+                        className="btn-view-detail"
+                        onClick={() => handleViewDetail(product)}
+                      >
+                        Chi Tiết
+                        <FaInfoCircle />
+                      </button>
+                      <button className="btn-edit-product">
+                        Sửa
+                        <FaEdit />
+                      </button>
+                      <button
+                        className="btn-delete-product"
+                        onClick={() => handleDeleteProduct(product.ma_sp)}
+                      >
+                        Xóa
+                        <FaTrash />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

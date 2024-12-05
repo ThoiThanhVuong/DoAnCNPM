@@ -11,6 +11,35 @@ const {
   Rom,
   Color,
 } = require("../models/Relationship");
+exports.deleteProduct = async (req, res) => {
+  const { ma_sp } = req.params; // Lấy mã sản phẩm từ URL
+
+  try {
+    // Tìm sản phẩm theo mã sản phẩm
+    const product = await Product.findOne({ where: { ma_sp } });
+
+    if (!product) {
+      return res.status(404).json({ message: "Sản phẩm không tồn tại." });
+    }
+
+    // Cập nhật trạng thái sản phẩm thành 0
+    const updatedProduct = await product.update({ trang_thai: 0 });
+
+    if (!updatedProduct) {
+      return res
+        .status(400)
+        .json({ message: "Cập nhật trạng thái không thành công." });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Sản phẩm đã được xóa (trạng thái = 0)." });
+  } catch (error) {
+    console.error("Lỗi khi cập nhật trạng thái sản phẩm:", error);
+    return res.status(500).json({ message: "Có lỗi xảy ra khi xóa sản phẩm." });
+  }
+};
+
 // Lấy danh sách tất cả sản phẩm
 exports.getAllProducts = async (req, res) => {
   try {

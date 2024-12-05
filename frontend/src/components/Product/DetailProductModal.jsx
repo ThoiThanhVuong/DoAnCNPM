@@ -92,6 +92,10 @@ const DetailProductModal = ({ show, onClose, product }) => {
                 <strong>Khu vực:</strong>{" "}
                 {product.storageArea?.ten_kho || "Không có thông tin"}
               </p>
+              <p>
+                <strong>Số lượng tồn:</strong>{" "}
+                {product.so_luong_ton || "Không có thông tin"}
+              </p>
               <button className="next-tab" onClick={handleContinue}>
                 Tiếp Tục
               </button>
