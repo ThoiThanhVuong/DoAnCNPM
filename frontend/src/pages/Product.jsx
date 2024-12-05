@@ -137,18 +137,23 @@ const Product = () => {
                 <td>{product.origin?.ten_xuat_xu || "Không có thông tin"}</td>
                 <td>{product.storageArea?.ten_kho || "Không có thông tin"}</td>
                 <td>
-                  <button
-                    className="btn-view-detail"
-                    onClick={() => handleViewDetail(product)}
-                  >
-                    <FaInfoCircle />
-                  </button>
-                  <button className="btn-edit-product">
-                    <FaEdit />
-                  </button>
-                  <button className="btn-delete-product">
-                    <FaTrash />
-                  </button>
+                  <div className="action-button">
+                    <button
+                      className="btn-view-detail"
+                      onClick={() => handleViewDetail(product)}
+                    >
+                      Chi Tiết
+                      <FaInfoCircle />
+                    </button>
+                    <button className="btn-edit-product">
+                      Sửa
+                      <FaEdit />
+                    </button>
+                    <button className="btn-delete-product">
+                      Xóa
+                      <FaTrash />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
