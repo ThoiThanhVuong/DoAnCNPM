@@ -3,6 +3,7 @@ import "../style/product.css";
 import { FaPlus, FaEdit, FaTrash, FaInfoCircle } from "react-icons/fa";
 import AddProductModal from "../components/Product/AddProductModal";
 import DetailProductModal from "../components/Product/DetailProductModal";
+import UpdateProduct from "../components/Product/UpdateProduct";
 import productService from "../services/productService";
 
 const Product = () => {
@@ -12,6 +13,7 @@ const Product = () => {
   const [searchBy, setSearchBy] = useState("name"); // Tiêu chí tìm kiếm (tên sản phẩm, thương hiệu, xuất xứ)
   const [showModal, setShowModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handleAddProduct = () => {
@@ -21,13 +23,25 @@ const Product = () => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
   const handleViewDetail = (product) => {
     setSelectedProduct(product);
     setShowDetailModal(true);
   };
+
   const handleCloseDetailModal = () => {
     setShowDetailModal(false);
   };
+
+  const handleViewUpdate = (product) => {
+    setSelectedProduct(product); // Sửa ở đây
+    setShowUpdateModal(true);
+  };
+
+  const handleCloseUpdate = () => {
+    setShowUpdateModal(false);
+  };
+
   useEffect(() => {
     // Lấy dữ liệu từ backend
     const fetchProducts = async () => {
@@ -42,6 +56,7 @@ const Product = () => {
 
     fetchProducts();
   }, []);
+
   // Hàm xử lý tìm kiếm
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
@@ -66,6 +81,7 @@ const Product = () => {
   const handleSearchByChange = (e) => {
     setSearchBy(e.target.value);
   };
+
   const handleDeleteProduct = async (productId) => {
     // Hiển thị thông báo xác nhận trước khi xóa sản phẩm
     const isConfirmed = window.confirm(
@@ -77,26 +93,23 @@ const Product = () => {
     }
 
     try {
-      // Gọi API để cập nhật trạng thái của sản phẩm thành 0 (ẩn sản phẩm)
       const response = await productService.deleteProduct(productId);
       if (response.status === 200) {
-        // Cập nhật lại trạng thái của sản phẩm trong danh sách mà không cần reload
         setProducts((prevProducts) =>
           prevProducts.map((product) =>
             product.ma_sp === productId
-              ? { ...product, trang_thai: 0 } // Ẩn sản phẩm bằng cách cập nhật trang_thai
+              ? { ...product, trang_thai: 0 }
               : product
           )
         );
 
-        // Cập nhật lại filteredProducts, chỉ hiển thị những sản phẩm có trạng thái khác 0
         setFilteredProducts((prevFiltered) =>
           prevFiltered.filter(
             (product) => product.ma_sp !== productId || product.trang_thai !== 0
           )
         );
 
-        alert("Sản phẩm đã được xóa .");
+        alert("Sản phẩm đã được xóa.");
       }
     } catch (err) {
       console.error("Lỗi khi ẩn sản phẩm:", err);
@@ -179,15 +192,16 @@ const Product = () => {
                       >
                         <FaInfoCircle />
                       </button>
-                      <button className="btn-product-edit">
-                      
+                      <button
+                        className="btn-product-edit"
+                        onClick={() => handleViewUpdate(product)} // Thêm hành động sửa
+                      >
                         <FaEdit />
                       </button>
                       <button
                         className="btn-product-delete"
                         onClick={() => handleDeleteProduct(product.ma_sp)}
                       >
-                      
                         <FaTrash />
                       </button>
                     </div>
@@ -201,6 +215,11 @@ const Product = () => {
       <DetailProductModal
         show={showDetailModal}
         onClose={handleCloseDetailModal}
+        product={selectedProduct}
+      />
+      <UpdateProduct
+        show={showUpdateModal}
+        onClose={handleCloseUpdate}
         product={selectedProduct}
       />
     </div>

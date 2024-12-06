@@ -3,7 +3,6 @@ const OperatingSystem = require("../models/OperatingSystemModel");
 const Brand = require("../models/BrandModel");
 const Origin = require("../models/OriginModel");
 const WareHouse = require("../models/WareHouseModel");
-//const PhienBansp = require("../models/PhienBanSPModel");
 const {
   sequelize,
   PhienBanSPModel,
@@ -28,15 +27,30 @@ exports.deleteProduct = async (req, res) => {
     if (!updatedProduct) {
       return res
         .status(400)
-        .json({ message: "Cập nhật trạng thái không thành công." });
+        .json({ message: "Cập nhật trạng thái sản phẩm không thành công." });
     }
 
-    return res
-      .status(200)
-      .json({ message: "Sản phẩm đã được xóa (trạng thái = 0)." });
+    // Cập nhật trạng thái của các phiên bản sản phẩm trong bảng `phien_ban_san_pham`
+    const updatedVariants = await PhienBanSPModel.update(
+      { trang_thai: 0 }, // Cập nhật cột `trang_thai` thành 0
+      { where: { ma_sp } } // Điều kiện: dựa vào `ma_sp`
+    );
+
+    if (updatedVariants[0] === 0) {
+      return res.status(400).json({
+        message: "Không có phiên bản nào được cập nhật trạng thái.",
+      });
+    }
+
+    return res.status(200).json({
+      message:
+        "Sản phẩm và các phiên bản liên quan đã được xóa (trạng thái = 0).",
+    });
   } catch (error) {
-    console.error("Lỗi khi cập nhật trạng thái sản phẩm:", error);
-    return res.status(500).json({ message: "Có lỗi xảy ra khi xóa sản phẩm." });
+    console.error("Lỗi khi xóa sản phẩm và các phiên bản:", error);
+    return res
+      .status(500)
+      .json({ message: "Có lỗi xảy ra khi xóa sản phẩm và các phiên bản." });
   }
 };
 
