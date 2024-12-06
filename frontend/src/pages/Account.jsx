@@ -28,9 +28,7 @@ const Account = () => {
     gioi_tinh: "",
     sdt: "",
     email: "",
-    mat_khau: "",
-    ma_quyen: "",
-    trang_thai: "",
+    mat_khau: ""
   });
 
   useEffect(() => {
@@ -108,6 +106,14 @@ const Account = () => {
       alert(validationError);
       return;
     }
+
+    if (
+      newAccountData.ma_quyen < 1 || // Kiểm tra nếu `ma_quyen` nhỏ hơn 1
+      newAccountData.ma_quyen > 4 // Kiểm tra nếu `ma_quyen` lớn hơn 4
+    ) {
+      alert("Mã quyền phải nằm trong khoảng từ 1 đến 4 và không được để trống.");
+      return;
+    }
     
     try {
       const ma_nv = generateEmployeeId();
@@ -148,7 +154,7 @@ const Account = () => {
     }
   };
 
-    const handleEditAccount = async () => {
+  const handleEditAccount = async () => {
       const validationError = validateAccountData(editAccountData);
       if (validationError) {
         alert(validationError);
@@ -166,7 +172,7 @@ const Account = () => {
       } catch (error) {
         console.error("Error updating account:", error);
       }
-    };
+  };
 
   const handleDeleteAccount = async (ma_nv) => {
     try {
@@ -366,15 +372,18 @@ const Account = () => {
               )}
             </tbody>
           </table>
-          <div className="add-account_button">
-            <button onClick={handleShowAddAccount}>Thêm Tài Khoản</button>
-          </div>
+          {statusFilter === "1" && (
+            <div className="add-account_button">
+              <button onClick={handleShowAddAccount}>Thêm Tài Khoản</button>
+            </div>
+          )}
         </div>
       </div>
 
       {showAddAccount && (
         <div className="add-account">
           <div className="add-account_content">
+          <h2 className="account_title">Thêm Tài Khoản</h2>
             {/* First Column */}
             <div className="add-account_content__column">
               <div className="add-account_content__content-items">
@@ -459,6 +468,7 @@ const Account = () => {
       {showSearchResult && searchedAccount && (
         <div className="add-account">
           <div className="add-account_content">
+          <h2 className="account_title">Thông Tin Tài Khoản Cần Tìm</h2>
             {/* First Column */}
             <div className="add-account_content__column">
               <div className="add-account_content__content-items">
@@ -540,6 +550,7 @@ const Account = () => {
       {showEditAccount && currentAccount && (
         <div className="edit-account">
           <div className="edit-account_content">
+           <h2 className="account_title">Sửa Tài Khoản</h2>
             <div className="edit-account_content__column">
               <div className="edit-account_content__content-items">
                 <label htmlFor="ten_nv">Tên Nhân Viên</label>

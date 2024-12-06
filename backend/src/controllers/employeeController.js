@@ -62,7 +62,7 @@ const addEmployee = async (req, res) => {
 // Update an employee by ma_nv
 const updateEmployee = async (req, res) => {
   const { ma_nv } = req.params;
-  const { ten_nv, gioi_tinh, sdt, email, mat_khau, ma_quyen } = req.body; // Các thuộc tính cần cập nhật
+  const { ten_nv, gioi_tinh, sdt, email, mat_khau } = req.body; // Các thuộc tính cần cập nhật
   try {
     const employee = await Employee.findByPk(ma_nv);
     if (!employee) return res.status(404).json({ error: 'Không tìm thấy nhân viên' });
@@ -72,8 +72,6 @@ const updateEmployee = async (req, res) => {
     employee.sdt = sdt;
     employee.email = email;
     employee.mat_khau = mat_khau;
-    employee.ma_quyen = ma_quyen;
-    employee.trang_thai = trang_thai;
     await employee.save();
 
     res.json(employee);

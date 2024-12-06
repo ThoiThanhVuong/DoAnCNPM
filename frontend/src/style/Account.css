@@ -232,3 +232,16 @@ button:last-child:hover {
 .reactivate-acc:hover {
   background-color: #45a049;
 }
+
+.account_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Căn giữa theo chiều ngang */
+  justify-content: center; /* Căn giữa theo chiều dọc */
+}
+
+.account_title {
+  margin-bottom: 20px; /* Thêm khoảng cách giữa tiêu đề và nội dung */
+  font-size: 24px;
+  font-weight: bold;
+}

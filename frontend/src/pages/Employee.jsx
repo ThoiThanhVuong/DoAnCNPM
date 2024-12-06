@@ -47,6 +47,14 @@ const Employee = () => {
   }, [manv]);
 
   const handlePasswordChange = async () => {
+    if (!newPassword?.trim()){
+      alert("Muốn đổi thì mật khẩu không được để trống.");
+      return;
+    }
+    if (newPassword.length < 6){
+      alert("Mật khẩu mới phải dài hơn 6 ký tự.");
+      return;
+    }
     if (newPassword !== confirmPassword) {
       alert("Mật khẩu mới và xác nhận mật khẩu không khớp.");
       return;
@@ -67,9 +75,6 @@ const Employee = () => {
           body: JSON.stringify(updatedAccountData),
         }
       );
-
-      if (!response.ok) throw new Error("Failed to update account");
-
       setEmployeeData((prevData) => ({
         ...prevData,
         mat_khau: newPassword,
