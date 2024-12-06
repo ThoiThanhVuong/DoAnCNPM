@@ -174,21 +174,20 @@ const Product = () => {
                   <td>
                     <div className="action-button">
                       <button
-                        className="btn-view-detail"
+                        className="btn-product-detail"
                         onClick={() => handleViewDetail(product)}
                       >
-                        Chi Tiết
                         <FaInfoCircle />
                       </button>
-                      <button className="btn-edit-product">
-                        Sửa
+                      <button className="btn-product-edit">
+                      
                         <FaEdit />
                       </button>
                       <button
-                        className="btn-delete-product"
+                        className="btn-product-delete"
                         onClick={() => handleDeleteProduct(product.ma_sp)}
                       >
-                        Xóa
+                      
                         <FaTrash />
                       </button>
                     </div>

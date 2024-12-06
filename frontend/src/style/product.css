@@ -82,37 +82,34 @@
 .product-actions button svg {
   margin-right: 8px;
 }
-
+.action-button{
+  display: flex;
+  gap: 10px;
+  font-size: 16px;
+  
+}
+.action-button.action-button button{
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+.action-button button:hover {
+  transform: scale(1.05); /* Hiệu ứng phóng to khi hover */
+}
 .btn-add-product {
   background-color: #28a745;
 }
 
-.btn-edit-product {
-  background-color: #3498db;
-}
 
-.btn-delete-product {
-  background-color: red;
-}
+
 .btn-detail-product {
   background-color: rgb(180, 160, 160);
 }
-.btn-detail-product:hover {
-  background-color: #ddd;
-  transform: translateY(-3px);
-}
+
 .btn-add-product:hover {
   background-color: #2d6639; /* Tối hơn khi hover */
-  transform: translateY(-3px); /* Tăng hiệu ứng nâng khi hover */
-}
-
-.btn-edit-product:hover {
-  background-color: #236ea0; /* Tối hơn khi hover */
-  transform: translateY(-3px); /* Tăng hiệu ứng nâng khi hover */
-}
-
-.btn-delete-product:hover {
-  background-color: #9a2c1f; /* Tối hơn khi hover */
   transform: translateY(-3px); /* Tăng hiệu ứng nâng khi hover */
 }
 

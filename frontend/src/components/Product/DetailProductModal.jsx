@@ -1,25 +1,30 @@
 import React, { useState, useEffect } from "react";
 import "../Product/detailProduct.css";
 
+
 const DetailProductModal = ({ show, onClose, product }) => {
-  const [selectedImage, setSelectedImage] = useState("");
   const [showTable, setShowTable] = useState(false); // State để hiển thị bảng
   const [showDetail, setShowDetail] = useState(true); // State để điều khiển hiển thị chi tiết sản phẩm
-
+  const [selectedColor, setSelectedColor] = useState("");
+  const colorMap = {
+    "Xanh Dương": "#27A4F2",
+    "Đỏ": "#FF0000",
+    "Vàng": "#FFFF00",
+    "Xanh lá": "#008000",
+    "Đen": "#000000",
+    "Trắng": "#FFFFFF",
+   
+  };
+  const availableColors = [...new Set(product?.phienBanSanPhams?.map((item) => item.mauSac?.ten_mau) || [])];
   useEffect(() => {
-    if (product && product.phienBanSanPhams && selectedImage === "") {
-      if (product.phienBanSanPhams.length > 0) {
-        setSelectedImage(
-          `${
-            product.hinh_anh
-          }_${product.phienBanSanPhams[0].mauSac.ten_mau.replace(
-            /\s+/g,
-            "_"
-          )}.jpg`
-        );
-      }
+    if (product && availableColors.length > 0) {
+      setSelectedColor(availableColors[0]); // Đặt màu đầu tiên mặc định
     }
-  }, [product, selectedImage]);
+  }, [product]);
+
+  const handleColorChange = (color) => {
+    setSelectedColor(color);
+  };
 
   const handleContinue = () => {
     setShowDetail(false); // Ẩn phần chi tiết sản phẩm khi bấm "Tiếp Tục"
@@ -32,7 +37,7 @@ const DetailProductModal = ({ show, onClose, product }) => {
   };
 
   if (!show || !product) return null;
-
+  const imageURL = product?.hinh_anh? `/img/${product.hinh_anh}_${selectedColor}.jpg`:"not image";
   return (
     <div className="modal-overlay">
       <div className="modal-content">
@@ -46,10 +51,27 @@ const DetailProductModal = ({ show, onClose, product }) => {
         {showDetail && (
           <div className="detail-content">
             <div className="detail-left">
-              <div
-                className="img-detail"
-                style={{ backgroundImage: `url(${product.hinh_anh || ""})` }}
-              ></div>
+              <div className="img-detail" >
+              <img
+               src={imageURL}
+               alt={product?.ten_sp || "Sản phẩm"}
+                />
+              </div>
+              <div className="color-option">
+              {availableColors.map((color, index) => (
+                  <button
+                    key={index}
+                    className={`color-button ${selectedColor === color ? "active" : ""}`}
+                    style={{
+                      backgroundColor: colorMap[color] || "#ccc", // Màu nền theo tên màu
+                      border: selectedColor === color ? "2px solid black" : "1px solid #ccc",
+                    }}
+                    onClick={() => handleColorChange(color)}
+                  >
+                   
+                  </button>
+                ))}
+              </div>
             </div>
             <div className="detail-right">
               <p>
