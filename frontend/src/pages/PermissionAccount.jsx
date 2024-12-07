@@ -50,7 +50,7 @@ const PermissionAccount = () => {
       console.log(roleID.ma_quyen);
       const response = await permissionService.updateRole(maNvID, roleID);
       console.log("updated role succcessfull", response);
-      alert("Update successfull");
+      alert("Thay đổi thành công.");
       window.location.reload();
     } catch (error) {
       console.log("error updating role: ", error);
@@ -69,7 +69,7 @@ const PermissionAccount = () => {
     try {
       const response = await permissionService.deleteRole(ma_nv);
       console.log("delete successfull", response);
-      alert("deleted", response);
+      alert("Đã xóa thành công.", response);
       window.location.reload();
     } catch (error) {
       console.log("error deleting user account: ", error);
