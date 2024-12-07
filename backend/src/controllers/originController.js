@@ -6,6 +6,9 @@ exports.getAllOrigins = async (req, res) => {
   try {
     const origins = await Origin.findAll({
       attributes: ["ma_xuat_xu", "ten_xuat_xu"],
+      where: {
+        trang_thai: 1,
+      },
     });
     res.json(origins);
   } catch (error) {
@@ -19,7 +22,9 @@ exports.addOrigin = async (req, res) => {
   const { ten_xuat_xu } = req.body;
 
   try {
-    const originExists = await Origin.findOne({ where: { ten_xuat_xu } });
+    const originExists = await Origin.findOne({
+      where: { ten_xuat_xu, trang_thai: 1 },
+    });
     if (originExists) {
       return res.status(409).json({ error: "Tên xuất xứ đã tồn tại" });
     }
@@ -73,21 +78,27 @@ exports.updateOrigin = async (req, res) => {
 };
 
 // Xóa xuất xứ
+
 exports.deleteOrigin = async (req, res) => {
   const { id } = req.params;
+  const { trang_thai } = req.body;
 
   try {
     const originToDelete = await Origin.findOne({
       where: { ma_xuat_xu: id },
     });
+
     if (!originToDelete) {
       return res.status(404).json({ error: "Xuất xứ không tồn tại" });
     }
 
-    await Origin.destroy({ where: { ma_xuat_xu: id } });
-    res.status(200).json({ message: "Xuất xứ đã bị xóa thành công" });
+    originToDelete.trang_thai = trang_thai || 0;
+
+    await originToDelete.save();
+
+    res.status(200).json({ message: "Xuất xứ đã được ẩn thành công" });
   } catch (error) {
     console.error("Lỗi khi xóa xuất xứ:", error);
-    res.status(500).json({ error: "Lỗi khi xóa xuất xứ" });
+    res.status(500).json({ error: "Lỗi khi ẩn xuất xứ" });
   }
 };

@@ -6,6 +6,9 @@ exports.getAllColors = async (req, res) => {
   try {
     const colors = await Color.findAll({
       attributes: ["ma_mau", "ten_mau"], // Lấy các thuộc tính của màu sắc
+      where: {
+        trang_thai: 1,
+      },
     });
     res.json(colors);
   } catch (error) {
@@ -23,7 +26,9 @@ exports.addColor = async (req, res) => {
   }
 
   try {
-    const colorExists = await Color.findOne({ where: { ten_mau } });
+    const colorExists = await Color.findOne({
+      where: { ten_mau, trang_thai: 1 },
+    });
     if (colorExists) {
       return res.status(409).json({ error: "Tên màu sắc đã tồn tại" });
     }
@@ -83,17 +88,22 @@ exports.deleteColor = async (req, res) => {
   const { id } = req.params;
 
   try {
+    // Tìm màu sắc theo ID
     const colorToDelete = await Color.findOne({
       where: { ma_mau: id },
     });
+
     if (!colorToDelete) {
       return res.status(404).json({ error: "Màu sắc không tồn tại" });
     }
 
-    await Color.destroy({ where: { ma_mau: id } });
-    res.status(200).json({ message: "Màu sắc đã bị xóa thành công" });
+    // Cập nhật trạng thái của màu sắc thành 0 (ẩn)
+    colorToDelete.trang_thai = 0;
+    await colorToDelete.save();
+
+    res.status(200).json({ message: "Màu sắc đã bị ẩn thành công" });
   } catch (error) {
-    console.error("Lỗi khi xóa màu sắc:", error);
-    res.status(500).json({ error: "Lỗi khi xóa màu sắc từ cơ sở dữ liệu" });
+    console.error("Lỗi khi ẩn màu sắc:", error);
+    res.status(500).json({ error: "Lỗi khi ẩn màu sắc từ cơ sở dữ liệu" });
   }
 };

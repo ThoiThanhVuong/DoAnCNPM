@@ -46,7 +46,8 @@ const OSModal = ({ isOpen, onClose }) => {
       });
       setOperatingSystems((prevOS) => [...prevOS, response.data]);
       setNewOS("");
-      setErrorMessage(""); // Xóa thông báo lỗi sau khi thành công
+      setErrorMessage("");
+      alert("Thêm thành công");
     } catch (error) {
       if (error.response && error.response.status === 409) {
         setErrorMessage("Tên hệ điều hành đã tồn tại");
@@ -84,7 +85,8 @@ const OSModal = ({ isOpen, onClose }) => {
       // Reset các giá trị sau khi cập nhật thành công
       setNewOS("");
       setEditIndex(null);
-      setErrorMessage(""); // Xóa thông báo lỗi nếu có
+      setErrorMessage("");
+      alert("Sửa thành công");
     } catch (error) {
       // Kiểm tra lỗi phản hồi từ backend
       if (error.response) {
@@ -117,10 +119,16 @@ const OSModal = ({ isOpen, onClose }) => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(
-        `http://localhost:5000/api/os/${osToDelete.ma_hdh}` // Xóa đúng theo mã hệ điều hành
+      await axios.put(`http://localhost:5000/api/os/${osToDelete.ma_hdh}`, {
+        trang_thai: 0,
+      });
+      setOperatingSystems((prevOperatingSystems) =>
+        prevOperatingSystems.map((os, i) =>
+          i === index ? { ...os, trang_thai: 0 } : os
+        )
       );
-      setOperatingSystems((prevOS) => prevOS.filter((_, i) => i !== index));
+      onClose();
+      alert("Xóa hệ điều hành thành công");
     } catch (error) {
       setErrorMessage("Lỗi khi xóa hệ điều hành");
       console.error("Error deleting OS:", error);
@@ -153,7 +161,9 @@ const OSModal = ({ isOpen, onClose }) => {
             value={newOS || ""}
             onChange={(e) => setNewOS(e.target.value)}
           />
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {errorMessage && (
+            <p className="error-message-brand">{errorMessage}</p>
+          )}
         </div>
 
         <div className="brand-table-container">

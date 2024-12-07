@@ -46,7 +46,8 @@ const ColorModal = ({ isOpen, onClose }) => {
       });
       setColors((prevColors) => [...prevColors, response.data]);
       setNewColor("");
-      setErrorMessage(""); // Xóa thông báo lỗi sau khi thành công
+      setErrorMessage("");
+      alert("Thêm thành công");
     } catch (error) {
       setErrorMessage(
         error.response && error.response.status === 409
@@ -85,7 +86,8 @@ const ColorModal = ({ isOpen, onClose }) => {
       // Reset các giá trị sau khi cập nhật thành công
       setNewColor("");
       setEditIndex(null);
-      setErrorMessage(""); // Xóa thông báo lỗi nếu có
+      setErrorMessage("");
+      alert("Sửa thành công");
     } catch (error) {
       setErrorMessage(
         error.response
@@ -99,28 +101,6 @@ const ColorModal = ({ isOpen, onClose }) => {
     }
   };
 
-  // Handle deleting a color with confirmation
-  const handleDeleteColor = async (index, e) => {
-    e.stopPropagation(); // Ngừng sự kiện tiếp theo
-
-    const colorToDelete = colors[index];
-    const confirmDelete = window.confirm(
-      `Bạn có chắc muốn xóa màu sắc ${colorToDelete.ten_mau}?`
-    );
-
-    if (!confirmDelete) return;
-
-    try {
-      await axios.delete(
-        `http://localhost:5000/api/color/${colorToDelete.ma_mau}` // Xóa đúng theo mã màu sắc
-      );
-      setColors((prevColors) => prevColors.filter((_, i) => i !== index));
-    } catch (error) {
-      setErrorMessage("Lỗi khi xóa màu sắc");
-      console.error("Error deleting color:", error);
-    }
-  };
-
   // Handle selecting a color for editing
   const handleColorClick = (index) => {
     setEditIndex(index);
@@ -128,7 +108,38 @@ const ColorModal = ({ isOpen, onClose }) => {
     setErrorMessage("");
   };
 
-  // Render modal if open
+  // Handle hiding a color with confirmation
+  const handleDeleteColor = async (index, e) => {
+    e.stopPropagation(); // Ngừng sự kiện tiếp theo
+
+    const colorToDelete = colors[index];
+    const confirmDelete = window.confirm(
+      `Bạn có chắc muốn ẩn màu sắc ${colorToDelete.ten_mau}?`
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      // Gửi yêu cầu PUT để cập nhật trạng thái màu sắc thành 0 (ẩn)
+      await axios.put(
+        `http://localhost:5000/api/color/${colorToDelete.ma_mau}`,
+        { trang_thai: 0 }
+      );
+
+      // Cập nhật lại state sau khi ẩn thành công
+      setColors((prevColors) =>
+        prevColors.map((color, i) =>
+          i === index ? { ...color, trang_thai: 0 } : color
+        )
+      );
+      onClose();
+      alert("Xóa màu sắc thành công");
+    } catch (error) {
+      setErrorMessage("Lỗi khi ẩn màu sắc");
+      console.error("Error hiding color:", error);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -147,7 +158,9 @@ const ColorModal = ({ isOpen, onClose }) => {
             value={newColor || ""}
             onChange={(e) => setNewColor(e.target.value)}
           />
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {errorMessage && (
+            <p className="error-message-brand">{errorMessage}</p>
+          )}
         </div>
 
         <div className="brand-table-container">

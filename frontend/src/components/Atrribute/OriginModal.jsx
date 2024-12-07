@@ -46,7 +46,8 @@ const OriginModal = ({ isOpen, onClose }) => {
       });
       setOrigins((prevOrigins) => [...prevOrigins, response.data]);
       setNewOrigin("");
-      setErrorMessage(""); // Xóa thông báo lỗi sau khi thành công
+      setErrorMessage("");
+      alert("Thêm thành công");
     } catch (error) {
       if (error.response && error.response.status === 409) {
         setErrorMessage("Tên xuất xứ đã tồn tại");
@@ -85,6 +86,7 @@ const OriginModal = ({ isOpen, onClose }) => {
       setNewOrigin("");
       setEditIndex(null);
       setErrorMessage(""); // Xóa thông báo lỗi nếu có
+      alert("Sửa thành công");
     } catch (error) {
       // Kiểm tra lỗi phản hồi từ backend
       if (error.response) {
@@ -103,27 +105,7 @@ const OriginModal = ({ isOpen, onClose }) => {
         setErrorMessage("Lỗi mạng, vui lòng thử lại");
         console.error("Lỗi mạng:", error);
       }
-      document.getElementById("origin-input").focus(); // Focus vào input nếu có lỗi
-    }
-  };
-
-  // Handle deleting an origin with confirmation
-  const handleDeleteOrigin = async (index) => {
-    const originToDelete = origins[index];
-    const confirmDelete = window.confirm(
-      `Bạn có chắc muốn xóa xuất xứ ${originToDelete.ten_xuat_xu}?`
-    );
-
-    if (!confirmDelete) return;
-
-    try {
-      await axios.delete(
-        `http://localhost:5000/api/origins/${originToDelete.ma_xuat_xu}` // Xóa đúng theo mã xuất xứ
-      );
-      setOrigins((prevOrigins) => prevOrigins.filter((_, i) => i !== index));
-    } catch (error) {
-      setErrorMessage("Lỗi khi xóa xuất xứ");
-      console.error("Error deleting origin:", error);
+      document.getElementById("origin-input").focus();
     }
   };
 
@@ -134,7 +116,42 @@ const OriginModal = ({ isOpen, onClose }) => {
     setErrorMessage("");
   };
 
-  // Render modal if open
+  //Xóa
+  const handleDeleteOrigin = async (index) => {
+    const originToDelete = origins[index];
+    const confirmDelete = window.confirm(
+      `Bạn có chắc muốn xóa xuất xứ ${originToDelete.ten_xuat_xu}?`
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      // Gửi yêu cầu PUT để cập nhật trạng thái của xuất xứ thành 0 (ẩn)
+      await axios.put(
+        `http://localhost:5000/api/origins/${originToDelete.ma_xuat_xu}`,
+        { trang_thai: 0 }
+      );
+
+      // Cập nhật lại state sau khi xóa thành công
+      setOrigins((prevOrigins) =>
+        prevOrigins.map((origin, i) =>
+          i === index ? { ...origin, trang_thai: 0 } : origin
+        )
+      );
+
+      onClose(); // Đóng modal sau khi xóa thành công
+      alert("Xóa xuất xứ thành công");
+    } catch (error) {
+      if (error.response) {
+        console.error("Error deleting origin:", error.response.data);
+        setErrorMessage(error.response.data.error || "Lỗi khi xóa xuất xứ");
+      } else {
+        console.error("Error deleting origin:", error);
+        setErrorMessage("Lỗi khi xóa xuất xứ");
+      }
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -153,7 +170,9 @@ const OriginModal = ({ isOpen, onClose }) => {
             value={newOrigin || ""}
             onChange={(e) => setNewOrigin(e.target.value)}
           />
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {errorMessage && (
+            <p className="error-message-brand">{errorMessage}</p>
+          )}
         </div>
 
         <div className="brand-table-container">

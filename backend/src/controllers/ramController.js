@@ -6,6 +6,9 @@ exports.getAllRams = async (req, res) => {
   try {
     const rams = await Ram.findAll({
       attributes: ["ma_ram", "kich_thuoc_ram"], // Lấy các thuộc tính của RAM
+      where: {
+        trang_thai: 1,
+      },
     });
     res.json(rams);
   } catch (error) {
@@ -26,7 +29,9 @@ exports.addRam = async (req, res) => {
 
   try {
     // Kiểm tra xem kích thước RAM đã tồn tại chưa
-    const ramExists = await Ram.findOne({ where: { kich_thuoc_ram } });
+    const ramExists = await Ram.findOne({
+      where: { kich_thuoc_ram, trang_thai: 1 },
+    });
     if (ramExists) {
       return res.status(409).json({ error: "Kích thước RAM đã tồn tại" });
     }
@@ -85,15 +90,20 @@ exports.deleteRam = async (req, res) => {
   const { id } = req.params;
 
   try {
+    // Tìm RAM theo mã
     const ramToDelete = await Ram.findOne({ where: { ma_ram: id } });
+
     if (!ramToDelete) {
       return res.status(404).json({ error: "RAM không tồn tại" });
     }
 
-    await Ram.destroy({ where: { ma_ram: id } });
-    res.status(200).json({ message: "RAM đã bị xóa thành công" });
+    // Cập nhật trạng thái RAM thành 0 (ẩn)
+    ramToDelete.trang_thai = 0;
+    await ramToDelete.save();
+
+    res.status(200).json({ message: "RAM đã bị ẩn thành công" });
   } catch (error) {
-    console.error("Lỗi khi xóa RAM:", error);
-    res.status(500).json({ error: "Lỗi khi xóa RAM" });
+    console.error("Lỗi khi ẩn RAM:", error);
+    res.status(500).json({ error: "Lỗi khi ẩn RAM" });
   }
 };

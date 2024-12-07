@@ -165,20 +165,33 @@ const AddProductModal = ({ show, onClose }) => {
     );
     resetForm_nextTab();
   };
+
   const deleteConfiguration = (index) => {
     if (index < 0 || index >= configurations.length) {
       console.error("Chọn cấu hình hợp lệ để xóa!");
       return;
     }
 
-    setConfigurations((prev) => prev.filter((_, idx) => idx !== index));
-    resetForm_nextTab();
+    console.log("Dữ liệu trước khi xóa:", configurations); // Log cấu hình trước khi xóa
+
+    setConfigurations((prev) => {
+      const updatedConfigs = prev.filter((_, idx) => idx !== index); // Lọc ra cấu hình không phải là cái đang xóa
+      console.log("Dữ liệu sau khi xóa:", updatedConfigs); // Log cấu hình sau khi xóa
+      return updatedConfigs; // Cập nhật lại danh sách cấu hình
+    });
   };
+
   const handleRowClick = (index) => {
+    if (index < 0 || index >= configurations.length) {
+      console.error("Chỉ mục không hợp lệ");
+      return;
+    }
     const selectedConfig = configurations[index];
+
     setNewConfig(selectedConfig);
-    setEditIndex(index); // Đánh dấu dòng đang sửa
+    setEditIndex(index);
   };
+
   const resetForm_nextTab = () => {
     setNewConfig({
       rom: "",

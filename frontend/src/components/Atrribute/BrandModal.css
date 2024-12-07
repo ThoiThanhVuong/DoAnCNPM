@@ -140,7 +140,7 @@
   transform: translateY(-2px); /* Tăng hiệu ứng nâng khi hover */
 }
 
-.error-message {
+.error-message-brand {
   color: red;
   animation: fadeIn 0.5s ease; /* Thêm hiệu ứng hiển thị lỗi */
 }

@@ -15,9 +15,8 @@ const UpdateProduct = ({ show, onClose, product }) => {
   const [rom, setRom] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
+
   //
-  const [configurations, setConfigurations] = useState([]);
-  const [editIndex, setEditIndex] = useState(null); // Để lưu index của cấu hình đang sửa
   const [formData, setFormData] = useState({
     productName: "",
     chip: "",
@@ -39,6 +38,15 @@ const UpdateProduct = ({ show, onClose, product }) => {
   });
 
   useEffect(() => {
+    if (product) {
+      console.log(product);
+      setFormData({
+        os: product.operatingSystem?.ten_hdh,
+        brand: product.brand?.ten_thuong_hieu,
+        origin: product.origin?.ten_xuat_xu,
+        region: product.storageArea?.ten_kho,
+      });
+    }
     const fetchData = async () => {
       try {
         const brandResponse = await axios.get(
@@ -73,26 +81,16 @@ const UpdateProduct = ({ show, onClose, product }) => {
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
-    setFormData({ ...formData, [id]: value });
-    setErrors({ ...errors, [id]: "" }); // Xóa lỗi khi người dùng nhập
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [id]: value,
+    }));
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [id]: "", // Xóa lỗi khi nhập
+    }));
   };
 
-  const validateProductForm = () => {
-    const newErrors = {};
-
-    Object.keys(formData).forEach((key) => {
-      if (!formData[key]) {
-        newErrors[key] = "Không được để trống";
-      }
-    });
-    setErrors(newErrors);
-    // Tìm tất cả các ô còn lỗi và focus vào chúng
-    Object.keys(newErrors).forEach((key) => {
-      const errorField = document.getElementById(key);
-      if (errorField) errorField.focus();
-    });
-    return Object.keys(newErrors).length === 0;
-  };
   const validateConfigForm = () => {
     if (
       !newConfig.rom ||
@@ -113,74 +111,6 @@ const UpdateProduct = ({ show, onClose, product }) => {
       return false;
     }
     return true;
-  };
-
-  const addConfiguration = () => {
-    if (!validateConfigForm()) {
-      return;
-    }
-    console.log("Cấu hình mới:", newConfig);
-    const romName =
-      rom.find((option) => option.ma_rom === Number(newConfig.rom))
-        ?.kich_thuoc_rom || "N/A";
-    const ramName =
-      ram.find((option) => option.ma_ram === Number(newConfig.ram))
-        ?.kich_thuoc_ram || "N/A";
-    const colorName =
-      colors.find((option) => option.ma_mau === Number(newConfig.color))
-        ?.ten_mau || "N/A";
-
-    setConfigurations((prev) => [
-      ...prev,
-      {
-        ...newConfig,
-        rom: romName,
-        ram: ramName,
-        color: colorName,
-      },
-    ]);
-
-    resetForm_nextTab();
-  };
-
-  const editConfiguration = (index) => {
-    if (editIndex === null) {
-      alert("Chọn cấu hình để sửa!");
-      return;
-    }
-
-    if (!validateConfigForm()) {
-      return;
-    }
-
-    setConfigurations((prev) =>
-      prev.map((config, idx) => (idx === editIndex ? newConfig : config))
-    );
-    resetForm_nextTab();
-  };
-  const deleteConfiguration = (index) => {
-    if (index < 0 || index >= configurations.length) {
-      console.error("Chọn cấu hình hợp lệ để xóa!");
-      return;
-    }
-
-    setConfigurations((prev) => prev.filter((_, idx) => idx !== index));
-    resetForm_nextTab();
-  };
-  const handleRowClick = (index) => {
-    const selectedConfig = configurations[index];
-    setNewConfig(selectedConfig);
-    setEditIndex(index); // Đánh dấu dòng đang sửa
-  };
-  const resetForm_nextTab = () => {
-    setNewConfig({
-      rom: "",
-      ram: "",
-      color: "",
-      priceImport: "",
-      priceSell: "",
-    });
-    setEditIndex(null); // Xóa trạng thái sửa
   };
 
   const handleNextTab = () => {
@@ -208,43 +138,12 @@ const UpdateProduct = ({ show, onClose, product }) => {
 
   const handleCloseModal = (e) => {
     if (e.target.classList.contains("modal-overlay")) {
-      resetForm();
       onClose();
     }
   };
 
   const handleCloseButtonClick = () => {
-    resetForm();
-    resetForm_nextTab();
-    setConfigurations([]);
     onClose();
-  };
-
-  const resetForm = () => {
-    setFormData({
-      productName: "",
-      chip: "",
-      battery: "",
-      screenSize: "",
-      frontCamera: "",
-      rearCamera: "",
-      os: "",
-      brand: "",
-      origin: "",
-      region: "",
-    });
-    setNewConfig({
-      rom: "",
-      ram: "",
-      color: "",
-      priceImport: "",
-      priceSell: "",
-    });
-    setConfigurations([]);
-    setErrors({});
-    setSelectedImage(null);
-    setIsNextTabVisible(false); // Reset về tab đầu tiên
-    setEditIndex(null);
   };
 
   return (
@@ -286,19 +185,39 @@ const UpdateProduct = ({ show, onClose, product }) => {
 
             {/* Các trường thông tin sản phẩm */}
             {[
-              { id: "productName", label: "Tên sản phẩm" },
-              { id: "chip", label: "Chip xử lý" },
-              { id: "battery", label: "Dung lượng pin" },
-              { id: "screenSize", label: "Kích thước màn hình" },
-              { id: "frontCamera", label: "Camera trước" },
-              { id: "rearCamera", label: "Camera sau" },
+              {
+                id: "productName",
+                label: "Tên sản phẩm",
+                value: product.ten_sp,
+              },
+              { id: "chip", label: "Chip xử lý", value: product.chip_xu_ly },
+              {
+                id: "battery",
+                label: "Dung lượng pin",
+                value: product.dung_luong_pin,
+              },
+              {
+                id: "screenSize",
+                label: "Kích thước màn hình",
+                value: product.kich_thuoc_man,
+              },
+              {
+                id: "frontCamera",
+                label: "Camera trước",
+                value: product.camera_truoc,
+              },
+              {
+                id: "rearCamera",
+                label: "Camera sau",
+                value: product.camera_sau,
+              },
             ].map((field) => (
               <div key={field.id}>
                 <label htmlFor={field.id}>{field.label}:</label>
                 <input
                   type="text"
                   id={field.id}
-                  value={formData[field.id]}
+                  value={formData[field.id] || field.value}
                   onChange={handleInputChange}
                   placeholder={field.label}
                 />
@@ -309,53 +228,68 @@ const UpdateProduct = ({ show, onClose, product }) => {
                 )}
               </div>
             ))}
+            <div>
+              <label htmlFor="os">Hệ điều hành:</label>
+              <select
+                id="os"
+                value={formData.os}
+                onChange={(e) => handleInputChange(e)} // Xử lý thay đổi
+              >
+                <option value="">-- Chọn hệ điều hành --</option>
+                {os.map((opt) => (
+                  <option key={opt.ma_hdh} value={opt.ma_hdh}>
+                    {opt.ten_hdh}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="brand">Thương hiệu:</label>
+              <select
+                id="brand"
+                value={formData.brand}
+                onChange={(e) => handleInputChange(e)} // Xử lý thay đổi
+              >
+                <option value="">-- Chọn thương hiệu --</option>
+                {brands.map((opt) => (
+                  <option key={opt.ma_thuong_hieu} value={opt.ma_thuong_hieu}>
+                    {opt.ten_thuong_hieu}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="origin">Xuất xứ:</label>
+              <select
+                id="origin"
+                value={formData.origin}
+                onChange={(e) => handleInputChange(e)} // Xử lý thay đổi
+              >
+                <option value="">-- Chọn xuất xứ --</option>
+                {origins.map((opt) => (
+                  <option key={opt.ma_xuat_xu} value={opt.ma_xuat_xu}>
+                    {opt.ten_xuat_xu}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="region">Khu vực:</label>
+              <select
+                id="region"
+                value={formData.region}
+                onChange={(e) => handleInputChange(e)} // Xử lý thay đổi
+              >
+                <option value="">-- Chọn khu vực --</option>
+                {area.map((opt) => (
+                  <option key={opt.ma_kho} value={opt.ma_kho}>
+                    {opt.ten_kho}
+                  </option>
+                ))}
+              </select>
+            </div>
 
             {/* Các trường chọn */}
-            {[
-              { id: "os", label: "Hệ điều hành", options: os },
-              { id: "brand", label: "Thương hiệu", options: brands },
-              { id: "origin", label: "Xuất xứ", options: origins },
-              { id: "region", label: "Khu vực", options: area },
-            ].map((select) => (
-              <div key={select.id}>
-                <label htmlFor={select.id}>{select.label}:</label>
-                <select
-                  id={select.id}
-                  value={formData[select.id]}
-                  onChange={handleInputChange}
-                >
-                  <option value="">
-                    -- Chọn {select.label.toLowerCase()} --
-                  </option>
-                  {select.options.map((opt) => (
-                    <option
-                      key={
-                        opt.ma_hdh ||
-                        opt.ma_thuong_hieu ||
-                        opt.ma_xuat_xu ||
-                        opt.ma_kho
-                      }
-                      value={
-                        opt.ma_hdh ||
-                        opt.ma_thuong_hieu ||
-                        opt.ma_xuat_xu ||
-                        opt.ma_kho
-                      }
-                    >
-                      {opt.ten_hdh ||
-                        opt.ten_thuong_hieu ||
-                        opt.ten_xuat_xu ||
-                        opt.ten_kho}
-                    </option>
-                  ))}
-                </select>
-                {errors[select.id] && (
-                  <span className="error-message-product">
-                    {errors[select.id]}
-                  </span>
-                )}
-              </div>
-            ))}
 
             {/* Nút hành động */}
             <div className="action-buttons">
@@ -426,24 +360,10 @@ const UpdateProduct = ({ show, onClose, product }) => {
             </div>
 
             <div className="action-buttons-sp">
-              <button className="btn btn-add" onClick={addConfiguration}>
-                Thêm cấu hình
-              </button>
-              <button
-                className="btn btn-edit"
-                onClick={() => editConfiguration()}
-              >
-                Sửa cấu hình
-              </button>
-              <button
-                className="btn btn-delete"
-                onClick={() => deleteConfiguration()}
-              >
-                Xóa cấu hình
-              </button>
-              <button className="btn btn-reset" onClick={resetForm_nextTab}>
-                Làm mới
-              </button>
+              <button className="btn btn-add">Thêm cấu hình</button>
+              <button className="btn btn-edit">Sửa cấu hình</button>
+              <button className="btn btn-delete">Xóa cấu hình</button>
+              <button className="btn btn-reset">Làm mới</button>
             </div>
 
             <div className="table-sp">
@@ -459,14 +379,14 @@ const UpdateProduct = ({ show, onClose, product }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {configurations.map((config, index) => (
-                    <tr key={index} onClick={() => handleRowClick(index)}>
+                  {product.phienBanSanPhams.map((item, index) => (
+                    <tr key={index}>
                       <td>{index + 1}</td>
-                      <td>{config.rom}</td>
-                      <td>{config.ram}</td>
-                      <td>{config.color}</td>
-                      <td>{config.priceImport}</td>
-                      <td>{config.priceSell}</td>
+                      <td>{item.rom.kich_thuoc_rom}</td>
+                      <td>{item.ram.kich_thuoc_ram}</td>
+                      <td>{item.mauSac?.ten_mau}</td>
+                      <td>{item.gia_nhap}</td>
+                      <td>{item.gia_xuat}</td>
                     </tr>
                   ))}
                 </tbody>

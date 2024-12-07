@@ -6,6 +6,9 @@ exports.getAllOperatingSystems = async (req, res) => {
   try {
     const operatingSystems = await OperatingSystem.findAll({
       attributes: ["ma_hdh", "ten_hdh"],
+      where: {
+        trang_thai: 1,
+      },
     });
     res.json(operatingSystems);
   } catch (error) {
@@ -19,7 +22,9 @@ exports.addOperatingSystem = async (req, res) => {
   const { ten_hdh } = req.body;
 
   try {
-    const osExists = await OperatingSystem.findOne({ where: { ten_hdh } });
+    const osExists = await OperatingSystem.findOne({
+      where: { ten_hdh, trang_thai: 1 },
+    });
     if (osExists) {
       return res.status(409).json({ error: "Tên hệ điều hành đã tồn tại" });
     }
@@ -79,19 +84,25 @@ exports.updateOperatingSystem = async (req, res) => {
 // Xóa hệ điều hành
 exports.deleteOperatingSystem = async (req, res) => {
   const { id } = req.params;
+  const { trang_thai } = req.body;
 
   try {
     const operatingSystemToDelete = await OperatingSystem.findOne({
       where: { ma_hdh: id },
     });
+
     if (!operatingSystemToDelete) {
       return res.status(404).json({ error: "Hệ điều hành không tồn tại" });
     }
 
-    await OperatingSystem.destroy({ where: { ma_hdh: id } });
-    res.status(200).json({ message: "Hệ điều hành đã bị xóa thành công" });
+    // Cập nhật trạng thái hệ điều hành thành 0 (ẩn)
+    operatingSystemToDelete.set("trang_thai", trang_thai || 0);
+
+    await operatingSystemToDelete.save();
+
+    res.status(200).json({ message: "Hệ điều hành đã được ẩn thành công" });
   } catch (error) {
-    console.error("Lỗi khi xóa hệ điều hành:", error);
-    res.status(500).json({ error: "Lỗi khi xóa hệ điều hành" });
+    console.error("Lỗi khi ẩn hệ điều hành:", error);
+    res.status(500).json({ error: "Lỗi khi ẩn hệ điều hành" });
   }
 };

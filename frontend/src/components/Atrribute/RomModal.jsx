@@ -51,7 +51,8 @@ const RomModal = ({ isOpen, onClose }) => {
       });
       setRomList((prevRoms) => [...prevRoms, response.data]);
       setRomSize(""); // Reset kích thước ROM
-      setErrorMessage(""); // Xóa thông báo lỗi sau khi thành công
+      setErrorMessage("");
+      alert("Thêm thành công");
     } catch (error) {
       setErrorMessage(
         error.response && error.response.status === 409
@@ -94,7 +95,8 @@ const RomModal = ({ isOpen, onClose }) => {
       // Reset các giá trị sau khi cập nhật thành công
       setRomSize("");
       setEditIndex(null);
-      setErrorMessage(""); // Xóa thông báo lỗi nếu có
+      setErrorMessage("");
+      alert("Sửa thành công");
     } catch (error) {
       setErrorMessage(
         error.response
@@ -108,7 +110,6 @@ const RomModal = ({ isOpen, onClose }) => {
     }
   };
 
-  // Handle deleting a ROM with confirmation
   const handleDeleteRom = async (index, e) => {
     e.stopPropagation(); // Ngừng sự kiện tiếp theo
 
@@ -120,13 +121,20 @@ const RomModal = ({ isOpen, onClose }) => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(
-        `http://localhost:5000/api/rom/${romToDelete.ma_rom}` // Xóa đúng theo mã ROM
+      await axios.put(`http://localhost:5000/api/rom/${romToDelete.ma_rom}`, {
+        trang_thai: 0,
+      });
+
+      setRomList((prevRoms) =>
+        prevRoms.map((rom, i) =>
+          i === index ? { ...rom, trang_thai: 0 } : rom
+        )
       );
-      setRomList((prevRoms) => prevRoms.filter((_, i) => i !== index));
+      onClose();
+      alert("Xóa thành công");
     } catch (error) {
-      setErrorMessage("Lỗi khi xóa ROM");
-      console.error("Error deleting ROM:", error);
+      setErrorMessage("Lỗi khi ẩn ROM");
+      console.error("Error hiding ROM:", error);
     }
   };
 
@@ -156,7 +164,9 @@ const RomModal = ({ isOpen, onClose }) => {
             value={romSize || ""}
             onChange={(e) => setRomSize(e.target.value)}
           />
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {errorMessage && (
+            <p className="error-message-brand">{errorMessage}</p>
+          )}
         </div>
 
         <div className="brand-table-container">

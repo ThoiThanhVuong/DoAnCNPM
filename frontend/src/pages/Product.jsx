@@ -108,9 +108,9 @@ const Product = () => {
             (product) => product.ma_sp !== productId || product.trang_thai !== 0
           )
         );
-
-        alert("Sản phẩm đã được xóa.");
       }
+
+      alert("Xóa sản phẩm thành công");
     } catch (err) {
       console.error("Lỗi khi ẩn sản phẩm:", err);
       alert("Có lỗi xảy ra khi ẩn sản phẩm.");

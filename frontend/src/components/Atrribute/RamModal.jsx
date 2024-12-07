@@ -52,6 +52,7 @@ const RamModal = ({ isOpen, onClose }) => {
       setRamList((prevRams) => [...prevRams, response.data]);
       setRamSize(""); // Reset kích thước RAM
       setErrorMessage(""); // Xóa thông báo lỗi sau khi thành công
+      alert("Thêm thành công");
     } catch (error) {
       setErrorMessage(
         error.response && error.response.status === 409
@@ -95,6 +96,7 @@ const RamModal = ({ isOpen, onClose }) => {
       setRamSize("");
       setEditIndex(null);
       setErrorMessage(""); // Xóa thông báo lỗi nếu có
+      alert("Sửa thành công");
     } catch (error) {
       setErrorMessage(
         error.response
@@ -108,36 +110,42 @@ const RamModal = ({ isOpen, onClose }) => {
     }
   };
 
-  // Handle deleting a RAM with confirmation
-  const handleDeleteRam = async (index, e) => {
-    e.stopPropagation(); // Ngừng sự kiện tiếp theo
-
-    const ramToDelete = ramList[index];
-    const confirmDelete = window.confirm(
-      `Bạn có chắc muốn xóa RAM với kích thước ${ramToDelete.kich_thuoc_ram}?`
-    );
-
-    if (!confirmDelete) return;
-
-    try {
-      await axios.delete(
-        `http://localhost:5000/api/ram/${ramToDelete.ma_ram}` // Xóa đúng theo mã RAM
-      );
-      setRamList((prevRams) => prevRams.filter((_, i) => i !== index));
-    } catch (error) {
-      setErrorMessage("Lỗi khi xóa RAM");
-      console.error("Error deleting RAM:", error);
-    }
-  };
-
   // Handle selecting a RAM for editing
   const handleRamClick = (index) => {
     setEditIndex(index);
     setRamSize(ramList[index].kich_thuoc_ram); // Lấy kích thước RAM từ bảng
     setErrorMessage("");
   };
+  //xóa
+  const handleDeleteRam = async (index, e) => {
+    const ramToDelete = ramList[index];
+    const confirmDelete = window.confirm(
+      `Bạn có chắc muốn ẩn RAM với kích thước ${ramToDelete.kich_thuoc_ram}?`
+    );
 
-  // Render modal if open
+    if (!confirmDelete) return;
+
+    try {
+      // Gửi yêu cầu PUT để thay đổi trạng thái RAM thành 0 (ẩn)
+      await axios.put(
+        `http://localhost:5000/api/ram/${ramToDelete.ma_ram}`,
+        { trang_thai: 0 } // Cập nhật trạng thái RAM thành 0
+      );
+
+      // Cập nhật lại danh sách RAM trong state
+      setRamList((prevRams) =>
+        prevRams.map((ram, i) =>
+          i === index ? { ...ram, trang_thai: 0 } : ram
+        )
+      );
+      onClose();
+      alert("Xóa thành công");
+    } catch (error) {
+      setErrorMessage("Lỗi khi ẩn RAM");
+      console.error("Error deleting RAM:", error);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -156,7 +164,9 @@ const RamModal = ({ isOpen, onClose }) => {
             value={ramSize || ""}
             onChange={(e) => setRamSize(e.target.value)}
           />
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {errorMessage && (
+            <p className="error-message-brand">{errorMessage}</p>
+          )}
         </div>
 
         <div className="brand-table-container">

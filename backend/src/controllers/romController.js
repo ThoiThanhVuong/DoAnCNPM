@@ -6,6 +6,9 @@ exports.getAllRoms = async (req, res) => {
   try {
     const roms = await Rom.findAll({
       attributes: ["ma_rom", "kich_thuoc_rom"], // Lấy các thuộc tính của ROM
+      where: {
+        trang_thai: 1,
+      },
     });
     res.json(roms);
   } catch (error) {
@@ -27,7 +30,9 @@ exports.addRom = async (req, res) => {
 
   try {
     // Kiểm tra xem kích thước ROM đã tồn tại chưa
-    const romExists = await Rom.findOne({ where: { kich_thuoc_rom } });
+    const romExists = await Rom.findOne({
+      where: { kich_thuoc_rom, trang_thai: 1 },
+    });
     if (romExists) {
       return res.status(409).json({ error: "Kích thước ROM đã tồn tại" });
     }
@@ -90,17 +95,19 @@ exports.deleteRom = async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Tìm ROM theo ID
+    // Tìm ROM theo mã
     const romToDelete = await Rom.findOne({ where: { ma_rom: id } });
     if (!romToDelete) {
       return res.status(404).json({ error: "ROM không tồn tại" });
     }
 
-    // Xóa ROM
-    await Rom.destroy({ where: { ma_rom: id } });
-    res.status(200).json({ message: "ROM đã bị xóa thành công" });
+    // Cập nhật trạng thái ROM thành 0 (ẩn)
+    romToDelete.trang_thai = 0;
+    await romToDelete.save();
+
+    res.status(200).json({ message: "ROM đã bị ẩn thành công" });
   } catch (error) {
-    console.error("Lỗi khi xóa ROM:", error);
-    res.status(500).json({ error: "Lỗi khi xóa ROM" });
+    console.error("Lỗi khi ẩn ROM:", error);
+    res.status(500).json({ error: "Lỗi khi ẩn ROM" });
   }
 };

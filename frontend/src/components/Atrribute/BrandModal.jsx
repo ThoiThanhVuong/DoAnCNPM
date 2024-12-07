@@ -29,7 +29,6 @@ const BrandModal = ({ isOpen, onClose }) => {
   // Handle adding a new brand
   const handleAddBrand = async (e) => {
     e.preventDefault();
-
     if (!newBrand || newBrand.trim() === "") {
       setErrorMessage("Tên thương hiệu không được để trống");
       document.getElementById("brand-input").focus();
@@ -38,18 +37,25 @@ const BrandModal = ({ isOpen, onClose }) => {
 
     try {
       const response = await axios.post("http://localhost:5000/api/brands", {
-        ten_thuong_hieu: newBrand, // Sử dụng tên cột đúng
+        ten_thuong_hieu: newBrand,
       });
+
       setBrands((prevBrands) => [...prevBrands, response.data]);
       setNewBrand("");
-      setErrorMessage(""); // Xóa thông báo lỗi sau khi thành công
+      setErrorMessage("");
+      alert("Thêm thành công");
     } catch (error) {
-      if (error.response && error.response.status === 409) {
-        setErrorMessage("Tên thương hiệu đã tồn tại");
-        document.getElementById("brand-input").focus();
+      if (error.response) {
+        if (error.response.status === 409) {
+          setErrorMessage("Tên thương hiệu đã tồn tại");
+          document.getElementById("brand-input").focus();
+        } else {
+          setErrorMessage("Lỗi khi thêm thương hiệu");
+          console.error("Lỗi khi thêm thương hiệu:", error.response.data);
+        }
       } else {
-        setErrorMessage("Lỗi khi thêm thương hiệu");
-        console.error("Lỗi khi thêm thương hiệu:", error);
+        setErrorMessage("Lỗi kết nối với server");
+        console.error("Lỗi kết nối với server:", error);
       }
     }
   };
@@ -81,6 +87,7 @@ const BrandModal = ({ isOpen, onClose }) => {
       setNewBrand("");
       setEditIndex(null);
       setErrorMessage(""); // Xóa thông báo lỗi nếu có
+      alert("Sửa thành công");
     } catch (error) {
       // Kiểm tra lỗi phản hồi từ backend
       if (error.response) {
@@ -103,23 +110,37 @@ const BrandModal = ({ isOpen, onClose }) => {
     }
   };
 
-  // Handle deleting a brand with confirmation
+  /// Hàm xóa (ẩn) thương hiệu bằng cách thay đổi trạng thái 'trang_thai' thành 0
   const handleDeleteBrand = async (index) => {
     const brandToDelete = brands[index];
+
+    // Xác nhận hành động xóa
     const confirmDelete = window.confirm(
-      `Bạn có chắc muốn xóa thương hiệu ${brandToDelete.ten_thuong_hieu}?`
+      `Bạn có chắc xóa thương thương hiệu ${brandToDelete.ten_thuong_hieu}?`
     );
 
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(
-        `http://localhost:5000/api/brands/${brandToDelete.ma_thuong_hieu}` // Xóa đúng theo mã thương hiệu
+      await axios.put(
+        `http://localhost:5000/api/brands/${brandToDelete.ma_thuong_hieu}`,
+        { trang_thai: 0 }
       );
-      setBrands((prevBrands) => prevBrands.filter((_, i) => i !== index));
+
+      setBrands((prevBrands) =>
+        prevBrands.map((brand, i) =>
+          i === index ? { ...brand, trang_thai: 0 } : brand
+        )
+      );
+      onClose();
+      alert("Xóa thương hiệu thành công");
     } catch (error) {
-      setErrorMessage("Lỗi khi xóa thương hiệu");
-      console.error("Error deleting brand:", error);
+      if (error.response && error.response.data) {
+        setErrorMessage(error.response.data.error || "Lỗi không xác định");
+      } else {
+        setErrorMessage("Lỗi khi kết nối với máy chủ");
+      }
+      console.error("Error updating brand status:", error);
     }
   };
 
@@ -149,7 +170,9 @@ const BrandModal = ({ isOpen, onClose }) => {
             value={newBrand || ""}
             onChange={(e) => setNewBrand(e.target.value)}
           />
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {errorMessage && (
+            <p className="error-message-brand">{errorMessage}</p>
+          )}
         </div>
 
         <div className="brand-table-container">

@@ -1,43 +1,37 @@
 const Brand = require("../models/BrandModel");
 const { Op } = require("sequelize");
 
+exports.addBrand = async (req, res) => {
+  const { ten_thuong_hieu } = req.body;
+  try {
+    const brandExists = await Brand.findOne({
+      where: { ten_thuong_hieu, trang_thai: 1 },
+    });
+    if (brandExists) {
+      return res.status(409).json({ error: "Tên xuất xứ đã tồn tại" });
+    }
+
+    const newBrand = await Brand.create({ ten_thuong_hieu });
+    res.status(201).json(newBrand);
+  } catch (error) {
+    console.error("Lỗi khi thêm xuất xứ:", error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Lấy tất cả thương hiệu
 exports.getAllBrands = async (req, res) => {
   try {
     const brands = await Brand.findAll({
-      attributes: ["ma_thuong_hieu", "ten_thuong_hieu"], // Chỉ lấy cột ma_thuong_hieu và ten_thuong_hieu
+      attributes: ["ma_thuong_hieu", "ten_thuong_hieu"],
+      where: {
+        trang_thai: 1, // Điều kiện trang_thai = 1
+      },
     });
     res.json(brands);
   } catch (error) {
     console.error("Lỗi khi lấy thương hiệu:", error);
     res.status(500).json({ error: "Lỗi khi lấy thương hiệu" });
-  }
-};
-
-// Thêm thương hiệu mới
-exports.addBrand = async (req, res) => {
-  const { ten_thuong_hieu } = req.body;
-
-  console.log("Dữ liệu nhận được:", req.body); // Log dữ liệu nhận từ frontend
-
-  if (!ten_thuong_hieu || ten_thuong_hieu.trim() === "") {
-    return res
-      .status(400)
-      .json({ error: "Tên thương hiệu không được để trống" });
-  }
-
-  try {
-    const brandExists = await Brand.findOne({ where: { ten_thuong_hieu } });
-    if (brandExists) {
-      return res.status(409).json({ error: "Tên thương hiệu đã tồn tại" });
-    }
-
-    const newBrand = await Brand.create({ ten_thuong_hieu });
-    console.log("Thêm thương hiệu thành công:", newBrand);
-    res.status(201).json(newBrand);
-  } catch (error) {
-    console.error("Lỗi khi thêm thương hiệu:", error.message);
-    res.status(500).json({ error: error.message }); // Trả thông báo lỗi chi tiết
   }
 };
 
@@ -92,17 +86,22 @@ exports.deleteBrand = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const brandToDelete = await Brand.findOne({
+    const brandToUpdate = await Brand.findOne({
       where: { ma_thuong_hieu: id },
     });
-    if (!brandToDelete) {
+
+    if (!brandToUpdate) {
       return res.status(404).json({ error: "Thương hiệu không tồn tại" });
     }
 
-    await Brand.destroy({ where: { ma_thuong_hieu: id } });
-    res.status(204).send();
+    brandToUpdate.trang_thai = 0;
+
+    await brandToUpdate.save();
+
+    res.status(200).json({ message: "Thương hiệu đã được ẩn thành công" });
   } catch (error) {
-    console.error("Lỗi khi xóa thương hiệu:", error);
-    res.status(500).json({ error: "Lỗi khi xóa thương hiệu" });
+    console.error("Lỗi khi ẩn thương hiệu:", error);
+
+    res.status(500).json({ error: "Lỗi khi ẩn thương hiệu" });
   }
 };
