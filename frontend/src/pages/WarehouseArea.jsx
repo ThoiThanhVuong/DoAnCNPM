@@ -88,6 +88,7 @@ const WarehouseArea = () => {
                 await WarehouseService.deleteItem(id);
                 console.log("Warehouse deleted successfully");
                 fetchWarehouses();
+                alert('Kho được xóa thành công');
             } catch (error) {
                 console.error('Error deleting warehouse:', error);
                 alert("Có lỗi xảy ra khi xóa kho. Vui lòng thử lại.");
@@ -149,11 +150,11 @@ const WarehouseArea = () => {
     return (
         <div className="warehouse-area">
             <div className="warehouse-area__container">
+                    <h1 className='warehouse-area__container__banner'>Quản lý khu vực kho</h1>
                     <div className='warehouse-area_search-and-add'>
                         <input type="text" placeholder='search...' className='warehouse-search' onChange={handleSearchWarehouse}/>
                         <button onClick={showAddArea} className="warehouse-button add">Thêm</button>
                     </div>
-                    <h1 className='warehouse-area__container__banner'>Quản lý khu vực kho</h1>
                     <div className='warehouse-area__container__content'>
                         <table className="warehouse-area__container__table">
                             <thead>
