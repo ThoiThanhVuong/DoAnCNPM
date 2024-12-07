@@ -86,7 +86,10 @@ const AddProductModal = ({ show, onClose }) => {
 
   const validateProductForm = () => {
     const newErrors = {};
-
+    if (!selectedImage || selectedImage.length === 0) {
+      alert("Không để trống ảnh");
+      return;
+    }
     Object.keys(formData).forEach((key) => {
       if (!formData[key]) {
         newErrors[key] = "Không được để trống";
@@ -101,24 +104,35 @@ const AddProductModal = ({ show, onClose }) => {
     return Object.keys(newErrors).length === 0;
   };
   const validateConfigForm = () => {
+    const priceImport = Number(newConfig.priceImport);
+    const priceSell = Number(newConfig.priceSell);
+
+    // Kiểm tra các trường bắt buộc không được để trống
     if (
       !newConfig.rom ||
       !newConfig.ram ||
       !newConfig.color ||
-      !newConfig.priceImport ||
-      !newConfig.priceSell
+      isNaN(priceImport) || // Kiểm tra nếu không phải số
+      isNaN(priceSell)
     ) {
-      alert("Vui lòng điền đầy đủ thông tin!");
+      alert("Vui lòng điền đầy đủ thông tin và giá hợp lệ!");
       return false;
     }
-    if (newConfig.priceImport > newConfig.priceSell) {
-      alert("Giá xuất phải lớn hơn hoặc bằng Giá Nhập!");
+    if (priceImport < 0) {
+      alert("Giá nhập phải lớn hơn hoặc bằng 0!");
       return false;
     }
-    if (newConfig.priceImport < 0 && newConfig.priceSell < 0) {
-      alert("Giá xuất , Giá Nhập lớn hơn 0!");
+
+    if (priceSell < 0) {
+      alert("Giá xuất phải lớn hơn hoặc bằng 0!");
       return false;
     }
+
+    if (priceImport > priceSell) {
+      alert("Giá xuất phải lớn hơn hoặc bằng Giá nhập!");
+      return false;
+    }
+
     return true;
   };
 
@@ -126,6 +140,7 @@ const AddProductModal = ({ show, onClose }) => {
     if (!validateConfigForm()) {
       return;
     }
+
     console.log("Cấu hình mới:", newConfig);
     const romName =
       rom.find((option) => option.ma_rom === Number(newConfig.rom))
@@ -172,13 +187,14 @@ const AddProductModal = ({ show, onClose }) => {
       return;
     }
 
-    console.log("Dữ liệu trước khi xóa:", configurations); // Log cấu hình trước khi xóa
+    console.log("Dữ liệu trước khi xóa:", configurations);
 
     setConfigurations((prev) => {
-      const updatedConfigs = prev.filter((_, idx) => idx !== index); // Lọc ra cấu hình không phải là cái đang xóa
-      console.log("Dữ liệu sau khi xóa:", updatedConfigs); // Log cấu hình sau khi xóa
-      return updatedConfigs; // Cập nhật lại danh sách cấu hình
+      const updatedConfigs = prev.filter((_, idx) => idx !== index);
+      console.log("Dữ liệu sau khi xóa:", updatedConfigs);
+      return updatedConfigs;
     });
+    resetForm_nextTab();
   };
 
   const handleRowClick = (index) => {
@@ -534,12 +550,7 @@ const AddProductModal = ({ show, onClose }) => {
               >
                 Sửa cấu hình
               </button>
-              <button
-                className="btn btn-delete"
-                onClick={() => deleteConfiguration()}
-              >
-                Xóa cấu hình
-              </button>
+
               <button className="btn btn-reset" onClick={resetForm_nextTab}>
                 Làm mới
               </button>
@@ -555,6 +566,7 @@ const AddProductModal = ({ show, onClose }) => {
                     <th>Màu sắc</th>
                     <th>Giá nhập</th>
                     <th>Giá xuất</th>
+                    <th>Hành động</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -566,6 +578,14 @@ const AddProductModal = ({ show, onClose }) => {
                       <td>{config.color}</td>
                       <td>{config.priceImport}</td>
                       <td>{config.priceSell}</td>
+                      <td>
+                        <button
+                          className="btn btn-delete"
+                          onClick={() => deleteConfiguration(index)}
+                        >
+                          Xóa
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
