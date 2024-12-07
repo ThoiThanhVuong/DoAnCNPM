@@ -215,9 +215,20 @@ const NhapHang = () => {
         chi_tiet_phieu_nhap: queueData,
       };
       addImport(newPN);
-      setQueuedata([]);
       localStorage.setItem("queueDataN", JSON.stringify([]));
       alert("Duyệt đơn nhập thành công");
+
+      queueData?.forEach((itemQE) => {
+        dataPBSanPham?.forEach((itemSP) => {
+          if(itemSP.ma_phien_ban_sp === itemQE.ma_phien_ban_sp)
+          {
+            itemSP.ton_kho = (itemSP.ton_kho || 0) + itemQE.so_luong 
+          }
+          }
+        )
+      })
+
+      setQueuedata([]);
     } else {
       alert("Vui lòng thêm sản phẩm vào hàng chờ");
     }

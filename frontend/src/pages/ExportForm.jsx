@@ -383,6 +383,17 @@ const XuatHang = () => {
         }
         console.log(newPX)
         addExport(newPX)
+
+        queueData?.forEach((itemQE) => {
+          dataPBSanPham?.forEach((itemSP) => {
+            if(itemSP.ma_phien_ban_sp === itemQE.ma_phien_ban_sp)
+            {
+              itemSP.ton_kho = (itemSP.ton_kho || 0) + itemQE.so_luong 
+            }
+            }
+          )
+        })
+        
         setQueuedata([])
         localStorage.setItem("queueDataX", JSON.stringify([]));
         alert("Duyệt đơn xuất thành công")
