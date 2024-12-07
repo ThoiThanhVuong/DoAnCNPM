@@ -16,7 +16,7 @@ const Employee = () => {
   });
 
   const handleBackToLogin = () => {
-    const confirmLogout = window.confirm("Xac nhan dang xuat?");
+    const confirmLogout = window.confirm("Xác nhận đăng xuất?");
     if (!confirmLogout) return;
     Cookies.remove("token");
     localStorage.removeItem('queueDataN')
