@@ -164,7 +164,6 @@ exports.addProduct = async (req, res) => {
     //  Thêm sản phẩm
     const newProduct = await Product.create(productData, { transaction: t });
     const productId = newProduct.ma_sp;
-    console.log(productId);
     // Tạo các phiên bản sản phẩm
     const versions = configurationsData.map((version) => ({
       ma_sp: productId,
@@ -209,6 +208,68 @@ exports.getCountProduct = async (req, res) => {
   }
 };
 
+exports.updateProduct = async (req, res) => {
+  const t = await sequelize.transaction();
+  try {
+    const { productData, configurationsData } = req.body;
+    const { ma_sp } = req.params;
+    const product = await Product.findByPk(ma_sp);
+    if (!product) {
+      return res.status(404).json({ message: "Sản phẩm không tồn tại!" });
+    }
+     // Update product details
+     await product.update(productData, { transaction: t });
+
+     const configPromises = configurationsData.map(async (config) => {
+      const existingConfig = await PhienBanSPModel.findOne({
+        where: {
+          ma_sp,
+          ma_ram: config.ma_ram,
+          ma_rom: config.ma_rom,
+          ma_mau: config.ma_mau,
+        },
+      });
+
+      if (existingConfig) {
+        // Update existing configuration
+        return existingConfig.update(
+          {
+            gia_nhap: config.gia_nhap,
+            gia_xuat: config.gia_xuat,
+            
+          },
+          { transaction: t }
+        );
+      } else {
+        // Create new configuration
+        return PhienBanSPModel.create(
+          {
+            ma_sp,
+            ...config,
+          },
+          { transaction: t }
+        );
+      }
+    });
+
+    await Promise.all(configPromises); // Execute all promises
+    await t.commit(); // Commit transaction
+
+    res.status(200).json({
+      success: true,
+      message: "Cập nhật sản phẩm thành công!",
+    });
+  } catch (error) {
+    await t.rollback();
+    console.error(error);
+
+    // Trả về lỗi
+    res.status(500).json({
+      success: false,
+      message: "Đã xảy ra lỗi khi thêm sản phẩm.",
+    });
+  }
+};
 exports.updatedCountProduct = async (req, res) => {
   const { ma_sp } = req.params;
   const { so_luong_moi } = req.body;

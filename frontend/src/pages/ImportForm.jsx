@@ -84,7 +84,7 @@ const NhapHang = () => {
       const dataPB = await getpbSP(); // phiên bản sp
       setdataPBSanPham(dataPB);
       const dataPV = await getAllprovider(); // nhà cung cấp
-      setdataProvider(dataPV);
+      setdataProvider(dataPV.filter((item) => item.trang_thai === 1));
     };
     fetchProducts();
   }, []);

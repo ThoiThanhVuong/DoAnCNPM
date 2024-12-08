@@ -3,6 +3,7 @@ import axios from "axios";
 import "../Product/style.css"; // Đường dẫn tới file CSS
 import "../Product/next-tab.css";
 import { FaPlus, FaEdit, FaTrash, FaInfoCircle } from "react-icons/fa";
+
 const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
   const [errors, setErrors] = useState({});
   const [isNextTabVisible, setIsNextTabVisible] = useState(false); // Quản lý trạng thái hiển thị tab tiếp theo
@@ -205,6 +206,7 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
   const handleUpdateConfig = (config) => {
     //console.log(config);
   };
+
   const handleDeleteConfig = (config) => {};
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -228,6 +230,7 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
   const handleCloseButtonClick = () => {
     onClose();
   };
+
   const handleSubmitUpdateProduct = async () => {
     // if (!validateConfigForm()) return;
     try {
@@ -375,14 +378,18 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
               <label htmlFor="os">Hệ điều hành:</label>
               <select
                 id="os"
-                value={formData.os}
+                value={product.operatingSystem?.ten_hdh || ""}
                 onChange={(e) => handleInputChange(e)} // Xử lý thay đổi
               >
-                {os.map((opt) => (
-                  <option key={opt.ma_hdh} value={opt.ten_hdh}>
-                    {opt.ten_hdh}
-                  </option>
-                ))}
+                {os
+                  .filter(
+                    (opt) => opt.ma_hdh !== product.operatingSystem?.ma_hdh
+                  )
+                  .map((opt) => (
+                    <option key={opt.ma_hdh} value={opt.ten_hdh}>
+                      {opt.ten_hdh}
+                    </option>
+                  ))}
               </select>
             </div>
             <div>
@@ -392,11 +399,19 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
                 value={formData.brand}
                 onChange={(e) => handleInputChange(e)} // Xử lý thay đổi
               >
-                {brands.map((opt) => (
-                  <option key={opt.ma_thuong_hieu} value={opt.ten_thuong_hieu}>
-                    {opt.ten_thuong_hieu}
-                  </option>
-                ))}
+                {brands
+                  .filter(
+                    (opt) =>
+                      opt.ma_thuong_hieu !== product.brand?.ma_thuong_hieu
+                  )
+                  .map((opt) => (
+                    <option
+                      key={opt.ma_thuong_hieu}
+                      value={opt.ten_thuong_hieu}
+                    >
+                      {opt.ten_thuong_hieu}
+                    </option>
+                  ))}
               </select>
             </div>
             <div>
@@ -406,11 +421,15 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
                 value={formData.origin}
                 onChange={(e) => handleInputChange(e)} // Xử lý thay đổi
               >
-                {origins.map((opt) => (
-                  <option key={opt.ma_xuat_xu} value={opt.ten_xuat_xu}>
-                    {opt.ten_xuat_xu}
-                  </option>
-                ))}
+                {origins
+                  .filter(
+                    (opt) => opt.ma_xuat_xu !== product.origin?.ma_xuat_xu
+                  )
+                  .map((opt) => (
+                    <option key={opt.ma_xuat_xu} value={opt.ten_xuat_xu}>
+                      {opt.ten_xuat_xu}
+                    </option>
+                  ))}
               </select>
             </div>
             <div>
@@ -420,14 +439,19 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
                 value={formData.region}
                 onChange={(e) => handleInputChange(e)} // Xử lý thay đổi
               >
-                {area.map((opt) => (
-                  <option key={opt.ma_kho} value={opt.ten_kho}>
-                    {opt.ten_kho}
-                  </option>
-                ))}
+                {area
+                  .filter((opt) => opt.ma_kho !== product.storageArea?.ma_kho)
+                  .map((opt) => (
+                    <option key={opt.ma_kho} value={opt.ten_kho}>
+                      {opt.ten_kho}
+                    </option>
+                  ))}
               </select>
             </div>
 
+            {/* Các trường chọn */}
+
+            {/* Nút hành động */}
             <div className="action-buttons">
               <button
                 type="button"
@@ -449,11 +473,7 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
           <div className="modal-body">
             <div className="form-group">
               <label htmlFor="rom">ROM</label>
-              <select
-                id="rom"
-                value={newConfig.rom}
-                onChange={handleInputChange_nextTab}
-              >
+              <select id="rom" value={newConfig.rom}>
                 <option value="">Chọn ROM</option>
                 {rom.map((opt) => (
                   <option key={opt.ma_rom} value={opt.ma_rom}>
@@ -463,11 +483,7 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
               </select>
 
               <label htmlFor="ram">RAM</label>
-              <select
-                id="ram"
-                value={newConfig.ram}
-                onChange={handleInputChange_nextTab}
-              >
+              <select id="ram" value={newConfig.ram}>
                 <option value="">Chọn RAM</option>
                 {ram.map((opt) => (
                   <option key={opt.ma_ram} value={opt.ma_ram}>
@@ -477,11 +493,7 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
               </select>
 
               <label htmlFor="color">Màu sắc</label>
-              <select
-                id="color"
-                value={newConfig.color}
-                onChange={handleInputChange_nextTab}
-              >
+              <select id="color" value={newConfig.color}>
                 <option value="">Chọn Màu sắc</option>
                 {colors.map((opt) => (
                   <option key={opt.ma_mau} value={opt.ma_mau}>
@@ -496,7 +508,6 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
                 id="priceImport"
                 value={newConfig.priceImport}
                 placeholder="Giá Nhập"
-                onChange={handleInputChange_nextTab}
               />
 
               <label htmlFor="price-sell">Giá xuất</label>
@@ -505,15 +516,14 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
                 id="priceSell"
                 value={newConfig.priceSell}
                 placeholder="Giá Xuất"
-                onChange={handleInputChange_nextTab}
               />
             </div>
 
             <div className="action-buttons-sp">
               <button className="btn btn-add">Thêm cấu hình</button>
-              <button className="btn btn-reset" onClick={resetForm_nextTab}>
-                Làm mới
-              </button>
+              <button className="btn btn-edit">Sửa cấu hình</button>
+              <button className="btn btn-delete">Xóa cấu hình</button>
+              <button className="btn btn-reset">Làm mới</button>
             </div>
 
             <div className="table-sp">
@@ -526,7 +536,6 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
                     <th>Màu sắc</th>
                     <th>Giá nhập</th>
                     <th>Giá xuất</th>
-                    <th>Hành động</th>
                   </tr>
                 </thead>
                 <tbody>

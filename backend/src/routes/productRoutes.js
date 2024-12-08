@@ -5,6 +5,7 @@ const productController = require("../controllers/productController");
 // Định nghĩa route API cho sản phẩm
 router.get("/", productController.getAllProducts);
 router.post("/", productController.addProduct);
+router.put("/:ma_sp", productController.updateProduct)
 // Cập nhật trạng thái sản phẩm (xóa)
 router.patch("/:ma_sp", productController.deleteProduct);
 router.get("/countProduct", productController.getCountProduct);
