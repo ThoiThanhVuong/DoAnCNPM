@@ -465,87 +465,120 @@ const Account = () => {
         </div>
       )}
 
-      {showSearchResult && searchedAccount && (
-        <div className="add-account">
-          <div className="add-account_content">
-          <h2 className="account_title">Thông Tin Tài Khoản Cần Tìm</h2>
-            {/* First Column */}
-            <div className="add-account_content__column">
-              <div className="add-account_content__content-items">
-                <label htmlFor="ten_nv">Tên Nhân Viên</label>
-                <input
-                  type="text"
-                  id="ten_nv"
-                  name="ten_nv"
-                  value={searchedAccount.ten_nv}
-                  readOnly
-                />
-              </div>
-
-              <div className="add-account_content__content-items">
-                <label htmlFor="gioi_tinh">Giới Tính</label>
-                <input
-                  type="text"
-                  id="gioi_tinh"
-                  name="gioi_tinh"
-                  value={searchedAccount.gioi_tinh}
-                  readOnly
-                />
-              </div>
-
-            </div>
-
-            {/* Second Column */}
-            <div className="add-account_content__column">
-              <div className="add-account_content__content-items">
-                <label htmlFor="sdt">Số Điện Thoại</label>
-                <input
-                  type="text"
-                  id="sdt"
-                  name="sdt"
-                  value={searchedAccount.sdt}
-                  readOnly
-                />
-              </div>
-
-              <div className="add-account_content__content-items">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={searchedAccount.email}
-                  readOnly
-                />
-              </div>
-              <div className="add-account_content__content-items">
-                <label htmlFor="mat_khau">Mật Khẩu</label>
-                <input
-                  type="text"
-                  id="mat_khau"
-                  name="mat_khau"
-                  value={searchedAccount.mat_khau}
-                  readOnly
-                />
-              </div>
-
-              <div className="add-account_content__content-items">
-                <label htmlFor="ma_quyen">Mã Quyền</label>
-                <input
-                  type="number"
-                  id="ma_quyen"
-                  name="ma_quyen"
-                  value={searchedAccount.ma_quyen}
-                  readOnly
-                />
-              </div>
-              <div className="add-account_buttons">
-                <button onClick={() => setShowSearchResult(false)}>Hủy</button>
-              </div>
-            </div>
-          </div>
+{showSearchResult && searchedAccount && (
+  <div className="add-account">
+    <div className="add-account_content">
+      <h2 className="account_title">Thông Tin Tài Khoản Cần Tìm</h2>
+      
+      {/* First Column */}
+      <div className="add-account_content__column">
+        <div className="add-account_content__content-items">
+          <label htmlFor="ten_nv">Tên Nhân Viên</label>
+          <input
+            type="text"
+            id="ten_nv"
+            name="ten_nv"
+            value={searchedAccount.ten_nv}
+            readOnly
+          />
         </div>
-      )}
+
+        <div className="add-account_content__content-items">
+          <label htmlFor="gioi_tinh">Giới Tính</label>
+          <input
+            type="text"
+            id="gioi_tinh"
+            name="gioi_tinh"
+            value={searchedAccount.gioi_tinh}
+            readOnly
+          />
+        </div>
+      </div>
+
+      {/* Second Column */}
+      <div className="add-account_content__column">
+        <div className="add-account_content__content-items">
+          <label htmlFor="sdt">Số Điện Thoại</label>
+          <input
+            type="text"
+            id="sdt"
+            name="sdt"
+            value={searchedAccount.sdt}
+            readOnly
+          />
+        </div>
+
+        <div className="add-account_content__content-items">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={searchedAccount.email}
+            readOnly
+          />
+        </div>
+
+        <div className="add-account_content__content-items">
+          <label htmlFor="mat_khau">Mật Khẩu</label>
+          <input
+            type="text"
+            id="mat_khau"
+            name="mat_khau"
+            value={searchedAccount.mat_khau}
+            readOnly
+          />
+        </div>
+
+        <div className="add-account_content__content-items">
+          <label htmlFor="ma_quyen">Mã Quyền</label>
+          <input
+            type="number"
+            id="ma_quyen"
+            name="ma_quyen"
+            value={searchedAccount.ma_quyen}
+            readOnly
+          />
+        </div>
+
+        <div className="add-account_buttons">
+          <button onClick={() => setShowSearchResult(false)}>Hủy</button>
+        </div>
+        
+        {/* Conditionally render based on trang_thai */}
+        <div className="account-act">
+          {searchedAccount.trang_thai === 1 ? (
+            <>
+              <FaEdit
+                className="edit-acc"
+                onClick={() => {
+                  handleShowEditAccount(searchedAccount);
+                  setShowSearchResult(false);  // Set to false when clicked
+                }}
+              />
+              <FaTrash
+                className="delete-acc"
+                onClick={() => {
+                  handleDeleteAccount(searchedAccount.ma_nv);
+                  setShowSearchResult(false);  // Set to false when clicked
+                }}
+              />
+            </>
+          ) : searchedAccount.trang_thai === 0 ? (
+            <FaRedo
+              className="delete-acc"
+              onClick={() => {
+                handleDeleteAccount(searchedAccount.ma_nv);
+                setShowSearchResult(false);  // Set to false when clicked
+              }}
+            />
+          ) : null}
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
 
       {showEditAccount && currentAccount && (
         <div className="edit-account">
