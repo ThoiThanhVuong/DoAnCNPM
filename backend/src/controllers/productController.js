@@ -77,17 +77,17 @@ exports.getAllProducts = async (req, res) => {
         {
           model: OperatingSystem, // Thêm mô hình hệ điều hành
           as: "operatingSystem", // Alias cho hệ điều hành
-          attributes: ["ten_hdh"], // Chỉ lấy tên hệ điều hành
+          attributes: ["ma_hdh", "ten_hdh"], // Chỉ lấy tên hệ điều hành
         },
         {
           model: Brand, // Thêm mô hình thương hiệu
           as: "brand", // Alias cho thương hiệu
-          attributes: ["ten_thuong_hieu"], // Chỉ lấy tên thương hiệu
+          attributes: ["ma_thuong_hieu", "ten_thuong_hieu"], // Chỉ lấy tên thương hiệu
         },
         {
           model: Origin, // Thêm mô hình xuất xứ
           as: "origin", // Alias cho xuất xứ
-          attributes: ["ten_xuat_xu"], // Chỉ lấy tên xuất xứ
+          attributes: ["ma_xuat_xu", "ten_xuat_xu"], // Chỉ lấy tên xuất xứ
         },
         {
           model: WareHouse, // Thêm mô hình khu vực kho
@@ -108,17 +108,17 @@ exports.getAllProducts = async (req, res) => {
             {
               model: Ram,
               as: "ram",
-              attributes: ["kich_thuoc_ram"],
+              attributes: ["ma_ram", "kich_thuoc_ram"],
             },
             {
               model: Rom,
               as: "rom",
-              attributes: ["kich_thuoc_rom"],
+              attributes: ["ma_rom", "kich_thuoc_rom"],
             },
             {
               model: Color,
               as: "mauSac",
-              attributes: ["ten_mau"],
+              attributes: ["ma_mau", "ten_mau"],
             },
           ],
           where: {

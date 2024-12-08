@@ -85,7 +85,7 @@ const Product = () => {
   const handleDeleteProduct = async (productId) => {
     // Hiển thị thông báo xác nhận trước khi xóa sản phẩm
     const isConfirmed = window.confirm(
-      "Bạn có chắc chắn muốn xóa sản phẩm này không?"
+      `Bạn có chắc chắn muốn xóa sản phẩm này không?`
     );
 
     if (!isConfirmed) {
@@ -116,6 +116,24 @@ const Product = () => {
       alert("Có lỗi xảy ra khi ẩn sản phẩm.");
     }
   };
+  // const handleUpdateProduct = (updatedConfigs) => {
+  //   // Cập nhật lại cấu hình sản phẩm
+  //   setProducts((prevProducts) =>
+  //     prevProducts.map((product) =>
+  //       product.ma_sp === selectedProduct.ma_sp
+  //         ? { ...product, phienBanSanPhams: updatedConfigs }
+  //         : product
+  //     )
+  //   );
+
+  //   setFilteredProducts((prevFiltered) =>
+  //     prevFiltered.map((product) =>
+  //       product.ma_sp === selectedProduct.ma_sp
+  //         ? { ...product, phienBanSanPhams: updatedConfigs }
+  //         : product
+  //     )
+  //   );
+  // };
 
   return (
     <div className="product-list">
@@ -221,6 +239,7 @@ const Product = () => {
         show={showUpdateModal}
         onClose={handleCloseUpdate}
         product={selectedProduct}
+        // onUpdateProduct={handleUpdateProduct} // Truyền hàm callback vào đây
       />
     </div>
   );

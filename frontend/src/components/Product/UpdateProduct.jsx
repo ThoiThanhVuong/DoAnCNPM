@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "../Product/style.css"; // Đường dẫn tới file CSS
 import "../Product/next-tab.css";
-
-const UpdateProduct = ({ show, onClose, product }) => {
+import { FaPlus, FaEdit, FaTrash, FaInfoCircle } from "react-icons/fa";
+const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
   const [errors, setErrors] = useState({});
   const [isNextTabVisible, setIsNextTabVisible] = useState(false); // Quản lý trạng thái hiển thị tab tiếp theo
   const [brands, setBrands] = useState([]);
@@ -15,8 +15,8 @@ const UpdateProduct = ({ show, onClose, product }) => {
   const [rom, setRom] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
+  // const [updatedProduct, setUpdatedProduct] = useState(product);
 
-  //
   const [formData, setFormData] = useState({
     productName: "",
     chip: "",
@@ -39,8 +39,13 @@ const UpdateProduct = ({ show, onClose, product }) => {
 
   useEffect(() => {
     if (product) {
-      console.log(product);
       setFormData({
+        productName: product.ten_sp,
+        chip: product.chip_xu_ly,
+        battery: product.dung_luong_pin,
+        screenSize: product.kich_thuoc_man,
+        frontCamera: product.camera_truoc,
+        rearCamera: product.camera_sau,
         os: product.operatingSystem?.ten_hdh,
         brand: product.brand?.ten_thuong_hieu,
         origin: product.origin?.ten_xuat_xu,
@@ -76,8 +81,36 @@ const UpdateProduct = ({ show, onClose, product }) => {
     };
     fetchData();
   }, [product]);
-
   if (!show) return null;
+  const addConfiguration = () => {
+    if (!validateConfigForm()) {
+      return;
+    }
+
+    console.log("Cấu hình mới:", newConfig);
+
+    // Lấy tên ROM, RAM và màu sắc từ dữ liệu
+    const romName =
+      rom.find((option) => option.ma_rom === Number(newConfig.rom))
+        ?.kich_thuoc_rom || "N/A";
+    const ramName =
+      ram.find((option) => option.ma_ram === Number(newConfig.ram))
+        ?.kich_thuoc_ram || "N/A";
+    const colorName =
+      colors.find((option) => option.ma_mau === Number(newConfig.color))
+        ?.ten_mau || "N/A";
+
+    // Tạo đối tượng cấu hình mới
+    const newConfigData = {
+      ram: ramName,
+      rom: romName,
+      color: colorName,
+      priceImport: newConfig.priceImport,
+      priceSell: newConfig.priceSell,
+    };
+
+    resetForm_nextTab();
+  };
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -90,27 +123,74 @@ const UpdateProduct = ({ show, onClose, product }) => {
       [id]: "", // Xóa lỗi khi nhập
     }));
   };
+  const validateProductForm = () => {
+    const newErrors = {};
+    if (!selectedImage || selectedImage.length === 0) {
+      alert("Không để trống ảnh");
+      return;
+    }
+    Object.keys(formData).forEach((key) => {
+      if (!formData[key]) {
+        newErrors[key] = "Không được để trống";
+      }
+    });
+    setErrors(newErrors);
+    // Tìm tất cả các ô còn lỗi và focus vào chúng
+    Object.keys(newErrors).forEach((key) => {
+      const errorField = document.getElementById(key);
+      if (errorField) errorField.focus();
+    });
+    return Object.keys(newErrors).length === 0;
+  };
 
   const validateConfigForm = () => {
+    const priceImport = Number(newConfig.priceImport);
+    const priceSell = Number(newConfig.priceSell);
+
+    // Kiểm tra các trường bắt buộc không được để trống
     if (
       !newConfig.rom ||
       !newConfig.ram ||
       !newConfig.color ||
-      !newConfig.priceImport ||
-      !newConfig.priceSell
+      isNaN(priceImport) || // Kiểm tra nếu không phải số
+      isNaN(priceSell)
     ) {
-      alert("Vui lòng điền đầy đủ thông tin!");
+      alert("Vui lòng điền đầy đủ thông tin và giá hợp lệ!");
       return false;
     }
-    if (newConfig.priceImport > newConfig.priceSell) {
-      alert("Giá xuất phải lớn hơn hoặc bằng Giá Nhập!");
+    if (priceImport < 0) {
+      alert("Giá nhập phải lớn hơn hoặc bằng 0!");
       return false;
     }
-    if (newConfig.priceImport < 0 && newConfig.priceSell < 0) {
-      alert("Giá xuất , Giá Nhập lớn hơn 0!");
+
+    if (priceSell < 0) {
+      alert("Giá xuất phải lớn hơn hoặc bằng 0!");
       return false;
     }
+
+    if (priceImport > priceSell) {
+      alert("Giá xuất phải lớn hơn hoặc bằng Giá nhập!");
+      return false;
+    }
+
     return true;
+  };
+  const resetForm_nextTab = () => {
+    setNewConfig({
+      rom: "",
+      ram: "",
+      color: "",
+      priceImport: "",
+      priceSell: "",
+    });
+    // setEditIndex(null); // Xóa trạng thái sửa
+  };
+  const handleInputChange_nextTab = (e) => {
+    const { id, value } = e.target;
+    setNewConfig((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
   };
 
   const handleNextTab = () => {
@@ -122,7 +202,10 @@ const UpdateProduct = ({ show, onClose, product }) => {
   const closeNextTab = () => {
     setIsNextTabVisible(false);
   };
-
+  const handleUpdateConfig = (config) => {
+    //console.log(config);
+  };
+  const handleDeleteConfig = (config) => {};
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -145,7 +228,67 @@ const UpdateProduct = ({ show, onClose, product }) => {
   const handleCloseButtonClick = () => {
     onClose();
   };
+  const handleSubmitUpdateProduct = async () => {
+    // if (!validateConfigForm()) return;
+    try {
+      const configurationsData = product.phienBanSanPhams.map((item) => ({
+        ma_ram: ram.find((r) => r.kich_thuoc_ram === item.ram.kich_thuoc_ram)
+          ?.ma_ram,
+        ma_rom: rom.find((r) => r.kich_thuoc_rom === item.rom.kich_thuoc_rom)
+          ?.ma_rom,
+        ma_mau: colors.find((r) => r.ten_mau === item.mauSac.ten_mau)?.ma_mau,
+        gia_nhap: item.gia_nhap,
+        gia_xuat: item.gia_xuat,
+      }));
+      if (
+        newConfig.rom &&
+        newConfig.ram &&
+        newConfig.color &&
+        newConfig.priceImport &&
+        newConfig.priceSell
+      ) {
+        configurationsData.push({
+          ma_ram: newConfig.ram,
+          ma_rom: newConfig.rom,
+          ma_mau: newConfig.color,
+          gia_nhap: parseInt(newConfig.priceImport, 10),
+          gia_xuat: parseInt(newConfig.priceSell, 10),
+        });
+      }
+      // const product
+      const UpdateProduct = {
+        productData: {
+          ten_sp: formData.productName,
+          hinh_anh: selectedImage || product.hinh_anh, // Giả sử bạn có ảnh mặc định
+          chip_xu_ly: formData.chip,
+          dung_luong_pin: formData.battery,
+          kich_thuoc_man: formData.screenSize,
+          camera_truoc: formData.frontCamera,
+          camera_sau: formData.rearCamera,
+          hdh: os.find((r) => r.ten_hdh === formData.os)?.ma_hdh,
+          thuong_hieu: brands.find((r) => r.ten_thuong_hieu === formData.brand)
+            ?.ma_thuong_hieu,
+          xuat_xu: origins.find((r) => r.ten_xuat_xu === formData.origin)
+            ?.ma_xuat_xu,
+          khu_vuc_kho: area.find((r) => r.ten_kho === formData.region)?.ma_kho,
+          trang_thai: 1,
+        },
+        configurationsData,
+      };
+      // Send the data to the backend
+      const response = await axios.put(
+        `http://localhost:5000/api/products/${product.ma_sp}`,
+        UpdateProduct
+      );
 
+      if (response.data.success) {
+        alert("Cập nhật sản phẩm thành công!");
+        onClose();
+      }
+    } catch (error) {
+      alert("Có lỗi xảy ra, vui lòng thử lại!");
+    }
+  };
   return (
     <div className="modal-overlay" onClick={handleCloseModal}>
       <div className="add-product-modal">
@@ -235,9 +378,8 @@ const UpdateProduct = ({ show, onClose, product }) => {
                 value={formData.os}
                 onChange={(e) => handleInputChange(e)} // Xử lý thay đổi
               >
-                <option value="">-- Chọn hệ điều hành --</option>
                 {os.map((opt) => (
-                  <option key={opt.ma_hdh} value={opt.ma_hdh}>
+                  <option key={opt.ma_hdh} value={opt.ten_hdh}>
                     {opt.ten_hdh}
                   </option>
                 ))}
@@ -250,9 +392,8 @@ const UpdateProduct = ({ show, onClose, product }) => {
                 value={formData.brand}
                 onChange={(e) => handleInputChange(e)} // Xử lý thay đổi
               >
-                <option value="">-- Chọn thương hiệu --</option>
                 {brands.map((opt) => (
-                  <option key={opt.ma_thuong_hieu} value={opt.ma_thuong_hieu}>
+                  <option key={opt.ma_thuong_hieu} value={opt.ten_thuong_hieu}>
                     {opt.ten_thuong_hieu}
                   </option>
                 ))}
@@ -265,9 +406,8 @@ const UpdateProduct = ({ show, onClose, product }) => {
                 value={formData.origin}
                 onChange={(e) => handleInputChange(e)} // Xử lý thay đổi
               >
-                <option value="">-- Chọn xuất xứ --</option>
                 {origins.map((opt) => (
-                  <option key={opt.ma_xuat_xu} value={opt.ma_xuat_xu}>
+                  <option key={opt.ma_xuat_xu} value={opt.ten_xuat_xu}>
                     {opt.ten_xuat_xu}
                   </option>
                 ))}
@@ -280,18 +420,14 @@ const UpdateProduct = ({ show, onClose, product }) => {
                 value={formData.region}
                 onChange={(e) => handleInputChange(e)} // Xử lý thay đổi
               >
-                <option value="">-- Chọn khu vực --</option>
                 {area.map((opt) => (
-                  <option key={opt.ma_kho} value={opt.ma_kho}>
+                  <option key={opt.ma_kho} value={opt.ten_kho}>
                     {opt.ten_kho}
                   </option>
                 ))}
               </select>
             </div>
 
-            {/* Các trường chọn */}
-
-            {/* Nút hành động */}
             <div className="action-buttons">
               <button
                 type="button"
@@ -313,7 +449,11 @@ const UpdateProduct = ({ show, onClose, product }) => {
           <div className="modal-body">
             <div className="form-group">
               <label htmlFor="rom">ROM</label>
-              <select id="rom" value={newConfig.rom}>
+              <select
+                id="rom"
+                value={newConfig.rom}
+                onChange={handleInputChange_nextTab}
+              >
                 <option value="">Chọn ROM</option>
                 {rom.map((opt) => (
                   <option key={opt.ma_rom} value={opt.ma_rom}>
@@ -323,7 +463,11 @@ const UpdateProduct = ({ show, onClose, product }) => {
               </select>
 
               <label htmlFor="ram">RAM</label>
-              <select id="ram" value={newConfig.ram}>
+              <select
+                id="ram"
+                value={newConfig.ram}
+                onChange={handleInputChange_nextTab}
+              >
                 <option value="">Chọn RAM</option>
                 {ram.map((opt) => (
                   <option key={opt.ma_ram} value={opt.ma_ram}>
@@ -333,7 +477,11 @@ const UpdateProduct = ({ show, onClose, product }) => {
               </select>
 
               <label htmlFor="color">Màu sắc</label>
-              <select id="color" value={newConfig.color}>
+              <select
+                id="color"
+                value={newConfig.color}
+                onChange={handleInputChange_nextTab}
+              >
                 <option value="">Chọn Màu sắc</option>
                 {colors.map((opt) => (
                   <option key={opt.ma_mau} value={opt.ma_mau}>
@@ -348,6 +496,7 @@ const UpdateProduct = ({ show, onClose, product }) => {
                 id="priceImport"
                 value={newConfig.priceImport}
                 placeholder="Giá Nhập"
+                onChange={handleInputChange_nextTab}
               />
 
               <label htmlFor="price-sell">Giá xuất</label>
@@ -356,14 +505,15 @@ const UpdateProduct = ({ show, onClose, product }) => {
                 id="priceSell"
                 value={newConfig.priceSell}
                 placeholder="Giá Xuất"
+                onChange={handleInputChange_nextTab}
               />
             </div>
 
             <div className="action-buttons-sp">
               <button className="btn btn-add">Thêm cấu hình</button>
-              <button className="btn btn-edit">Sửa cấu hình</button>
-              <button className="btn btn-delete">Xóa cấu hình</button>
-              <button className="btn btn-reset">Làm mới</button>
+              <button className="btn btn-reset" onClick={resetForm_nextTab}>
+                Làm mới
+              </button>
             </div>
 
             <div className="table-sp">
@@ -376,6 +526,7 @@ const UpdateProduct = ({ show, onClose, product }) => {
                     <th>Màu sắc</th>
                     <th>Giá nhập</th>
                     <th>Giá xuất</th>
+                    <th>Hành động</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -387,6 +538,22 @@ const UpdateProduct = ({ show, onClose, product }) => {
                       <td>{item.mauSac?.ten_mau}</td>
                       <td>{item.gia_nhap}</td>
                       <td>{item.gia_xuat}</td>
+                      <td>
+                        <div className="action-button">
+                          <button
+                            className="btn-product-edit"
+                            onClick={handleUpdateConfig(item)} // Thêm hành động sửa
+                          >
+                            <FaEdit />
+                          </button>
+                          <button
+                            className="btn-product-delete"
+                            onClick={() => product.ma_sp}
+                          >
+                            <FaTrash />
+                          </button>
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -394,7 +561,10 @@ const UpdateProduct = ({ show, onClose, product }) => {
             </div>
 
             <div className="aciton-add-products">
-              <button className="add-prodduct-sp" onClick={null}>
+              <button
+                className="add-prodduct-sp"
+                onClick={handleSubmitUpdateProduct}
+              >
                 Sửa sản phẩm
               </button>
               <button className="comback-sp" onClick={closeNextTab}>
