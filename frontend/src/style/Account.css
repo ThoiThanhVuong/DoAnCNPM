@@ -41,6 +41,12 @@
   background-color: #45a049;
 }
 
+.account-act {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .edit-acc,
 .delete-acc {
   cursor: pointer;
