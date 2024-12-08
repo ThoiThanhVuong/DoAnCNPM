@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "../Product/style.css"; // Đường dẫn tới file CSS
 import "../Product/next-tab.css";
-
+import { FaPlus, FaEdit, FaTrash, FaInfoCircle } from "react-icons/fa";
 const UpdateProduct = ({ show, onClose, product }) => {
   const [errors, setErrors] = useState({});
   const [isNextTabVisible, setIsNextTabVisible] = useState(false); // Quản lý trạng thái hiển thị tab tiếp theo
@@ -16,7 +16,8 @@ const UpdateProduct = ({ show, onClose, product }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
 
-  //
+
+
   const [formData, setFormData] = useState({
     productName: "",
     chip: "",
@@ -39,8 +40,14 @@ const UpdateProduct = ({ show, onClose, product }) => {
 
   useEffect(() => {
     if (product) {
-      console.log(product);
+      
       setFormData({
+        productName:product.ten_sp,
+        chip:product.chip_xu_ly,
+        battery:product.dung_luong_pin,
+        screenSize:product.kich_thuoc_man,
+        frontCamera:product.camera_truoc,
+        rearCamera: product.camera_sau,
         os: product.operatingSystem?.ten_hdh,
         brand: product.brand?.ten_thuong_hieu,
         origin: product.origin?.ten_xuat_xu,
@@ -76,7 +83,6 @@ const UpdateProduct = ({ show, onClose, product }) => {
     };
     fetchData();
   }, [product]);
-
   if (!show) return null;
 
   const handleInputChange = (e) => {
@@ -122,7 +128,12 @@ const UpdateProduct = ({ show, onClose, product }) => {
   const closeNextTab = () => {
     setIsNextTabVisible(false);
   };
+  const handleUpdateConfig = (config) => {
+    //console.log(config);
+  };
+  const handleDeleteConfig = (config) => {
 
+  };
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -145,7 +156,65 @@ const UpdateProduct = ({ show, onClose, product }) => {
   const handleCloseButtonClick = () => {
     onClose();
   };
+  const handleSubmitUpdateProduct =async() =>{
+    // if (!validateConfigForm()) return;
+    try {
+      const configurationsData = product.phienBanSanPhams.map((item) => ({
+        ma_ram:ram.find((r)=> r.kich_thuoc_ram=== item.ram.kich_thuoc_ram)?.ma_ram,
+        ma_rom: rom.find((r)=> r.kich_thuoc_rom=== item.rom.kich_thuoc_rom)?.ma_rom,
+        ma_mau:colors.find((r)=> r.ten_mau === item.mauSac.ten_mau)?.ma_mau,
+        gia_nhap: item.gia_nhap,
+        gia_xuat: item.gia_xuat,
+      }));
+      if (
+        newConfig.rom &&
+        newConfig.ram &&
+        newConfig.color &&
+        newConfig.priceImport &&
+        newConfig.priceSell
+      ) {
+        configurationsData.push({
+          ma_ram: newConfig.ram,
+          ma_rom: newConfig.rom,
+          ma_mau: newConfig.color,
+          gia_nhap: parseInt(newConfig.priceImport, 10),
+          gia_xuat: parseInt(newConfig.priceSell, 10),
+        });
+      }
+     // const product
+        const UpdateProduct ={
+          productData:{
+          ten_sp:formData.productName,
+          hinh_anh: selectedImage || product.hinh_anh, // Giả sử bạn có ảnh mặc định
+          chip_xu_ly: formData.chip,
+          dung_luong_pin: formData.battery,
+          kich_thuoc_man: formData.screenSize,
+          camera_truoc: formData.frontCamera,
+          camera_sau: formData.rearCamera,
+          hdh: os.find((r)=> r.ten_hdh === formData.os)?.ma_hdh,
+          thuong_hieu: brands.find((r)=> r.ten_thuong_hieu===formData.brand)?.ma_thuong_hieu,
+          xuat_xu: origins.find((r)=> r.ten_xuat_xu === formData.origin)?.ma_xuat_xu,
+          khu_vuc_kho: area.find((r)=> r.ten_kho===formData.region)?.ma_kho,
+          trang_thai: 1,
+          },
+          configurationsData,
+          
+        }
+        // Send the data to the backend
+    const response = await axios.put(
+      `http://localhost:5000/api/products/${product.ma_sp}`,
+      UpdateProduct
+    );
 
+    if (response.data.success) {
+      alert("Cập nhật sản phẩm thành công!");
+      onClose(); 
+    }
+    } catch (error) {
+      alert("Có lỗi xảy ra, vui lòng thử lại!");
+    }
+    
+  }
   return (
     <div className="modal-overlay" onClick={handleCloseModal}>
       <div className="add-product-modal">
@@ -232,15 +301,15 @@ const UpdateProduct = ({ show, onClose, product }) => {
               <label htmlFor="os">Hệ điều hành:</label>
               <select
                 id="os"
-                value={formData.os}
+                value={ product.operatingSystem?.ten_hdh || ""}
                 onChange={(e) => handleInputChange(e)} // Xử lý thay đổi
               >
-                <option value="">-- Chọn hệ điều hành --</option>
-                {os.map((opt) => (
-                  <option key={opt.ma_hdh} value={opt.ma_hdh}>
-                    {opt.ten_hdh}
-                  </option>
-                ))}
+                {os.filter((opt) => opt.ma_hdh !== product.operatingSystem?.ma_hdh)
+                  .map((opt) => (
+                    <option key={opt.ma_hdh} value={opt.ten_hdh}>
+                      {opt.ten_hdh}
+                    </option>
+                  ))}
               </select>
             </div>
             <div>
@@ -250,9 +319,9 @@ const UpdateProduct = ({ show, onClose, product }) => {
                 value={formData.brand}
                 onChange={(e) => handleInputChange(e)} // Xử lý thay đổi
               >
-                <option value="">-- Chọn thương hiệu --</option>
-                {brands.map((opt) => (
-                  <option key={opt.ma_thuong_hieu} value={opt.ma_thuong_hieu}>
+                {brands.filter((opt)=> opt.ma_thuong_hieu !== product.brand?.ma_thuong_hieu)
+                .map((opt) => (
+                  <option key={opt.ma_thuong_hieu} value={opt.ten_thuong_hieu}>
                     {opt.ten_thuong_hieu}
                   </option>
                 ))}
@@ -265,9 +334,9 @@ const UpdateProduct = ({ show, onClose, product }) => {
                 value={formData.origin}
                 onChange={(e) => handleInputChange(e)} // Xử lý thay đổi
               >
-                <option value="">-- Chọn xuất xứ --</option>
-                {origins.map((opt) => (
-                  <option key={opt.ma_xuat_xu} value={opt.ma_xuat_xu}>
+                {origins.filter((opt)=> opt.ma_xuat_xu !== product.origin?.ma_xuat_xu)
+                .map((opt) => (
+                  <option key={opt.ma_xuat_xu} value={opt.ten_xuat_xu}>
                     {opt.ten_xuat_xu}
                   </option>
                 ))}
@@ -280,9 +349,10 @@ const UpdateProduct = ({ show, onClose, product }) => {
                 value={formData.region}
                 onChange={(e) => handleInputChange(e)} // Xử lý thay đổi
               >
-                <option value="">-- Chọn khu vực --</option>
-                {area.map((opt) => (
-                  <option key={opt.ma_kho} value={opt.ma_kho}>
+           
+                {area.filter((opt) => opt.ma_kho !== product.storageArea?.ma_kho)
+                .map((opt) => (
+                  <option key={opt.ma_kho} value={opt.ten_kho}>
                     {opt.ten_kho}
                   </option>
                 ))}
@@ -387,6 +457,22 @@ const UpdateProduct = ({ show, onClose, product }) => {
                       <td>{item.mauSac?.ten_mau}</td>
                       <td>{item.gia_nhap}</td>
                       <td>{item.gia_xuat}</td>
+                      <td>
+                        <div className="action-button">
+                          <button
+                          className="btn-product-edit"
+                          onClick={handleUpdateConfig(item)} // Thêm hành động sửa
+                          >
+                          <FaEdit />
+                          </button>
+                          <button
+                          className="btn-product-delete"
+                          onClick={() => (product.ma_sp)}
+                          >
+                          <FaTrash />
+                          </button>
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -394,7 +480,7 @@ const UpdateProduct = ({ show, onClose, product }) => {
             </div>
 
             <div className="aciton-add-products">
-              <button className="add-prodduct-sp" onClick={null}>
+              <button className="add-prodduct-sp" onClick={handleSubmitUpdateProduct}>
                 Sửa sản phẩm
               </button>
               <button className="comback-sp" onClick={closeNextTab}>
