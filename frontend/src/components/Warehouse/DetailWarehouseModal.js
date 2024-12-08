@@ -5,7 +5,7 @@ const DetailWarehouseModal = ({filterDataDetailWarehouse,setShowDetailWarehouse,
     const [showChangeWarehouseForm, setShowChangeWarehouseForm]=useState(false);
     const [currentProduct, setCurrentProduct]= useState({idProduct:'',nameWarehouse:''})
     const [selectedWarehouse, setSelectedWarehouse]= useState('')
-
+    const [updatedProductList, setUpdatedProductList] = useState(filterDataDetailWarehouse);
     const showChangeWarehouse = (product) => {
         console.log("danh sach kho",warehouses)
         setShowChangeWarehouseForm(true);        
@@ -21,7 +21,14 @@ const DetailWarehouseModal = ({filterDataDetailWarehouse,setShowDetailWarehouse,
                 await productService.updateWarehouse(currentProduct.idProduct,selectedWarehouse)
                 alert('cập nhật kho thành công')
                 setShowChangeWarehouseForm(false)
-                fetchProducts()
+                // fetchProducts()
+                // Update the product list to remove the product from the current warehouse
+                const updatedProducts = updatedProductList.filter(product => product.ma_sp !== currentProduct.idProduct);
+                setUpdatedProductList(updatedProducts);
+
+                // Optionally, call fetchProducts to refresh the entire product list from the server
+                fetchProducts();
+
             } catch (error) {
                 alert('sửa kho thất bại')
                 console.log('lỗi sửa kho:',error)
@@ -41,7 +48,7 @@ const DetailWarehouseModal = ({filterDataDetailWarehouse,setShowDetailWarehouse,
                         </tr>
                     </thead>
                     <tbody>
-                        {filterDataDetailWarehouse.map(product=>(
+                        {updatedProductList.map(product=>(
                             <tr key={product.ma_sp}>
                                 <td className='warehouse-area__data-cell'>{product.ten_sp}</td>
                                 <td className='warehouse-area__data-cell'>{product.so_luong_ton}</td>
