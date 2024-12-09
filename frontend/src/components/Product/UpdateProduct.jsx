@@ -232,6 +232,7 @@ const UpdateProduct = ({ show, onClose, product }) => {
     const updatedConfigurations = [...product.phienBanSanPhams];
     if (editIndex !== null) {
       updatedConfigurations[editIndex] = updatedConfig; // Sửa cấu hình hiện tại
+      product.phienBanSanPhams[editIndex] = updatedConfigurations[editIndex];
       setEditIndex(null); // Xóa trạng thái chỉnh sửa
     }
 
