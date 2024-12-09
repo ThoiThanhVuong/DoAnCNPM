@@ -58,18 +58,13 @@
   color: #fff;
 }
 
-.action-buttons-sp .btn-edit {
-  background-color: #ffc107;
-  color: #fff;
-}
-
-.action-buttons-sp .btn-delete {
-  background-color: #dc3545;
+.action-buttons-sp .btn-update {
+  background-color: #0e9aeb;
   color: #fff;
 }
 
 .action-buttons-sp .btn-reset {
-  background-color: #6c757d;
+  background-color: #d43d3d;
   color: #fff;
 }
 

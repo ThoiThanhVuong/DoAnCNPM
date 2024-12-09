@@ -5,6 +5,7 @@ import { IoIosAddCircle } from "react-icons/io";
 import AddProductModal from "../components/Product/AddProductModal";
 import DetailProductModal from "../components/Product/DetailProductModal";
 import UpdateProduct from "../components/Product/UpdateProduct";
+import AddConfig from "../components/Product/AddConfig";
 import productService from "../services/productService";
 
 const Product = () => {
@@ -15,6 +16,7 @@ const Product = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showAddConfig, setShowAddConfig] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handleAddProduct = () => {
@@ -29,13 +31,11 @@ const Product = () => {
     setSelectedProduct(product);
     setShowDetailModal(true);
   };
-  const handelAddVariance= (product) => {
-  };
-  
+
   const handleCloseDetailModal = () => {
     setShowDetailModal(false);
   };
-
+  ////
   const handleViewUpdate = (product) => {
     setSelectedProduct(product); // Sửa ở đây
     setShowUpdateModal(true);
@@ -43,6 +43,14 @@ const Product = () => {
 
   const handleCloseUpdate = () => {
     setShowUpdateModal(false);
+  };
+  ////
+  const handleViewAddConfig = (product) => {
+    setSelectedProduct(product);
+    setShowAddConfig(true);
+  };
+  const handleCloseAddConfig = () => {
+    setShowAddConfig(false);
   };
 
   useEffect(() => {
@@ -119,24 +127,6 @@ const Product = () => {
       alert("Có lỗi xảy ra khi ẩn sản phẩm.");
     }
   };
-  // const handleUpdateProduct = (updatedConfigs) => {
-  //   // Cập nhật lại cấu hình sản phẩm
-  //   setProducts((prevProducts) =>
-  //     prevProducts.map((product) =>
-  //       product.ma_sp === selectedProduct.ma_sp
-  //         ? { ...product, phienBanSanPhams: updatedConfigs }
-  //         : product
-  //     )
-  //   );
-
-  //   setFilteredProducts((prevFiltered) =>
-  //     prevFiltered.map((product) =>
-  //       product.ma_sp === selectedProduct.ma_sp
-  //         ? { ...product, phienBanSanPhams: updatedConfigs }
-  //         : product
-  //     )
-  //   );
-  // };
 
   return (
     <div className="product-list">
@@ -214,10 +204,10 @@ const Product = () => {
                         <FaInfoCircle />
                       </button>
                       <button
-                        className ="btn-btn-add"
-                        onClick={() => handelAddVariance(product)}
+                        className="btn-btn-add"
+                        onClick={() => handleViewAddConfig(product)}
                       >
-                          <IoIosAddCircle/>
+                        <IoIosAddCircle />
                       </button>
                       <button
                         className="btn-product-edit"
@@ -248,7 +238,11 @@ const Product = () => {
         show={showUpdateModal}
         onClose={handleCloseUpdate}
         product={selectedProduct}
-        // onUpdateProduct={handleUpdateProduct} // Truyền hàm callback vào đây
+      />
+      <AddConfig
+        show={showAddConfig}
+        onClose={handleCloseAddConfig}
+        product={selectedProduct}
       />
     </div>
   );
