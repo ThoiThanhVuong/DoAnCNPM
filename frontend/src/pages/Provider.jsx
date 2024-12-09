@@ -8,6 +8,9 @@ import UpdateProviderModal from "../components/Provider/UpdateProviderModal";
 import SearchProviderModal from "../components/Provider/SearchProviderModal";
 import AYSProviderModal from "../components/Provider/AYSProviderModal";
 
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
+
 const Provider = () => {
   const [Data, setData] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
@@ -161,6 +164,7 @@ const Provider = () => {
         errorInput={errorInput}
         setErrorInput={setErrorInput}
         setSearch={setSearch}
+        toast={toast}
       />
 
       <UpdateProviderModal
@@ -173,6 +177,7 @@ const Provider = () => {
         errorInput={errorInput}
         setErrorInput={setErrorInput}
         setSearch={setSearch}
+        toast={toast}
       />
 
       <AYSProviderModal
@@ -184,6 +189,7 @@ const Provider = () => {
         fetchProviders={fetchProviders}
         active={active}
         setSearch={setSearch}
+        toast={toast}
       />
 
       <div class="content_provider">
@@ -242,6 +248,13 @@ const Provider = () => {
           </table>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000} // Tự động đóng sau 5 giây
+        hideProgressBar={true} // Ẩn thanh tiến trình
+        newestOnTop={true} // Hiển thị thông báo mới nhất trên cùng
+        closeButton={false} // Tắt nút đóng
+      />
     </div>
   );
 };

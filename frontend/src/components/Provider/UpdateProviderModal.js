@@ -11,17 +11,14 @@ const UpdateProviderModal = ({
   handleInputChange,
   errorInput,
   setErrorInput,
-  setSearch
+  setSearch,
+  toast
 }) => {
-  const [showError, setError] = useState("");
 
   //cập nhật Nhà cung cấp
   const updateProvider = async () => {
     if (!formData.TNCC || !formData.DC || !formData.Email || !formData.SDT) {
-      setError("Vui lòng nhập đầy đủ thông tin!");
-      setTimeout(() => {
-        setError(""); // Ẩn thông báo
-      }, 2000);
+      toast.error("Vui lòng nhập đầy đủ thông tin!");
       if (!formData.TNCC) {
         setErrorInput((prevErrors) => {
           const newErrors = [...prevErrors];
@@ -52,10 +49,7 @@ const UpdateProviderModal = ({
       }
     } else {
       if (!validateEmail(formData.Email)) {
-        setError("Vui lòng nhập đúng Email!");
-        setTimeout(() => {
-          setError(""); // Ẩn thông báo
-        }, 2000);
+        toast.error("Vui lòng nhập đúng Email!");
         setErrorInput((prevErrors) => {
           const newErrors = [...prevErrors];
           newErrors[2] = true;
@@ -63,10 +57,7 @@ const UpdateProviderModal = ({
         });
       } else {
         if (!validatePhoneNumber(formData.SDT)) {
-          setError("Vui lòng nhập đúng SDT!");
-          setTimeout(() => {
-            setError(""); // Ẩn thông báo
-          }, 2000);
+          toast.error("Vui lòng nhập đúng SDT!");
           setErrorInput((prevErrors) => {
             const newErrors = [...prevErrors];
             newErrors[3] = true;
@@ -83,10 +74,7 @@ const UpdateProviderModal = ({
             `http://localhost:5000/api/providers/${formData.MNCC}`,
             payload
           );
-          setSuccessMessage("Sửa thành công");
-          setTimeout(() => {
-            setSuccessMessage(""); // Ẩn thông báo
-          }, 1500);
+          toast.success("Sửa thành công");;
           hiddenEdit("");
           fetchProviders();
           setErrorInput((prevErrors) => {
@@ -126,8 +114,6 @@ const UpdateProviderModal = ({
       style={{ display: showEditCustomer ? "block" : "none" }}
     >
       <div class="overlay " onClick={() => hiddenEdit(" ")}></div>
-      {/* Thông báo với animation */}
-      {showError && <div className="error-message">{showError}</div>}
       <div class="form_interface">
         <form class="form_interface_add">
           <div>

@@ -4,16 +4,15 @@ import axios from "axios";
 
 const AddProviderModal = ({
   formData,
-  setSuccessMessage,
   hiddenAdd,
   showAdd,
   handleInputChange,
   fetchProviders,
   errorInput,
   setErrorInput,
-  setSearch
+  setSearch,
+  toast
 }) => {
-  const [showError, setError] = useState("");
 
   //Thêm Nhà Cung Cấp
   const addProvider = async () => {
@@ -24,10 +23,7 @@ const AddProviderModal = ({
       !formData.Email ||
       !formData.SDT
     ) {
-      setError("Vui lòng nhập đầy đủ thông tin!");
-      setTimeout(() => {
-        setError(""); // Ẩn thông báo
-      }, 2000);
+      toast.error("Vui lòng nhập đầy đủ thông tin!");
       if (!formData.TNCC) {
         setErrorInput((prevErrors) => {
           const newErrors = [...prevErrors];
@@ -58,10 +54,7 @@ const AddProviderModal = ({
       }
     } else {
       if (!validatePhoneNumber(formData.SDT)) {
-        setError("Vui lòng nhập đúng SDT!");
-        setTimeout(() => {
-          setError(""); // Ẩn thông báo
-        }, 2000);
+        toast.error("Vui lòng nhập đúng SDT!");
         setErrorInput((prevErrors) => {
           const newErrors = [...prevErrors];
           newErrors[3] = true;
@@ -69,10 +62,7 @@ const AddProviderModal = ({
         });
       } else {
         if (!validateEmail(formData.Email)) {
-          setError("Vui lòng nhập đúng Email!");
-          setTimeout(() => {
-            setError(""); // Ẩn thông báo
-          }, 2000);
+          toast.error("Vui lòng nhập đúng Email!");
           setErrorInput((prevErrors) => {
             const newErrors = [...prevErrors];
             newErrors[2] = true;
@@ -88,10 +78,7 @@ const AddProviderModal = ({
               sdt_ncc: formData.SDT,
             };
             await axios.post("http://localhost:5000/api/providers", payload);
-            setSuccessMessage("Thêm thành công");
-            setTimeout(() => {
-              setSuccessMessage(""); // Ẩn thông báo
-            }, 1500);
+            toast.success("Thêm thành công");
             fetchProviders();
             hiddenAdd();
             setErrorInput((prevErrors) => {
@@ -100,10 +87,7 @@ const AddProviderModal = ({
             });
             setSearch({ MNCC: "" });
           } catch (error) {
-            setError("Mã Nhà Cung Cấp bị Trùng!");
-            setTimeout(() => {
-              setError(""); // Ẩn thông báo
-            }, 2000);
+            toast.error("Mã Nhà Cung Cấp bị Trùng!");
           }
         }
       }
@@ -133,8 +117,6 @@ const AddProviderModal = ({
   return (
     <div class="interface_add" style={{ display: showAdd ? "block" : "none" }}>
       <div class="overlay " onClick={hiddenAdd}></div>
-      {/* Thông báo với animation */}
-      {showError && <div className="error-message">{showError}</div>}
       <div class="form_interface">
         <form class="form_interface_add">
           <div>

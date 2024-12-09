@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const UpdateCustomerModal = ({
   showEditCustomer,
@@ -8,14 +9,13 @@ const UpdateCustomerModal = ({
   hiddenEdit,
   formData,
   handleInputChange,
-  setSuccessMessage,
   setData,
   setCustomerIds,
   errorInput,
   setErrorInput,
-  setSearch
+  setSearch,
+  toast
 }) => {
-  const [showError, setError] = useState("");
 
   const fetchCustomers = async () => {
     try {
@@ -36,10 +36,7 @@ const UpdateCustomerModal = ({
 
   const updateData = async () => {
     if (!formData.TKH || !formData.DC || !formData.SDT) {
-      setError("Vui lòng nhập đầy đủ thông tin!");
-      setTimeout(() => {
-        setError("");
-      }, 2000);
+      toast.error("Vui lòng nhập đầy đủ thông tin!");
       if (!formData.TKH) {
         setErrorInput((prevErrors) => {
           const newErrors = [...prevErrors];
@@ -63,17 +60,14 @@ const UpdateCustomerModal = ({
       }
     } else {
       if (!validatePhoneNumber(formData.SDT)) {
-        setError("Vui lòng nhập đúng SDT!");
-        setTimeout(() => {
-          setError("");
-        }, 2000);
+        toast.error("Vui lòng nhập đúng SDT!");
         setErrorInput((prevErrors) => {
           const newErrors = [...prevErrors];
           newErrors[2] = true;
           return newErrors;
         });
       } else {
-        setSuccessMessage("Sửa thành công!");
+        toast.success("Sửa thành công!");
         const payload = {
           ten_kh: formData.TKH,
           dia_chi_kh: formData.DC,
@@ -89,9 +83,6 @@ const UpdateCustomerModal = ({
           const newErrors = prevErrors.map(() => false);
           return newErrors;
         });
-        setTimeout(() => {
-          setSuccessMessage(""); // Ẩn thông báo
-        }, 2000);
         setSearch({MKH : ""})
       }
     }
@@ -118,8 +109,6 @@ const UpdateCustomerModal = ({
       style={{ display: showEditCustomer ? "block" : "none" }}
     >
       <div class="overlay " onClick={() => hiddenEdit()}></div>
-      {/* Thông báo thêm thành công với animation */}
-      {showError && <div className="error-message">{showError}</div>}
       <div class="form_interface">
         <form class="form_interface_add">
           <div>

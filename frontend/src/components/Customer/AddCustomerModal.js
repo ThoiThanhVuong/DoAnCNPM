@@ -7,12 +7,12 @@ const AddCustomerModal = ({
   showAddCustomer,
   formData,
   handleInputChange,
-  setSuccessMessage,
   setData,
   setCustomerIds,
   errorInput,
   setErrorInput,
-  setSearch
+  setSearch,
+  toast
 }) => {
   const [showError, setError] = useState("");
 
@@ -22,7 +22,7 @@ const AddCustomerModal = ({
       const response = await axios.get("http://localhost:5000/api/customers");
 
       // Cập nhật state customers với dữ liệu trả về
-      setData(response.data.filter((item) => item.trang_thai == 1));
+      setData(response.data.filter((item) => item.trang_thai === 1));
       // Cập nhật state customerIDs với dữ liệu trả về
       setCustomerIds(response.data.map((item) => item.ma_kh));
     } catch (err) {
@@ -41,7 +41,7 @@ const AddCustomerModal = ({
       sdt_kh: formData.SDT,
     };
     if (!formData.TKH || !formData.DC || !formData.SDT) {
-      setError("Vui lòng nhập đầy đủ thông tin!");
+      toast.error("Vui lòng nhập đầy đủ thông tin!");
       setTimeout(() => {
         setError("");
       }, 2000);
@@ -73,18 +73,12 @@ const AddCustomerModal = ({
           newErrors[2] = true;
           return newErrors;
         });
-        setError("Vui lòng nhâp đúng SDT!");
-        setTimeout(() => {
-          setError("");
-        }, 2000);
+        toast.error("Vui lòng nhâp đúng SDT!");
       } else {
         try {
           await axios.post("http://localhost:5000/api/customers", payload);
 
-          setSuccessMessage("Thêm thành công!");
-          setTimeout(() => {
-            setSuccessMessage(""); // Ẩn thông báo
-          }, 2000);
+          toast.success("Thêm thành công!");
           // Cập nhật lại danh sách khách hàng
           fetchCustomers();
           hiddenAdd();

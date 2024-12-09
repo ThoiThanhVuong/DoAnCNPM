@@ -1,10 +1,10 @@
 import React, { useState} from "react";
 import axios from "axios";
-const AYSCustomerModal = ({showAYS,handleAYS,formData,setSuccessMessage,fetchCustomers,setAYS,setSearch,setform,active}) =>{
+const AYSCustomerModal = ({showAYS,handleAYS,formData,setSuccessMessage,fetchCustomers,setAYS,setSearch,setform,active,toast}) =>{
   const deleteData = async (MKH) => {
 
 
-    (active ? setSuccessMessage(" Ẩn thành công!") : setSuccessMessage(" Hiện thành công!"));
+    (active ? toast.success("Ẩn thành công") : toast.success(" Hiện thành công!"));
     await axios.delete(`http://localhost:5000/api/customers/${MKH}`);
     fetchCustomers();
     setform({

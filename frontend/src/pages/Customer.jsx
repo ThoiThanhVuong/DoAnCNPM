@@ -6,6 +6,9 @@ import AddCustomerModal from "../components/Customer/AddCustomerModal";
 import UpdateCustomerModal from "../components/Customer/UpdateCustomerModal";
 import AYSCustomerModal from "../components/Customer/AYSCustomerModal";
 import SearchCustomerModal from "../components/Customer/SearchCustomerModal";
+
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 const Customer = () => {
   const [Data, setData] = useState([]);
   const [showAddCustomer, setShow] = useState(false);
@@ -163,12 +166,12 @@ const Customer = () => {
         showAddCustomer={showAddCustomer}
         formData={formData}
         handleInputChange={handleInputChange}
-        setSuccessMessage={setSuccessMessage}
         setData={setData}
         setCustomerIds={setCustomerIds}
         errorInput={errorInput}
         setErrorInput={setErrorInput}
         setSearch={setSearch}
+        toast={toast}
       />
 
       {/* form Sửa */}
@@ -178,12 +181,12 @@ const Customer = () => {
         hiddenEdit={hiddenEdit}
         formData={formData}
         handleInputChange={handleInputChange}
-        setSuccessMessage={setSuccessMessage}
         setData={setData}
         setCustomerIds={setCustomerIds}
         errorInput={errorInput}
         setErrorInput={setErrorInput}
         setSearch={setSearch}
+        toast={toast}
       />
 
       {/* form are you sure */}
@@ -197,6 +200,7 @@ const Customer = () => {
         setSearch={setSearch}
         setform={setform}
         active={active}
+        toast={toast}
       />
 
       {/* form contend */}
@@ -252,6 +256,13 @@ const Customer = () => {
           </table>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000} // Tự động đóng sau 5 giây
+        hideProgressBar={true} // Ẩn thanh tiến trình
+        newestOnTop={true} // Hiển thị thông báo mới nhất trên cùng
+        closeButton={false} // Tắt nút đóng
+      />
     </div>
   );
 };
