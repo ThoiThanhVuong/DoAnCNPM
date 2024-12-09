@@ -10,7 +10,8 @@ const AddProviderModal = ({
   handleInputChange,
   fetchProviders,
   errorInput,
-  setErrorInput
+  setErrorInput,
+  setSearch
 }) => {
   const [showError, setError] = useState("");
 
@@ -23,7 +24,7 @@ const AddProviderModal = ({
       !formData.Email ||
       !formData.SDT
     ) {
-      setError("Vui lòng nhập thông tin!");
+      setError("Vui lòng nhập đầy đủ thông tin!");
       setTimeout(() => {
         setError(""); // Ẩn thông báo
       }, 2000);
@@ -97,6 +98,7 @@ const AddProviderModal = ({
               const newErrors = prevErrors.map(() => false);
               return newErrors;
             });
+            setSearch({ MNCC: "" });
           } catch (error) {
             setError("Mã Nhà Cung Cấp bị Trùng!");
             setTimeout(() => {

@@ -11,7 +11,8 @@ const AddCustomerModal = ({
   setData,
   setCustomerIds,
   errorInput,
-  setErrorInput
+  setErrorInput,
+  setSearch
 }) => {
   const [showError, setError] = useState("");
 
@@ -40,7 +41,7 @@ const AddCustomerModal = ({
       sdt_kh: formData.SDT,
     };
     if (!formData.TKH || !formData.DC || !formData.SDT) {
-      setError("vui long nhap thong tin!");
+      setError("Vui lòng nhập đầy đủ thông tin!");
       setTimeout(() => {
         setError("");
       }, 2000);
@@ -72,7 +73,7 @@ const AddCustomerModal = ({
           newErrors[2] = true;
           return newErrors;
         });
-        setError("vui long nhap dung SDT");
+        setError("Vui lòng nhâp đúng SDT!");
         setTimeout(() => {
           setError("");
         }, 2000);
@@ -80,7 +81,7 @@ const AddCustomerModal = ({
         try {
           await axios.post("http://localhost:5000/api/customers", payload);
 
-          setSuccessMessage("Khách hàng đã được thêm thành công!");
+          setSuccessMessage("Thêm thành công!");
           setTimeout(() => {
             setSuccessMessage(""); // Ẩn thông báo
           }, 2000);
@@ -91,6 +92,7 @@ const AddCustomerModal = ({
             const newErrors = prevErrors.map(() => false);
             return newErrors;
           });
+          setSearch({MKH : ""})
         } catch (error) {
           setError("Loi trung ma khach hang");
           setTimeout(() => {
