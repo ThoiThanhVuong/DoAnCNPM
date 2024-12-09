@@ -561,7 +561,6 @@ const UpdateProduct = ({ show, onClose, product }) => {
             </div>
 
             <div className="action-buttons-sp">
-              <button className="btn btn-add">Thêm cấu hình</button>
               <button className="btn btn-update" onClick={updatedConfigs}>Sửa cấu hình</button>
               <button className="btn btn-reset" onClick={resetForm_nextTab}>
                 Làm mới

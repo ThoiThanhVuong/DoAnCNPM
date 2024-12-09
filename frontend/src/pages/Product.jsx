@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../style/product.css";
 import { FaPlus, FaEdit, FaTrash, FaInfoCircle } from "react-icons/fa";
+import { IoIosAddCircle } from "react-icons/io";
 import AddProductModal from "../components/Product/AddProductModal";
 import DetailProductModal from "../components/Product/DetailProductModal";
 import UpdateProduct from "../components/Product/UpdateProduct";
@@ -28,7 +29,9 @@ const Product = () => {
     setSelectedProduct(product);
     setShowDetailModal(true);
   };
-
+  const handelAddVariance= (product) => {
+  };
+  
   const handleCloseDetailModal = () => {
     setShowDetailModal(false);
   };
@@ -209,6 +212,12 @@ const Product = () => {
                         onClick={() => handleViewDetail(product)}
                       >
                         <FaInfoCircle />
+                      </button>
+                      <button
+                        className ="btn-btn-add"
+                        onClick={() => handelAddVariance(product)}
+                      >
+                          <IoIosAddCircle/>
                       </button>
                       <button
                         className="btn-product-edit"
