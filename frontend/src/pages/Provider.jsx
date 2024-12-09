@@ -160,6 +160,7 @@ const Provider = () => {
         fetchProviders={fetchProviders}
         errorInput={errorInput}
         setErrorInput={setErrorInput}
+        setSearch={setSearch}
       />
 
       <UpdateProviderModal
@@ -171,6 +172,7 @@ const Provider = () => {
         handleInputChange={handleInputChange}
         errorInput={errorInput}
         setErrorInput={setErrorInput}
+        setSearch={setSearch}
       />
 
       <AYSProviderModal
@@ -181,6 +183,7 @@ const Provider = () => {
         setSuccessMessage={setSuccessMessage}
         fetchProviders={fetchProviders}
         active={active}
+        setSearch={setSearch}
       />
 
       <div class="content_provider">

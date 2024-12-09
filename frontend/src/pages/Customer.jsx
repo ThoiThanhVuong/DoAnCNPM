@@ -168,6 +168,7 @@ const Customer = () => {
         setCustomerIds={setCustomerIds}
         errorInput={errorInput}
         setErrorInput={setErrorInput}
+        setSearch={setSearch}
       />
 
       {/* form Sửa */}
@@ -182,6 +183,7 @@ const Customer = () => {
         setCustomerIds={setCustomerIds}
         errorInput={errorInput}
         setErrorInput={setErrorInput}
+        setSearch={setSearch}
       />
 
       {/* form are you sure */}

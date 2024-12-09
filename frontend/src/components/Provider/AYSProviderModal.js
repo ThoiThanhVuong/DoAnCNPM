@@ -9,11 +9,10 @@ const AYSProviderModal = ({
   setform,
   setSuccessMessage,
   fetchProviders,
-  active
+  active,
+  setSearch
 }) => {
   const deleteProvider = async (MNCC) => {
-    
-    (active ? setSuccessMessage("Ẩn thành công") : setSuccessMessage("Hiện thành công"));
     await axios.delete(`http://localhost:5000/api/providers/${MNCC}`);
     setform({
       MNCC: " ",
@@ -22,10 +21,11 @@ const AYSProviderModal = ({
       Email: " ",
       SDT: " ",
     });
-    
+    (active ? setSuccessMessage("Ẩn thành công") : setSuccessMessage("Hiện thành công"));
     setTimeout(() => {
       setSuccessMessage(""); // Ẩn thông báo
     }, 1500);
+    setSearch({ MNCC: "" });
     fetchProviders();
     handleAYS("");
   };

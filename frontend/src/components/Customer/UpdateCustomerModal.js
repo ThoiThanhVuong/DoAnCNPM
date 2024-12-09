@@ -13,6 +13,7 @@ const UpdateCustomerModal = ({
   setCustomerIds,
   errorInput,
   setErrorInput,
+  setSearch
 }) => {
   const [showError, setError] = useState("");
 
@@ -35,7 +36,7 @@ const UpdateCustomerModal = ({
 
   const updateData = async () => {
     if (!formData.TKH || !formData.DC || !formData.SDT) {
-      setError("vui long nhap thong tin!");
+      setError("Vui lòng nhập đầy đủ thông tin!");
       setTimeout(() => {
         setError("");
       }, 2000);
@@ -62,7 +63,7 @@ const UpdateCustomerModal = ({
       }
     } else {
       if (!validatePhoneNumber(formData.SDT)) {
-        setError("vui long nhap dung SDT!");
+        setError("Vui lòng nhập đúng SDT!");
         setTimeout(() => {
           setError("");
         }, 2000);
@@ -91,6 +92,7 @@ const UpdateCustomerModal = ({
         setTimeout(() => {
           setSuccessMessage(""); // Ẩn thông báo
         }, 2000);
+        setSearch({MKH : ""})
       }
     }
   };

@@ -10,14 +10,15 @@ const UpdateProviderModal = ({
   showEditCustomer,
   handleInputChange,
   errorInput,
-  setErrorInput
+  setErrorInput,
+  setSearch
 }) => {
   const [showError, setError] = useState("");
 
   //cập nhật Nhà cung cấp
   const updateProvider = async () => {
     if (!formData.TNCC || !formData.DC || !formData.Email || !formData.SDT) {
-      setError("Vui lòng nhập thông tin!");
+      setError("Vui lòng nhập đầy đủ thông tin!");
       setTimeout(() => {
         setError(""); // Ẩn thông báo
       }, 2000);
@@ -92,6 +93,7 @@ const UpdateProviderModal = ({
             const newErrors = prevErrors.map(() => false);
             return newErrors;
           });
+          setSearch({ MNCC: "" });
         }
       }
     }
