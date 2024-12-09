@@ -4,7 +4,7 @@ import "../Product/style.css"; // Đường dẫn tới file CSS
 import "../Product/next-tab.css";
 import { FaPlus, FaEdit, FaTrash, FaInfoCircle } from "react-icons/fa";
 
-const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
+const UpdateProduct = ({ show, onClose, product }) => {
   const [errors, setErrors] = useState({});
   const [isNextTabVisible, setIsNextTabVisible] = useState(false); // Quản lý trạng thái hiển thị tab tiếp theo
   const [brands, setBrands] = useState([]);
@@ -16,8 +16,10 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
   const [rom, setRom] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
-  // const [updatedProduct, setUpdatedProduct] = useState(product);
+  const [editConfig, setEditConfig] = useState(null);
+  const [editIndex, setEditIndex] = useState(null); // Quản lý trạng thái chỉnh sửa
 
+  
   const [formData, setFormData] = useState({
     productName: "",
     chip: "",
@@ -55,20 +57,16 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
     }
     const fetchData = async () => {
       try {
-        const brandResponse = await axios.get(
-          "http://localhost:5000/api/brands"
-        );
-        const originResponse = await axios.get(
-          "http://localhost:5000/api/origins"
-        );
-        const osResponse = await axios.get("http://localhost:5000/api/os");
-        const areaReponse = await axios.get(
-          "http://localhost:5000/api/warehouses"
-        );
-        const colorReponse = await axios.get("http://localhost:5000/api/color");
-        const ramReponse = await axios.get("http://localhost:5000/api/ram");
-        const romReponse = await axios.get("http://localhost:5000/api/rom");
-
+        const [brandResponse, originResponse, osResponse, areaReponse, colorReponse, ramReponse, romReponse] = await Promise.all([
+          axios.get("http://localhost:5000/api/brands"),
+          axios.get("http://localhost:5000/api/origins"),
+          axios.get("http://localhost:5000/api/os"),
+          axios.get("http://localhost:5000/api/warehouses"),
+          axios.get("http://localhost:5000/api/color"),
+          axios.get("http://localhost:5000/api/ram"),
+          axios.get("http://localhost:5000/api/rom"),
+        ]);
+    
         setBrands(brandResponse.data);
         setOrigins(originResponse.data);
         setOs(osResponse.data);
@@ -184,7 +182,7 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
       priceImport: "",
       priceSell: "",
     });
-    // setEditIndex(null); // Xóa trạng thái sửa
+    setEditIndex(null); // Xóa trạng thái sửa
   };
   const handleInputChange_nextTab = (e) => {
     const { id, value } = e.target;
@@ -203,11 +201,54 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
   const closeNextTab = () => {
     setIsNextTabVisible(false);
   };
-  const handleUpdateConfig = (config) => {
-    //console.log(config);
+  const handleUpdateConfig = (item,index) => {
+    setEditConfig(item);
+    setNewConfig({
+      rom: rom.find((r) => r.kich_thuoc_rom === item.rom.kich_thuoc_rom)?.ma_rom || "",
+      ram: ram.find((r) => r.kich_thuoc_ram === item.ram.kich_thuoc_ram)?.ma_ram || "",
+      color: colors.find((c) => c.ten_mau === item.mauSac.ten_mau)?.ma_mau || "",
+      priceImport: item.gia_nhap || "",
+      priceSell: item.gia_xuat || "",
+    });
+    setEditIndex(index); // Lưu lại chỉ số cấu hình đang chỉnh sửa
+  
   };
+  const updatedConfigs = () => {
+    if (!validateConfigForm()) return; // Kiểm tra dữ liệu nhập
+    
+    const romName = rom.find((option) => option.ma_rom === Number(newConfig.rom))?.kich_thuoc_rom || "N/A";
+    const ramName = ram.find((option) => option.ma_ram === Number(newConfig.ram))?.kich_thuoc_ram || "N/A";
+    const colorName = colors.find((option) => option.ma_mau === Number(newConfig.color))?.ten_mau || "N/A";
+  
+    const updatedConfig = {
+      rom: { kich_thuoc_rom: romName },
+      ram: { kich_thuoc_ram: ramName },
+      mauSac: { ten_mau: colorName },
+      gia_nhap: newConfig.priceImport,
+      gia_xuat: newConfig.priceSell,
+    };
+  
+    // Cập nhật danh sách cấu hình
+    const updatedConfigurations = [...product.phienBanSanPhams];
+    if (editIndex !== null) {
+      updatedConfigurations[editIndex] = updatedConfig; // Sửa cấu hình hiện tại
+      setEditIndex(null); // Xóa trạng thái chỉnh sửa
+    }
 
-  const handleDeleteConfig = (config) => {};
+ 
+    setNewConfig({
+      rom: "",
+      ram: "",
+      color: "",
+      priceImport: "",
+      priceSell: "",
+    });
+    setEditConfig(null);
+  };
+ 
+  const handleDeleteConfig = (index) => {
+
+  };
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -521,6 +562,7 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
 
             <div className="action-buttons-sp">
               <button className="btn btn-add">Thêm cấu hình</button>
+              <button className="btn btn-update" onClick={updatedConfigs}>Sửa cấu hình</button>
               <button className="btn btn-reset" onClick={resetForm_nextTab}>
                 Làm mới
               </button>
@@ -541,6 +583,7 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
                 </thead>
                 <tbody>
                   {product.phienBanSanPhams.map((item, index) => (
+                    
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{item.rom.kich_thuoc_rom}</td>
@@ -551,13 +594,13 @@ const UpdateProduct = ({ show, onClose, product, onUpdateProduct }) => {
                       <td>
                         <div className="action-button">
                           <button
-                            className="btn-product-edit"
-                            onClick={handleUpdateConfig(item)} // Thêm hành động sửa
+                            className="btn-config-edit"
+                            onClick={()=>handleUpdateConfig(item,index)}
                           >
                             <FaEdit />
                           </button>
                           <button
-                            className="btn-product-delete"
+                            className="btn-config-delete"
                             onClick={() => product.ma_sp}
                           >
                             <FaTrash />
