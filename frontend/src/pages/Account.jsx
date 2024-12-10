@@ -175,6 +175,14 @@ const Account = () => {
   };
 
   const handleDeleteAccount = async (ma_nv) => {
+    const confirmDelete = window.confirm(
+      `Bạn có chắc chắn muốn thay đổi trạng thái tài khoản với mã nhân viên ${ma_nv}?`
+    );
+  
+    if (!confirmDelete) {
+      return; // Dừng nếu người dùng không xác nhận
+    }
+  
     try {
       const response = await fetch(
         `http://localhost:5000/api/employee/${ma_nv}`,
@@ -182,10 +190,16 @@ const Account = () => {
           method: "DELETE",
         }
       );
-      alert("Thay đổi thành công thành công!");
-      fetchAccounts();
+  
+      if (response.ok) {
+        alert("Xóa tài khoản thành công!");
+        fetchAccounts(); // Cập nhật danh sách tài khoản
+      } else {
+        alert("Có lỗi xảy ra khi xóa tài khoản.");
+      }
     } catch (error) {
       console.error("Error deleting account:", error);
+      alert("Không thể kết nối tới server. Vui lòng thử lại sau.");
     }
   };
 
