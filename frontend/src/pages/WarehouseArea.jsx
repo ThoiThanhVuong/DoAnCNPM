@@ -21,6 +21,7 @@ const WarehouseArea = () => {
     const [filterWarehouses, setFilterWarehouses] = useState([])
     const [status, setStatus] = useState(1);
     const [unactiveWarehouse, setUnactiveWarehouse] = useState([]);
+    const [filterunactiveWarehouse, setFilterunactiveWarehouse] = useState([]);
     console.log("trang thai ban dau:",status)
     // cảnh báo nhập 
     const [errorsName, setErrorsName] = useState('');
@@ -41,6 +42,7 @@ const WarehouseArea = () => {
             setFilterWarehouses(activeData); 
             const unactiveData=data.filter(warehouse=>warehouse.trang_thai === 0)
             setUnactiveWarehouse(unactiveData)
+            setFilterunactiveWarehouse(unactiveData)
         } catch (error) {
             console.error('Error fetching warehouses:', error);
         }
@@ -110,12 +112,11 @@ const WarehouseArea = () => {
             try {
                 console.log("Restoring warehouse with ID:", id);
                 await WarehouseService.restoreItem(id);
-                console.log("Warehouse restored successfully");
+                // console.log("Warehouse restored successfully");
                 fetchWarehouses();
                 alert('Kho được khôi phục thành công');
             } catch (error) {
-                console.error('Error restoring warehouse:', error);
-                alert("Có lỗi xảy ra khi khôi phục kho. Vui lòng thử lại.");
+                alert('Kho được khôi phục thất bại')
             }
         }
     }
@@ -125,10 +126,22 @@ const WarehouseArea = () => {
     
         const result = warehouses.filter((warehouse) => 
             warehouse.ten_kho.toLowerCase().includes(value.toLowerCase()) ||
-            warehouse.chu_thich.toLowerCase().includes(value.toLowerCase())
+            warehouse.chu_thich.toLowerCase().includes(value.toLowerCase()) ||
+            warehouse.ma_kho.toString().includes(value)
         );
         setFilterWarehouses(result);
     };
+    //tìm kiếm data ẩn
+    const handleSearchUnactiveWarehouse = (e) => {
+        const value = e.target.value;
+
+        const result = unactiveWarehouse.filter((warehouse) => 
+            warehouse.ten_kho.toLowerCase().includes(value.toLowerCase()) ||
+            warehouse.chu_thich.toLowerCase().includes(value.toLowerCase()) ||
+            warehouse.ma_kho.toString().includes(value)
+        );
+        setFilterunactiveWarehouse(result);
+    }
     //hiển thị giao diện thêm kho
     const showAddArea = () => {
         setShowAddForm(true); //
@@ -176,7 +189,8 @@ const WarehouseArea = () => {
             <div className="warehouse-area__container">
                     <h1 className='warehouse-area__container__banner'>Quản lý khu vực kho</h1>
                     <div className='warehouse-area_search-and-add'>
-                        <input type="text" placeholder='search...' className='warehouse-search' onChange={handleSearchWarehouse}/>
+                        <input type="text" placeholder='search...' className='warehouse-search' onChange={status == 1 ? handleSearchWarehouse : handleSearchUnactiveWarehouse}/>
+                        <p>Tình trạng</p>
                         <select className="warehouse-area__filter" value={status} id="warehouse-area_status" onChange={handleStatus}>
                             <option value="1"> Hoạt động</option>
                             <option value="0"> Ngưng hoạt động</option>
@@ -211,7 +225,7 @@ const WarehouseArea = () => {
                             }
                             
                             {status ==0 &&
-                                unactiveWarehouse.map((warehouse) => (
+                                filterunactiveWarehouse.map((warehouse) => (
                                     <tr key={warehouse.id}>
                                         <td className='warehouse-area__data-cell'>{warehouse.ma_kho}</td>
                                         <td className='warehouse-area__data-cell'>{warehouse.ten_kho}</td>
