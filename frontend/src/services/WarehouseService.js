@@ -51,6 +51,16 @@ const WarehouseService = {
             console.error(`Error deleting item with id ${id}:`, error);
             throw error;
         }
+    },
+
+    restoreItem: async(id) => {
+        try {
+            const response = await axios.patch(`${API_URL}/restore/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error(error)
+            throw error;
+        }
     }
 };
 

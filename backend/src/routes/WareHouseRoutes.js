@@ -8,5 +8,6 @@ router.get('/:ma_kho',warehousecontroller.getWarehouseByID)
 router.post('/', warehousecontroller.createWarehouse)
 router.put('/:ma_kho',warehousecontroller.updateWarehouse)
 router.delete('/:ma_kho',warehousecontroller.deleteWarehouse)
+router.patch('/restore/:ma_kho',warehousecontroller.restoreWarehouse)
 
 module.exports = router
