@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../Product/style.css"; // Đường dẫn tới file CSS
 import "../Product/next-tab.css";
-import { FaPlus, FaEdit, FaTrash, FaInfoCircle } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 const AddConfig = ({ show, onClose, product }) => {
   const [colors, setColors] = useState([]);
@@ -194,6 +194,95 @@ const AddConfig = ({ show, onClose, product }) => {
     onClose();
   };
 
+  const handleSubmitConfigProduct = async () => {
+    // Kiểm tra danh sách cấu hình trước khi gửi
+    if (configurations.length === 0) {
+      alert("Danh sách cấu hình không được để trống!");
+      return;
+    }
+
+    try {
+      // Tạo payload gửi lên server
+      const payLoad = {
+        ma_sp: product.ma_sp,
+        configurationsData: configurations.map((config) => ({
+          ma_ram: ram.find((r) => r.kich_thuoc_ram === config.ram)?.ma_ram,
+          ma_rom: rom.find((r) => r.kich_thuoc_rom === config.rom)?.ma_rom,
+          ma_mau: colors.find((c) => c.ten_mau === config.color)?.ma_mau,
+          gia_nhap: config.priceImport,
+          gia_xuat: config.priceSell,
+          ton_kho: 0, // Tồn kho mặc định là 0
+        })),
+      };
+
+      // Gửi yêu cầu lên backend
+      const { data } = await axios.post(
+        "http://localhost:5000/api/pbsp",
+        payLoad
+      );
+
+      if (data.success) {
+        const { addedConfigurations = [], duplicateConfigurations = [] } =
+          data.data;
+
+        // Thông báo cấu hình thêm thành công
+        if (addedConfigurations.length > 0) {
+          alert(
+            `Đã thêm ${addedConfigurations.length} cấu hình thành công:\n` +
+              addedConfigurations
+                .map(
+                  (config) =>
+                    `- RAM: ${config.ma_ram}, ROM: ${config?.ma_rom}, Màu: ${config?.ma_mau}`
+                )
+                .join("\n")
+          );
+        }
+
+        // Thông báo cấu hình bị trùng lặp
+        if (duplicateConfigurations.length > 0) {
+          alert(
+            `Có ${duplicateConfigurations.length} cấu hình bị trùng lặp:\n` +
+              duplicateConfigurations
+                .map(
+                  (config) =>
+                    `- RAM: ${config.config.ma_ram}, ROM: ${config.config.ma_rom}, Màu: ${config.config.ma_mau} (Lý do: ${config.reason})`
+                )
+                .join("\n")
+          );
+        }
+
+        // Reset form và trạng thái
+        resetForm_nextTab();
+        setConfigurations([]);
+        onClose();
+      } else {
+        alert(data.message || "Có lỗi xảy ra. Vui lòng thử lại!");
+      }
+    } catch (error) {
+      console.error("Lỗi khi thêm sản phẩm và cấu hình:", error);
+
+      // Xử lý lỗi từ backend
+      if (error.response) {
+        switch (error.response.status) {
+          case 400:
+            alert(error.response.data.message || "Dữ liệu không hợp lệ!");
+            break;
+          case 500:
+            alert("Lỗi server. Vui lòng thử lại sau.");
+            break;
+          default:
+            alert(
+              `Lỗi không xác định: ${
+                error.response.data.message || "Vui lòng thử lại!"
+              }`
+            );
+        }
+      } else {
+        alert("Không thể kết nối tới máy chủ. Vui lòng kiểm tra kết nối mạng.");
+      }
+    }
+  };
+
   return (
     <div className="modal-overlay" onClick={handleCloseModal}>
       <div className="add-product-modal">
@@ -326,7 +415,12 @@ const AddConfig = ({ show, onClose, product }) => {
           </div>
 
           <div className="aciton-add-products">
-            <button className="add-prodduct-sp">Tạo cấu hình</button>
+            <button
+              className="add-prodduct-sp"
+              onClick={handleSubmitConfigProduct}
+            >
+              Tạo cấu hình
+            </button>
           </div>
         </div>
       </div>
