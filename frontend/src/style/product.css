@@ -19,7 +19,8 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ nhẹ cho bảng */
 }
 .table-products {
-  max-height: 450px;
+  max-height: 500px;
+
   overflow-y: auto;
 }
 .rows {
@@ -82,13 +83,12 @@
 .product-actions button svg {
   margin-right: 8px;
 }
-.action-button{
+.action-button {
   display: flex;
   gap: 10px;
   font-size: 16px;
-  
 }
-.action-button.action-button button{
+.action-button.action-button button {
   background: none;
   border: none;
   cursor: pointer;
@@ -101,8 +101,6 @@
 .btn-add-product {
   background-color: #28a745;
 }
-
-
 
 .btn-detail-product {
   background-color: rgb(180, 160, 160);

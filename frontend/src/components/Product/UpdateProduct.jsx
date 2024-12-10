@@ -19,7 +19,6 @@ const UpdateProduct = ({ show, onClose, product }) => {
   const [editConfig, setEditConfig] = useState(null);
   const [editIndex, setEditIndex] = useState(null); // Quản lý trạng thái chỉnh sửa
 
-  
   const [formData, setFormData] = useState({
     productName: "",
     chip: "",
@@ -57,7 +56,15 @@ const UpdateProduct = ({ show, onClose, product }) => {
     }
     const fetchData = async () => {
       try {
-        const [brandResponse, originResponse, osResponse, areaReponse, colorReponse, ramReponse, romReponse] = await Promise.all([
+        const [
+          brandResponse,
+          originResponse,
+          osResponse,
+          areaReponse,
+          colorReponse,
+          ramReponse,
+          romReponse,
+        ] = await Promise.all([
           axios.get("http://localhost:5000/api/brands"),
           axios.get("http://localhost:5000/api/origins"),
           axios.get("http://localhost:5000/api/os"),
@@ -66,7 +73,7 @@ const UpdateProduct = ({ show, onClose, product }) => {
           axios.get("http://localhost:5000/api/ram"),
           axios.get("http://localhost:5000/api/rom"),
         ]);
-    
+
         setBrands(brandResponse.data);
         setOrigins(originResponse.data);
         setOs(osResponse.data);
@@ -201,25 +208,35 @@ const UpdateProduct = ({ show, onClose, product }) => {
   const closeNextTab = () => {
     setIsNextTabVisible(false);
   };
-  const handleUpdateConfig = (item,index) => {
+  const handleUpdateConfig = (item, index) => {
     setEditConfig(item);
     setNewConfig({
-      rom: rom.find((r) => r.kich_thuoc_rom === item.rom.kich_thuoc_rom)?.ma_rom || "",
-      ram: ram.find((r) => r.kich_thuoc_ram === item.ram.kich_thuoc_ram)?.ma_ram || "",
-      color: colors.find((c) => c.ten_mau === item.mauSac.ten_mau)?.ma_mau || "",
+      rom:
+        rom.find((r) => r.kich_thuoc_rom === item.rom.kich_thuoc_rom)?.ma_rom ||
+        "",
+      ram:
+        ram.find((r) => r.kich_thuoc_ram === item.ram.kich_thuoc_ram)?.ma_ram ||
+        "",
+      color:
+        colors.find((c) => c.ten_mau === item.mauSac.ten_mau)?.ma_mau || "",
       priceImport: item.gia_nhap || "",
       priceSell: item.gia_xuat || "",
     });
     setEditIndex(index); // Lưu lại chỉ số cấu hình đang chỉnh sửa
-  
   };
   const updatedConfigs = () => {
     if (!validateConfigForm()) return; // Kiểm tra dữ liệu nhập
-    
-    const romName = rom.find((option) => option.ma_rom === Number(newConfig.rom))?.kich_thuoc_rom || "N/A";
-    const ramName = ram.find((option) => option.ma_ram === Number(newConfig.ram))?.kich_thuoc_ram || "N/A";
-    const colorName = colors.find((option) => option.ma_mau === Number(newConfig.color))?.ten_mau || "N/A";
-  
+
+    const romName =
+      rom.find((option) => option.ma_rom === Number(newConfig.rom))
+        ?.kich_thuoc_rom || "N/A";
+    const ramName =
+      ram.find((option) => option.ma_ram === Number(newConfig.ram))
+        ?.kich_thuoc_ram || "N/A";
+    const colorName =
+      colors.find((option) => option.ma_mau === Number(newConfig.color))
+        ?.ten_mau || "N/A";
+
     const updatedConfig = {
       rom: { kich_thuoc_rom: romName },
       ram: { kich_thuoc_ram: ramName },
@@ -227,7 +244,7 @@ const UpdateProduct = ({ show, onClose, product }) => {
       gia_nhap: newConfig.priceImport,
       gia_xuat: newConfig.priceSell,
     };
-  
+
     // Cập nhật danh sách cấu hình
     const updatedConfigurations = [...product.phienBanSanPhams];
     if (editIndex !== null) {
@@ -236,7 +253,6 @@ const UpdateProduct = ({ show, onClose, product }) => {
       setEditIndex(null); // Xóa trạng thái chỉnh sửa
     }
 
- 
     setNewConfig({
       rom: "",
       ram: "",
@@ -246,10 +262,8 @@ const UpdateProduct = ({ show, onClose, product }) => {
     });
     setEditConfig(null);
   };
- 
-  const handleDeleteConfig = (index) => {
 
-  };
+  const handleDeleteConfig = (index) => {};
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -562,7 +576,9 @@ const UpdateProduct = ({ show, onClose, product }) => {
             </div>
 
             <div className="action-buttons-sp">
-              <button className="btn btn-update" onClick={updatedConfigs}>Sửa cấu hình</button>
+              <button className="btn btn-update" onClick={updatedConfigs}>
+                Sửa cấu hình
+              </button>
               <button className="btn btn-reset" onClick={resetForm_nextTab}>
                 Làm mới
               </button>
@@ -583,7 +599,6 @@ const UpdateProduct = ({ show, onClose, product }) => {
                 </thead>
                 <tbody>
                   {product.phienBanSanPhams.map((item, index) => (
-                    
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{item.rom.kich_thuoc_rom}</td>
@@ -595,15 +610,9 @@ const UpdateProduct = ({ show, onClose, product }) => {
                         <div className="action-button">
                           <button
                             className="btn-config-edit"
-                            onClick={()=>handleUpdateConfig(item,index)}
+                            onClick={() => handleUpdateConfig(item, index)}
                           >
                             <FaEdit />
-                          </button>
-                          <button
-                            className="btn-config-delete"
-                            onClick={() => product.ma_sp}
-                          >
-                            <FaTrash />
                           </button>
                         </div>
                       </td>
