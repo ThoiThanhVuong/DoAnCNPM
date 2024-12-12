@@ -141,12 +141,6 @@
   margin-bottom: 20px;
 }
 
-.warehouse-area__container__table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-
 
 .warehouse-area__detail-icon,
 .warehouse-area__edit-icon,
@@ -274,4 +268,7 @@
   color: red;
   font-size: 14px;
   margin-top: 10px;
+}
+.warehouse-area__filter{
+  height: 24px;
 }

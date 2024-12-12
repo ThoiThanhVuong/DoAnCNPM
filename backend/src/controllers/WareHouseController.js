@@ -2,11 +2,7 @@ const Warehouse = require('../models/WareHouseModel')
 
 const getAllWarehouse = async (req ,res) => {
     try {
-        const warehouse =await Warehouse.findAll({
-            where: {
-                trang_thai :1
-            }
-        });
+        const warehouse =await Warehouse.findAll();
         res.json(warehouse);
     }
     catch (error) {
@@ -76,10 +72,30 @@ const deleteWarehouse = async(req,res) => {
     }
 }
 
+const restoreWarehouse = async (req, res) => {
+    const { ma_kho } = req.params;
+    try {
+        const warehouse = await Warehouse.findByPk(ma_kho);
+        if (!warehouse) return res.status(404).json({ error: 'Không tìm thấy kho' });
+
+        if (warehouse.trang_thai === 0) {
+            warehouse.trang_thai = 1;
+            await warehouse.save();
+            return res.json({ message: 'Kho đã được khôi phục thành công' });
+        } else {
+            return res.status(400).json({ error: 'Kho không cần khôi phục' });
+        }
+    } catch (error) {
+        console.error('Lỗi khi khôi phục kho:', error);
+        return res.status(500).json({ error: 'Lỗi khi khôi phục kho', details: error.message });
+    }
+};
+
 module.exports = {
     getAllWarehouse,
     getWarehouseByID,
     createWarehouse,
     updateWarehouse,
-    deleteWarehouse
+    deleteWarehouse,
+    restoreWarehouse
 }

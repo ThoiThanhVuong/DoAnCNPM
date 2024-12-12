@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../style/WareHouseArea.css';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { BiSolidDetail } from "react-icons/bi";
+import { MdRestore } from "react-icons/md";
 import WarehouseService from '../services/WarehouseService';
 import productService from '../services/productService';
 import AddWarehouseModal from '../components/Warehouse/AddWarehouseModal';
@@ -18,6 +19,10 @@ const WarehouseArea = () => {
     const [dataDetailWarehouse, setDataDetailWarehouse] = useState([]);
     const [filterDataDetailWarehouse, setFilterDataDetailWarehouse] = useState([]);
     const [filterWarehouses, setFilterWarehouses] = useState([])
+    const [status, setStatus] = useState(1);
+    const [unactiveWarehouse, setUnactiveWarehouse] = useState([]);
+    const [filterunactiveWarehouse, setFilterunactiveWarehouse] = useState([]);
+    console.log("trang thai ban dau:",status)
     // cảnh báo nhập 
     const [errorsName, setErrorsName] = useState('');
     const [errorsNote, setErrorsNote] = useState('');
@@ -25,12 +30,19 @@ const WarehouseArea = () => {
         fetchWarehouses();
         fetchProducts();
     }, []);
-
+    const handleStatus= (e) =>{
+        setStatus(e.target.value);
+        console.log("trang thai:",status)
+    }
     const fetchWarehouses = async () => {
         try {
             const data = await WarehouseService.getAllItems();
-            setWarehouses(data);
-            setFilterWarehouses(data); 
+            const activeData=data.filter(warehouse => warehouse.trang_thai === 1)
+            setWarehouses(activeData);
+            setFilterWarehouses(activeData); 
+            const unactiveData=data.filter(warehouse=>warehouse.trang_thai === 0)
+            setUnactiveWarehouse(unactiveData)
+            setFilterunactiveWarehouse(unactiveData)
         } catch (error) {
             console.error('Error fetching warehouses:', error);
         }
@@ -95,16 +107,41 @@ const WarehouseArea = () => {
             }
         }
     };
+    const handleRestoreWarehouse = async(id)=>{
+        if(window.confirm("Bạn có chắc chắn muốn khôi phục kho này không?")){
+            try {
+                console.log("Restoring warehouse with ID:", id);
+                await WarehouseService.restoreItem(id);
+                // console.log("Warehouse restored successfully");
+                fetchWarehouses();
+                alert('Kho được khôi phục thành công');
+            } catch (error) {
+                alert('Kho được khôi phục thất bại')
+            }
+        }
+    }
     //thanh tìm kiếm
     const handleSearchWarehouse = (e) => {
         const value = e.target.value;
     
         const result = warehouses.filter((warehouse) => 
             warehouse.ten_kho.toLowerCase().includes(value.toLowerCase()) ||
-            warehouse.chu_thich.toLowerCase().includes(value.toLowerCase())
+            warehouse.chu_thich.toLowerCase().includes(value.toLowerCase()) ||
+            warehouse.ma_kho.toString().includes(value)
         );
         setFilterWarehouses(result);
     };
+    //tìm kiếm data ẩn
+    const handleSearchUnactiveWarehouse = (e) => {
+        const value = e.target.value;
+
+        const result = unactiveWarehouse.filter((warehouse) => 
+            warehouse.ten_kho.toLowerCase().includes(value.toLowerCase()) ||
+            warehouse.chu_thich.toLowerCase().includes(value.toLowerCase()) ||
+            warehouse.ma_kho.toString().includes(value)
+        );
+        setFilterunactiveWarehouse(result);
+    }
     //hiển thị giao diện thêm kho
     const showAddArea = () => {
         setShowAddForm(true); //
@@ -152,7 +189,12 @@ const WarehouseArea = () => {
             <div className="warehouse-area__container">
                     <h1 className='warehouse-area__container__banner'>Quản lý khu vực kho</h1>
                     <div className='warehouse-area_search-and-add'>
-                        <input type="text" placeholder='search...' className='warehouse-search' onChange={handleSearchWarehouse}/>
+                        <input type="text" placeholder='search...' className='warehouse-search' onChange={status == 1 ? handleSearchWarehouse : handleSearchUnactiveWarehouse}/>
+                        <p>Tình trạng</p>
+                        <select className="warehouse-area__filter" value={status} id="warehouse-area_status" onChange={handleStatus}>
+                            <option value="1"> Hoạt động</option>
+                            <option value="0"> Ngưng hoạt động</option>
+                        </select>
                         <button onClick={showAddArea} className="warehouse-button add">Thêm</button>
                     </div>
                     <div className='warehouse-area__container__content'>
@@ -167,7 +209,8 @@ const WarehouseArea = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filterWarehouses.map((warehouse) => (
+                            {status == 1 &&
+                            filterWarehouses.map((warehouse) => (
                                     <tr key={warehouse.id}>
                                         <td className='warehouse-area__data-cell'>{warehouse.ma_kho}</td>
                                         <td className='warehouse-area__data-cell'>{warehouse.ten_kho}</td>
@@ -178,7 +221,22 @@ const WarehouseArea = () => {
                                             <FaTrash className='warehouse-area__delete-icon' onClick={() => handleDeleteWarehouse(warehouse.ma_kho)} />
                                         </td>
                                     </tr>
+                                ))
+                            }
+                            
+                            {status ==0 &&
+                                filterunactiveWarehouse.map((warehouse) => (
+                                    <tr key={warehouse.id}>
+                                        <td className='warehouse-area__data-cell'>{warehouse.ma_kho}</td>
+                                        <td className='warehouse-area__data-cell'>{warehouse.ten_kho}</td>
+                                        <td className='warehouse-area__data-cell'>{warehouse.chu_thich}</td>
+                                        <td className='warehouse-area__data-cell'><BiSolidDetail className='warehouse-area__detail-icon' onClick={() => showDetailArea(warehouse)}/></td>
+                                        <td className='warehouse-area__data-cell'>
+                                            <MdRestore className='warehouse-area__edit-icon' onClick={()=>handleRestoreWarehouse(warehouse.ma_kho)}/>
+                                        </td>
+                                    </tr>
                                 ))}
+                                
                             </tbody>
                         </table>
                     </div>
