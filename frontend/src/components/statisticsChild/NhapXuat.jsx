@@ -2,7 +2,7 @@ import React,{useEffect, useState} from "react";
 import '../statisticsChild/statisticChild.css';
 import thongkeService from "../../services/thongkeService";
 import * as XLSX from 'xlsx'
-const TonKho = ()=> {
+const NhapXuat = ()=> {
     const [text, setText] = useState('');
     const [timeStart, setTimeStart] = useState('');
     const [timeEnd, setTimeEnd] = useState('');
@@ -155,4 +155,4 @@ const TonKho = ()=> {
         </div>
     );
 };
-export default TonKho;
+export default NhapXuat;

@@ -18,8 +18,8 @@ const UpdateProduct = ({ show, onClose, product }) => {
   const fileInputRef = useRef(null);
   const [editConfig, setEditConfig] = useState(null);
   const [editIndex, setEditIndex] = useState(null); // Quản lý trạng thái chỉnh sửa
-
   
+
   const [formData, setFormData] = useState({
     productName: "",
     chip: "",
@@ -121,25 +121,6 @@ const UpdateProduct = ({ show, onClose, product }) => {
       ...prevErrors,
       [id]: "", // Xóa lỗi khi nhập
     }));
-  };
-  const validateProductForm = () => {
-    const newErrors = {};
-    if (!selectedImage || selectedImage.length === 0) {
-      alert("Không để trống ảnh");
-      return;
-    }
-    Object.keys(formData).forEach((key) => {
-      if (!formData[key]) {
-        newErrors[key] = "Không được để trống";
-      }
-    });
-    setErrors(newErrors);
-    // Tìm tất cả các ô còn lỗi và focus vào chúng
-    Object.keys(newErrors).forEach((key) => {
-      const errorField = document.getElementById(key);
-      if (errorField) errorField.focus();
-    });
-    return Object.keys(newErrors).length === 0;
   };
 
   const validateConfigForm = () => {
@@ -248,7 +229,8 @@ const UpdateProduct = ({ show, onClose, product }) => {
   };
  
   const handleDeleteConfig = (index) => {
-
+    const updatedConfigurations = product.phienBanSanPhams.filter((_,i)=> i!== index)
+    product.phienBanSanPhams = updatedConfigurations; // Cập nhật lại danh sách
   };
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -601,7 +583,7 @@ const UpdateProduct = ({ show, onClose, product }) => {
                           </button>
                           <button
                             className="btn-config-delete"
-                            onClick={() => product.ma_sp}
+                            onClick={() => handleDeleteConfig(index)}
                           >
                             <FaTrash />
                           </button>

@@ -3,7 +3,7 @@ import '../style/Statistics.css';
 import TabChilden from '../components/ChildTab';
 import StatisticProvider from '../components/statisticsChild/NhaCungCap.jsx';
 import StatisticCustommer from '../components/statisticsChild/KhachHang.jsx';
-import StatisticStock from '../components/statisticsChild/TonKho.jsx';
+import StatisticStock from '../components/statisticsChild/NhapXuat.jsx';
 import StatisticOverview from '../components/Chart/TongQuan.jsx'
 const Statistics=()=>{
     const [activeTab, setActiveTab] = useState('TongQuan');
@@ -24,10 +24,10 @@ const Statistics=()=>{
 
                 {/* tab 2 */}
                 <button
-                    className={activeTab === 'TonKho' ? 'active' : ''}
-                    onClick={() => handleTabClick('TonKho')}
+                    className={activeTab === 'NhapXuat' ? 'active' : ''}
+                    onClick={() => handleTabClick('NhapXuat')}
                 >
-                    Tồn kho
+                    Nhập xuất
                 </button>
 
                 {/* tab 3 */}
@@ -55,7 +55,7 @@ const Statistics=()=>{
   
             <div className="tab-content">
                 {activeTab === 'TongQuan' && <div><StatisticOverview/></div>}
-                {activeTab === 'TonKho' && <div><StatisticStock/></div>}
+                {activeTab === 'NhapXuat' && <div><StatisticStock/></div>}
                 {activeTab === 'DoanhThu' && <div><TabChilden/></div>}
                 {activeTab === 'KhachHang' && <div><StatisticCustommer/></div>}
                 {activeTab === 'NhaCungCap' && <div><StatisticProvider/></div>}

@@ -98,7 +98,7 @@ const getThongKeProvider = async (req, res) => {
     res.status(500).json({ message: "Error fetching provider statistics" });
   }
 };
-const getThongKeTonKho = async (req, res) => {
+const getThongKeNhapXuat = async (req, res) => {
   const { text, timeStart, timeEnd } = req.query;
   try {
     // Điều kiện tìm kiếm theo text
@@ -195,17 +195,6 @@ const getThongKeTonKho = async (req, res) => {
             )`),
           "so_luong_cuoi_ky",
         ],
-        // [
-        //   sequelize.literal(`
-        //     (
-        //       SELECT COALESCE(SUM(ton_kho), 0)
-        //        FROM phien_ban_san_pham AS pbsp ,san_pham
-        //        WHERE pbsp.ma_sp = san_pham.ma_sp AND pbsp.ma_sp = PhienBanSPModel.ma_sp
-        //        Group by pbsp.ma_sp
-        //     )
-        //   `),
-        //   "so_luong_ton",
-        // ],
         
       ],
       where: TextCondition,
@@ -706,7 +695,7 @@ const getThongKeNgayDenNgay= async (req, res) => {
 module.exports = { 
   getThongKeKhachHang ,
   getThongKeProvider,
-  getThongKeTonKho,
+  getThongKeNhapXuat,
   getThongKeTheoNam,
   getThongKeTheoThang,
   getThongKeTheoNgay,
